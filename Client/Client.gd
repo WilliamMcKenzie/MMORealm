@@ -1,17 +1,30 @@
-extends Node
+extends Node2D
 
 
-var IP_ADDRESS = "127.0.0.1"
+onready var clientButton = $Client
+onready var serverButton = $Server
+var MAX_PLAYERS = 10
 var PORT = 20200
+
+var serverId
+var infoBank = {}
+remote var printme = "hello"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(get_tree().get_network_peer())
-	
+	print(printme)
+	clientButton.connect("pressed", self, "connectClient")
+	serverButton.connect("pressed", self, "createServer")
+
+func connectClient():
+	var mychar = load("res://PlayerCharacter/Player.tscn")
+	var player_instance = mychar.instance()
+	player_instance.scale.x = 4
+	player_instance.scale.y = 4
+	add_child(player_instance)
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(IP_ADDRESS, PORT)
+	peer.create_client("localhost", PORT)
 	get_tree().network_peer = peer
-	print(get_tree().is_network_server())
-	rpc("print_once_per_client")
-func print_once_per_client():
-	print("I will be printed to the console once per each connected client.")
+
+func _process(delta):
+	print(printme)

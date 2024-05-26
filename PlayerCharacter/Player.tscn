@@ -251,7 +251,6 @@ parameters/idle/blend_position = Vector2( -0.1458, 0.672414 )
 texture = ExtResource( 2 )
 hframes = 6
 vframes = 3
-frame = 12
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -261,3 +260,9 @@ frame = 12
 
 [node name="Joystick" parent="UI" instance=ExtResource( 3 )]
 position = Vector2( 148, 442 )
+
+[node name="Chat" type="RichTextLabel" parent="UI"]
+margin_left = 838.0
+margin_top = 405.0
+margin_right = 995.0
+margin_bottom = 576.0

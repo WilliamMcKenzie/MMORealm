@@ -3,21 +3,18 @@ extends Node
 
 var MAX_PLAYERS = 10
 var PORT = 20200
+remote var printme = "HELLO"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(get_tree().get_network_peer())
-	
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(PORT, MAX_PLAYERS)
 	get_tree().network_peer = peer
-	print(get_tree().is_network_server())
-	rpc("print_once_per_client")
-func print_once_per_client():
-	print("I will be printed to the console once per each connected client.")
-
+	get_tree().connect("network_peer_connected", self, "_player_connected")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-	
+func _process(delta):
+	print(get_tree().get_network_connected_peers())
+
+func _player_connected(id):
+	rset_unreliable("printme", "TAMPERED")
