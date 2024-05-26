@@ -8,11 +8,9 @@ var PORT = 20200
 
 var serverId
 var infoBank = {}
-remote var printme = "hello"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(printme)
 	clientButton.connect("pressed", self, "connectClient")
 	serverButton.connect("pressed", self, "createServer")
 
@@ -26,5 +24,5 @@ func connectClient():
 	peer.create_client("localhost", PORT)
 	get_tree().network_peer = peer
 
-func _process(delta):
-	print(printme)
+remote func print_hello():
+	print("WASSSUP")

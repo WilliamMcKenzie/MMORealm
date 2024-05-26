@@ -12,9 +12,9 @@ func _ready():
 	get_tree().network_peer = peer
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 
+func _player_connected():
+	rpc("print_hello")
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	print(get_tree().get_network_connected_peers())
-
-func _player_connected(id):
-	rset_unreliable("printme", "TAMPERED")
