@@ -12,7 +12,9 @@ func _ready():
 	peer.create_server(PORT, MAX_PLAYERS)
 	get_tree().network_peer = peer
 	print(get_tree().is_network_server())
-
+	rpc("print_once_per_client")
+func print_once_per_client():
+	print("I will be printed to the console once per each connected client.")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

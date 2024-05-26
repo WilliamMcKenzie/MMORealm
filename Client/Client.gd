@@ -9,6 +9,9 @@ func _ready():
 	print(get_tree().get_network_peer())
 	
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(IP_ADDRESS, PORT
+	peer.create_server(IP_ADDRESS, PORT)
 	get_tree().network_peer = peer
 	print(get_tree().is_network_server())
+	rpc("print_once_per_client")
+func print_once_per_client():
+	print("I will be printed to the console once per each connected client.")
