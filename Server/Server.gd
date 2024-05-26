@@ -1,7 +1,7 @@
 extends Node
 
 
-var MAX_PLAYERS = 10
+var MAX_PLAYERS = 10	
 var PORT = 20200
 remote var printme = "HELLO"
 
