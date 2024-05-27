@@ -11,7 +11,13 @@ config_version=4
 [application]
 
 config/name="Authenticate"
+run/main_scene="res://Scenes/Main/Authenticate.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+PlayerData="*res://Scenes/Singletons/PlayerData.gd"
+PlayerAuth="*res://Scripts/PlayerAuth.gd"
 
 [gui]
 

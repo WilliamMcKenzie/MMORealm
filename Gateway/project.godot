@@ -11,7 +11,13 @@ config_version=4
 [application]
 
 config/name="Gateway"
+run/main_scene="res://Scenes/Main/LoginServer.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Gateway="*res://Scenes/Singletons/Gateway.gd"
+Authenticate="*res://Scenes/Singletons/Authenticate.gd"
 
 [gui]
 

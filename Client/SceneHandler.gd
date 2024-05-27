@@ -1,6 +1,6 @@
 extends Node
 
-var mapstart = preload("res://Scenes/MainScenes/Map.tscn")
+var mapstart = preload("res://Scenes/MainScenes/Home.tscn")
 
 func _ready():
 	var mapstart_instance = mapstart.instance()

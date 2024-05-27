@@ -1,7 +1,7 @@
 extends Node
 
 var ip_address = "localhost"
-var port = 20200
+var port = 1912
 var network = NetworkedMultiplayerENet.new()
 
 # Called when the node enters the scene tree for the first time.
@@ -16,15 +16,14 @@ func connectToServer():
 	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
 
 func _onConnectionFailed():
-	print("Connection failed.")
+	print("Authentication server connection failed.")
 	
 func _onConnectionSucceeded():
-	print("Connection succeeded!")
+	print("Authentication server connection succeeded!")
 
-func fetchProjectileData(skill_name, requester_id):
-	rpc_id(1, "FetchProjectileData", skill_name, requester_id)
+func authenticatePlayer(email, password, id):
+	rpc_id(1, "AuthenticatePlayer", email, password, id) 
 
-remote func returnProjectileData(skill_data, requester_id):
-	if is_instance_valid(instance_from_id(requester_id)): 
-		instance_from_id(requester_id).SetData(skill_data)
+remote func authenticateResults(player_id, result):
+	Gateway.returnLoginRequest(player_id, result)
 
