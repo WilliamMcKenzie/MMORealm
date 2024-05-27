@@ -21,5 +21,9 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected to authentication server!")
 
-remote func AuthenticatePlayer(username, password, player_id):
-	pass
+remote func AuthenticatePlayer(email, password, player_id):
+	var gateway_id = get_tree().get_rpc_sender_id()
+	if PlayerAuth.FetchUserData(email, password) == true:
+		rpc_id(gateway_id, "authenticateResults", player_id, true)
+	else:
+		rpc_id(gateway_id, "authenticateResults", player_id, false)

@@ -5,7 +5,7 @@ var port = 20201
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
 
-var username
+var email
 var password
 
 # Called when the node enters the scene tree for the first time.
@@ -20,23 +20,34 @@ func _process(delta):
 	custom_multiplayer.poll()
 	
 
-func startServer():
+func connectToServer(_email, _password):
+	network = NetworkedMultiplayerENet.new()
+	gateway_api = MultiplayerAPI.new()
+	email = _email
+	password = _password
+	
 	network.create_client(ip, port)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
 
-	get_tree().connect("connection_failed", self, "_onConnectionFailed")
-	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
+	custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
+	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
 
 func _onConnectionFailed():
-	print("Connection failed.")
+	print("Connection failed, gateway server down.")
+	get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
+	get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
+	requestLogin()
 
-func fetchProjectileData(skill_name, requester_id):
-	rpc_id(1, "FetchProjectileData", skill_name, requester_id)
+func requestLogin():
+	print("Requesting login from gateway")
+	rpc_id(1, "loginRequest", email, password)
+	email = ""
+	password = ""
 
-remote func returnProjectileData(skill_data, requester_id):
-	instance_from_id(requester_id).SetData(skill_data)
+remote func returnLogin(result):
+	get_node("../SceneHandler/Home/LoginPopup").loginResult(result)

@@ -21,9 +21,9 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Authentication server connection succeeded!")
 
-func authenticatePlayer():
-	pass
+func authenticatePlayer(email, password, id):
+	rpc_id(1, "AuthenticatePlayer", email, password, id) 
 
-remote func AuthenticateResults():
-	pass
+remote func authenticateResults(player_id, result):
+	Gateway.returnLoginRequest(player_id, result)
 

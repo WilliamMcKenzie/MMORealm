@@ -21,8 +21,8 @@ func startServer():
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
 
-	network.connect("network_peer_connected", self, "_Peer_Connected")
-	network.connect("network_peer_disconnected", self, "_Peer_Disconnected")
+	custom_multiplayer.connect("network_peer_connected", self, "_Peer_Connected")
+	custom_multiplayer.connect("network_peer_disconnected", self, "_Peer_Disconnected")
 
 
 func _Peer_Connected(id):
@@ -30,7 +30,8 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
 
-remote func LoginRequest(username, password):
-	pass
-func ReturnLoginRequest(result, player_id):
-	pass
+remote func loginRequest(email, password):
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	Authenticate.authenticatePlayer(email, password, player_id)
+func returnLoginRequest(player_id,result):
+	rpc_id(player_id, "returnLogin", result)

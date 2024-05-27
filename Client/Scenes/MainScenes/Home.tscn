@@ -318,6 +318,5 @@ custom_fonts/font = SubResource( 4 )
 text = "Graveyard"
 
 [node name="LoginPopup" parent="." instance=ExtResource( 5 )]
-visible = false
 position = Vector2( -48, -25 )
 scale = Vector2( 0.25, 0.25 )
