@@ -30,7 +30,12 @@ func loginAttempt():
 		print("Attempting login!!")
 		Gateway.connectToServer(email, password)
 func loginResult(result):
-	print(result)
+	loginButton.disabled = false
+	signupButton.disabled = false
+	if(result == true):
+		queue_free()
+	else:
+		print("Invalid credentials")
 	
 func signupAttempt():
 	pass
