@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GradientTexture" id=1]
+
+[node name="LoginPopup" type="Node2D"]
+
+[node name="ResizeContainer" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="ResizeContainer"]
+modulate = Color( 1, 1, 1, 0.733333 )
+position = Vector2( 414, 297.5 )
+scale = Vector2( 1, 661 )
+texture = SubResource( 1 )
+
+[node name="PasswordLabel" type="Label" parent="ResizeContainer"]
+margin_left = 373.0
+margin_top = 278.0
+margin_right = 433.0
+margin_bottom = 292.0
+text = "Password"
+
+[node name="Password" type="TextEdit" parent="ResizeContainer"]
+margin_left = 371.0
+margin_top = 304.0
+margin_right = 644.0
+margin_bottom = 344.0
+
+[node name="Email" type="TextEdit" parent="ResizeContainer"]
+margin_left = 368.0
+margin_top = 200.0
+margin_right = 645.0
+margin_bottom = 243.0
+
+[node name="EmailLabel" type="Label" parent="ResizeContainer"]
+margin_left = 370.0
+margin_top = 179.0
+margin_right = 410.0
+margin_bottom = 193.0
+text = "Email"
+
+[node name="Button" type="Button" parent="ResizeContainer"]
+margin_left = 374.0
+margin_top = 366.0
+margin_right = 501.0
+margin_bottom = 394.0
+text = "Login"
+
+[node name="Button2" type="Button" parent="ResizeContainer"]
+margin_left = 517.0
+margin_top = 365.0
+margin_right = 644.0
+margin_bottom = 393.0
+text = "Sign up"
