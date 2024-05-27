@@ -1,8 +1,7 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://PlayerCharacter/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/skin.png" type="Texture" id=2]
-[ext_resource path="res://Joystick/Joystick.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 4 )
@@ -257,9 +256,6 @@ vframes = 3
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 
 [node name="UI" type="CanvasLayer" parent="."]
-
-[node name="Joystick" parent="UI" instance=ExtResource( 3 )]
-position = Vector2( 148, 442 )
 
 [node name="Chat" type="RichTextLabel" parent="UI"]
 margin_left = 838.0

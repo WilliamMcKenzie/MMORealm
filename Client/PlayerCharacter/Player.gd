@@ -8,18 +8,16 @@ func _ready():
 func _physics_process(delta):
 	var motion = Vector2()
 
-	if(Input.is_action_pressed("up")):
+	if(Input.is_action_pressed("ui_up")):
 		motion.y -= 1
-	if(Input.is_action_pressed("down")):
+	if(Input.is_action_pressed("ui_down")):
 		motion.y += 1
-	if(Input.is_action_pressed("left")):
+	if(Input.is_action_pressed("ui_left")):
 		motion.x -= 1
-	if(Input.is_action_pressed("right")):
+	if(Input.is_action_pressed("ui_right")):
 		motion.x += 1
 	motion = motion.normalized()
 	$AnimationTree.set("parameters/Idle/blend_position", motion)
 	
 	motion = move_and_slide(motion * 50)
-func _process(delta):
-	var velocity = $UI/Joystick.get_velo()
-	move_and_slide(velocity*500, Vector2.UP)
+
