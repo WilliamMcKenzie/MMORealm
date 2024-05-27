@@ -21,3 +21,9 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
 
+func fetchProjectileData(skill_name, requester_id):
+	rpc_id(1, "FetchProjectileData", skill_name, requester_id)
+
+remote func returnProjectileData(skill_data, requester_id):
+	instance_from_id(requester_id).SetData(skill_data)
+

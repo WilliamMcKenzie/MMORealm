@@ -378,7 +378,7 @@ tree_root = SubResource( 16 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 17 )
-parameters/Attack/blend_position = Vector2( -0.939778, 0.0517242 )
+parameters/Attack/blend_position = Vector2( -0.66878, 0.431035 )
 parameters/Idle/blend_position = Vector2( 0, 0 )
 parameters/Walk/blend_position = Vector2( 0, 0 )
 
@@ -403,7 +403,11 @@ texture = ExtResource( 1 )
 hframes = 4
 vframes = 4
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Axis" type="Area2D" parent="."]
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Axis"]
 shape = SubResource( 18 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.2, 0.2 )

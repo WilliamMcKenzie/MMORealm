@@ -21,6 +21,6 @@ vframes = 26
 position = Vector2( 5, 4 )
 
 [node name="Hitbox" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( -7.77791, -0.920939 )
+position = Vector2( -8.09477, -1.31399 )
 scale = Vector2( 0.668, 0.5 )
 shape = SubResource( 1 )

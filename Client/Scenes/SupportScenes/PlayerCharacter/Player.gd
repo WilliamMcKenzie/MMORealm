@@ -50,7 +50,7 @@ func _physics_process(delta):
 
 func shoot_projectile():
 	var projectile_instance = projectile.instance()
-	projectile_instance.position = position
+	projectile_instance.position = $Axis.global_position
 	
 	var mouse_position = get_global_mouse_position()
 	var direction = (mouse_position - position).normalized()

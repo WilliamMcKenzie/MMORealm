@@ -20,3 +20,9 @@ func _Peer_Connected(id):
 	print("User " + str(id) + " has connected!")
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
+
+remote func FetchProjectileData(skill_name, requester_id):
+	var player_id = get_tree().get_rpc_sender_id()
+	var data = ServerData.projectile_data[skill_name]
+	rpc_id(player_id, "returnProjectileData", data, requester_id)
+	print("Sending " + str(data) + " to player " + str(player_id))
