@@ -12,7 +12,7 @@ func _ready():
 	initial_position = position
 	Server.fetchProjectileData("arrow", get_instance_id())
 func SetData(data):
-	damage = data.damage
+	damage = round(rand_range(data.damage[0], data.damage[1]))
 	speed = data.speed
 	lifetime = data.lifetime
 	piercing = data.piercing

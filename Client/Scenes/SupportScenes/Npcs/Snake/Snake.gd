@@ -1,7 +1,7 @@
 extends Node2D
 
 var distanceTraveled
-var health = 20
+var health = 50
 var speed = 50
 var playersWhoDamaged = []
 var velocity = Vector2.ZERO
@@ -20,7 +20,7 @@ func onHit(body):
 		if health <= 0:
 			die()
 		else:
-			show_damage_indicator(-5)
+			show_damage_indicator(-1*body.get_parent().damage)
 
 func show_damage_indicator(damage_amount):
 	var damage_indicator = damageIndicatorScene.instance()
@@ -38,7 +38,8 @@ func show_damage_indicator(damage_amount):
 	timer.connect("timeout", self, "_on_damage_indicator_timeout")
 
 func _on_damage_indicator_timeout():
-	get_node("DamageIndicator").queue_free()
+	if is_instance_valid(get_node("DamageIndicator")): 
+		get_node("DamageIndicator").queue_free()
 
 func die():
 	queue_free()

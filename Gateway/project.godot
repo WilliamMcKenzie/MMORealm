@@ -10,14 +10,8 @@ config_version=4
 
 [application]
 
-config/name="Server"
-run/main_scene="res://Scenes/Main/Server.tscn"
+config/name="Gateway"
 config/icon="res://icon.png"
-
-[autoload]
-
-ServerData="*res://Scenes/Singletons/ServerData.gd"
-Combat="*res://Scripts/Combat.gd"
 
 [gui]
 

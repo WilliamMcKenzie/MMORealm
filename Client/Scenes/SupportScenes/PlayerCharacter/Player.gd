@@ -55,5 +55,5 @@ func shoot_projectile():
 	var mouse_position = get_global_mouse_position()
 	var direction = (mouse_position - position).normalized()
 	projectile_instance.set_direction(direction)
-	projectile_instance.look_at(get_global_mouse_position())
+	projectile_instance.look_at(mouse_position)
 	get_parent().add_child(projectile_instance)
