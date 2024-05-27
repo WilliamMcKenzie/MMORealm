@@ -1,26 +1,48 @@
 extends KinematicBody2D
 
 var projectile = preload("res://Scenes/SupportScenes/Projectiles/Arrow/Arrow.tscn")
+var level = 1
+var curStats = {}
 var stats = {
-	"dexterity": 50,
-	"attack": 50,
-	"speed": 50
+	"health" : 100,
+	"mana" : 100,
+	"vitality" : 20,
+	"armor" : 0,
+	"dexterity": 20,
+	"attack": 20,
+	"speed": 20
 }
+var gear = {
+	"weapon" : {
+		
+	},
+	"ability" : {
+		
+	},
+	"armor" : {
+		
+	},
+	"ring" : {
+		
+	}
+}
+
 var last_shot_time = 0
+onready var animationTree = $AnimationTree
 
 
 func _ready():
-	pass # Replace with function body.
+	pass
 func _physics_process(delta):
 	var motion = Vector2.ZERO
 
-	if(Input.is_action_pressed("up")):
+	if(Input.is_action_pressed("ui_up")):
 		motion.y -= 1
-	if(Input.is_action_pressed("down")):
+	if(Input.is_action_pressed("ui_down")):
 		motion.y += 1
-	if(Input.is_action_pressed("left")):
+	if(Input.is_action_pressed("ui_left")):
 		motion.x -= 1
-	if(Input.is_action_pressed("right")):
+	if(Input.is_action_pressed("ui_right")):
 		motion.x += 1
 	if(Input.is_action_pressed("shoot")):
 		var current_time = OS.get_ticks_msec() / 1000.0
@@ -28,24 +50,20 @@ func _physics_process(delta):
 		if current_time - last_shot_time >= time_between_shots:
 			shoot_projectile()
 			last_shot_time = current_time
-
 	motion = motion.normalized()
+	
+	#Animations
 	if(Input.is_action_pressed("shoot")):
-		$AnimationTree.get("parameters/playback").travel("Attack")
-		$AnimationTree.set("parameters/Idle/blend_position", (get_global_mouse_position()-global_position).normalized())
-		$AnimationTree.set("parameters/Walk/blend_position", (get_global_mouse_position()-global_position).normalized())
-		$AnimationTree.set("parameters/Attack/blend_position", (get_global_mouse_position()-global_position).normalized())
-		var current_time = OS.get_ticks_msec() / 1000.0
-		var time_between_shots = 1 / (2 + (6 * (stats.dexterity/2)) / 75.0)
-		if current_time - last_shot_time >= time_between_shots:
-			shoot_projectile()
-			last_shot_time = current_time
+		animationTree.get("parameters/playback").travel("Attack")
+		animationTree.set("parameters/Idle/blend_position", (get_global_mouse_position()-global_position).normalized())
+		animationTree.set("parameters/Walk/blend_position", (get_global_mouse_position()-global_position).normalized())
+		animationTree.set("parameters/Attack/blend_position", (get_global_mouse_position()-global_position).normalized())
 	elif motion != Vector2.ZERO:
-		$AnimationTree.get("parameters/playback").travel("Walk")
-		$AnimationTree.set("parameters/Idle/blend_position", motion)
-		$AnimationTree.set("parameters/Walk/blend_position", motion)
+		animationTree.get("parameters/playback").travel("Walk")
+		animationTree.set("parameters/Idle/blend_position", motion)
+		animationTree.set("parameters/Walk/blend_position", motion)
 	else:
-		$AnimationTree.get("parameters/playback").travel("Idle")
+		animationTree.get("parameters/playback").travel("Idle")
 	motion = move_and_slide(motion * stats.speed)
 
 func shoot_projectile():

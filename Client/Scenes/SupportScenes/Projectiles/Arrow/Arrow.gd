@@ -1,9 +1,9 @@
 extends Node2D
 
-var damage = 0
-var speed = 0
-var lifetime = 0
-var piercing = false
+var damage
+var speed
+var lifetime
+var piercing
 
 var initial_position = Vector2.ZERO
 var velocity = Vector2.ZERO
