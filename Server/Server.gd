@@ -1,20 +1,22 @@
 extends Node
 
-
-var MAX_PLAYERS = 10
-var PORT = 20200
-remote var printme = "HELLO"
+var max_players = 100
+var port = 20200
+var network = NetworkedMultiplayerENet.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(PORT, MAX_PLAYERS)
-	get_tree().network_peer = peer
-	get_tree().connect("network_peer_connected", self, "_player_connected")
+	startServer()
 
-func _player_connected():
-	rpc("print_hello")
+func startServer():
+	network.create_server(port, max_players)
+	get_tree().network_peer = network
+	print("Server started")
+	
+	get_tree().connect("network_peer_connected", self, "_Peer_Connected")
+	get_tree().connect("network_peer_disconnected", self, "_Peer_Disconnected")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	print(get_tree().get_network_connected_peers())
+func _Peer_Connected(id):
+	print("User " + str(id) + " has connected!")
+func _Peer_Disconnected(id):
+	print("User " + str(id) + " has disconnected!")

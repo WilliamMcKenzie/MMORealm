@@ -2,5 +2,5 @@
 
 [ext_resource path="res://Server.gd" type="Script" id=1]
 
-[node name="Server_Node" type="Node"]
+[node name="Server" type="Node"]
 script = ExtResource( 1 )
