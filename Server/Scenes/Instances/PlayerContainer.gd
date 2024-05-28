@@ -7,5 +7,5 @@ var currentCharacterIndex
 func getPlayerData():
 	return {
 		"characters" : characters,
-		"curretnCharacterIndex" : currentCharacterIndex
+		"currentCharacterIndex" : currentCharacterIndex
 	}
