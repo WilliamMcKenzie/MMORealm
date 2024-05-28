@@ -370,7 +370,7 @@ code = "shader_type canvas_item;
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
 uniform float line_thickness : hint_range(0, 10) = 0.25;
 uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.2);
+uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
 
 void fragment() {
     vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
@@ -413,7 +413,7 @@ shader = SubResource( 39 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.2 )
+shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
 [sub_resource type="RectangleShape2D" id=18]
 extents = Vector2( 5, 5 )
@@ -668,33 +668,36 @@ shape = SubResource( 18 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 0.2, 0.2 )
+zoom = Vector2( 0.15, 0.15 )
 
 [node name="PlayerUI" type="Node2D" parent="."]
-position = Vector2( 1, -1 )
 
-[node name="Ring" type="Sprite" parent="PlayerUI"]
+[node name="Gear" type="Node2D" parent="PlayerUI"]
+visible = false
+position = Vector2( 0, -14 )
+
+[node name="Ring" type="Sprite" parent="PlayerUI/Gear"]
 material = SubResource( 42 )
 position = Vector2( 14, 49 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
 
-[node name="Weapon" type="Sprite" parent="PlayerUI"]
+[node name="Weapon" type="Sprite" parent="PlayerUI/Gear"]
 material = SubResource( 48 )
 position = Vector2( -16, 49 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
 
-[node name="Ability" type="Sprite" parent="PlayerUI"]
+[node name="Ability" type="Sprite" parent="PlayerUI/Gear"]
 material = SubResource( 46 )
 position = Vector2( -5.99998, 49 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
 
-[node name="Armor" type="Sprite" parent="PlayerUI"]
+[node name="Armor" type="Sprite" parent="PlayerUI/Gear"]
 material = SubResource( 44 )
 position = Vector2( 4.00002, 49 )
 texture = ExtResource( 3 )

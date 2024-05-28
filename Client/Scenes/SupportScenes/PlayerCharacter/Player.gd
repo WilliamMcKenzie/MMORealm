@@ -5,10 +5,10 @@ var level
 var stats
 var gear
 
-onready var WeaponSlot = $PlayerUI/Weapon
-onready var AbilitySlot = $PlayerUI/Ability
-onready var ArmorSlot = $PlayerUI/Armor
-onready var RingSlot = $PlayerUI/Ring
+onready var WeaponSlot = $PlayerUI/Gear/Weapon
+onready var AbilitySlot = $PlayerUI/Gear/Ability
+onready var ArmorSlot = $PlayerUI/Gear/Armor
+onready var RingSlot = $PlayerUI/Gear/Ring
 
 #Sub variables (Will set these based on key variables onready)
 var projectile
@@ -47,24 +47,25 @@ func _physics_process(delta):
 		motion.x += 1
 	if(Input.is_action_pressed("shoot")):
 		var current_time = OS.get_ticks_msec() / 1000.0
-		var time_between_shots = 1 / (2 + (6 * (stats.dexterity/2)) / 75.0)
+		var time_between_shots = 1 / (6.5 * (stats.dexterity + 17.3) / 75)
 		if current_time - last_shot_time >= time_between_shots:
 			shoot_projectile()
 			last_shot_time = current_time
-	motion = motion.normalized()
 	
 	#Animations
-	if(Input.is_action_pressed("shoot")):
+	var shoot_direction = (get_global_mouse_position() - global_position).normalized()
+	if Input.is_action_pressed("shoot"):
 		animationTree.get("parameters/playback").travel("Attack")
-		animationTree.set("parameters/Idle/blend_position", (get_global_mouse_position()-global_position).normalized())
-		animationTree.set("parameters/Walk/blend_position", (get_global_mouse_position()-global_position).normalized())
-		animationTree.set("parameters/Attack/blend_position", (get_global_mouse_position()-global_position).normalized())
+		animationTree.set("parameters/Idle/blend_position", shoot_direction)
+		animationTree.set("parameters/Walk/blend_position", shoot_direction)
+		animationTree.set("parameters/Attack/blend_position", shoot_direction)
 	elif motion != Vector2.ZERO:
 		animationTree.get("parameters/playback").travel("Walk")
 		animationTree.set("parameters/Idle/blend_position", motion)
 		animationTree.set("parameters/Walk/blend_position", motion)
 	else:
 		animationTree.get("parameters/playback").travel("Idle")
+	motion = motion.normalized()
 	motion = move_and_slide(motion * stats.speed)
 
 func shoot_projectile():

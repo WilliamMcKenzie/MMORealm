@@ -10,7 +10,7 @@ code = "shader_type canvas_item;
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
 uniform float line_thickness : hint_range(0, 10) = 0.25;
 uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.2);
+uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
 
 void fragment() {
     vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
@@ -53,15 +53,15 @@ shader = SubResource( 3 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.2 )
+shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
 uniform float line_thickness : hint_range(0, 10) = 0.25;
-uniform float glow_thickness : hint_range(0, 20) = 4.0;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.2);
+uniform float glow_thickness : hint_range(0, 20) = 4;
+uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
 
 void fragment() {
     vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
@@ -104,7 +104,7 @@ shader = SubResource( 1 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.2 )
+shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
 [node name="CharacterButton" type="Node2D"]
 position = Vector2( -2, 0 )
