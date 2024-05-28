@@ -27,3 +27,6 @@ remote func FetchPlayerData():
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
 	rpc_id(player_id, "returnPlayerData", player_data)
+	
+remote func MoveStart():
+	print("movestart")

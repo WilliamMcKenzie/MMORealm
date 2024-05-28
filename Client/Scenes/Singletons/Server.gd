@@ -26,4 +26,3 @@ func fetchPlayerData():
 
 remote func returnPlayerData(player_data):
 	get_node("/root/SceneHandler/Home").selectionScreen(player_data)
-

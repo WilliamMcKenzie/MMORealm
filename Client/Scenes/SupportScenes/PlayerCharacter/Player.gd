@@ -13,6 +13,9 @@ onready var RingSlot = $PlayerUI/Gear/Ring
 #Sub variables (Will set these based on key variables onready)
 var projectile
 
+var x = 0
+var y = 0
+var shoot = false
 var last_shot_time = 0
 onready var animationTree = $AnimationTree
 
@@ -33,24 +36,41 @@ func setSpriteData(sprite, path):
 	sprite.vframes = path[2]
 	sprite.frame = path[3]
 
+# warning-ignore:unused_argument
 func _physics_process(delta):
 	
 	var motion = Vector2.ZERO
+	# remember to add checks to make sure each input is only hit once, emulators may be able to simulate multiple action pressed inputs
+	if(Input.is_action_just_pressed ("up")):
+		y -= 1
+	if(Input.is_action_just_pressed ("down")):
+		y += 1
+	if(Input.is_action_just_pressed ("left")):
+		x -= 1
+	if(Input.is_action_just_pressed ("right")):
+		x += 1
+		
+	if(Input.is_action_just_released("up")):
+		y += 1
+	if(Input.is_action_just_released ("down")):
+		y -= 1
+	if(Input.is_action_just_released ("left")):
+		x += 1
+	if(Input.is_action_just_released ("right")):
+		x -= 1
+	if(Input.is_action_just_pressed("shoot")):
+		shoot = true
+	if (Input.is_action_just_released("shoot")):
+		shoot = false
+	motion.x += x
+	motion.y += y
+	
+	var current_time = OS.get_ticks_msec() / 1000.0
+	var time_between_shots = 1 / (6.5 * (stats.dexterity + 17.3) / 75)
+	if current_time - last_shot_time >= time_between_shots and shoot == true:
+		shoot_projectile()
+		last_shot_time = current_time
 
-	if(Input.is_action_pressed("up")):
-		motion.y -= 1
-	if(Input.is_action_pressed("down")):
-		motion.y += 1
-	if(Input.is_action_pressed("left")):
-		motion.x -= 1
-	if(Input.is_action_pressed("right")):
-		motion.x += 1
-	if(Input.is_action_pressed("shoot")):
-		var current_time = OS.get_ticks_msec() / 1000.0
-		var time_between_shots = 1 / (6.5 * (stats.dexterity + 17.3) / 75)
-		if current_time - last_shot_time >= time_between_shots:
-			shoot_projectile()
-			last_shot_time = current_time
 	
 	#Animations
 	var shoot_direction = (get_global_mouse_position() - global_position).normalized()

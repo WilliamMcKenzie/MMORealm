@@ -55,7 +55,7 @@ shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0.2 )
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8.10921, 1.32312 )
+extents = Vector2( 8.10921, 1.96048 )
 
 [node name="Arrow" type="Node2D"]
 rotation = -1.6427
@@ -63,16 +63,15 @@ script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 3 )
-position = Vector2( -3.20778, 2.77672 )
 rotation = 0.792494
 texture = ExtResource( 1 )
 hframes = 26
 vframes = 26
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2( 5, 4 )
+position = Vector2( -1.42847, 5.91266 )
 
 [node name="Hitbox" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( -8.09477, -1.31399 )
+position = Vector2( 1.26756, -5.81781 )
 scale = Vector2( 0.668, 0.5 )
 shape = SubResource( 1 )
