@@ -21,10 +21,9 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
 
-func fetchProjectileData(skill_name, requester_id):
-	rpc_id(1, "FetchProjectileData", skill_name, requester_id)
+func fetchPlayerData():
+	rpc_id(1, "FetchPlayerData")
 
-remote func returnProjectileData(skill_data, requester_id):
-	if is_instance_valid(instance_from_id(requester_id)): 
-		instance_from_id(requester_id).SetData(skill_data)
+remote func returnPlayerData(player_data):
+	get_node("/root/SceneHandler/Home").selectionScreen(player_data)
 

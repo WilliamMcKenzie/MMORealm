@@ -1,48 +1,49 @@
 extends KinematicBody2D
 
-var projectile = preload("res://Scenes/SupportScenes/Projectiles/Arrow/Arrow.tscn")
-var level = 1
-var curStats = {}
-var stats = {
-	"health" : 100,
-	"mana" : 100,
-	"vitality" : 20,
-	"armor" : 0,
-	"dexterity": 20,
-	"attack": 20,
-	"speed": 20
-}
-var gear = {
-	"weapon" : {
-		
-	},
-	"ability" : {
-		
-	},
-	"armor" : {
-		
-	},
-	"ring" : {
-		
-	}
-}
+#Key variables (Will set these from server immedietly)
+var level
+var stats
+var gear
+
+onready var WeaponSlot = $PlayerUI/Weapon
+onready var AbilitySlot = $PlayerUI/Ability
+onready var ArmorSlot = $PlayerUI/Armor
+onready var RingSlot = $PlayerUI/Ring
+
+#Sub variables (Will set these based on key variables onready)
+var projectile
 
 var last_shot_time = 0
 onready var animationTree = $AnimationTree
 
-
 func _ready():
-	pass
+	var projectilePath = "res://Scenes/SupportScenes/Projectiles/" + str(gear.weapon.projectile) + "/" + str(gear.weapon.projectile) + ".tscn"
+	projectile = load(projectilePath)
+	populate_inventory()
+
+func populate_inventory():
+	setSpriteData(WeaponSlot, gear.weapon.path)
+	setSpriteData(AbilitySlot, gear.ability.path)
+	setSpriteData(ArmorSlot, gear.armor.path)
+	setSpriteData(RingSlot, gear.ring.path)
+func setSpriteData(sprite, path):
+	var spriteTexture = load("res://Assets/"+path[0]) 
+	sprite.texture = spriteTexture
+	sprite.hframes = path[1]
+	sprite.vframes = path[2]
+	sprite.frame = path[3]
+
 func _physics_process(delta):
+	
 	var motion = Vector2.ZERO
 
-	if(Input.is_action_pressed("ui_up")):
+	if(Input.is_action_pressed("up")):
 		motion.y -= 1
-	if(Input.is_action_pressed("ui_down")):
+	if(Input.is_action_pressed("down")):
 		motion.y += 1
-	if(Input.is_action_pressed("ui_left")):
+	if(Input.is_action_pressed("left")):
 		motion.x -= 1
-	if(Input.is_action_pressed("ui_right")):
+	if(Input.is_action_pressed("right")):
 		motion.x += 1
 	if(Input.is_action_pressed("shoot")):
 		var current_time = OS.get_ticks_msec() / 1000.0
@@ -70,8 +71,15 @@ func shoot_projectile():
 	var projectile_instance = projectile.instance()
 	projectile_instance.position = $Axis.global_position
 	
+	#Set projectile data
+	projectile_instance.damage = round(calculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
+	projectile_instance.tile_range = gear.weapon.range
+	
 	var mouse_position = get_global_mouse_position()
 	var direction = (mouse_position - position).normalized()
 	projectile_instance.set_direction(direction)
 	projectile_instance.look_at(mouse_position)
 	get_parent().add_child(projectile_instance)
+
+func calculateDamageWithMultiplier(damage):
+	return (damage*(0.5 + (float(stats.attack)/float(50))))

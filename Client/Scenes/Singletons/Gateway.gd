@@ -37,7 +37,6 @@ func connectToServer(_email, _password):
 func _onConnectionFailed():
 	print("Connection failed, gateway server down.")
 	get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
-	get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")

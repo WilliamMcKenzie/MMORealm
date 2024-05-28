@@ -5,7 +5,7 @@ func FetchUserData(email, password):
 	if email in PlayerData.player_data:
 		data = PlayerData.player_data[email]
 	else:
-		data = null
+		PlayerData.player_data[email]
 	
 	if data and data.password == password:
 		print(str(data))
@@ -14,3 +14,4 @@ func FetchUserData(email, password):
 		print(str(data))
 		print(email + "  " + password)
 		return false
+

@@ -18,10 +18,12 @@ func startServer():
 
 func _Peer_Connected(id):
 	print("User " + str(id) + " has connected!")
+	PlayerVerification.start(id)
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
+	get_parent().get_node(str(id)).queue_free()
 
-remote func FetchProjectileData(skill_name, requester_id):
+remote func FetchPlayerData():
 	var player_id = get_tree().get_rpc_sender_id()
-	var data = Combat.FetchProjectileData(skill_name)
-	rpc_id(player_id, "returnProjectileData", data, requester_id)
+	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
+	rpc_id(player_id, "returnPlayerData", player_data)
