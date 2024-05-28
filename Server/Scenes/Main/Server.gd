@@ -30,3 +30,38 @@ remote func FetchPlayerData():
 	
 remote func MoveStart():
 	print("movestart")
+
+remote func fetchPlayerKeyPress(k):
+	
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_data = get_parent().get_node(str(player_id))
+	
+	if k == "up":
+		player_data.moveVector = player_data.moveVector +  Vector2(0,1)
+	if k == "down":
+		player_data.moveVector = player_data.moveVector +  Vector2(0,-1)
+	if k == "right":
+		player_data.moveVector = player_data.moveVector + Vector2(1,0)
+	if k == "left":
+		player_data.moveVector = player_data.moveVector +  Vector2(-1,0)
+	
+remote func fetchPlayerKeyRelease(k):
+
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_data = get_parent().get_node(str(player_id))
+	
+	if k == "up":
+		player_data.moveVector = player_data.moveVector +  Vector2(0,-1)
+	if k == "down":
+		player_data.moveVector = player_data.moveVector +  Vector2(0,1)
+	if k == "right":
+		player_data.moveVector = player_data.moveVector + Vector2(-1,0)
+	if k == "left":
+		player_data.moveVector = player_data.moveVector +  Vector2(1,0)
+	
+
+func _physics_process(_delta):
+	for i in(get_tree().get_network_connected_peers()):
+		var player_container = get_parent().get_node(str(i))
+		var player_character = player_container.get_node("player_character")
+		player_character.position += (player_container.moveVector * get_parent().get_node(str(i)).characters[player_container.currentCharacterIndex].stats.speed)
