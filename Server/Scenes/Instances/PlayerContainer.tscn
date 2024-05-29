@@ -4,3 +4,5 @@
 
 [node name="PlayerContainer" type="Node"]
 script = ExtResource( 1 )
+
+[node name="player_character" type="Node2D" parent="."]

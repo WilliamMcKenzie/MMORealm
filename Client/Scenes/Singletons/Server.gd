@@ -25,8 +25,13 @@ func _onConnectionSucceeded():
 func fetchPlayerData():
 	rpc_id(1, "FetchPlayerData")
 
-func sendPlayerMovement():
-	rpc_id(1, "FetchPlayerData")
+func sendKeyPress(k):
+	rpc_id(1, "fetchPlayerKeyPress", k)
+
+func sendKeyRelease(k):
+	rpc_id(1, "fetchPlayerKeyRelease",k)
 
 remote func returnPlayerData(player_data):
 	get_node("/root/SceneHandler/Home").selectionScreen(player_data)
+
+
