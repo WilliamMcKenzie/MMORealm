@@ -15,7 +15,6 @@ func _process(delta):
 	if not custom_multiplayer.has_network_peer():
 		return
 	custom_multiplayer.poll()
-	
 
 func startServer():
 	network.create_server(port, max_players)

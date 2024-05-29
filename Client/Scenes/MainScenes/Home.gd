@@ -22,5 +22,6 @@ func enterGame(character):
 	map_instance.get_node("YSort/player").gear = character.gear
 	map_instance.get_node("YSort/player").level = character.level
 	get_parent().add_child(map_instance)
+	Server.fetchCharacterSpawnPosition()
 	queue_free()
 	

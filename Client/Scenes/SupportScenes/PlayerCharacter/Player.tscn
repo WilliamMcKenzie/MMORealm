@@ -365,7 +365,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="RectangleShape2D" id=18]
-extents = Vector2( 5, 5 )
+extents = Vector2( 4.99001, 5 )
 
 [sub_resource type="Shader" id=41]
 code = "shader_type canvas_item;
@@ -612,6 +612,7 @@ vframes = 4
 position = Vector2( 0.02, 0 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Axis"]
+position = Vector2( -0.00997925, 0 )
 shape = SubResource( 18 )
 
 [node name="Camera2D" type="Camera2D" parent="."]

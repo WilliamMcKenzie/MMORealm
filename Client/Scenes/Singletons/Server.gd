@@ -25,6 +25,12 @@ func _onConnectionSucceeded():
 func fetchPlayerData():
 	rpc_id(1, "FetchPlayerData")
 
+func fetchCharacterSpawnPosition():
+	rpc_id(1, "fetchCharacterSpawnPosition")
+	
+remote func returnCharacterSpawnPosition(pos):
+	get_node("/root/SceneHandler/Map/YSort/player").position = pos
+
 func sendKeyPress(k):
 	rpc_id(1, "fetchPlayerKeyPress", k)
 
