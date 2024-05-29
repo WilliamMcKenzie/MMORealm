@@ -41,35 +41,30 @@ func _physics_process(delta):
 	
 	print(position)
 	
+	
+	
+	
+	
 	var motion = Vector2.ZERO
 	# remember to add checks to make sure each input is only hit once, emulators may be able to simulate multiple action pressed inputs
 	if(Input.is_action_just_pressed ("up")):
 		y -= 1
-		Server.sendKeyPress("up")
 	if(Input.is_action_just_pressed ("down")):
 		y += 1
-		Server.sendKeyPress("down")
 	if(Input.is_action_just_pressed ("left")):
 		x -= 1
-		Server.sendKeyPress("left")
 	if(Input.is_action_just_pressed ("right")):
 		x += 1
-		Server.sendKeyPress("right")
 		
 		
 	if(Input.is_action_just_released("up")):
 		y += 1
-		Server.sendKeyRelease("up")
 	if(Input.is_action_just_released ("down")):
 		y -= 1
-		Server.sendKeyRelease("down")
 	if(Input.is_action_just_released ("left")):
 		x += 1
-		Server.sendKeyRelease("left")
 	if(Input.is_action_just_released ("right")):
 		x -= 1
-		Server.sendKeyRelease("right")
-		
 		
 	if(Input.is_action_just_pressed("shoot")):
 		shoot = true

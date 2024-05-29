@@ -52,3 +52,25 @@ func fetchToken(player_id):
 remote func ReturnToken(token):
 	var player_id = get_tree().get_rpc_sender_id()
 	PlayerVerification.verify(player_id, token)
+	
+remote func fetchPlayerJoined(pos):
+	#rpc("spawnOtherPlayer", pos, get_tree().get_rpc_sender_id())
+	pass
+	#pass for now
+remote func fetchPlayerPosition(pos):
+	
+	# remember to add speed checking and such
+	
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_container = get_parent().get_node(str(player_id))
+	player_container.get_node("player_character").position = pos
+	
+
+func _physics_process(_delta):
+	pass
+	
+var players	
+func clientSpawnOtherPlayers(players):
+	pass
+	# will send an rpc to of spawnOtherPlayers to all clients
+	# players will be an array of every player conatainer/player data

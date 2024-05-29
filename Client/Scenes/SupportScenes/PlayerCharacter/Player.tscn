@@ -7,71 +7,71 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 4 )
 
-[sub_resource type="AnimationNodeAnimation" id=30]
+[sub_resource type="AnimationNodeAnimation" id=39]
 animation = "attack_left"
 
-[sub_resource type="AnimationNodeAnimation" id=31]
+[sub_resource type="AnimationNodeAnimation" id=40]
 animation = "attack_down"
 
-[sub_resource type="AnimationNodeAnimation" id=32]
+[sub_resource type="AnimationNodeAnimation" id=41]
 animation = "attack_up"
 
-[sub_resource type="AnimationNodeAnimation" id=33]
+[sub_resource type="AnimationNodeAnimation" id=42]
 animation = "attack_right"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=34]
-blend_point_0/node = SubResource( 30 )
+blend_point_0/node = SubResource( 39 )
 blend_point_0/pos = Vector2( -0.7, 0 )
-blend_point_1/node = SubResource( 31 )
+blend_point_1/node = SubResource( 40 )
 blend_point_1/pos = Vector2( 0, 0.9 )
-blend_point_2/node = SubResource( 32 )
+blend_point_2/node = SubResource( 41 )
 blend_point_2/pos = Vector2( 0, -0.9 )
-blend_point_3/node = SubResource( 33 )
+blend_point_3/node = SubResource( 42 )
 blend_point_3/pos = Vector2( 0.9, 0 )
 
-[sub_resource type="AnimationNodeAnimation" id=11]
+[sub_resource type="AnimationNodeAnimation" id=43]
 animation = "idle_left"
 
-[sub_resource type="AnimationNodeAnimation" id=12]
+[sub_resource type="AnimationNodeAnimation" id=44]
 animation = "idle_down"
 
-[sub_resource type="AnimationNodeAnimation" id=13]
+[sub_resource type="AnimationNodeAnimation" id=45]
 animation = "idle_right"
 
-[sub_resource type="AnimationNodeAnimation" id=14]
+[sub_resource type="AnimationNodeAnimation" id=46]
 animation = "idle_up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=15]
-blend_point_0/node = SubResource( 11 )
+blend_point_0/node = SubResource( 43 )
 blend_point_0/pos = Vector2( -1, 0 )
-blend_point_1/node = SubResource( 12 )
+blend_point_1/node = SubResource( 44 )
 blend_point_1/pos = Vector2( 0, 1 )
-blend_point_2/node = SubResource( 13 )
+blend_point_2/node = SubResource( 45 )
 blend_point_2/pos = Vector2( 1, 0 )
-blend_point_3/node = SubResource( 14 )
+blend_point_3/node = SubResource( 46 )
 blend_point_3/pos = Vector2( 0, -1 )
 blend_mode = 1
 
-[sub_resource type="AnimationNodeAnimation" id=19]
+[sub_resource type="AnimationNodeAnimation" id=47]
 animation = "walk_left"
 
-[sub_resource type="AnimationNodeAnimation" id=20]
+[sub_resource type="AnimationNodeAnimation" id=48]
 animation = "walk_right"
 
-[sub_resource type="AnimationNodeAnimation" id=21]
+[sub_resource type="AnimationNodeAnimation" id=49]
 animation = "walk_down"
 
-[sub_resource type="AnimationNodeAnimation" id=22]
+[sub_resource type="AnimationNodeAnimation" id=50]
 animation = "walk_up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=23]
-blend_point_0/node = SubResource( 19 )
+blend_point_0/node = SubResource( 47 )
 blend_point_0/pos = Vector2( -1, 0 )
-blend_point_1/node = SubResource( 20 )
+blend_point_1/node = SubResource( 48 )
 blend_point_1/pos = Vector2( 1, 0 )
-blend_point_2/node = SubResource( 21 )
+blend_point_2/node = SubResource( 49 )
 blend_point_2/pos = Vector2( 0, 1 )
-blend_point_3/node = SubResource( 22 )
+blend_point_3/node = SubResource( 50 )
 blend_point_3/pos = Vector2( 0, -1 )
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=24]
@@ -418,7 +418,7 @@ shader_param/glow_color = Color( 0, 0, 0, 0 )
 [sub_resource type="RectangleShape2D" id=18]
 extents = Vector2( 4.99001, 5 )
 
-[sub_resource type="Shader" id=41]
+[sub_resource type="Shader" id=51]
 code = "shader_type canvas_item;
 
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
@@ -462,14 +462,14 @@ void fragment() {
     COLOR = glow_color_mixed;
 }"
 
-[sub_resource type="ShaderMaterial" id=42]
-shader = SubResource( 41 )
+[sub_resource type="ShaderMaterial" id=52]
+shader = SubResource( 51 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
-[sub_resource type="Shader" id=47]
+[sub_resource type="Shader" id=53]
 code = "shader_type canvas_item;
 
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
@@ -513,14 +513,14 @@ void fragment() {
     COLOR = glow_color_mixed;
 }"
 
-[sub_resource type="ShaderMaterial" id=48]
-shader = SubResource( 47 )
+[sub_resource type="ShaderMaterial" id=54]
+shader = SubResource( 53 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
-[sub_resource type="Shader" id=45]
+[sub_resource type="Shader" id=55]
 code = "shader_type canvas_item;
 
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
@@ -564,14 +564,14 @@ void fragment() {
     COLOR = glow_color_mixed;
 }"
 
-[sub_resource type="ShaderMaterial" id=46]
-shader = SubResource( 45 )
+[sub_resource type="ShaderMaterial" id=56]
+shader = SubResource( 55 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
-[sub_resource type="Shader" id=43]
+[sub_resource type="Shader" id=57]
 code = "shader_type canvas_item;
 
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
@@ -615,8 +615,8 @@ void fragment() {
     COLOR = glow_color_mixed;
 }"
 
-[sub_resource type="ShaderMaterial" id=44]
-shader = SubResource( 43 )
+[sub_resource type="ShaderMaterial" id=58]
+shader = SubResource( 57 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
@@ -659,6 +659,7 @@ material = SubResource( 52 )
 texture = ExtResource( 1 )
 hframes = 4
 vframes = 4
+frame = 4
 
 [node name="Axis" type="Area2D" parent="."]
 position = Vector2( 0.02, 0 )
@@ -678,28 +679,28 @@ visible = false
 position = Vector2( 0, -14 )
 
 [node name="Ring" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 42 )
+material = SubResource( 52 )
 position = Vector2( 14, 49 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
 
 [node name="Weapon" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 48 )
+material = SubResource( 54 )
 position = Vector2( -16, 49 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
 
 [node name="Ability" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 46 )
+material = SubResource( 56 )
 position = Vector2( -5.99998, 49 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
 
 [node name="Armor" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 44 )
+material = SubResource( 58 )
 position = Vector2( 4.00002, 49 )
 texture = ExtResource( 3 )
 hframes = 26
