@@ -1,9 +1,11 @@
 extends Node
 
 var max_players = 100
-var port = 20201
+var port = 1912
 var network = NetworkedMultiplayerENet.new()
-var gateway_api = MultiplayerAPI.new()
+var gameserver_api = MultiplayerAPI.new()
+
+var gameserverlist = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,21 +19,24 @@ func _process(delta):
 
 func startServer():
 	network.create_server(port, max_players)
-	set_custom_multiplayer(gateway_api)
+	set_custom_multiplayer(gameserver_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
+	print("Gameserver hub started")
 
 	custom_multiplayer.connect("network_peer_connected", self, "_Peer_Connected")
 	custom_multiplayer.connect("network_peer_disconnected", self, "_Peer_Disconnected")
 
 
 func _Peer_Connected(id):
-	print("User " + str(id) + " has connected!")
+	print("Game server " + str(id) + " has connected!")
+	gameserverlist["GameServer1"] = id
+	print(gameserverlist)
 func _Peer_Disconnected(id):
-	print("User " + str(id) + " has disconnected!")
+	print("Game server " + str(id) + " has disconnected!")
 
-remote func loginRequest(email, password):
-	var player_id = custom_multiplayer.get_rpc_sender_id()
-	Authenticate.authenticatePlayer(email, password, player_id)
-func returnLoginRequest(player_id, result, token):
-	rpc_id(player_id, "returnLogin", result, token)
+func DistributeLogToken(token, gameserver):
+	var gameserver_peer_id = gameserverlist[gameserver]
+	rpc_id(gameserver_peer_id, "RecievingLoginToken", token)
+
+

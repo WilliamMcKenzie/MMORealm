@@ -4,6 +4,7 @@ var ip_address = "localhost"
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
+var token
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	connectToServer()

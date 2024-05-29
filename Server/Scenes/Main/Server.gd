@@ -4,6 +4,8 @@ var max_players = 100
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
+var expected_tokens = ["c07bdbcb2e25664a5567c38f121e0f38f27b0720886b4e3ccada1315128a710c1716997784"]
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	startServer()

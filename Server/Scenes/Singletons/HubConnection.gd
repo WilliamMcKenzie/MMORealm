@@ -1,16 +1,15 @@
 extends Node
 
 var ip = "localhost"
-var port = 20201
+var port = 1912
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
 
-var email
-var password
+onready var gameserver = get_node("/root/Server")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	connectToServer()
 
 func _process(delta):
 	if get_custom_multiplayer() == null:
@@ -20,12 +19,7 @@ func _process(delta):
 	custom_multiplayer.poll()
 	
 
-func connectToServer(_email, _password):
-	network = NetworkedMultiplayerENet.new()
-	gateway_api = MultiplayerAPI.new()
-	email = _email
-	password = _password
-	
+func connectToServer():
 	network.create_client(ip, port)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
@@ -36,20 +30,9 @@ func connectToServer(_email, _password):
 
 func _onConnectionFailed():
 	print("Connection failed, gateway server down.")
-	get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
-	requestLogin()
 
-func requestLogin():
-	print("Requesting login from gateway")
-	rpc_id(1, "loginRequest", email, password)
-	email = ""
-	password = ""
-
-remote func returnLogin(result, token):
-	print("token recieved")
-	if(result):
-		Server.token = token
-	get_node("../SceneHandler/Home/LoginPopup").loginResult(result)
+remote func RecieveLoginToken(token):
+	gameserver.expected_tokens.append(token)

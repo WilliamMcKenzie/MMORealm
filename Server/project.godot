@@ -19,6 +19,7 @@ config/icon="res://icon.png"
 ServerData="*res://Scenes/Singletons/ServerData.gd"
 Combat="*res://Scripts/Combat.gd"
 PlayerVerification="*res://Scripts/PlayerVerification.gd"
+HubConnection="*res://Scenes/Singletons/HubConnection.gd"
 
 [gui]
 

@@ -1,7 +1,7 @@
 extends Node
 
 var ip_address = "localhost"
-var port = 1912
+var port = 1913
 var network = NetworkedMultiplayerENet.new()
 
 # Called when the node enters the scene tree for the first time.
@@ -24,6 +24,6 @@ func _onConnectionSucceeded():
 func authenticatePlayer(email, password, id):
 	rpc_id(1, "AuthenticatePlayer", email, password, id) 
 
-remote func authenticateResults(player_id, result):
-	Gateway.returnLoginRequest(player_id, result)
+remote func authenticateResults(result, player_id, token):
+	Gateway.returnLoginRequest(player_id, result, token)
 
