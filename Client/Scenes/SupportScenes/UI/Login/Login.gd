@@ -29,6 +29,8 @@ func loginAttempt():
 func loginResult(result):
 	loginButton.disabled = false
 	if(result == true):
+		print("Connected")
+		Server.connectToServer()
 		queue_free()
 	else:
 		print("Invalid credentials")

@@ -36,6 +36,6 @@ func _Peer_Disconnected(id):
 
 func DistributeLogToken(token, gameserver):
 	var gameserver_peer_id = gameserverlist[gameserver]
-	rpc_id(gameserver_peer_id, "RecievingLoginToken", token)
+	rpc_id(gameserver_peer_id, "RecieveLoginToken", token)
 
 

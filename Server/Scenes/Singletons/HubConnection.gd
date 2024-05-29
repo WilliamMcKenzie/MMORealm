@@ -35,4 +35,6 @@ func _onConnectionSucceeded():
 	print("Connection succeeded!")
 
 remote func RecieveLoginToken(token):
+	print(gameserver.expected_tokens)
 	gameserver.expected_tokens.append(token)
+	print(gameserver.expected_tokens)

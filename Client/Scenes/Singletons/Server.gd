@@ -7,7 +7,7 @@ var network = NetworkedMultiplayerENet.new()
 var token
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	connectToServer()
+	pass
 
 func connectToServer():
 	network.create_client(ip_address, port)
@@ -21,6 +21,9 @@ func _onConnectionFailed():
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
+	
+remote func FetchToken():
+	rpc_id(1, "ReturnToken", token)
 
 func fetchPlayerData():
 	rpc_id(1, "FetchPlayerData")
