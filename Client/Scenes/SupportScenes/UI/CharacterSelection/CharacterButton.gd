@@ -35,7 +35,7 @@ func _ready():
 	setSpriteData(ArmorEle, armorPath)
 	setSpriteData(RingEle, ringPath)
 	containerButton.connect("pressed", self, "enterGame")
-
+	
 func setSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
 	sprite.texture = spriteTexture

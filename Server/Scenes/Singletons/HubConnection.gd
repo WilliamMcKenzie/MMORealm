@@ -34,5 +34,5 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
 
-remote func RecieveLoginToken(token):
+remote func RecievingLoginToken(token):
 	gameserver.expected_tokens.append(token)
