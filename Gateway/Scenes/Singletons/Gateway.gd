@@ -30,8 +30,30 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
 
+remote func createAccountRequest(email, password):
+	print("Processing Request...")
+	var player_id = get_tree().get_rpc_sender_id()
+	var valid_request = true
+	if(email == ""):
+		valid_request = false
+	if(password == ""):
+		valid_request = false
+	if(password.length() < 7):
+		valid_request = false
+	if valid_request == false:
+		print("Request rejected")
+		returnCreateAccountRequest(valid_request, player_id, 1)
+	else:
+		print("Request accepted")
+		Authenticate.createAccount(email.to_lower(), password, player_id)
+func returnCreateAccountRequest(result, player_id, message):
+	print("Result: " + str(result))
+	rpc_id(player_id, "returnCreateAccountRequest", result, message)
+	network.disconnect_peer(player_id)
+
 remote func loginRequest(email, password):
 	var player_id = custom_multiplayer.get_rpc_sender_id()
 	Authenticate.authenticatePlayer(email, password, player_id)
 func returnLoginRequest(player_id, result, token):
 	rpc_id(player_id, "returnLogin", result, token)
+

@@ -25,6 +25,12 @@ func _onConnectionSucceeded():
 remote func FetchToken():
 	rpc_id(1, "ReturnToken", token)
 
+remote func ReturnTokenVerificationResults(results):
+	if(results == true):
+		get_node("../SceneHandler/Home/LoginPopup").queue_free()
+		print("successful token verification")
+	else:
+		print("Login failed")
 func fetchPlayerData():
 	rpc_id(1, "FetchPlayerData")
 	
@@ -34,6 +40,7 @@ remote func returnCharacterSpawnPosition(pos):
 func sendPlayerJoined(pos):
 	#rpc_id(1, "fetchPlayerJoined", pos)
 	#pass for now
+	pass
 
 remote func returnPlayerData(player_data):
 	get_node("/root/SceneHandler/Home").selectionScreen(player_data)

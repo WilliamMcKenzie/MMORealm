@@ -4,7 +4,9 @@ var max_players = 100
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
-var expected_tokens = ["c07bdbcb2e25664a5567c38f121e0f38f27b0720886b4e3ccada1315128a710c1716997784"]
+var expected_tokens = ["c07bdbcb2e25664a5567c38f121e0f38f27b0720886b4e3ccada1315128a710c1716997784",
+"c07bdbcb2e25664a5567c38f121e0f38f27b0720886b4e3ccada1315128a710c1816997784",
+"c07bdbcb2e25664a5567c38f121e0f38f27b0720886b4e3ccada1315128a710c17169977884"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,9 +32,7 @@ remote func FetchPlayerData():
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
 	rpc_id(player_id, "returnPlayerData", player_data)
 
-func ReturnTokenVerificationResults(player_id, token_verification):
-	print("RECEIVED TOKEN VERIFICATION RESULTS: " + str(token_verification))
-
+#TOKENS
 func _on_TokenExpiration_timeout():
 	var current_time = OS.get_unix_time()
 	var token_time
@@ -46,13 +46,21 @@ func _on_TokenExpiration_timeout():
 	print("Expected Tokens:")
 	print(expected_tokens)
 
+#Make sure if players manually set tokens to expire say a year from now, they still get kicked
+func _on_VerificationExpiration_timeout():
+	PlayerVerification.verificationExpiration()
+
 func fetchToken(player_id):
 	rpc_id(player_id, "FetchToken")
 
 remote func ReturnToken(token):
 	var player_id = get_tree().get_rpc_sender_id()
 	PlayerVerification.verify(player_id, token)
+
+func ReturnTokenVerificationResults(player_id, result):
+	rpc_id(player_id, "ReturnTokenVerificationResults", result)
 	
+#PLAYER SYNCING
 remote func fetchPlayerJoined(pos):
 	#rpc("spawnOtherPlayer", pos, get_tree().get_rpc_sender_id())
 	pass

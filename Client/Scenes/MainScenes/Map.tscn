@@ -91,13 +91,15 @@ tile_data = PoolIntArray( -3080170, 3, 0, -3080169, 3, 0, -3080168, 3, 0, -30801
 [node name="player" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 79, 56 )
 
-[node name="YSort" type="YSort" parent="YSort"]
+[node name="Enemies" type="YSort" parent="YSort"]
 
-[node name="Snake" parent="YSort/YSort" instance=ExtResource( 3 )]
+[node name="Snake" parent="YSort/Enemies" instance=ExtResource( 3 )]
 position = Vector2( 120, 59 )
 
-[node name="Snake3" parent="YSort/YSort" instance=ExtResource( 3 )]
+[node name="Snake3" parent="YSort/Enemies" instance=ExtResource( 3 )]
 position = Vector2( 79, 9 )
 
-[node name="Snake2" parent="YSort/YSort" instance=ExtResource( 3 )]
+[node name="Snake2" parent="YSort/Enemies" instance=ExtResource( 3 )]
 position = Vector2( 74, 18 )
+
+[node name="OtherPlayers" type="YSort" parent="YSort"]

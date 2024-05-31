@@ -10,7 +10,6 @@ func start(player_id):
 	main_interface.fetchToken(player_id)
 
 func verify(player_id, token):
-	print("my token is" + token)
 	var token_verification = false
 	while OS.get_unix_time() - int(token.right(64)) <= 30:
 		if main_interface.expected_tokens.has(token):
@@ -18,9 +17,9 @@ func verify(player_id, token):
 			CreatePlayerContainer(player_id)
 			awaiting_verification.erase(player_id)
 			main_interface.expected_tokens.erase(token)
+			break
 		else:
 			yield(get_tree().create_timer(2), "timeout")
-	print("my token is" + token)
 	main_interface.ReturnTokenVerificationResults(player_id, token_verification)
 	if(token_verification == false): #make sure they are disconnected
 		awaiting_verification.erase(player_id)
@@ -40,3 +39,28 @@ func fillPlayerContainer(player_container):
 	player_container.currentCharacterIndex = 0
 	player_container.position = Vector2(0,0)
 	player_container.moveVector = Vector2(0,0) 
+
+func verificationExpiration():
+	var current_time = OS.get_unix_time()
+	var start_time
+	if awaiting_verification == {}:
+		pass
+	else:
+		for key in awaiting_verification.keys():
+			start_time = awaiting_verification[key].Timestamp
+			if current_time - start_time >= 30:
+				awaiting_verification.erase(key)
+				var connected_peers = Array(get_tree().get_network_connected_peers())
+				if connected_peers.has(key):
+					main_interface.ReturnTokenVerificationResults(key, false)
+					main_interface.network.disconnect_peer(key)
+	print("Awaiting Verification:")
+	print(awaiting_verification)
+	
+	
+	
+	
+	
+	
+	
+	

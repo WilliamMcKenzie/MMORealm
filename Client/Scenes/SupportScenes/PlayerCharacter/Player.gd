@@ -39,12 +39,6 @@ func setSpriteData(sprite, path):
 # warning-ignore:unused_argument
 func _physics_process(delta):
 	
-	print(position)
-	
-	
-	
-	
-	
 	var motion = Vector2.ZERO
 	# remember to add checks to make sure each input is only hit once, emulators may be able to simulate multiple action pressed inputs
 	if(Input.is_action_just_pressed ("up")):
