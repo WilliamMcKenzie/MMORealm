@@ -67,7 +67,7 @@ remote func AuthenticatePlayer(email, password, player_id):
 	else:
 		var retrieved_salt = PlayerData.player_data[email].salt
 		hashed_password = GenerateHashedPassword(password, retrieved_salt)
-		if not PlayerData.player_data.has(email) == hashed_password:
+		if not PlayerData.player_data[email].password == hashed_password:
 			result = false
 		else:
 			result = true

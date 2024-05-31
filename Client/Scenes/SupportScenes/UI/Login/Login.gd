@@ -44,6 +44,6 @@ func loginResult(result):
 	loginButton.disabled = false
 	signupButton.disabled = false
 	if(result == true):
-		Server.connectToServer()
+		get_node("/root/SceneHandler/Home").selectionScreen()
 	else:
 		print("Invalid credentials")

@@ -26,6 +26,7 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
 	get_parent().get_node(str(id)).queue_free()
+	rpc_id(0, "DespawnPlayer", id)
 
 remote func FetchPlayerData():
 	var player_id = get_tree().get_rpc_sender_id()
@@ -59,6 +60,8 @@ remote func ReturnToken(token):
 
 func ReturnTokenVerificationResults(player_id, result):
 	rpc_id(player_id, "ReturnTokenVerificationResults", result)
+	if result == true:
+		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
 	
 #PLAYER SYNCING
 remote func fetchPlayerJoined(pos):

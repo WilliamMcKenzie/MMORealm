@@ -787,7 +787,7 @@ material = SubResource( 52 )
 texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
-frame = 12
+frame = 13
 
 [node name="Axis" type="Area2D" parent="."]
 position = Vector2( 0.02, 0 )

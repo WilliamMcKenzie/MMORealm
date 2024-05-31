@@ -9,14 +9,17 @@ func _ready():
 
 func play():
 	Server.fetchPlayerData()
-func selectionScreen(player):
+func selectionScreen():
 	get_node("UI").visible = false
+	get_node("LoginPopup").visible = false
 	var selectionScreenInstance = get_node("CharacterSelection")
-	selectionScreenInstance.characters = player.characters
+	#We will implement actually showing created characters once we have them on the auth server
+	#selectionScreenInstance.characters = player.characters
 	selectionScreenInstance.populateCharacters()
 	selectionScreenInstance.visible = true
 	
 func enterGame(character):
+	Server.connectToServer()
 	var map_instance = map.instance()
 	map_instance.get_node("YSort/player").stats = character.stats
 	map_instance.get_node("YSort/player").gear = character.gear

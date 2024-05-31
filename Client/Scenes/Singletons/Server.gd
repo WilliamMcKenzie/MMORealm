@@ -27,10 +27,16 @@ remote func FetchToken():
 
 remote func ReturnTokenVerificationResults(results):
 	if(results == true):
-		get_node("../SceneHandler/Home/LoginPopup").queue_free()
 		print("successful token verification")
 	else:
 		print("Login failed")
+
+remote func SpawnNewPlayer(player_id, spawn_position):
+	get_node("../SceneHandler/Map").SpawnNewPlayer(player_id, spawn_position)
+remote func DespawnPlayer(player_id, spawn_position):
+	get_node("../SceneHandler/Map").DespawnPlayer(player_id, spawn_position)
+
+		
 func fetchPlayerData():
 	rpc_id(1, "FetchPlayerData")
 	
