@@ -20,11 +20,11 @@ var last_shot_time = 0
 onready var animationTree = $AnimationTree
 
 func _ready():
-	var projectilePath = "res://Scenes/SupportScenes/Projectiles/" + str(gear.weapon.projectile) + "/" + str(gear.weapon.projectile) + ".tscn"
-	projectile = load(projectilePath)
-	populate_inventory()
+	var projectile_path = "res://Scenes/SupportScenes/Projectiles/" + str(gear.weapon.projectile) + "/" + str(gear.weapon.projectile) + ".tscn"
+	projectile = load(projectile_path)
+	PopulateInventory()
 
-func populate_inventory():
+func PopulateInventory():
 	setSpriteData(WeaponSlot, gear.weapon.path)
 	setSpriteData(AbilitySlot, gear.ability.path)
 	setSpriteData(ArmorSlot, gear.armor.path)
@@ -38,7 +38,10 @@ func setSpriteData(sprite, path):
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
-	
+	MovePlayer(delta)
+	DefinePlayerState()
+
+func MovePlayer(delta):
 	var motion = Vector2.ZERO
 	# remember to add checks to make sure each input is only hit once, emulators may be able to simulate multiple action pressed inputs
 	if(Input.is_action_just_pressed ("up")):
@@ -50,7 +53,6 @@ func _physics_process(delta):
 	if(Input.is_action_just_pressed ("right")):
 		x += 1
 		
-		
 	if(Input.is_action_just_released("up")):
 		y += 1
 	if(Input.is_action_just_released ("down")):
@@ -59,7 +61,7 @@ func _physics_process(delta):
 		x += 1
 	if(Input.is_action_just_released ("right")):
 		x -= 1
-		
+
 	if(Input.is_action_just_pressed("shoot")):
 		shoot = true
 	if (Input.is_action_just_released("shoot")):
@@ -71,10 +73,9 @@ func _physics_process(delta):
 	var current_time = OS.get_ticks_msec() / 1000.0
 	var time_between_shots = 1 / (6.5 * (stats.dexterity + 17.3) / 75)
 	if current_time - last_shot_time >= time_between_shots and shoot == true:
-		shoot_projectile()
+		ShootProjectile()
 		last_shot_time = current_time
-
-	
+		
 	#Animations
 	var shoot_direction = (get_global_mouse_position() - global_position).normalized()
 	if Input.is_action_pressed("shoot"):
@@ -91,12 +92,17 @@ func _physics_process(delta):
 	motion = motion.normalized()
 	motion = move_and_slide(motion * stats.speed)
 
-func shoot_projectile():
+#Here we are sending over the location to the server 60 times a second
+func DefinePlayerState():
+	var player_state = {"T":OS.get_system_time_msecs(), "P":get_global_position()}
+	Server.SendPlayerState(player_state)
+
+func ShootProjectile():
 	var projectile_instance = projectile.instance()
 	projectile_instance.position = $Axis.global_position
 	
 	#Set projectile data
-	projectile_instance.damage = round(calculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
+	projectile_instance.damage = round(CalculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
 	projectile_instance.tile_range = gear.weapon.range
 	
 	var mouse_position = get_global_mouse_position()
@@ -105,5 +111,5 @@ func shoot_projectile():
 	projectile_instance.look_at(mouse_position)
 	get_parent().add_child(projectile_instance)
 
-func calculateDamageWithMultiplier(damage):
+func CalculateDamageWithMultiplier(damage):
 	return (damage*(0.5 + (float(stats.attack)/float(50))))

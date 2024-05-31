@@ -21,7 +21,7 @@ func _process(delta):
 	custom_multiplayer.poll()
 	
 
-func connectToServer(_email, _password, _new_account):
+func ConnectToServer(_email, _password, _new_account):
 	network = NetworkedMultiplayerENet.new()
 	gateway_api = MultiplayerAPI.new()
 	email = _email
@@ -44,40 +44,38 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
 	if(new_account):
-		requestCreateAccount()
+		RequestCreateAccount()
 	else:
-		requestLogin()
+		RequestLogin()
 	
-func requestCreateAccount():
+func RequestCreateAccount():
 	print("Requesting create account from gateway")
-	rpc_id(1, "createAccountRequest", email, password)
+	rpc_id(1, "CreateAccountRequest", email, password)
 	email = ""
 	password = ""
-remote func returnCreateAccountRequest(results, message):
+remote func ReturnCreateAccountRequest(results, message):
 	print("Results recieved")
 	print(results)
 	print(message)
 	if(results == true):
 		print("Account created successfully.")
-		get_node("../SceneHandler/Home/LoginPopup").loginAttempt()
+		get_node("../SceneHandler/Home/LoginPopup").LoginAttempt()
 	else:
 		if(message == 1):
-			print("couldnt create account, please try again.")
+			print("Couldnt create account, please try again.")
 		else:
-			print("email in use, please try another.")
+			print("Email in use, please try another.")
 		get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
 		get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
 	network.disconnect("connection_failed", self, "_onConnectionFailed")
 	network.disconnect("connected_to_server", self, "_onConnectionSucceeded")
 
-func requestLogin():
-	print("Requesting login from gateway")
-	rpc_id(1, "loginRequest", email, password)
+func RequestLogin():
+	rpc_id(1, "LoginRequest", email, password)
 	email = ""
 	password = ""
 
-remote func returnLogin(result, token):
-	print("token recieved")
+remote func ReturnLogin(result, token):
 	if(result):
 		Server.token = token
-	get_node("../SceneHandler/Home/LoginPopup").loginResult(result)
+	get_node("../SceneHandler/Home/LoginPopup").LoginResult(result)

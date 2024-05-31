@@ -9,7 +9,7 @@ onready var gameserver = get_node("/root/Server")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	connectToServer()
+	ConnectToServer()
 
 func _process(delta):
 	if get_custom_multiplayer() == null:
@@ -19,7 +19,7 @@ func _process(delta):
 	custom_multiplayer.poll()
 	
 
-func connectToServer():
+func ConnectToServer():
 	network.create_client(ip, port)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
@@ -35,6 +35,4 @@ func _onConnectionSucceeded():
 	print("Connection succeeded!")
 
 remote func RecieveLoginToken(token):
-	print(gameserver.expected_tokens)
 	gameserver.expected_tokens.append(token)
-	print(gameserver.expected_tokens)

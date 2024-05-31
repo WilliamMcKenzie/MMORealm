@@ -4,15 +4,12 @@ var max_players = 100
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
-var expected_tokens = ["c07bdbcb2e25664a5567c38f121e0f38f27b0720886b4e3ccada1315128a710c1716997784",
-"c07bdbcb2e25664a5567c38f121e0f38f27b0720886b4e3ccada1315128a710c1816997784",
-"c07bdbcb2e25664a5567c38f121e0f38f27b0720886b4e3ccada1315128a710c17169977884"]
+var expected_tokens = []
+var player_state_collection = {}
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	startServer()
-
-func startServer():
+	StartServer()
+func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
 	print("Server started")
@@ -22,16 +19,29 @@ func startServer():
 
 func _Peer_Connected(id):
 	print("User " + str(id) + " has connected!")
-	PlayerVerification.start(id)
+	PlayerVerification.Start(id)
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
-	get_parent().get_node(str(id)).queue_free()
-	rpc_id(0, "DespawnPlayer", id)
+	if(get_parent().has_node(str(id))):	
+		get_parent().get_node(str(id)).queue_free()
+		player_state_collection.erase(id)
+		rpc_id(0, "DespawnPlayer", id)
 
 remote func FetchPlayerData():
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
-	rpc_id(player_id, "returnPlayerData", player_data)
+	rpc_id(player_id, "ReturnPlayerData", player_data)
+
+#PLAYER SYNCING
+remote func RecievePlayerState(player_state):
+	var player_id = get_tree().get_rpc_sender_id()
+	if player_state_collection.has(player_id):
+		if(player_state_collection[player_id]["T"] <  player_state["T"]):
+			player_state_collection[player_id] = player_state
+	else:
+		player_state_collection[player_id] = player_state
+func SendWorldState(world_state):
+	rpc_unreliable_id(0, "RecieveWorldState", world_state)
 
 #TOKENS
 func _on_TokenExpiration_timeout():
@@ -44,44 +54,19 @@ func _on_TokenExpiration_timeout():
 			token_time = int(expected_tokens[i].right(64))
 			if current_time - token_time >= 30:
 				expected_tokens.remove(i)
-	print("Expected Tokens:")
-	print(expected_tokens)
 
 #Make sure if players manually set tokens to expire say a year from now, they still get kicked
 func _on_VerificationExpiration_timeout():
-	PlayerVerification.verificationExpiration()
+	PlayerVerification.VerificationExpiration()
 
-func fetchToken(player_id):
+func FetchToken(player_id):
 	rpc_id(player_id, "FetchToken")
 
 remote func ReturnToken(token):
 	var player_id = get_tree().get_rpc_sender_id()
-	PlayerVerification.verify(player_id, token)
+	PlayerVerification.Verify(player_id, token)
 
 func ReturnTokenVerificationResults(player_id, result):
 	rpc_id(player_id, "ReturnTokenVerificationResults", result)
 	if result == true:
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
-	
-#PLAYER SYNCING
-remote func fetchPlayerJoined(pos):
-	#rpc("spawnOtherPlayer", pos, get_tree().get_rpc_sender_id())
-	pass
-	#pass for now
-remote func fetchPlayerPosition(pos):
-	
-	# remember to add speed checking and such
-	
-	var player_id = get_tree().get_rpc_sender_id()
-	var player_container = get_parent().get_node(str(player_id))
-	player_container.get_node("player_character").position = pos
-	
-
-func _physics_process(_delta):
-	pass
-	
-var players	
-func clientSpawnOtherPlayers(players):
-	pass
-	# will send an rpc to of spawnOtherPlayers to all clients
-	# players will be an array of every player conatainer/player data

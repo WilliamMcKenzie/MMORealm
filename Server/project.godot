@@ -20,6 +20,11 @@ ServerData="*res://Scenes/Singletons/ServerData.gd"
 Combat="*res://Scripts/Combat.gd"
 PlayerVerification="*res://Scripts/PlayerVerification.gd"
 HubConnection="*res://Scenes/Singletons/HubConnection.gd"
+StateProcessing="*res://Scenes/Singletons/StateProcessing.gd"
+
+[global]
+
+physics=false
 
 [gui]
 
@@ -27,6 +32,7 @@ common/drop_mouse_on_gui_input_disabled=true
 
 [physics]
 
+common/physics_fps=20
 common/enable_pause_aware_picking=true
 
 [rendering]

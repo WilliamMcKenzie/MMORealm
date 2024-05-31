@@ -9,19 +9,19 @@ var email = ""
 var password = ""
 
 func _ready():
-	loginButton.connect("pressed", self, "loginAttempt")
-	signupButton.connect("pressed", self, "signupAttempt")
-	emailEle.connect("text_changed", self, "emailHandler")
-	passwordEle.connect("text_changed", self, "passwordHandler")
+	loginButton.connect("pressed", self, "LoginAttempt")
+	signupButton.connect("pressed", self, "SignupAttempt")
+	emailEle.connect("text_changed", self, "EmailHandler")
+	passwordEle.connect("text_changed", self, "PasswordHandler")
 
-func emailHandler():
+func EmailHandler():
 	email = emailEle.text
 	print(email)
-func passwordHandler():
+func PasswordHandler():
 	password = passwordEle.text
 	print(password)
 
-func signupAttempt():
+func SignupAttempt():
 	if email == "" or password == "":
 		print("Invalid credentials: Email/password cannot be blank")
 	if password.length() < 7:
@@ -30,17 +30,17 @@ func signupAttempt():
 		loginButton.disabled = true
 		signupButton.disabled = true
 		print("Attempting login!!")
-		Gateway.connectToServer(email, password, true)
+		Gateway.ConnectToServer(email, password, true)
 
-func loginAttempt():
+func LoginAttempt():
 	if email == "" or password == "":
 		print("Invalid credentials: Email/password cannot be blank")
 	else:
 		loginButton.disabled = true
 		signupButton.disabled = true
 		print("Attempting login!!")
-		Gateway.connectToServer(email, password, false)
-func loginResult(result):
+		Gateway.ConnectToServer(email, password, false)
+func LoginResult(result):
 	loginButton.disabled = false
 	signupButton.disabled = false
 	if(result == true):

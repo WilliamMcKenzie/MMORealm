@@ -9,14 +9,14 @@ var gameserverlist = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	startServer()
+	StartServer()
 
 func _process(delta):
 	if not custom_multiplayer.has_network_peer():
 		return
 	custom_multiplayer.poll()
 
-func startServer():
+func StartServer():
 	network.create_server(port, max_players)
 	set_custom_multiplayer(gameserver_api)
 	custom_multiplayer.set_root_node(self)

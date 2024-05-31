@@ -6,9 +6,9 @@ var network = NetworkedMultiplayerENet.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	connectToServer()
+	ConnectToServer()
 
-func connectToServer():
+func ConnectToServer():
 	network.create_client(ip_address, port)
 	get_tree().network_peer = network
 	
@@ -21,16 +21,16 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Authentication server connection succeeded!")
 
-func createAccount(email, password, player_id):
+func CreateAccount(email, password, player_id):
 	print("Sending signal...")
 	rpc_id(1, "CreateAccount", email, password, player_id)
 
-remote func returnCreateAccountRequest(result, player_id, message):
-	Gateway.returnCreateAccountRequest(result, player_id, message)
+remote func ReturnCreateAccountRequest(result, player_id, message):
+	Gateway.ReturnCreateAccountRequest(result, player_id, message)
 
-func authenticatePlayer(email, password, id):
+func AuthenticatePlayer(email, password, id):
 	rpc_id(1, "AuthenticatePlayer", email, password, id) 
 
-remote func authenticateResults(result, player_id, token):
-	Gateway.returnLoginRequest(player_id, result, token)
+remote func AuthenticateResults(result, player_id, token):
+	Gateway.ReturnLoginRequest(player_id, result, token)
 

@@ -6,9 +6,9 @@ var network = NetworkedMultiplayerENet.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	startServer()
+	StartServer()
 
-func startServer():
+func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
 	print("Server started")
@@ -37,7 +37,7 @@ remote func CreateAccount(email, password, player_id):
 		PlayerData.player_data[email] = {"password": hashed_password, "salt": salt}
 		PlayerData.savePlayerIDs()
 	print("Returning result...")
-	rpc_id(gateway_id, "returnCreateAccountRequest", result, player_id, message)
+	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
 		
 func GenerateSalt():
 	randomize()
@@ -45,15 +45,11 @@ func GenerateSalt():
 	print("Salt: " + salt)
 	return salt
 func GenerateHashedPassword(password, salt):
-	print(str(OS.get_system_time_msecs()))
 	var hashed_password = password
 	var rounds = pow(2, 7)
-	print("Hashed password as input: " + hashed_password)
 	while rounds > 0:
 		hashed_password = (hashed_password + salt).sha256_text()
 		rounds -= 1
-	print("Final hashed password: " + hashed_password)
-	print(str(OS.get_system_time_msecs()))
 	return hashed_password
 	
 
@@ -75,4 +71,4 @@ remote func AuthenticatePlayer(email, password, player_id):
 			token = str(randi()).sha256_text() + str(OS.get_unix_time())
 			var gameserver = "GameServer1"
 			GameServers.DistributeLogToken(token, gameserver)
-	rpc_id(gateway_id, "authenticateResults", result, player_id, token)
+	rpc_id(gateway_id, "AuthenticateResults", result, player_id, token)

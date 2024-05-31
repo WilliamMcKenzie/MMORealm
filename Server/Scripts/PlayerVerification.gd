@@ -5,11 +5,11 @@ onready var player_container_scene = preload("res://Scenes/Instances/PlayerConta
 
 var awaiting_verification = {}
 
-func start(player_id):
+func Start(player_id):
 	awaiting_verification[player_id] = { "Timestamp" : OS.get_unix_time()}
-	main_interface.fetchToken(player_id)
+	main_interface.FetchToken(player_id)
 
-func verify(player_id, token):
+func Verify(player_id, token):
 	var token_verification = false
 	while OS.get_unix_time() - int(token.right(64)) <= 30:
 		if main_interface.expected_tokens.has(token):
@@ -24,23 +24,21 @@ func verify(player_id, token):
 	if(token_verification == false): #make sure they are disconnected
 		awaiting_verification.erase(player_id)
 		main_interface.network.disconnect_peer(player_id)
-		
-	
 
 func CreatePlayerContainer(player_id):
 	var new_player_container = player_container_scene.instance()
 	new_player_container.name = str(player_id)
 	get_parent().add_child(new_player_container, true)
-	fillPlayerContainer(get_node("../" + str(player_id)))
+	FillPlayerContainer(get_node("../" + str(player_id)))
 
-func fillPlayerContainer(player_container):
+func FillPlayerContainer(player_container):
 	var selectedPlayer = ServerData.test_data
 	player_container.characters = selectedPlayer.characters
 	player_container.currentCharacterIndex = 0
 	player_container.position = Vector2(0,0)
 	player_container.moveVector = Vector2(0,0) 
 
-func verificationExpiration():
+func VerificationExpiration():
 	var current_time = OS.get_unix_time()
 	var start_time
 	if awaiting_verification == {}:
