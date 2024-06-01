@@ -15,6 +15,11 @@ var projectile
 
 var x = 0
 var y = 0
+
+#We send animation to server to display to other clients.
+var lastAnimation = { "A" : "Idle", "C" : Vector2.ZERO }
+
+
 var shoot = false
 var last_shot_time = 0
 onready var animationTree = $AnimationTree
@@ -25,17 +30,16 @@ func _ready():
 	PopulateInventory()
 
 func PopulateInventory():
-	setSpriteData(WeaponSlot, gear.weapon.path)
-	setSpriteData(AbilitySlot, gear.ability.path)
-	setSpriteData(ArmorSlot, gear.armor.path)
-	setSpriteData(RingSlot, gear.ring.path)
-func setSpriteData(sprite, path):
+	SetSpriteData(WeaponSlot, gear.weapon.path)
+	SetSpriteData(AbilitySlot, gear.ability.path)
+	SetSpriteData(ArmorSlot, gear.armor.path)
+	SetSpriteData(RingSlot, gear.ring.path)
+func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
 	sprite.texture = spriteTexture
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
 	sprite.frame = path[3]
-
 # warning-ignore:unused_argument
 func _physics_process(delta):
 	MovePlayer(delta)
@@ -66,6 +70,8 @@ func MovePlayer(delta):
 		shoot = true
 	if (Input.is_action_just_released("shoot")):
 		shoot = false
+	if (Input.is_action_just_pressed("nexus")):
+		Server.EnterInstance("Nexus")
 
 	motion.x += x
 	motion.y += y
@@ -81,20 +87,22 @@ func MovePlayer(delta):
 	if Input.is_action_pressed("shoot"):
 		animationTree.get("parameters/playback").travel("Attack")
 		animationTree.set("parameters/Idle/blend_position", shoot_direction)
-		animationTree.set("parameters/Walk/blend_position", shoot_direction)
 		animationTree.set("parameters/Attack/blend_position", shoot_direction)
+		lastAnimation = { "A" : "Attack", "C" : shoot_direction }
 	elif motion != Vector2.ZERO:
 		animationTree.get("parameters/playback").travel("Walk")
 		animationTree.set("parameters/Idle/blend_position", motion)
 		animationTree.set("parameters/Walk/blend_position", motion)
+		lastAnimation = { "A" : "Walk", "C" : motion }
 	else:
 		animationTree.get("parameters/playback").travel("Idle")
+		lastAnimation["A"] = "Idle"
 	motion = motion.normalized()
 	motion = move_and_slide(motion * stats.speed)
 
 #Here we are sending over the location to the server 60 times a second
 func DefinePlayerState():
-	var player_state = {"T":OS.get_system_time_msecs(), "P":get_global_position()}
+	var player_state = {"T":OS.get_system_time_msecs(), "P":get_global_position(), "A":lastAnimation}
 	Server.SendPlayerState(player_state)
 
 func ShootProjectile():

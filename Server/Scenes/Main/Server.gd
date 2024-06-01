@@ -5,10 +5,14 @@ var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
 var expected_tokens = []
+
 var player_state_collection = {}
+var portal_state_collection = {}
+
 
 func _ready():
 	StartServer()
+	CreateInstance("test_dungeon", "Realm", Vector2.ZERO)
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
@@ -37,8 +41,10 @@ remote func RecievePlayerState(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	if player_state_collection.has(player_id):
 		if(player_state_collection[player_id]["T"] <  player_state["T"]):
+			player_state["I"] = player_state_collection[player_id]["I"]
 			player_state_collection[player_id] = player_state
 	else:
+		player_state["I"] = "nexus"
 		player_state_collection[player_id] = player_state
 func SendWorldState(world_state):
 	rpc_unreliable_id(0, "RecieveWorldState", world_state)
@@ -71,6 +77,25 @@ func ReturnTokenVerificationResults(player_id, result):
 	if result == true:
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
 
-remote func RecieveChatMessage(message):
-	print("server has recieved message : " + message)
-	rpc("RecieveChat",message)
+#DUNGEON INSTANCES
+func CreateInstance(instance_name, parent_instance, portal_position):
+	var instance_id = generate_unique_id()
+	var instance_map = Dungeons.GenerateDungeon(instance_name)
+	if get_node("Instances").has_node(parent_instance):
+		var instance = Node2D.new()
+		instance.name = instance_id
+		get_node("Instances/"+parent_instance).add_child(instance)
+		portal_state_collection[instance_id] = {"T": OS.get_system_time_msecs(), "P": portal_position, "I": str(parent_instance)}
+
+func generate_unique_id():
+	var timestamp = OS.get_unix_time()
+	var random_value = randi()
+	return (str(timestamp) + "_" + str(random_value)).sha256_text()
+
+remote func EnterInstance(instance_id):
+	var player_id = get_tree().get_rpc_sender_id()
+	print("Instance request recieved")
+	if get_node("Instances").has_node(instance_id):
+		print("Changed instance")
+		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": str(instance_id)}
+	rpc_id(player_id, "ReturnInstanceData", instance_id)

@@ -35,8 +35,7 @@ func FillPlayerContainer(player_container):
 	var selectedPlayer = ServerData.test_data
 	player_container.characters = selectedPlayer.characters
 	player_container.currentCharacterIndex = 0
-	player_container.position = Vector2(0,0)
-	player_container.moveVector = Vector2(0,0) 
+	player_container.instance = "nexus"
 
 func VerificationExpiration():
 	var current_time = OS.get_unix_time()
