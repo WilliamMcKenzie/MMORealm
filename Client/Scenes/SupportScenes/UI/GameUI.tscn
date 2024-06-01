@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/EnterPortal.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/SupportScenes/UI/GameUI.gd" type="Script" id=3]
 
 [node name="GameUI" type="CanvasLayer"]
+script = ExtResource( 3 )
 
 [node name="EnterPortal" type="Button" parent="."]
 visible = false

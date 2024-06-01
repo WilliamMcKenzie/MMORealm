@@ -93,8 +93,7 @@ func CreateInstance(instance_name, instance_tree, portal_position):
 		instance.name = instance_id
 		instance.map = instance_map
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
-		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs(), "P": portal_position, "I": instance_tree, "N":instance_name, "Type":"DungeonPortals"}
-
+		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs()+10000, "P": portal_position, "I": instance_tree, "N":instance_name, "Type":"DungeonPortals"}
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
 	var random_value = randi()
@@ -110,7 +109,7 @@ remote func EnterInstance(instance_id):
 	print(instance_id)
 	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_node(instance_id):
 		print("Changed instance")
-		var instance_tree = player_state_collection[player_id]["I"]
+		var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
 		instance_tree.append(str(instance_id))
 		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": instance_tree}
 		rpc_id(player_id, "ReturnInstanceData", { "Map":get_node("Instances/"+StringifyInstanceTree(instance_tree)).map, "Name":objects_state_collection[instance_id]["N"], "Id":instance_id})
@@ -129,6 +128,7 @@ remote func RecieveChatMessage(message):
 	
 	if message[0] == "/":
 		if message_words[0] == "/d":
+			print("CREATING")
 			CreateInstance(message.substr(3,-1), instance_tree, player_position)
 		if message_words[0] == "/spawn":
 			SpawnNPC(message.substr(7,-1), instance_tree, player_position)

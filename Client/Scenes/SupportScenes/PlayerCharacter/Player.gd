@@ -46,6 +46,8 @@ func _physics_process(delta):
 	DefinePlayerState()
 
 func MovePlayer(delta):
+	if GameUI.in_chat == true:
+		return
 	var motion = Vector2.ZERO
 	# remember to add checks to make sure each input is only hit once, emulators may be able to simulate multiple action pressed inputs
 	if(Input.is_action_just_pressed ("up")):
