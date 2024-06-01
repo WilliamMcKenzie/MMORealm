@@ -70,6 +70,8 @@ func MovePlayer(delta):
 		shoot = true
 	if (Input.is_action_just_released("shoot")):
 		shoot = false
+	if (Input.is_action_just_pressed("nexus")):
+		Server.EnterInstance("Nexus")
 
 	motion.x += x
 	motion.y += y
@@ -116,7 +118,6 @@ func ShootProjectile():
 	projectile_instance.set_direction(direction)
 	projectile_instance.look_at(mouse_position)
 	get_parent().add_child(projectile_instance)
-	Server.EnterInstance("Nexus")
 
 func CalculateDamageWithMultiplier(damage):
 	return (damage*(0.5 + (float(stats.attack)/float(50))))

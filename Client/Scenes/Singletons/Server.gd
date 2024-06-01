@@ -47,13 +47,15 @@ remote func RecieveWorldState(world_state):
 	
 #INSTANCES
 func EnterInstance(instance_id):
+	if instance_id == current_instance:
+		return
 	var nexus_instance = Nexus.instance()
-	var map_instance = get_node("../SceneHandler/Map")
+	var map_instance = get_node("../SceneHandler/"+current_instance)
 	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
 	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
 	nexus_instance.name = "Nexus"
-	current_instance = "Nexus"
-	get_node("../SceneHandler/Map").queue_free()
+	get_node("../SceneHandler/"+current_instance).queue_free()
 	get_node("../SceneHandler").add_child(nexus_instance)
+	current_instance = "Nexus"
 	rpc_id(1, "EnterInstance", instance_id)
