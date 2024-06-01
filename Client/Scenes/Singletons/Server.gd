@@ -7,8 +7,9 @@ var network = NetworkedMultiplayerENet.new()
 var token
 
 #Map preloads
-var current_instance = "Map"
-var Nexus = preload("res://Scenes/MainScenes/Nexus.tscn")
+var current_instance = "nexus"
+var nexus = preload("res://Scenes/MainScenes/nexus.tscn")
+var dungeon_container = preload("res://Scenes/MainScenes/dungeon_container.tscn")
 
 func _ready():
 	pass
@@ -49,13 +50,26 @@ remote func RecieveWorldState(world_state):
 func EnterInstance(instance_id):
 	if instance_id == current_instance:
 		return
-	var nexus_instance = Nexus.instance()
+	rpc_id(1, "EnterInstance", instance_id)
+remote func ReturnInstanceData(instance_data):
+	var dungeon_instance = dungeon_container.instance()
+	var map_instance = get_node("../SceneHandler/"+current_instance)
+	dungeon_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	dungeon_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
+	dungeon_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	dungeon_instance.name = instance_data["Id"]
+	dungeon_instance.PopulateDungeon(instance_data)
+	get_node("../SceneHandler/"+current_instance).queue_free()
+	get_node("../SceneHandler").add_child(dungeon_instance)
+	current_instance = instance_data["Id"]
+
+func Nexus():
+	var nexus_instance = nexus.instance()
 	var map_instance = get_node("../SceneHandler/"+current_instance)
 	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
 	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
-	nexus_instance.name = "Nexus"
+	nexus_instance.name = "Realm"
 	get_node("../SceneHandler/"+current_instance).queue_free()
 	get_node("../SceneHandler").add_child(nexus_instance)
-	current_instance = "Nexus"
-	rpc_id(1, "EnterInstance", instance_id)
+	current_instance = "Realm"

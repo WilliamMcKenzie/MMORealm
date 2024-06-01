@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/SupportScenes/UI/EnterPortal.gd" type="Script" id=1]
+
+[node name="GameUI" type="CanvasLayer"]
+
+[node name="EnterPortal" type="Button" parent="."]
+visible = false
+margin_left = 448.0
+margin_top = 395.0
+margin_right = 573.0
+margin_bottom = 446.0
+text = "Enter Portal"
+script = ExtResource( 1 )

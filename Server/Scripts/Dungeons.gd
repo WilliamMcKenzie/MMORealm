@@ -8,21 +8,23 @@ func GenerateTestDungeon():
 	randomize()
 	var layout = []
 	var rooms_until_boss = 3
+	
 	var boss_has_been_placed = false
+	var boss_root = -1
 	
 	for i in range(4):
 		layout.append([])
 		for k in range(rooms_until_boss):
 			if k < rooms_until_boss:
-				if boss_has_been_placed == false:
-					layout[i].append("R")
+				if not boss_root == k:
+					layout[i].append("Room")
 				if round(rand_range(0,3)) == 3 and boss_has_been_placed == false:
-					layout[i].append("B")
+					layout[i].append("Boss")
 					boss_has_been_placed = true
+					boss_root = k
 					print(boss_has_been_placed)
 	if not boss_has_been_placed:
-		layout[round(rand_range(0,3))].append("B")
-	print(layout)
+		layout[round(rand_range(0,3))].append("BossRoom")
 	return layout
 		
 	

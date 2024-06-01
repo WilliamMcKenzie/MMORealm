@@ -17,9 +17,7 @@ autostart = true
 
 [node name="Instances" type="Node" parent="."]
 
-[node name="Nexus" type="Node" parent="Instances"]
-
-[node name="Realm" type="Node" parent="Instances"]
+[node name="nexus" type="Node" parent="Instances"]
 
 [connection signal="timeout" from="TokenExpiration" to="." method="_on_TokenExpiration_timeout"]
 [connection signal="timeout" from="VerificationExpiration" to="." method="_on_VerificationExpiration_timeout"]

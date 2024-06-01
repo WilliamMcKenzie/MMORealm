@@ -2,7 +2,7 @@ extends Control
 
 onready var playButton = $UI/PlayResizer/Play
 
-var map = preload("res://Scenes/MainScenes/Map.tscn")
+var nexus = preload("res://Scenes/MainScenes/nexus.tscn")
 
 func _ready():
 	playButton.connect("pressed", self, "play")
@@ -20,10 +20,11 @@ func selectionScreen():
 	
 func enterGame(character):
 	Server.ConnectToServer()
-	var map_instance = map.instance()
-	map_instance.get_node("YSort/player").stats = character.stats
-	map_instance.get_node("YSort/player").gear = character.gear
-	map_instance.get_node("YSort/player").level = character.level
-	get_parent().add_child(map_instance)
+	var nexus_instance = nexus.instance()
+	nexus_instance.get_node("YSort/player").stats = character.stats
+	nexus_instance.get_node("YSort/player").gear = character.gear
+	nexus_instance.get_node("YSort/player").level = character.level
+	get_parent().add_child(nexus_instance)
+	GameUI.visible = true
 	queue_free()
 	

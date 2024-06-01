@@ -7,12 +7,12 @@ var network = NetworkedMultiplayerENet.new()
 var expected_tokens = []
 
 var player_state_collection = {}
-var portal_state_collection = {}
+var objects_state_collection = {}
 
 
 func _ready():
 	StartServer()
-	CreateInstance("test_dungeon", "Realm", Vector2.ZERO)
+	CreateInstance("test_dungeon", "nexus", Vector2.ZERO)
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
@@ -82,10 +82,11 @@ func CreateInstance(instance_name, parent_instance, portal_position):
 	var instance_id = generate_unique_id()
 	var instance_map = Dungeons.GenerateDungeon(instance_name)
 	if get_node("Instances").has_node(parent_instance):
-		var instance = Node2D.new()
+		var instance = load("res://Scenes/Instances/Dungeons/Dungeon.tscn").instance()
 		instance.name = instance_id
+		instance.map = instance_map
 		get_node("Instances/"+parent_instance).add_child(instance)
-		portal_state_collection[instance_id] = {"T": OS.get_system_time_msecs(), "P": portal_position, "I": str(parent_instance)}
+		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs(), "P": portal_position, "I": str(parent_instance), "N":instance_name, "Type":"DungeonPortals"}
 
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
@@ -95,7 +96,9 @@ func generate_unique_id():
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	print("Instance request recieved")
-	if get_node("Instances").has_node(instance_id):
+	print(instance_id)
+	if get_node("Instances/"+player_state_collection[player_id]["I"]).has_node(instance_id):
 		print("Changed instance")
+		var previous_instance = player_state_collection[player_id]["I"]
 		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": str(instance_id)}
-	rpc_id(player_id, "ReturnInstanceData", instance_id)
+		rpc_id(player_id, "ReturnInstanceData", { "Map":get_node("Instances/"+previous_instance+"/"+instance_id).map, "Name":objects_state_collection[instance_id]["N"], "Id":instance_id})

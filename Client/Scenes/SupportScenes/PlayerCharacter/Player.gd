@@ -71,7 +71,7 @@ func MovePlayer(delta):
 	if (Input.is_action_just_released("shoot")):
 		shoot = false
 	if (Input.is_action_just_pressed("nexus")):
-		Server.EnterInstance("Nexus")
+		Server.EnterInstance("realm")
 
 	motion.x += x
 	motion.y += y
