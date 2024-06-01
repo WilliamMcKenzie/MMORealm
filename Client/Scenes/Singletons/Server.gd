@@ -47,6 +47,11 @@ remote func RecieveWorldState(world_state):
 	get_node("../SceneHandler/"+current_instance).UpdateWorldState(world_state)
 	
 #INSTANCES
+func SendChatMessage(message):
+	rpc_id(1,"RecieveChatMessage", message)
+remote func RecieveChat(message,plr):
+	get_node("../SceneHandler/"+current_instance+"/YSort/player/ChatControl").AddChat(message,plr)
+
 func EnterInstance(instance_id):
 	if instance_id == current_instance:
 		return
