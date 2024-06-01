@@ -13,13 +13,14 @@ var objects_state_collection = {}
 func _ready():
 	StartServer()
 	CreateInstance("test_dungeon", "nexus", Vector2.ZERO)
+	CreateInstance("test_dungeon", "nexus", Vector2(50, 20))
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
-	print("Server started")
 	
 	get_tree().connect("network_peer_connected", self, "_Peer_Connected")
 	get_tree().connect("network_peer_disconnected", self, "_Peer_Disconnected")
+	
 
 func _Peer_Connected(id):
 	print("User " + str(id) + " has connected!")
@@ -93,6 +94,11 @@ func generate_unique_id():
 	var random_value = randi()
 	return (str(timestamp) + "_" + str(random_value)).sha256_text()
 
+remote func Nexus():
+	var player_id = get_tree().get_rpc_sender_id()
+	var previous_instance = player_state_collection[player_id]["I"]
+	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": "nexus"}
+	rpc_id(player_id, "ConfirmNexus")
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	print("Instance request recieved")

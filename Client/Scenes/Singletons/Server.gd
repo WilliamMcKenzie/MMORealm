@@ -52,6 +52,20 @@ func SendChatMessage(message):
 remote func RecieveChat(message,plr):
 	get_node("../SceneHandler/"+current_instance+"/YSort/player/ChatControl").AddChat(message,plr)
 
+func Nexus():
+	if "nexus" == current_instance:
+		return
+	rpc_id(1, "Nexus")
+remote func ConfirmNexus():
+	var nexus_instance = nexus.instance()
+	var map_instance = get_node("../SceneHandler/"+current_instance)
+	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
+	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	nexus_instance.name = "nexus"
+	get_node("../SceneHandler/"+current_instance).queue_free()
+	get_node("../SceneHandler").add_child(nexus_instance)
+	current_instance = "nexus"
 func EnterInstance(instance_id):
 	if instance_id == current_instance:
 		return
@@ -67,14 +81,3 @@ remote func ReturnInstanceData(instance_data):
 	get_node("../SceneHandler/"+current_instance).queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
 	current_instance = instance_data["Id"]
-
-func Nexus():
-	var nexus_instance = nexus.instance()
-	var map_instance = get_node("../SceneHandler/"+current_instance)
-	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
-	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
-	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
-	nexus_instance.name = "Realm"
-	get_node("../SceneHandler/"+current_instance).queue_free()
-	get_node("../SceneHandler").add_child(nexus_instance)
-	current_instance = "Realm"
