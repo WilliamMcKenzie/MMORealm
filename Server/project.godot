@@ -21,6 +21,7 @@ Combat="*res://Scripts/Combat.gd"
 PlayerVerification="*res://Scripts/PlayerVerification.gd"
 HubConnection="*res://Scenes/Singletons/HubConnection.gd"
 StateProcessing="*res://Scripts/StateProcessing.gd"
+Dungeons="*res://Scripts/Dungeons.gd"
 
 [global]
 
