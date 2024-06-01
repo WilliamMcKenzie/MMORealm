@@ -5,7 +5,7 @@ onready var animationTree = $AnimationTree
 func MovePlayer(new_position, animation):
 	set_position(new_position)
 	
-	if animation.has("A") and animation.has("C"):
+	if animation is Dictionary and animation.has("A") and animation.has("C"):
 		var animationType = animation["A"]
 		var animationDirection = animation["C"]
 		

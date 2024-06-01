@@ -7,7 +7,7 @@ var network = NetworkedMultiplayerENet.new()
 var token
 
 #Map preloads
-var current_instance = "nexus"
+var current_instance_tree = ["nexus"]
 var nexus = preload("res://Scenes/MainScenes/nexus.tscn")
 var dungeon_container = preload("res://Scenes/MainScenes/dungeon_container.tscn")
 
@@ -36,48 +36,51 @@ remote func ReturnTokenVerificationResults(results):
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
-	get_node("../SceneHandler/"+current_instance).SpawnNewPlayer(player_id, spawn_position)
+	get_node("../SceneHandler/"+GetCurrentInstance()).SpawnNewPlayer(player_id, spawn_position)
 remote func DespawnPlayer(player_id):
-	get_node("../SceneHandler/"+current_instance).DespawnPlayer(player_id)
+	get_node("../SceneHandler/"+GetCurrentInstance()).DespawnPlayer(player_id)
 
 #WORLD SYNCING
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 remote func RecieveWorldState(world_state):
-	get_node("../SceneHandler/"+current_instance).UpdateWorldState(world_state)
+	get_node("../SceneHandler/"+GetCurrentInstance()).UpdateWorldState(world_state)
 	
 #INSTANCES
+func GetCurrentInstance():
+	return current_instance_tree[current_instance_tree.size()-1]
+
 func SendChatMessage(message):
 	rpc_id(1,"RecieveChatMessage", message)
 remote func RecieveChat(message,plr):
-	get_node("../SceneHandler/"+current_instance+"/YSort/player/ChatControl").AddChat(message,plr)
+	GameUI.get_node("ChatControl").AddChat(message,plr)
 
 func Nexus():
-	if "nexus" == current_instance:
+	if "nexus" == GetCurrentInstance():
 		return
 	rpc_id(1, "Nexus")
 remote func ConfirmNexus():
 	var nexus_instance = nexus.instance()
-	var map_instance = get_node("../SceneHandler/"+current_instance)
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
 	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
 	nexus_instance.name = "nexus"
-	get_node("../SceneHandler/"+current_instance).queue_free()
+	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(nexus_instance)
-	current_instance = "nexus"
+	current_instance_tree = ["nexus"]
 func EnterInstance(instance_id):
-	if instance_id == current_instance:
+	if instance_id == GetCurrentInstance():
 		return
 	rpc_id(1, "EnterInstance", instance_id)
 remote func ReturnInstanceData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
-	var map_instance = get_node("../SceneHandler/"+current_instance)
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	dungeon_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
 	dungeon_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	dungeon_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
 	dungeon_instance.name = instance_data["Id"]
 	dungeon_instance.PopulateDungeon(instance_data)
-	get_node("../SceneHandler/"+current_instance).queue_free()
+	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
-	current_instance = instance_data["Id"]
+	current_instance_tree.append(instance_data["Id"])

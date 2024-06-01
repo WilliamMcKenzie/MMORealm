@@ -13,8 +13,8 @@ var objects_state_collection = {}
 
 func _ready():
 	StartServer()
-	CreateInstance("test_dungeon", "nexus", Vector2.ZERO)
-	CreateInstance("test_dungeon", "nexus", Vector2(50, 20))
+	#CreateInstance("test_dungeon", ["nexus"], Vector2.ZERO)
+	#CreateInstance("test_dungeon", ["nexus"], Vector2(50, 20))
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
@@ -46,7 +46,7 @@ remote func RecievePlayerState(player_state):
 			player_state["I"] = player_state_collection[player_id]["I"]
 			player_state_collection[player_id] = player_state
 	else:
-		player_state["I"] = "nexus"
+		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
 func SendWorldState(world_state):
 	rpc_unreliable_id(0, "RecieveWorldState", world_state)
@@ -79,16 +79,21 @@ func ReturnTokenVerificationResults(player_id, result):
 	if result == true:
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
 
+#NPCS/ENEMIES
+func SpawnNPC(enemy_name, parent_instance, spawn_position):
+	pass
+
 #DUNGEON INSTANCES
-func CreateInstance(instance_name, parent_instance, portal_position):
+func CreateInstance(instance_name, instance_tree, portal_position):
 	var instance_id = generate_unique_id()
 	var instance_map = Dungeons.GenerateDungeon(instance_name)
-	if get_node("Instances").has_node(parent_instance):
+	print("Instances/"+StringifyInstanceTree(instance_tree))
+	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
 		var instance = load("res://Scenes/Instances/Dungeons/Dungeon.tscn").instance()
 		instance.name = instance_id
 		instance.map = instance_map
-		get_node("Instances/"+parent_instance).add_child(instance)
-		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs(), "P": portal_position, "I": str(parent_instance), "N":instance_name, "Type":"DungeonPortals"}
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
+		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs(), "P": portal_position, "I": instance_tree, "N":instance_name, "Type":"DungeonPortals"}
 
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
@@ -97,23 +102,36 @@ func generate_unique_id():
 
 remote func Nexus():
 	var player_id = get_tree().get_rpc_sender_id()
-	var previous_instance = player_state_collection[player_id]["I"]
-	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": "nexus"}
+	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
 	rpc_id(player_id, "ConfirmNexus")
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	print("Instance request recieved")
 	print(instance_id)
-	if get_node("Instances/"+player_state_collection[player_id]["I"]).has_node(instance_id):
+	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_node(instance_id):
 		print("Changed instance")
-		var previous_instance = player_state_collection[player_id]["I"]
-		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": str(instance_id)}
-		rpc_id(player_id, "ReturnInstanceData", { "Map":get_node("Instances/"+previous_instance+"/"+instance_id).map, "Name":objects_state_collection[instance_id]["N"], "Id":instance_id})
+		var instance_tree = player_state_collection[player_id]["I"]
+		instance_tree.append(str(instance_id))
+		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": instance_tree}
+		rpc_id(player_id, "ReturnInstanceData", { "Map":get_node("Instances/"+StringifyInstanceTree(instance_tree)).map, "Name":objects_state_collection[instance_id]["N"], "Id":instance_id})
+func StringifyInstanceTree(instance_tree):
+	var res = ""
+	for instance in instance_tree:
+		res += (instance+"/")
+	return res.left(res.length() - 1) 
 
+#COMMANDS
 remote func RecieveChatMessage(message):
+	var message_words = message.split(" ")
+	var player_id = get_tree().get_rpc_sender_id()
+	var player_position = player_state_collection[player_id]["P"]
+	var instance_tree = player_state_collection[player_id]["I"]
+	
 	if message[0] == "/":
-		if message[1] == "d":
-			CreateInstance(message.substr(3,-1),player_state_collection[get_tree().get_rpc_sender_id()]["I"],player_state_collection[get_tree().get_rpc_sender_id()]["P"])
+		if message_words[0] == "/d":
+			CreateInstance(message.substr(3,-1), instance_tree, player_position)
+		if message_words[0] == "/spawn":
+			SpawnNPC(message.substr(7,-1), instance_tree, player_position)
 	else:
 		print("server has recieved message : " + message)
 		rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))

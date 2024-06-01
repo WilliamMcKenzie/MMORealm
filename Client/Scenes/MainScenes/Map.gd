@@ -62,6 +62,7 @@ func UpdateObjects(objects_dict, current_instance):
 	for instance_id in objects_dict.keys():
 		type = objects_dict[instance_id]["Type"]
 		var scene_name = objects_dict[instance_id]["N"]+".tscn"
+		if scene_name == "test_dungeon.tscn":
 		if (not get_node("YSort/Objects").has_node(str(instance_id))) and current_instance == objects_dict[instance_id]["I"]:
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
