@@ -4,24 +4,20 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/ChatInput.gd" type="Script" id=2]
 
 [node name="ChatControl" type="Node2D"]
-position = Vector2( 6, 2 )
+position = Vector2( 5, -42 )
 scale = Vector2( 0.3, 0.3 )
 script = ExtResource( 1 )
 
 [node name="ChatVerticalContainer" type="VBoxContainer" parent="."]
-margin_left = 2.0
-margin_top = 157.0
-margin_right = 112.0
-margin_bottom = 188.0
-
-[node name="RichTextLabel" type="RichTextLabel" parent="ChatVerticalContainer"]
-margin_right = 110.0
+margin_left = -3.0
+margin_top = 167.0
+margin_right = 197.0
+margin_bottom = 191.0
+alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ChatVerticalContainer"]
-margin_top = 4.0
-margin_right = 110.0
-margin_bottom = 28.0
-alignment = 2
+margin_right = 200.0
+margin_bottom = 24.0
 
 [node name="Label" type="Label" parent="ChatVerticalContainer/HBoxContainer"]
 margin_top = 5.0
@@ -31,8 +27,9 @@ text = "[Chat] : "
 
 [node name="ChatInput" type="LineEdit" parent="ChatVerticalContainer/HBoxContainer"]
 margin_left = 52.0
-margin_right = 110.0
+margin_right = 200.0
 margin_bottom = 24.0
+size_flags_horizontal = 3
 caret_blink = true
 caret_blink_speed = 0.5
 script = ExtResource( 2 )

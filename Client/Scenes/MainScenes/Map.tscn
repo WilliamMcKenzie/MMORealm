@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/tiles/tileset.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/MainScenes/Map.gd" type="Script" id=4]
 
 [sub_resource type="TileSet" id=1]
@@ -301,6 +302,9 @@ tile_data = PoolIntArray( -1507338, 19, 1, -1507337, 19, 1, -1507336, 19, 1, -15
 
 [node name="player" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 0, 0 )
+
+[node name="ChatControl" parent="YSort/player" instance=ExtResource( 3 )]
+position = Vector2( -74, -41 )
 
 [node name="Enemies" type="YSort" parent="YSort"]
 

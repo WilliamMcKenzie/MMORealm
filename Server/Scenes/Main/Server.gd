@@ -99,3 +99,7 @@ remote func EnterInstance(instance_id):
 		print("Changed instance")
 		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": str(instance_id)}
 	rpc_id(player_id, "ReturnInstanceData", instance_id)
+
+remote func RecieveChatMessage(message):
+	print("server has recieved message : " + message)
+	rpc("RecieveChat",message,str(get_tree().get_rpc_sender_id()))

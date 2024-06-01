@@ -8,7 +8,8 @@ func _ready():
 	pass
 
 
-func AddChat(msg):
+func AddChat(msg,plr):
 	var ChatMsg = Chat.instance()
-	ChatMsg.text = (msg)
-	get_node("ChatVerticalContainer").add_child(ChatMsg)
+	ChatMsg.text = ("[" + plr + "]" + " : " + msg)
+	get_node("ChatVerticalContainer").add_child(ChatMsg,1)
+	get_node("ChatVerticalContainer").move_child(ChatMsg,1)
