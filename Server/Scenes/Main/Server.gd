@@ -70,3 +70,7 @@ func ReturnTokenVerificationResults(player_id, result):
 	rpc_id(player_id, "ReturnTokenVerificationResults", result)
 	if result == true:
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
+
+remote func RecieveChatMessage(message):
+	print("server has recieved message : " + message)
+	rpc("RecieveChat",message)

@@ -40,3 +40,8 @@ func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 remote func RecieveWorldState(world_state):
 	get_node("../SceneHandler/Map").UpdateWorldState(world_state)
+	
+func SendChatMessage(message):
+	rpc_id(1,"RecieveChatMessage", message)
+remote func RecieveChat(message):
+	get_parent().get_node("SceneHandler/Map/YSort/player/ChatControl").AddChat(message)
