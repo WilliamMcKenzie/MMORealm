@@ -6,6 +6,10 @@ var network = NetworkedMultiplayerENet.new()
 
 var token
 
+#Map preloads
+var current_instance = "Map"
+var Nexus = preload("res://Scenes/MainScenes/Nexus.tscn")
+
 func _ready():
 	pass
 
@@ -31,12 +35,25 @@ remote func ReturnTokenVerificationResults(results):
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
-	get_node("../SceneHandler/Map").SpawnNewPlayer(player_id, spawn_position)
+	get_node("../SceneHandler/"+current_instance).SpawnNewPlayer(player_id, spawn_position)
 remote func DespawnPlayer(player_id):
-	get_node("../SceneHandler/Map").DespawnPlayer(player_id)
+	get_node("../SceneHandler/"+current_instance).DespawnPlayer(player_id)
 
 #WORLD SYNCING
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 remote func RecieveWorldState(world_state):
-	get_node("../SceneHandler/Map").UpdateWorldState(world_state)
+	get_node("../SceneHandler/"+current_instance).UpdateWorldState(world_state)
+	
+#INSTANCES
+func EnterInstance(instance_id):
+	var nexus_instance = Nexus.instance()
+	var map_instance = get_node("../SceneHandler/Map")
+	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
+	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	nexus_instance.name = "Nexus"
+	current_instance = "Nexus"
+	get_node("../SceneHandler/Map").queue_free()
+	get_node("../SceneHandler").add_child(nexus_instance)
+	rpc_id(1, "EnterInstance", instance_id)

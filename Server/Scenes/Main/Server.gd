@@ -5,6 +5,7 @@ var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
 var expected_tokens = []
+
 var player_state_collection = {}
 
 func _ready():
@@ -37,8 +38,10 @@ remote func RecievePlayerState(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	if player_state_collection.has(player_id):
 		if(player_state_collection[player_id]["T"] <  player_state["T"]):
+			player_state["I"] = player_state_collection[player_id]["I"]
 			player_state_collection[player_id] = player_state
 	else:
+		player_state["I"] = "nexus"
 		player_state_collection[player_id] = player_state
 func SendWorldState(world_state):
 	rpc_unreliable_id(0, "RecieveWorldState", world_state)
@@ -70,3 +73,17 @@ func ReturnTokenVerificationResults(player_id, result):
 	rpc_id(player_id, "ReturnTokenVerificationResults", result)
 	if result == true:
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
+
+#PLAYER INSTANCES
+func CreateInstance(instance_id):
+	if not get_node("Instances").has_node("instance_id"):
+		var instance = Node.new()
+		instance.name = instance_id
+		get_node("Instances").add_child(instance)
+remote func EnterInstance(instance_id):
+	var player_id = get_tree().get_rpc_sender_id()
+	print("Instance request recieved")
+	if get_node("Instances").has_node(instance_id):
+		print("Changed instance")
+		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": str(instance_id)}
+	rpc_id(player_id, "ReturnInstanceData", instance_id)

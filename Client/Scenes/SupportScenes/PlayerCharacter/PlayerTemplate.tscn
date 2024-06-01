@@ -1,6 +1,7 @@
-[gd_scene load_steps=48 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/PlayerTemplate.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/characters/character.png" type="Texture" id=4]
 
@@ -778,6 +779,7 @@ material = SubResource( 52 )
 texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
+script = ExtResource( 2 )
 
 [node name="PlayerUI" type="Node2D" parent="."]
 

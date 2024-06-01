@@ -20,7 +20,7 @@ ServerData="*res://Scenes/Singletons/ServerData.gd"
 Combat="*res://Scripts/Combat.gd"
 PlayerVerification="*res://Scripts/PlayerVerification.gd"
 HubConnection="*res://Scenes/Singletons/HubConnection.gd"
-StateProcessing="*res://Scenes/Singletons/StateProcessing.gd"
+StateProcessing="*res://Scripts/StateProcessing.gd"
 
 [global]
 
