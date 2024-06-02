@@ -6,15 +6,15 @@ var network = NetworkedMultiplayerENet.new()
 
 var expected_tokens = []
 
+#For rendering the positions/instance to the player
 var player_state_collection = {}
 var objects_state_collection = {}
-
-
+var enemies_state_collection = {}
 
 func _ready():
 	StartServer()
-	#CreateInstance("test_dungeon", ["nexus"], Vector2.ZERO)
-	#CreateInstance("test_dungeon", ["nexus"], Vector2(50, 20))
+	CreateInstance("test_dungeon", ["nexus"], Vector2.ZERO)
+	SpawnNPC("snake", ["nexus"], Vector2(50, 20))
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
@@ -80,8 +80,27 @@ func ReturnTokenVerificationResults(player_id, result):
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
 
 #NPCS/ENEMIES
-func SpawnNPC(enemy_name, parent_instance, spawn_position):
-	pass
+func SpawnNPC(enemy_name, instance_tree, spawn_position):
+	var enemy_id = generate_unique_id()
+	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
+		var enemy_data = ServerData.GetEnemyData(enemy_name)
+		var enemy = {
+			"Name":enemy_name,
+			"Position":spawn_position,
+			"Health":enemy_data.health,
+			"MaxHealth":enemy_data.health,
+			"Defense":enemy_data.defense,
+			"State":"Idle"
+		}
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id] = enemy
+		enemies_state_collection[enemy_id] = {"T": OS.get_system_time_msecs(), "P": spawn_position, "I": instance_tree, "N":enemy_name}
+remote func NPCHit(enemy_id, instance_tree, damage):
+	if get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list.has(enemy_id):
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id]["Health"] -= damage
+remote func SendProjectile(projectile_data):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	rpc_id(0, "ReceiveProjectile", projectile_data, instance_tree, player_id)
 
 #DUNGEON INSTANCES
 func CreateInstance(instance_name, instance_tree, portal_position):
@@ -128,10 +147,11 @@ remote func RecieveChatMessage(message):
 	
 	if message[0] == "/":
 		if message_words[0] == "/d":
-			print("CREATING")
 			CreateInstance(message.substr(3,-1), instance_tree, player_position)
+			rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
 		if message_words[0] == "/spawn":
 			SpawnNPC(message.substr(7,-1), instance_tree, player_position)
+			rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
 	else:
 		print("server has recieved message : " + message)
 		rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))

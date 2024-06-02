@@ -41,6 +41,14 @@ remote func DespawnPlayer(player_id):
 	get_node("../SceneHandler/"+GetCurrentInstance()).DespawnPlayer(player_id)
 
 #WORLD SYNCING
+func SendProjectile(projectile_data):
+	rpc_id(1, "SendProjectile", projectile_data)
+remote func ReceiveProjectile(projectile_data, instance_tree, player_id):
+	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree:
+		pass
+	else:
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
+	
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 remote func RecieveWorldState(world_state):
@@ -84,3 +92,7 @@ remote func ReturnInstanceData(instance_data):
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
 	current_instance_tree.append(instance_data["Id"])
+	
+#ENEMIES
+func NPCHit(enemy_id, damage):
+	rpc_id(1, "NPCHit", enemy_id, current_instance_tree, damage)

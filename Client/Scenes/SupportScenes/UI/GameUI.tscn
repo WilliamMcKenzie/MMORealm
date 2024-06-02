@@ -7,6 +7,10 @@
 [node name="GameUI" type="CanvasLayer"]
 script = ExtResource( 3 )
 
+[node name="ChatControl" parent="." instance=ExtResource( 2 )]
+position = Vector2( -26, -570 )
+scale = Vector2( 2, 2 )
+
 [node name="EnterPortal" type="Button" parent="."]
 visible = false
 margin_left = 448.0
@@ -15,7 +19,3 @@ margin_right = 573.0
 margin_bottom = 446.0
 text = "Enter Portal"
 script = ExtResource( 1 )
-
-[node name="ChatControl" parent="." instance=ExtResource( 2 )]
-position = Vector2( -26, -570 )
-scale = Vector2( 2, 2 )

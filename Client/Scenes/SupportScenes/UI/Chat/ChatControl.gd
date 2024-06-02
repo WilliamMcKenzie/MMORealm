@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var chat_input = $ChatVerticalContainer/HBoxContainer/ChatInput
+onready var chat_input = $HBoxContainer/ChatInput
 var chat = load("res://Scenes/SupportScenes/UI/Chat/ChatMsg.tscn")
 
 func _ready():
@@ -16,7 +16,6 @@ func AddChat(message, player):
 	var chat_message = chat.instance()
 	chat_message.text = ("[" + player + "]" + " : " + message)
 	get_node("ChatVerticalContainer").add_child(chat_message,1)
-	get_node("ChatVerticalContainer").move_child(chat_message,1)
 
 func _physics_process(delta):
 	if(Input.is_action_just_pressed ("command")):

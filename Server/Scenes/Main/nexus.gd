@@ -1,6 +1,5 @@
-extends Node2D
+extends Node
 
-var map = []
 var enemy_list = {}
 
 func _physics_process(delta):

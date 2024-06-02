@@ -9,6 +9,8 @@ func _physics_process(delta):
 			world_state[player].erase("T")
 		world_state["T"] = OS.get_system_time_msecs()
 		
+		world_state["Enemies"] = get_node("/root/Server").enemies_state_collection
+		
 		#Objects
 		get_node("/root/Server").objects_state_collection = CleanObjects(get_node("/root/Server").objects_state_collection).duplicate(true)
 		print(get_node("/root/Server").objects_state_collection)

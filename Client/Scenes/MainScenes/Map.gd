@@ -19,6 +19,9 @@ func _physics_process(delta):
 				if str(player) == "Objects":
 					UpdateObjects(world_state_buffer[2]["Objects"], world_state_buffer[1][get_tree().get_network_unique_id()]["I"])
 					continue;
+				if str(player) == "Enemies":
+					UpdateEnemies(world_state_buffer[2]["Enemies"])
+					continue;
 				if player == get_tree().get_network_unique_id():
 					continue;
 				if not world_state_buffer[1].has(player):
@@ -33,6 +36,15 @@ func _physics_process(delta):
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, world_state_buffer[2][player]["A"])
 				else:
 					SpawnNewPlayer(player, world_state_buffer[2][player]["P"])
+			var enemies_dict = world_state_buffer[2]["Enemies"]
+			for enemy_id in enemies_dict.keys():
+				if (not enemies_dict.has(enemy_id) or (not world_state_buffer[1]["Enemies"].has(enemy_id))):
+					continue
+				if get_node("YSort/Enemies").has_node(str(enemy_id)):
+					var new_position = lerp(world_state_buffer[1]["Enemies"][enemy_id]["P"], enemies_dict[enemy_id]["P"], interpolation_factor)
+					get_node("YSort/Enemies/"+str(enemy_id)).MoveEnemy(new_position)
+				elif world_state_buffer[1][get_tree().get_network_unique_id()]["I"] == enemies_dict[enemy_id]["I"]:
+					SpawnNewEnemy(enemy_id, world_state_buffer[2]["Enemies"][enemy_id]["P"], world_state_buffer[2]["Enemies"][enemy_id]["N"])
 		elif render_time > world_state_buffer[1]["T"]:
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 			for player in world_state_buffer[1].keys():
@@ -41,9 +53,12 @@ func _physics_process(delta):
 				if str(player) == "Objects":
 					UpdateObjects(world_state_buffer[1]["Objects"], world_state_buffer[0][get_tree().get_network_unique_id()]["I"])
 					continue;
+				if str(player) == "Enemies":
+					UpdateEnemies(world_state_buffer[1]["Enemies"])
+					continue;
 				if player == get_tree().get_network_unique_id():
 					continue;
-				if not world_state_buffer[0].has(player):
+				if (not world_state_buffer[0].has(player)) or (not world_state_buffer[0][get_tree().get_network_unique_id()]["I"]):
 					continue;
 				if world_state_buffer[0][player]["I"] != world_state_buffer[0][get_tree().get_network_unique_id()]["I"]:
 					if get_node("YSort/OtherPlayers").has_node(str(player)):
@@ -56,21 +71,29 @@ func _physics_process(delta):
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, world_state_buffer[1][player]["A"])
 				else:
 					SpawnNewPlayer(player, world_state_buffer[1][player]["P"])
+func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
+	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
+		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+"/"+enemy_name+".tscn")
+		var enemy_instance = enemy_scene.instance()
+		enemy_instance.name = enemy_id
+		enemy_instance.position = enemy_position
+		get_node("YSort/Enemies").add_child(enemy_instance)
+func UpdateEnemies(enemies_dict):
+	for enemy_node in get_node("YSort/Enemies").get_children():
+		if not enemies_dict.has(enemy_node.name):
+			get_node("YSort/Enemies/"+enemy_node.name).queue_free()
 
 func UpdateObjects(objects_dict, current_instance):
 	var type
-	
-	for instance_id in objects_dict.keys():
-		type = objects_dict[instance_id]["Type"]
-		print("Current:" + str(current_instance))
-		print("Dungeon:" + str(objects_dict[instance_id]["I"]))
-		var scene_name = objects_dict[instance_id]["N"]+".tscn"
-		if (not get_node("YSort/Objects").has_node(str(instance_id))) and (current_instance == objects_dict[instance_id]["I"]):
+	for object_id in objects_dict.keys():
+		type = objects_dict[object_id]["Type"]
+		var scene_name = objects_dict[object_id]["N"]+".tscn"
+		if (not get_node("YSort/Objects").has_node(str(object_id))) and (current_instance == objects_dict[object_id]["I"]):
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
-			object_instance.name = str(instance_id)
-			object_instance.object_id = str(instance_id)
-			object_instance.position = objects_dict[instance_id]["P"]
+			object_instance.name = str(object_id)
+			object_instance.object_id = str(object_id)
+			object_instance.position = objects_dict[object_id]["P"]
 			get_node("YSort/Objects").add_child(object_instance)
 	for object_node in get_node("YSort/Objects").get_children():
 		if not objects_dict.has(object_node.name):

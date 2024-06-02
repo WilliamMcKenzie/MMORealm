@@ -7,24 +7,19 @@
 position = Vector2( 0, -2 )
 script = ExtResource( 1 )
 
-[node name="ChatVerticalContainer" type="VBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 31.0
 margin_top = 547.0
 margin_right = 231.0
 margin_bottom = 571.0
-alignment = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ChatVerticalContainer"]
-margin_right = 200.0
-margin_bottom = 24.0
-
-[node name="Label" type="Label" parent="ChatVerticalContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer"]
 margin_top = 5.0
 margin_right = 48.0
 margin_bottom = 19.0
 text = "[Chat] : "
 
-[node name="ChatInput" type="LineEdit" parent="ChatVerticalContainer/HBoxContainer"]
+[node name="ChatInput" type="LineEdit" parent="HBoxContainer"]
 margin_left = 52.0
 margin_right = 200.0
 margin_bottom = 24.0
@@ -33,4 +28,11 @@ caret_blink = true
 caret_blink_speed = 0.5
 script = ExtResource( 2 )
 
-[connection signal="text_entered" from="ChatVerticalContainer/HBoxContainer/ChatInput" to="ChatVerticalContainer/HBoxContainer/ChatInput" method="_on_ChatInput_text_entered"]
+[node name="ChatVerticalContainer" type="VBoxContainer" parent="."]
+margin_left = 31.0
+margin_top = 240.0
+margin_right = 321.0
+margin_bottom = 540.0
+alignment = 2
+
+[connection signal="text_entered" from="HBoxContainer/ChatInput" to="HBoxContainer/ChatInput" method="_on_ChatInput_text_entered"]
