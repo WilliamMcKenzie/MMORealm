@@ -7,9 +7,13 @@ var network = NetworkedMultiplayerENet.new()
 var token
 
 #Map preloads
-var current_instance = "nexus"
+var current_instance_tree = ["nexus"]
 var nexus = preload("res://Scenes/MainScenes/nexus.tscn")
+var island_container = preload("res://Scenes/MainScenes/island_container.tscn")
 var dungeon_container = preload("res://Scenes/MainScenes/dungeon_container.tscn")
+
+#For player hierarchy
+var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 
 func _ready():
 	pass
@@ -36,45 +40,82 @@ remote func ReturnTokenVerificationResults(results):
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
-	get_node("../SceneHandler/"+current_instance).SpawnNewPlayer(player_id, spawn_position)
+	get_node("../SceneHandler/"+GetCurrentInstance()).SpawnNewPlayer(player_id, spawn_position)
 remote func DespawnPlayer(player_id):
-	get_node("../SceneHandler/"+current_instance).DespawnPlayer(player_id)
+	get_node("../SceneHandler/"+GetCurrentInstance()).DespawnPlayer(player_id)
 
 #WORLD SYNCING
+func SendProjectile(projectile_data):
+	rpc_id(1, "SendProjectile", projectile_data)
+remote func ReceiveProjectile(projectile_data, instance_tree, player_id):
+	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree:
+		pass
+	else:
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
+	
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 remote func RecieveWorldState(world_state):
-	get_node("../SceneHandler/"+current_instance).UpdateWorldState(world_state)
+	get_node("../SceneHandler/"+GetCurrentInstance()).UpdateWorldState(world_state)
 	
 #INSTANCES
+func GetCurrentInstance():
+	return current_instance_tree[current_instance_tree.size()-1]
+
 func SendChatMessage(message):
 	rpc_id(1,"RecieveChatMessage", message)
 remote func RecieveChat(message,plr):
-	get_node("../SceneHandler/"+current_instance+"/YSort/player/ChatControl").AddChat(message,plr)
+	GameUI.get_node("ChatControl").AddChat(message,plr)
+remote func MovePlayer(new_position):
+	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position = new_position
 
+func Nexus():
+	if "nexus" == GetCurrentInstance():
+		return
+	rpc_id(1, "Nexus")
+remote func ConfirmNexus():
+	var nexus_instance = nexus.instance()
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
+	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	nexus_instance.name = "nexus"
+	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
+	get_node("../SceneHandler").add_child(nexus_instance)
+	current_instance_tree = ["nexus"]
 func EnterInstance(instance_id):
-	if instance_id == current_instance:
+	if instance_id == GetCurrentInstance():
 		return
 	rpc_id(1, "EnterInstance", instance_id)
-remote func ReturnInstanceData(instance_data):
+remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
-	var map_instance = get_node("../SceneHandler/"+current_instance)
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	dungeon_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
 	dungeon_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	dungeon_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
 	dungeon_instance.name = instance_data["Id"]
 	dungeon_instance.PopulateDungeon(instance_data)
-	get_node("../SceneHandler/"+current_instance).queue_free()
+	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
-	current_instance = instance_data["Id"]
+	current_instance_tree.append(instance_data["Id"])
+remote func ReturnIslandData(instance_data):
+	var map_data = instance_data["Map"]
+	
+	var island_instance = island_container.instance()
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 
-func Nexus():
-	var nexus_instance = nexus.instance()
-	var map_instance = get_node("../SceneHandler/"+current_instance)
-	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
-	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
-	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
-	nexus_instance.name = "Realm"
-	get_node("../SceneHandler/"+current_instance).queue_free()
-	get_node("../SceneHandler").add_child(nexus_instance)
-	current_instance = "Realm"
+	island_instance.GenerateIslandMap(map_data["Tiles"], map_data["Objects"])
+	island_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	island_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
+	island_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	island_instance.get_node("YSort/player").global_position = instance_data["P"]
+	print(instance_data["P"])
+	island_instance.name = instance_data["Id"]
+	
+	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
+	get_node("../SceneHandler").add_child(island_instance)
+	current_instance_tree.append(instance_data["Id"])
+	
+#ENEMIES
+func NPCHit(enemy_id, damage):
+	rpc_id(1, "NPCHit", enemy_id, current_instance_tree, damage)

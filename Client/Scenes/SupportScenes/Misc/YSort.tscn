@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.tscn" type="PackedScene" id=1]
+
+[node name="YSort" type="YSort"]
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 0 )
+
+[node name="Enemies" type="YSort" parent="."]
+
+[node name="OtherPlayers" type="YSort" parent="."]
+
+[node name="Objects" type="YSort" parent="."]
+
+[node name="DungeonPortals" type="YSort" parent="Objects"]

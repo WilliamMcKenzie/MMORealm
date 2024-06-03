@@ -46,6 +46,9 @@ func _physics_process(delta):
 	DefinePlayerState()
 
 func MovePlayer(delta):
+	print(global_position)
+	if GameUI.in_chat == true:
+		return
 	var motion = Vector2.ZERO
 	# remember to add checks to make sure each input is only hit once, emulators may be able to simulate multiple action pressed inputs
 	if(Input.is_action_just_pressed ("up")):
@@ -71,7 +74,7 @@ func MovePlayer(delta):
 	if (Input.is_action_just_released("shoot")):
 		shoot = false
 	if (Input.is_action_just_pressed("nexus")):
-		Server.EnterInstance("realm")
+		Server.Nexus()
 
 	motion.x += x
 	motion.y += y
@@ -97,8 +100,11 @@ func MovePlayer(delta):
 	else:
 		animationTree.get("parameters/playback").travel("Idle")
 		lastAnimation["A"] = "Idle"
+
 	motion = motion.normalized()
 	motion = move_and_slide(motion * stats.speed)
+	if get_parent().get_parent().has_method("LoadChunk"):
+		get_parent().get_parent().LoadChunk(position)
 
 #Here we are sending over the location to the server 60 times a second
 func DefinePlayerState():
@@ -106,15 +112,28 @@ func DefinePlayerState():
 	Server.SendPlayerState(player_state)
 
 func ShootProjectile():
+	var mouse_position = get_global_mouse_position()
+	var direction = (mouse_position - position).normalized()
 	var projectile_instance = projectile.instance()
+	var damage = round(CalculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
+	
+	#Send projectile to server
+	var projectile_data = {
+		"Damage":damage,
+		"Position":position,
+		"Projectile":gear.weapon.projectile,
+		"MousePosition":mouse_position,
+		"Direction":direction,
+		"TileRange":gear.weapon.range
+	}
+	Server.SendProjectile(projectile_data)
+	
 	projectile_instance.position = $Axis.global_position
 	
 	#Set projectile data
-	projectile_instance.damage = round(CalculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
+	projectile_instance.damage = damage
 	projectile_instance.tile_range = gear.weapon.range
 	
-	var mouse_position = get_global_mouse_position()
-	var direction = (mouse_position - position).normalized()
 	projectile_instance.set_direction(direction)
 	projectile_instance.look_at(mouse_position)
 	get_parent().add_child(projectile_instance)

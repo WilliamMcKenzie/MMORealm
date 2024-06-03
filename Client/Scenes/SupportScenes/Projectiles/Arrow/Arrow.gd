@@ -5,6 +5,9 @@ var speed = 50
 var tile_range
 var piercing
 
+#Check if this is being shot locally or from another player
+var original = true
+
 var initial_position = Vector2.ZERO
 var velocity = Vector2.ZERO
 
@@ -31,10 +34,7 @@ func selfDestruct():
 	
 func set_direction(direction: Vector2):
 	velocity = direction.normalized()
-	
-func playerProjectile():
-	pass
-	
-func interaction(isEnemy):
-	if piercing == false and isEnemy == true:
+
+func interaction(body):
+	if (piercing == false) and (body.get_parent().name == "Enemies") :
 		queue_free()

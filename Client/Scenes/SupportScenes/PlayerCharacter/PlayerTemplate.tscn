@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/PlayerTemplate.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
@@ -591,6 +591,9 @@ shader_param/bladeSwingNew = Color( 0.564706, 0.317647, 0.14902, 1 )
 shader_param/bowDarkOrigin = Color( 0.666667, 0.631373, 0, 1 )
 shader_param/bowDarkNew = Color( 0, 0, 0, 0 )
 
+[sub_resource type="RectangleShape2D" id=59]
+extents = Vector2( 4.99001, 5 )
+
 [sub_resource type="Shader" id=53]
 code = "shader_type canvas_item;
 
@@ -780,6 +783,14 @@ texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
 script = ExtResource( 2 )
+
+[node name="Axis" type="Area2D" parent="."]
+position = Vector2( 0.019989, 0 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Axis"]
+visible = false
+position = Vector2( -0.00997925, 0 )
+shape = SubResource( 59 )
 
 [node name="PlayerUI" type="Node2D" parent="."]
 

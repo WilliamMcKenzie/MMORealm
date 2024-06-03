@@ -1,28 +1,25 @@
 extends Node2D
 
 var distanceTraveled
-var health = 50
-var speed = 50
-var playersWhoDamaged = []
 var velocity = Vector2.ZERO
 
 var damageIndicatorScene = preload("res://Scenes/SupportScenes/UI/DamageIndicator/DamageIndicator.tscn")
 
 func _ready():
-	$Area2D.connect("area_entered", self, "onHit")
+	$Area2D.connect("area_entered", self, "OnHit")
+
+func MoveEnemy(new_position):
+	set_position(new_position)
 
 #Damage Taken section
-func onHit(body):
-	print("Collision")
-	if body.get_parent().has_method("playerProjectile"):
-		body.get_parent().interaction(true)
-		health -= body.get_parent().damage
-		if health <= 0:
-			die()
-		else:
-			show_damage_indicator(-1*body.get_parent().damage)
+func OnHit(body):
+	if ("damage" in body.get_parent()):
+		ShowDamageIndicator(-1*body.get_parent().damage)
+		body.get_parent().interaction(self)
+	if ("original" in body.get_parent()) and (body.get_parent().original == true):
+		Server.NPCHit(get_name(), body.get_parent().damage)
 
-func show_damage_indicator(damage_amount):
+func ShowDamageIndicator(damage_amount):
 	var damage_indicator = damageIndicatorScene.instance()
 	damage_indicator.get_node("DamageLabel").text = str(damage_amount)
 	damage_indicator.position = damage_indicator.position + Vector2(10, -10)
@@ -35,20 +32,8 @@ func show_damage_indicator(damage_amount):
 	add_child(timer)
 	timer.start()
 
-	timer.connect("timeout", self, "_on_damage_indicator_timeout")
+	timer.connect("timeout", self, "DamageIndicatorTimeout")
 
-func _on_damage_indicator_timeout():
+func DamageIndicatorTimeout():
 	if is_instance_valid(get_node("DamageIndicator")): 
 		get_node("DamageIndicator").queue_free()
-
-func die():
-	queue_free()
-	print("I died")
-	
-func dropLoot():
-	pass
-	# Instantiate loot items at the enemy's position
-	# Example: 
-	# var loot_instance = loot_scene.instance()
-	# loot_instance.position = position
-	# get_parent().add_child(loot_instance)

@@ -26,6 +26,7 @@ Dungeons="*res://Scripts/Dungeons.gd"
 [global]
 
 physics=false
+debuf=false
 
 [gui]
 

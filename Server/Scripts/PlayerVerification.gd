@@ -51,8 +51,6 @@ func VerificationExpiration():
 				if connected_peers.has(key):
 					main_interface.ReturnTokenVerificationResults(key, false)
 					main_interface.network.disconnect_peer(key)
-	print("Awaiting Verification:")
-	print(awaiting_verification)
 	
 	
 	

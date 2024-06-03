@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Assets/objects/objects_8x8.png" type="Texture" id=1]
+[ext_resource path="res://Assets/objects/objects_16x16.png" type="Texture" id=1]
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=2]
 [ext_resource path="res://Scenes/SupportScenes/Objects/DungeonPortals/enter_dungeon.gd" type="Script" id=3]
 
@@ -50,17 +50,17 @@ shader_param/bowDarkOrigin = null
 shader_param/bowDarkNew = null
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 5, 5 )
+extents = Vector2( 8, 9 )
 
-[node name="test_dungeon" type="Node2D"]
-position = Vector2( 0, -4 )
+[node name="island" type="Node2D"]
+position = Vector2( 0, -8 )
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 1 )
 texture = ExtResource( 1 )
-hframes = 26
-vframes = 26
+hframes = 15
+vframes = 15
 
 [node name="Area2D" type="Area2D" parent="."]
 
