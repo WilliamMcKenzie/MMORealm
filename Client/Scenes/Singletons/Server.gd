@@ -109,7 +109,6 @@ remote func ReturnIslandData(instance_data):
 	island_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	island_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
 	island_instance.get_node("YSort/player").global_position = instance_data["P"]
-	print(instance_data["P"])
 	island_instance.name = instance_data["Id"]
 	
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
