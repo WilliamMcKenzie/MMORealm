@@ -9,7 +9,11 @@ var token
 #Map preloads
 var current_instance_tree = ["nexus"]
 var nexus = preload("res://Scenes/MainScenes/nexus.tscn")
+var island_container = preload("res://Scenes/MainScenes/island_container.tscn")
 var dungeon_container = preload("res://Scenes/MainScenes/dungeon_container.tscn")
+
+#For player hierarchy
+var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 
 func _ready():
 	pass
@@ -81,7 +85,7 @@ func EnterInstance(instance_id):
 	if instance_id == GetCurrentInstance():
 		return
 	rpc_id(1, "EnterInstance", instance_id)
-remote func ReturnInstanceData(instance_data):
+remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	dungeon_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
@@ -91,6 +95,23 @@ remote func ReturnInstanceData(instance_data):
 	dungeon_instance.PopulateDungeon(instance_data)
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
+	current_instance_tree.append(instance_data["Id"])
+remote func ReturnIslandData(instance_data):
+	var map_data = instance_data["Map"]
+	
+	var island_instance = island_container.instance()
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+
+	island_instance.GenerateIslandMap(map_data["Tiles"], map_data["Objects"])
+	island_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	island_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
+	island_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	island_instance.get_node("YSort/player").global_position = instance_data["P"]
+	print(instance_data["P"])
+	island_instance.name = instance_data["Id"]
+	
+	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
+	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
 	
 #ENEMIES

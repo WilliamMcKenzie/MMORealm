@@ -1,8 +1,14 @@
 extends Node
 
 func GenerateDungeon(instance_name):
+	if instance_name == "island":
+		return GenerateIslandMap()
 	if instance_name == "test_dungeon":
 		return GenerateTestDungeon()
+
+func GenerateIslandMap():
+	pass
+	
 
 func GenerateTestDungeon():
 	randomize()
@@ -22,7 +28,6 @@ func GenerateTestDungeon():
 					layout[i].append("Boss")
 					boss_has_been_placed = true
 					boss_root = k
-					print(boss_has_been_placed)
 	if not boss_has_been_placed:
 		layout[round(rand_range(0,3))].append("BossRoom")
 	return layout

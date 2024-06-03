@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/MainScenes/island_container.gd" type="Script" id=2]
+[ext_resource path="res://Resources/tilemap.tres" type="TileSet" id=3]
+
+[node name="island_container" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="YSort" type="YSort" parent="."]
+z_index = 10
+
+[node name="player" parent="YSort" instance=ExtResource( 1 )]
+position = Vector2( 0, 0 )
+
+[node name="Enemies" type="YSort" parent="YSort"]
+
+[node name="OtherPlayers" type="YSort" parent="YSort"]
+
+[node name="Objects" type="YSort" parent="YSort"]
+
+[node name="DungeonPortals" type="YSort" parent="YSort/Objects"]
+
+[node name="Tiles" type="TileMap" parent="."]
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 8, 8 )
+format = 1

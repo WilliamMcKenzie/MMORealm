@@ -13,8 +13,7 @@ var enemies_state_collection = {}
 
 func _ready():
 	StartServer()
-	CreateInstance("test_dungeon", ["nexus"], Vector2.ZERO)
-	SpawnNPC("snake", ["nexus"], Vector2(50, 20))
+	CreateIsland("perseus", ["nexus"], Vector2.ZERO)
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
@@ -102,17 +101,25 @@ remote func SendProjectile(projectile_data):
 	var instance_tree = player_state_collection[player_id]["I"]
 	rpc_id(0, "ReceiveProjectile", projectile_data, instance_tree, player_id)
 
-#DUNGEON INSTANCES
-func CreateInstance(instance_name, instance_tree, portal_position):
+#INSTANCES
+func CreateIsland(instance_name, instance_tree, portal_position):
+	var instance_id = instance_name
+	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
+		var instance = load("res://Scenes/Instances/Island/Island.tscn").instance()
+		instance.name = instance_id
+		instance.GenerateIslandMap()
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
+		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs()+99999999999999, "P": portal_position, "I": instance_tree, "N":"island", "Type":"DungeonPortals"}
+func CreateDungeon(instance_name, instance_tree, portal_position):
 	var instance_id = generate_unique_id()
 	var instance_map = Dungeons.GenerateDungeon(instance_name)
-	print("Instances/"+StringifyInstanceTree(instance_tree))
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
 		var instance = load("res://Scenes/Instances/Dungeons/Dungeon.tscn").instance()
 		instance.name = instance_id
 		instance.map = instance_map
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
 		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs()+10000, "P": portal_position, "I": instance_tree, "N":instance_name, "Type":"DungeonPortals"}
+
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
 	var random_value = randi()
@@ -127,11 +134,20 @@ remote func EnterInstance(instance_id):
 	print("Instance request recieved")
 	print(instance_id)
 	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_node(instance_id):
-		print("Changed instance")
 		var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
 		instance_tree.append(str(instance_id))
-		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": instance_tree}
-		rpc_id(player_id, "ReturnInstanceData", { "Map":get_node("Instances/"+StringifyInstanceTree(instance_tree)).map, "Name":objects_state_collection[instance_id]["N"], "Id":instance_id})
+		
+		#For dungeons
+		if not objects_state_collection[instance_id]["N"] == "island":	 
+			rpc_id(player_id, "ReturnDungeonData", { "Map":get_node("Instances/"+StringifyInstanceTree(instance_tree)).map, "Name":objects_state_collection[instance_id]["N"], "Id":instance_id})
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": instance_tree}
+		#For islands (Map is a node instead of array here)
+		else:
+			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+			var spawnpoint = island_node.GetMapSpawnpoint()
+			
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
+			rpc_id(player_id, "ReturnIslandData", { "Map": island_node.GetMapData(), "Name":objects_state_collection[instance_id]["N"], "Id":instance_id, "P": spawnpoint})
 func StringifyInstanceTree(instance_tree):
 	var res = ""
 	for instance in instance_tree:
@@ -147,7 +163,7 @@ remote func RecieveChatMessage(message):
 	
 	if message[0] == "/":
 		if message_words[0] == "/d":
-			CreateInstance(message.substr(3,-1), instance_tree, player_position)
+			CreateDungeon(message.substr(3,-1), instance_tree, player_position)
 			rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
 		if message_words[0] == "/spawn":
 			SpawnNPC(message.substr(7,-1), instance_tree, player_position)

@@ -46,6 +46,7 @@ func _physics_process(delta):
 	DefinePlayerState()
 
 func MovePlayer(delta):
+	print(global_position)
 	if GameUI.in_chat == true:
 		return
 	var motion = Vector2.ZERO

@@ -13,7 +13,6 @@ func _physics_process(delta):
 		
 		#Objects
 		get_node("/root/Server").objects_state_collection = CleanObjects(get_node("/root/Server").objects_state_collection).duplicate(true)
-		print(get_node("/root/Server").objects_state_collection)
 		world_state["Objects"] = get_node("/root/Server").objects_state_collection
 		#We add speed checks here
 		
