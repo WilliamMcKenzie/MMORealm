@@ -66,6 +66,8 @@ func SendChatMessage(message):
 	rpc_id(1,"RecieveChatMessage", message)
 remote func RecieveChat(message,plr):
 	GameUI.get_node("ChatControl").AddChat(message,plr)
+remote func MovePlayer(new_position):
+	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position = new_position
 
 func Nexus():
 	if "nexus" == GetCurrentInstance():

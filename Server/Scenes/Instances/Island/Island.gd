@@ -43,7 +43,8 @@ func ArrayToTiles():
 		for y in range(map_size.y):
 			if map_as_array[x][y] == 2:
 				spawn_points.append(Vector2(x*8, y*8))
-			$Tiles.set_cell(x, y, map_as_array[x][y])
+			#For visualizing realms
+			#$Tiles.set_cell(x, y, map_as_array[x][y])
 func MakeOcean():
 	var center = map_size / 2
 	var max_distance = center.length() * 1.3  # Adjust 0.8 to change the island's radius

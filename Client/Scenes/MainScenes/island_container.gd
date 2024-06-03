@@ -6,10 +6,25 @@ var last_world_state = 0
 var world_state_buffer = []
 const interpolation_offset = 50
 
-func GenerateIslandMap(tiles, objects):
-	for x in tiles.size():
-		for y in tiles[x].size():
-			$Tiles.set_cell(x,y,tiles[x][y])
+var tiles = []
+var objects = []
+
+func GenerateIslandMap(_tiles, _objects):
+	tiles = _tiles
+	objects = _objects
+	#To laggy for prod
+	#for x in tiles.size():
+		#for y in tiles[x].size():
+			#$Tiles.set_cell(x,y,tiles[x][y])
+func LoadChunk(position):
+	var coordinates = position/8
+	var render_size = Vector2(30,20)
+	
+	for x in render_size.x:
+		for y in render_size.y:
+			var combined_x = (x+coordinates.x)-render_size.x/2
+			var combined_y = (y+coordinates.y)-render_size.y/2
+			$Tiles.set_cell(combined_x,combined_y,tiles[combined_x][combined_y])
 
 func _physics_process(delta):
 	var render_time = OS.get_system_time_msecs() - interpolation_offset

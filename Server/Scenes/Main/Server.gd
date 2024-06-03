@@ -162,6 +162,14 @@ remote func RecieveChatMessage(message):
 	var instance_tree = player_state_collection[player_id]["I"]
 	
 	if message[0] == "/":
+		if message_words[0] == "/tp":
+			var selected_player_id = int(message.substr(4,-1))
+			if player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
+				player_state_collection[player_id]["P"] = player_state_collection[selected_player_id]["P"]
+				rpc_id(player_id, "MovePlayer", player_state_collection[player_id]["P"])
+				rpc_id(player_id, "RecieveChat", "You have teleported to " + message.substr(4,-1), "System")
+			else:
+				rpc_id(player_id, "RecieveChat", "Invalid player ID: " + message.substr(4,-1), "System")
 		if message_words[0] == "/d":
 			CreateDungeon(message.substr(3,-1), instance_tree, player_position)
 			rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")

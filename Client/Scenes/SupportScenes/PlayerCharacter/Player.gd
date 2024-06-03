@@ -100,8 +100,11 @@ func MovePlayer(delta):
 	else:
 		animationTree.get("parameters/playback").travel("Idle")
 		lastAnimation["A"] = "Idle"
+
 	motion = motion.normalized()
 	motion = move_and_slide(motion * stats.speed)
+	if get_parent().get_parent().has_method("LoadChunk"):
+		get_parent().get_parent().LoadChunk(position)
 
 #Here we are sending over the location to the server 60 times a second
 func DefinePlayerState():
