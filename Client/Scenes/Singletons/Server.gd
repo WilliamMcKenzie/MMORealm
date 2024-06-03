@@ -119,3 +119,6 @@ remote func ReturnIslandData(instance_data):
 #ENEMIES
 func NPCHit(enemy_id, damage):
 	rpc_id(1, "NPCHit", enemy_id, current_instance_tree, damage)
+remote func SetHealth(max_health, current_health):
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	var player_health_bar = map_instance.get_node("YSort/player/PlayerUI/HealthUI").ChangeHealth(max_health, current_health)

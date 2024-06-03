@@ -1,10 +1,11 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/characters/character.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/SupportScenes/UI/HealthBar/HealthBar.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 4 )
@@ -653,3 +654,5 @@ position = Vector2( 4.00002, 49 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
+
+[node name="HealthUI" parent="PlayerUI" instance=ExtResource( 6 )]

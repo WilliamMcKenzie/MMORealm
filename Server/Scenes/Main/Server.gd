@@ -21,7 +21,6 @@ func StartServer():
 	get_tree().connect("network_peer_connected", self, "_Peer_Connected")
 	get_tree().connect("network_peer_disconnected", self, "_Peer_Disconnected")
 	
-
 func _Peer_Connected(id):
 	print("User " + str(id) + " has connected!")
 	PlayerVerification.Start(id)
@@ -96,11 +95,14 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 remote func NPCHit(enemy_id, instance_tree, damage):
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list.has(enemy_id):
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id]["Health"] -= damage
+
+var temp = 100
 remote func SendProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
 	rpc_id(0, "ReceiveProjectile", projectile_data, instance_tree, player_id)
-
+	temp -= 1
+	SetHealth(player_id,100,temp)
 #INSTANCES
 func CreateIsland(instance_name, instance_tree, portal_position):
 	var instance_id = instance_name
@@ -129,6 +131,7 @@ remote func Nexus():
 	var player_id = get_tree().get_rpc_sender_id()
 	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
 	rpc_id(player_id, "ConfirmNexus")
+	
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	print("Instance request recieved")
@@ -179,3 +182,6 @@ remote func RecieveChatMessage(message):
 	else:
 		print("server has recieved message : " + message)
 		rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))
+
+func SetHealth(player_id, max_health,health):
+	rpc_id(player_id,"SetHealth",max_health,health)
