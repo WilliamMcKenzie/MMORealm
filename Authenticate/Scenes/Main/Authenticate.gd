@@ -25,6 +25,21 @@ remote func CreateAccount(email, password, player_id):
 	var gateway_id = get_tree().get_rpc_sender_id()
 	var result
 	var message
+	
+	#Temporary no checks until we have databsae
+	result = true
+	message = 3
+	#This is where we would attatch the email/password to a database
+	var salt = GenerateSalt()
+	var hashed_password = GenerateHashedPassword(password, salt)
+	print("Returning result...")
+
+	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
+
+remote func CreateAccountREAL(email, password, player_id):
+	var gateway_id = get_tree().get_rpc_sender_id()
+	var result
+	var message
 	if PlayerData.player_data.has(email):
 		result = false
 		message = 2
@@ -51,9 +66,23 @@ func GenerateHashedPassword(password, salt):
 		hashed_password = (hashed_password + salt).sha256_text()
 		rounds -= 1
 	return hashed_password
-	
 
 remote func AuthenticatePlayer(email, password, player_id):
+	var token
+	var hashed_password
+	var result
+	var gateway_id = get_tree().get_rpc_sender_id()
+	
+	#Temporary no checks until we get database
+	result = true
+	randomize()
+	token = str(randi()).sha256_text() + str(OS.get_unix_time())
+	var gameserver = "GameServer1"
+	GameServers.DistributeLogToken(token, gameserver)
+	
+	rpc_id(gateway_id, "AuthenticateResults", result, player_id, token)
+
+remote func AuthenticatePlayerREAL(email, password, player_id):
 	var token
 	var hashed_password
 	var result

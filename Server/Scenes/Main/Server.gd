@@ -38,6 +38,14 @@ remote func FetchPlayerData():
 	rpc_id(player_id, "ReturnPlayerData", player_data)
 
 #PLAYER SYNCING
+remote func FetchServerTime(client_time):
+	var player_id =  get_tree().get_rpc_sender_id()
+	rpc_id(player_id, "ReturnServerTime", OS.get_system_time_msecs(), client_time)
+	
+remote func DetermineLatency(client_time):
+	var player_id =  get_tree().get_rpc_sender_id()
+	rpc_id(player_id, "ReturnLatency", client_time)
+	
 remote func RecievePlayerState(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	if player_state_collection.has(player_id):
@@ -91,7 +99,9 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"Defense":enemy_data.defense,
 			"State":"Idle"
 		}
+		#Put enemy into whatever instance node it should be put into
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id] = enemy
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy_id, spawn_position, 0)
 		enemies_state_collection[enemy_id] = {"T": OS.get_system_time_msecs(), "P": spawn_position, "I": instance_tree, "N":enemy_name}
 remote func NPCHit(enemy_id, instance_tree, damage):
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list.has(enemy_id):
@@ -99,6 +109,8 @@ remote func NPCHit(enemy_id, instance_tree, damage):
 remote func SendProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
+	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_method("SpawnProjectile"):
+		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).SpawnProjectile(projectile_data, player_id)
 	rpc_id(0, "ReceiveProjectile", projectile_data, instance_tree, player_id)
 
 #INSTANCES

@@ -370,9 +370,9 @@ tracks/0/keys = {
 render_priority = 1
 shader = ExtResource( 1 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.0
-shader_param/glow_thickness = 0.991
-shader_param/glow_color = Color( 1, 1, 1, 0 )
+shader_param/line_thickness = 0.4
+shader_param/glow_thickness = 5.743
+shader_param/glow_color = Color( 0, 0, 0, 0.137255 )
 shader_param/helmetDarkOrigin = Color( 0.788235, 0.415686, 0, 1 )
 shader_param/helmetDarkNew = Color( 0.368627, 0.329412, 0.329412, 1 )
 shader_param/helmetLightOrigin = Color( 1, 0.52549, 0, 1 )
@@ -413,7 +413,7 @@ shader_param/bowDarkOrigin = Color( 0.666667, 0.631373, 0, 1 )
 shader_param/bowDarkNew = Color( 0, 0, 0, 0 )
 
 [sub_resource type="RectangleShape2D" id=18]
-extents = Vector2( 4.99001, 5 )
+extents = Vector2( 4.99, 5 )
 
 [sub_resource type="Shader" id=53]
 code = "shader_type canvas_item;
@@ -573,7 +573,7 @@ position = Vector2( 343, 265 )
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
+scale = Vector2( 1.051, 1.04 )
 shape = SubResource( 1 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -612,7 +612,6 @@ script = ExtResource( 5 )
 position = Vector2( 0.02, 0 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Axis"]
-visible = false
 position = Vector2( -0.00997925, 0 )
 shape = SubResource( 18 )
 

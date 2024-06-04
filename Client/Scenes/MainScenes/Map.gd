@@ -7,7 +7,7 @@ var world_state_buffer = []
 const interpolation_offset = 50
 
 func _physics_process(delta):
-	var render_time = OS.get_system_time_msecs() - interpolation_offset
+	var render_time = Server.client_clock - interpolation_offset
 	if world_state_buffer.size() > 1:
 		while(world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T):
 			world_state_buffer.remove(0)
@@ -32,6 +32,7 @@ func _physics_process(delta):
 					else:
 						continue
 				if get_node("YSort/OtherPlayers").has_node(str(player)):
+					print("interpolating")
 					var new_position = lerp(world_state_buffer[1][player]["P"], world_state_buffer[2][player]["P"], interpolation_factor)
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, world_state_buffer[2][player]["A"])
 				else:
@@ -66,6 +67,9 @@ func _physics_process(delta):
 					else:
 						continue
 				if get_node("YSort/OtherPlayers").has_node(str(player)):
+					print("extrapolating")
+					print("server time: " + str(world_state_buffer[0]["T"]))
+					print("client time: " + str(render_time))
 					var position_delta = (world_state_buffer[1][player]["P"] - world_state_buffer[0][player]["P"])
 					var new_position = world_state_buffer[1][player]["P"] + (position_delta * extrapolation_factor)
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, world_state_buffer[1][player]["A"])

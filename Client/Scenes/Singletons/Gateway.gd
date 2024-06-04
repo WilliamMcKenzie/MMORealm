@@ -1,6 +1,7 @@
 extends Node
 
-var ip = "localhost"
+#var ip_address = "143.110.213.88"
+var ip_address = "localhost"
 var port = 20201
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
@@ -28,7 +29,7 @@ func ConnectToServer(_email, _password, _new_account):
 	new_account = _new_account
 	password = _password
 	
-	network.create_client(ip, port)
+	network.create_client(ip_address, port)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)

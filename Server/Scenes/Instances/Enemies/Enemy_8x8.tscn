@@ -3,11 +3,13 @@
 [ext_resource path="res://Scenes/Instances/Enemies/SnakeAI.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4, 4 )
 
-[node name="Enemy" type="Node2D"]
+[node name="Enemy" type="Node2D" groups=["NPCEnemies"]]
 script = ExtResource( 1 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 4, 4 )
 shape = SubResource( 1 )

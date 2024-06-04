@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/Main/Server.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Main/nexus.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Main/server_nexus.tscn" type="PackedScene" id=3]
 
 [node name="Server" type="Node"]
 script = ExtResource( 1 )
@@ -18,8 +19,13 @@ autostart = true
 
 [node name="Instances" type="Node" parent="."]
 
-[node name="nexus" type="Node" parent="Instances"]
+[node name="nexus" parent="Instances" instance=ExtResource( 3 )]
 script = ExtResource( 2 )
+
+[node name="DebugCamera" type="Camera2D" parent="."]
+position = Vector2( -21, -16 )
+current = true
+zoom = Vector2( 0.5, 0.5 )
 
 [connection signal="timeout" from="TokenExpiration" to="." method="_on_TokenExpiration_timeout"]
 [connection signal="timeout" from="VerificationExpiration" to="." method="_on_VerificationExpiration_timeout"]
