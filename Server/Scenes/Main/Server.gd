@@ -88,21 +88,22 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"Health":enemy_data.health,
 			"MaxHealth":enemy_data.health,
 			"Defense":enemy_data.defense,
-			"State":"Idle"
+			"State":"Idle",
+			"Exp" : enemy_data.exp
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id] = enemy
 		enemies_state_collection[enemy_id] = {"T": OS.get_system_time_msecs(), "P": spawn_position, "I": instance_tree, "N":enemy_name}
 remote func NPCHit(enemy_id, instance_tree, damage):
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list.has(enemy_id):
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id]["Health"] -= damage
-
-var temp = 100
+	if get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id]["Health"] <= 0:
+		rpc_id(get_tree().get_rpc_sender_id(),"ShowExpIndicator",get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id]["Exp"])
+	
 remote func SendProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
 	rpc_id(0, "ReceiveProjectile", projectile_data, instance_tree, player_id)
-	temp -= 1
-	SetHealth(player_id,100,temp)
+
 #INSTANCES
 func CreateIsland(instance_name, instance_tree, portal_position):
 	var instance_id = instance_name

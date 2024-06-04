@@ -73,6 +73,7 @@ func Nexus():
 	if "nexus" == GetCurrentInstance():
 		return
 	rpc_id(1, "Nexus")
+	
 remote func ConfirmNexus():
 	var nexus_instance = nexus.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
@@ -83,10 +84,12 @@ remote func ConfirmNexus():
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(nexus_instance)
 	current_instance_tree = ["nexus"]
+	
 func EnterInstance(instance_id):
 	if instance_id == GetCurrentInstance():
 		return
 	rpc_id(1, "EnterInstance", instance_id)
+	
 remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
@@ -98,6 +101,7 @@ remote func ReturnDungeonData(instance_data):
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
 	current_instance_tree.append(instance_data["Id"])
+	
 remote func ReturnIslandData(instance_data):
 	var map_data = instance_data["Map"]
 	
@@ -115,7 +119,9 @@ remote func ReturnIslandData(instance_data):
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
-	
+
+remote func ShowExpIndicator(xp):
+	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").ShowExpIndicator(xp)
 #ENEMIES
 func NPCHit(enemy_id, damage):
 	rpc_id(1, "NPCHit", enemy_id, current_instance_tree, damage)

@@ -6,6 +6,9 @@ var stats
 var gear
 var health
 
+var expIndicatorScene = preload("res://Scenes/SupportScenes/UI/ExpIndicator/ExpIndicator.tscn")
+
+
 onready var WeaponSlot = $PlayerUI/Gear/Weapon
 onready var AbilitySlot = $PlayerUI/Gear/Ability
 onready var ArmorSlot = $PlayerUI/Gear/Armor
@@ -135,3 +138,23 @@ func ShootProjectile():
 
 func CalculateDamageWithMultiplier(damage):
 	return (damage*(0.5 + (float(stats.attack)/float(50))))
+
+
+func ShowExpIndicator(exp_amount):
+	var exp_indicator = expIndicatorScene.instance()
+	exp_indicator.get_node("ExpLabel").text = str(exp_amount)
+	exp_indicator.position = exp_indicator.position + Vector2(100,100)
+	
+	add_child(exp_indicator)
+
+	var timer = Timer.new()
+	timer.wait_time = 1.0 # Adjust this as needed
+	timer.one_shot = true
+	add_child(timer)
+	timer.start()
+
+	timer.connect("timeout", self, "ExpIndicatorTimeout")
+
+func ExpIndicatorTimeout():
+	if is_instance_valid(get_node("ExpIndicator")): 
+		get_node("ExpIndicator").queue_free()
