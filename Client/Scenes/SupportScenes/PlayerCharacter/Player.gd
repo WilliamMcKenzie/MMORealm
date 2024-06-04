@@ -117,7 +117,6 @@ func ShootProjectile():
 	
 	#Send projectile to server
 	var projectile_data = {
-		"Damage":damage,
 		"Position":position,
 		"Projectile":gear.weapon.projectile,
 		"MousePosition":mouse_position,

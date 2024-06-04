@@ -1,7 +1,22 @@
 extends Node
 
 var item_data
-var enemy_data
+
+var enemy_data = {
+	"snake" : {
+		"health" : 100,
+		"defense" : 1
+	}
+}
+
+var projectile_data = {
+	"Arrow" : {
+		"damage" : 10,
+		"speed" : 50,
+		"lifetime" : 0.5,
+		"piercing" : false
+	}
+}
 
 onready var test_data = {
 	"characters" : [ {
@@ -119,7 +134,8 @@ onready var test_data = {
 	}]
 }
 
-func _ready():
+#Right now we cant access the jsons through our server
+func _readySUDOOO():
 	var item_data_file = File.new()
 	item_data_file.open("res://Data/Items.json", File.READ)
 	var item_data_json = JSON.parse(item_data_file.get_as_text())
@@ -133,4 +149,10 @@ func _ready():
 	enemy_data = enemy_data_json.result
 
 func GetEnemyData(enemy_name):
-	return enemy_data["snake"]
+	return enemy_data[enemy_name]
+
+func GetProjectileData(projectile_name):
+	return projectile_data[projectile_name]
+
+func GetItemData():
+	pass

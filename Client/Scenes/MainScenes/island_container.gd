@@ -27,7 +27,7 @@ func LoadChunk(position):
 			$Tiles.set_cell(combined_x,combined_y,tiles[combined_x][combined_y])
 
 func _physics_process(delta):
-	var render_time = OS.get_system_time_msecs() - interpolation_offset
+	var render_time = Server.client_clock - interpolation_offset
 	if world_state_buffer.size() > 1:
 		while(world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T):
 			world_state_buffer.remove(0)
@@ -135,7 +135,8 @@ func SpawnNewPlayer(player_id, spawn_position):
 			get_node("YSort/OtherPlayers").add_child(player_instance)
 
 func DespawnPlayer(player_id):
-	get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()
+	if get_node("YSort/OtherPlayers").has_node(str(player_id)):
+		get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()
 	yield(get_tree().create_timer(0.2), "timeout")
 	if get_node("YSort/OtherPlayers").has_node(str(player_id)):
 		get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()

@@ -1,9 +1,9 @@
 extends Node2D
 
 var noise
-var map_size = Vector2(500,500)
+var map_size = Vector2(1000,1000)
 var grass_cap = 0.5
-var road_caps = Vector2(0.3, 0.05)
+var road_caps = Vector2(0.05, 0.02)
 var environment_caps = Vector3(0.4, 0.3, 0.04)
 
 var map_as_array = []

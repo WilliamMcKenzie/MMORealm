@@ -32,6 +32,5 @@ func ShootProjectile():
 			projectile_instance.tile_range = projectile_data["TileRange"]
 			projectile_instance.set_direction(projectile_data["Direction"])
 			projectile_instance.look_at(projectile_data["MousePosition"])
-			projectile_instance.original = false
 			projectile_dict.erase(projectile_time)
 			get_parent().add_child(projectile_instance)

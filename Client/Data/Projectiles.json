@@ -3,6 +3,6 @@
         "damage" : 10,
         "speed" : 50,
         "lifetime" : 0.5,
-        "piercing" : false
+        "piercing" : true
     }
 }
