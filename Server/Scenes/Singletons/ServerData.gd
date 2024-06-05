@@ -5,7 +5,8 @@ var item_data
 var enemy_data = {
 	"snake" : {
 		"health" : 100,
-		"defense" : 1
+		"defense" : 1,
+		"exp" : 20
 	}
 }
 

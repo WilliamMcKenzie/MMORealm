@@ -13,6 +13,30 @@ var spawn_points = []
 
 var enemy_list = {}
 
+var arrow_projectile = preload("res://Scenes/Instances/Projectiles/ServerArrow.tscn")
+var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
+
+func SpawnProjectile(projectile_data, player_id):
+	var projectile_instance = arrow_projectile.instance()
+	projectile_instance.player_id = player_id
+	projectile_instance.projectile_name = projectile_data["Projectile"]
+	projectile_instance.position = projectile_data["Position"]
+	projectile_instance.tile_range = projectile_data["TileRange"]
+	projectile_instance.SetDirection(projectile_data["Direction"])
+	projectile_instance.look_at(projectile_data["MousePosition"])
+	
+	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
+	projectile_instance.SetData(data)
+	
+	add_child(projectile_instance)
+	print("Shot")
+
+func SpawnEnemy(enemy_id, position, hitbox_type):
+	var new_enemy = enemy_8x8.instance()
+	new_enemy.position = position
+	new_enemy.name = enemy_id
+	get_node("YSort/Enemies/").add_child(new_enemy, true)
+
 func _physics_process(delta):
 	for enemy_id in enemy_list.keys():
 		if(enemy_list[enemy_id]["Health"] < 1):
@@ -22,9 +46,14 @@ func _physics_process(delta):
 func GetMapSpawnpoint():
 	randomize()
 	return spawn_points[rand_range(0, spawn_points.size())]
-func GetMapData():
+func GetIslandChunk(start, finish):
+	var result = []
+	for x in range(start.x, finish.x):
+		result.append([])
+		for y in range(start.y, finish.y):
+			result[result.size()-1].append(map_as_array[x][y])
 	return {
-		"Tiles" : map_as_array,
+		"Tiles" : result,
 		"Objects" : map_objects
 	}
 

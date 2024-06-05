@@ -322,7 +322,7 @@ tile_data = PoolIntArray( -1507338, 19, 1, -1507337, 19, 1, -1507336, 19, 1, -15
 
 [node name="Enemies" type="YSort" parent="YSort"]
 
-[node name="OtherPlayers" type="YSort" parent="YSort"]
+[node name="Players" type="YSort" parent="YSort"]
 
 [node name="Objects" type="YSort" parent="YSort"]
 

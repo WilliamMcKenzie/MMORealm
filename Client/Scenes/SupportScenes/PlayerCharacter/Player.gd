@@ -50,7 +50,6 @@ func _physics_process(delta):
 	DefinePlayerState()
 
 func MovePlayer(delta):
-	print(global_position)
 	if GameUI.in_chat == true:
 		return
 	var motion = Vector2.ZERO
@@ -103,6 +102,7 @@ func MovePlayer(delta):
 	motion = move_and_slide(motion * stats.speed)
 	if get_parent().get_parent().has_method("LoadChunk"):
 		get_parent().get_parent().LoadChunk(position)
+		print("loading")
 
 #Here we are sending over the location to the server 60 times a second
 func DefinePlayerState():

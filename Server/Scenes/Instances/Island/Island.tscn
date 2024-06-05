@@ -11,6 +11,12 @@ tile_set = ExtResource( 2 )
 cell_size = Vector2( 8, 8 )
 format = 1
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 2042, 1204 )
-zoom = Vector2( 4, 4 )
+[node name="YSort" type="YSort" parent="."]
+
+[node name="Enemies" type="YSort" parent="YSort"]
+
+[node name="Players" type="YSort" parent="YSort"]
+
+[node name="Objects" type="YSort" parent="YSort"]
+
+[node name="DungeonPortals" type="YSort" parent="YSort/Objects"]

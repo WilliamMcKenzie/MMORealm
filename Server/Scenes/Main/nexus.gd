@@ -19,8 +19,12 @@ func SpawnProjectile(projectile_data, player_id):
 	projectile_instance.tile_range = projectile_data["TileRange"]
 	projectile_instance.SetDirection(projectile_data["Direction"])
 	projectile_instance.look_at(projectile_data["MousePosition"])
-
+	
+	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
+	projectile_instance.SetData(data)
+	
 	add_child(projectile_instance)
+	print("Shot")
 
 func SpawnEnemy(enemy_id, position, hitbox_type):
 	var new_enemy = enemy_8x8.instance()

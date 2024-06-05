@@ -4,7 +4,7 @@ var player_spawn = preload("res://Scenes/SupportScenes/PlayerCharacter/PlayerTem
 var last_world_state = 0
 
 var world_state_buffer = []
-const interpolation_offset = 50
+const interpolation_offset = 100
 
 func _physics_process(delta):
 	var render_time = Server.client_clock - interpolation_offset
@@ -32,7 +32,6 @@ func _physics_process(delta):
 					else:
 						continue
 				if get_node("YSort/OtherPlayers").has_node(str(player)):
-					print("interpolating")
 					var new_position = lerp(world_state_buffer[1][player]["P"], world_state_buffer[2][player]["P"], interpolation_factor)
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, world_state_buffer[2][player]["A"])
 				else:
@@ -67,9 +66,6 @@ func _physics_process(delta):
 					else:
 						continue
 				if get_node("YSort/OtherPlayers").has_node(str(player)):
-					print("extrapolating")
-					print("server time: " + str(world_state_buffer[0]["T"]))
-					print("client time: " + str(render_time))
 					var position_delta = (world_state_buffer[1][player]["P"] - world_state_buffer[0][player]["P"])
 					var new_position = world_state_buffer[1][player]["P"] + (position_delta * extrapolation_factor)
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, world_state_buffer[1][player]["A"])

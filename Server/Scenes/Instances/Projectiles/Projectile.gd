@@ -3,25 +3,23 @@ extends Node2D
 var projectile_name
 var player_id
 
-var damage
+var damage = 0
 var speed = 50
-var tile_range
-var piercing
+var tile_range = 0
+var piercing = false
 
 var initial_position = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 func _ready():
 	$Area2D.connect("area_entered", self, "Interaction")
-	var data = ServerData.GetProjectileData(projectile_name)
-	SetData(data)
+	SelfDestruct()
 
 func SetData(data):
 	damage = data.damage
 	speed = data.speed
 	piercing = data.piercing
 	velocity *= speed
-	SelfDestruct()
 	
 func _process(delta):
 	position += velocity * delta

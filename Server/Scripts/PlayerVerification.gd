@@ -26,16 +26,20 @@ func Verify(player_id, token):
 		main_interface.network.disconnect_peer(player_id)
 
 func CreatePlayerContainer(player_id):
+	var instance_tree = get_node("/root/Server").player_state_collection[player_id]["I"]
 	var new_player_container = player_container_scene.instance()
 	new_player_container.name = str(player_id)
-	get_parent().add_child(new_player_container, true)
-	FillPlayerContainer(get_node("../" + str(player_id)))
+	get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players").add_child(new_player_container, true)
+	FillPlayerContainer(get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)))
+func StringifyInstanceTree(instance_tree):
+	var res = ""
+	for instance in instance_tree:
+		res += (instance+"/")
+	return res.left(res.length() - 1) 
 
 func FillPlayerContainer(player_container):
 	var selectedPlayer = ServerData.test_data
-	player_container.characters = selectedPlayer.characters
-	player_container.currentCharacterIndex = 0
-	player_container.instance = "nexus"
+	player_container.character = selectedPlayer.characters[0]
 
 func VerificationExpiration():
 	var current_time = OS.get_unix_time()
@@ -52,7 +56,7 @@ func VerificationExpiration():
 					main_interface.ReturnTokenVerificationResults(key, false)
 					main_interface.network.disconnect_peer(key)
 	
-	
+
 	
 	
 	

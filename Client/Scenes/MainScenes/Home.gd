@@ -8,7 +8,7 @@ func _ready():
 	playButton.connect("pressed", self, "play")
 
 func play():
-	Server.fetchPlayerData()
+	Server.FetchPlayerData()
 func selectionScreen():
 	get_node("UI").visible = false
 	get_node("LoginPopup").visible = false

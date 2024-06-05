@@ -1,7 +1,7 @@
 extends Node
 
-var ip_address = "159.203.0.78"
-#var ip_address = "localhost"
+#var ip_address = "159.203.0.78"
+var ip_address = "localhost"
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
@@ -144,12 +144,10 @@ remote func ReturnDungeonData(instance_data):
 	current_instance_tree.append(instance_data["Id"])
 	
 remote func ReturnIslandData(instance_data):
-	var map_data = instance_data["Map"]
-	
 	var island_instance = island_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 
-	island_instance.GenerateIslandMap(map_data["Tiles"], map_data["Objects"])
+	#island_instance.GenerateIslandMap(map_data["Tiles"], map_data["Objects"])
 	island_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
 	island_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	island_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
@@ -159,12 +157,14 @@ remote func ReturnIslandData(instance_data):
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
+func FetchIslandChunk(start, finish):
+	rpc_id(1, "FetchIslandChunk", start, finish)
+remote func ReturnIslandChunk(chunk):
+	get_node("../SceneHandler/"+GetCurrentInstance()).GenerateChunk(chunk)
 
 remote func ShowExpIndicator(xp):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").ShowExpIndicator(xp)
 #ENEMIES
-func NPCHit(enemy_id, damage):
-	rpc_id(1, "NPCHit", enemy_id, current_instance_tree, damage)
 remote func SetHealth(max_health, current_health):
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	var player_health_bar = map_instance.get_node("YSort/player/PlayerUI/HealthUI").ChangeHealth(max_health, current_health)

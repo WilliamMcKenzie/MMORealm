@@ -1,21 +1,33 @@
 extends Node
 
-var enemy_id_counter = 1
-var enemy_maximum = 2
-var enemy_types = ["Snake"]
-var enemy_spawn_points = [Vector2(0,0), Vector2(40,23), Vector2(-20,42), Vector2(15,-30)]
-var open_locations = [0,1,2,3]
-var occupied_locations = {}
 var enemy_list = {}
 
-func _ready():
-	var timer = Timer.new()
-	timer.wait_time = 3
-	timer.autostart = true
-	timer.connect("timeout", self, "SpawnEnemy")
-	self.add_child(timer)
-func SpawnEnemy():
-	if enemy_list.size() >= enemy_maximum:
-		pass
-	else:
-		randomize()
+var arrow_projectile = preload("res://Scenes/Instances/Projectiles/ServerArrow.tscn")
+var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
+
+func _physics_process(delta):
+	for enemy_id in enemy_list.keys():
+		if(enemy_list[enemy_id]["Health"] < 1):
+			enemy_list.erase(enemy_id)
+			get_node("/root/Server").enemies_state_collection.erase(enemy_id)
+
+func SpawnProjectile(projectile_data, player_id):
+	var projectile_instance = arrow_projectile.instance()
+	projectile_instance.player_id = player_id
+	projectile_instance.projectile_name = projectile_data["Projectile"]
+	projectile_instance.position = projectile_data["Position"]
+	projectile_instance.tile_range = projectile_data["TileRange"]
+	projectile_instance.SetDirection(projectile_data["Direction"])
+	projectile_instance.look_at(projectile_data["MousePosition"])
+	
+	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
+	projectile_instance.SetData(data)
+	
+	add_child(projectile_instance)
+	print("Shot")
+
+func SpawnEnemy(enemy_id, position, hitbox_type):
+	var new_enemy = enemy_8x8.instance()
+	new_enemy.position = position
+	new_enemy.name = enemy_id
+	get_node("YSort/Enemies/").add_child(new_enemy, true)

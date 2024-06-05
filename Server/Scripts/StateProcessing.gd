@@ -12,7 +12,7 @@ func _physics_process(delta):
 			for player in world_state:
 				world_state[player].erase("T")
 			world_state["T"] = OS.get_system_time_msecs()
-			
+				
 			world_state["Enemies"] = get_node("/root/Server").enemies_state_collection
 			
 			#Objects

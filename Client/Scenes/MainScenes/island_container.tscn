@@ -28,8 +28,8 @@ cell_size = Vector2( 8, 8 )
 format = 1
 
 [node name="BlackBackground" type="Sprite" parent="."]
-position = Vector2( 30, 16 )
-scale = Vector2( 179, 171.25 )
+position = Vector2( 213, 108.5 )
+scale = Vector2( 224.75, 194.375 )
 texture = ExtResource( 4 )
 hframes = 32
 vframes = 32

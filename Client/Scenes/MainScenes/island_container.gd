@@ -9,22 +9,33 @@ const interpolation_offset = 50
 var tiles = []
 var objects = []
 
-func GenerateIslandMap(_tiles, _objects):
-	tiles = _tiles
-	objects = _objects
-	#To laggy for prod
-	#for x in tiles.size():
-		#for y in tiles[x].size():
-			#$Tiles.set_cell(x,y,tiles[x][y])
-func LoadChunk(position):
-	var coordinates = position/8
+var player_coords = Vector2.ZERO
+var generating = false
+
+func GenerateChunk(chunk):
+	print("Generating...")
 	var render_size = Vector2(30,20)
+	
+	var tiles = chunk["Tiles"]
 	
 	for x in render_size.x:
 		for y in render_size.y:
-			var combined_x = (x+coordinates.x)-render_size.x/2
-			var combined_y = (y+coordinates.y)-render_size.y/2
-			$Tiles.set_cell(combined_x,combined_y,tiles[combined_x][combined_y])
+			var combined_x = (x+player_coords.x)-render_size.x/2
+			var combined_y = (y+player_coords.y)-render_size.y/2
+			
+			$Tiles.set_cell(combined_x,combined_y,tiles[x][y])
+	generating = false
+
+func LoadChunk(position):
+	if generating == true:
+		pass
+	player_coords = Vector2(round((position/8).x), round((position/8).y))
+	var render_size = Vector2(30,20)
+	
+	var end_x = (player_coords.x + player_coords.x)-render_size.x/2
+	var end_y = (player_coords.y + player_coords.y)-render_size.y/2
+	generating = true
+	Server.FetchIslandChunk(player_coords, Vector2(player_coords.x+render_size.x, player_coords.y+render_size.y))
 
 func _physics_process(delta):
 	var render_time = Server.client_clock - interpolation_offset
