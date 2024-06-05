@@ -4,10 +4,6 @@ extends KinematicBody2D
 var level
 var stats
 var gear
-var health
-
-var expIndicatorScene = preload("res://Scenes/SupportScenes/UI/ExpIndicator/ExpIndicator.tscn")
-
 
 onready var WeaponSlot = $PlayerUI/Gear/Weapon
 onready var AbilitySlot = $PlayerUI/Gear/Ability
@@ -53,18 +49,24 @@ func MovePlayer(delta):
 	if GameUI.in_chat == true:
 		return
 	var motion = Vector2.ZERO
-	x = 0
-	y = 0
-
 	# remember to add checks to make sure each input is only hit once, emulators may be able to simulate multiple action pressed inputs
-	if(Input.is_action_pressed("up")):
+	if(Input.is_action_just_pressed ("up")):
 		y -= 1
-	if(Input.is_action_pressed("down")):
+	if(Input.is_action_just_pressed ("down")):
 		y += 1
-	if(Input.is_action_pressed("left")):
+	if(Input.is_action_just_pressed ("left")):
 		x -= 1
-	if(Input.is_action_pressed("right")):
+	if(Input.is_action_just_pressed ("right")):
 		x += 1
+		
+	if(Input.is_action_just_released("up")):
+		y += 1
+	if(Input.is_action_just_released ("down")):
+		y -= 1
+	if(Input.is_action_just_released ("left")):
+		x += 1
+	if(Input.is_action_just_released ("right")):
+		x -= 1
 
 	if(Input.is_action_just_pressed("shoot")):
 		shoot = true
@@ -138,23 +140,3 @@ func ShootProjectile():
 
 func CalculateDamageWithMultiplier(damage):
 	return (damage*(0.5 + (float(stats.attack)/float(50))))
-
-
-func ShowExpIndicator(exp_amount):
-	var exp_indicator = expIndicatorScene.instance()
-	exp_indicator.get_node("ExpLabel").text = str(exp_amount)
-	exp_indicator.position = exp_indicator.position + Vector2(100,100)
-	
-	add_child(exp_indicator)
-
-	var timer = Timer.new()
-	timer.wait_time = 1.0 # Adjust this as needed
-	timer.one_shot = true
-	add_child(timer)
-	timer.start()
-
-	timer.connect("timeout", self, "ExpIndicatorTimeout")
-
-func ExpIndicatorTimeout():
-	if is_instance_valid(get_node("ExpIndicator")): 
-		get_node("ExpIndicator").queue_free()
