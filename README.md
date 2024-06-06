@@ -1,8 +1,6 @@
 Commands
 
-#To spawn in enemy
 /spawn {enemy}
-#To open dungeon
 /d {dungeon}
 
 Dungeon List:
