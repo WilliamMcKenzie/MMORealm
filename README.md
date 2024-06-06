@@ -1,6 +1,6 @@
 Commands
 
-   /spawn {enemy}
+     /spawn {enemy}
 
     /d {dungeon}
 
