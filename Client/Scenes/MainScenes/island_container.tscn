@@ -22,14 +22,17 @@ position = Vector2( 0, 0 )
 
 [node name="DungeonPortals" type="YSort" parent="YSort/Objects"]
 
+[node name="Obstacles" type="YSort" parent="YSort/Objects"]
+
 [node name="Tiles" type="TileMap" parent="."]
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 8, 8 )
 format = 1
 
 [node name="BlackBackground" type="Sprite" parent="."]
-position = Vector2( 213, 108.5 )
-scale = Vector2( 224.75, 194.375 )
+visible = false
+position = Vector2( 63.0001, 237.5 )
+scale = Vector2( 614.25, 409.375 )
 texture = ExtResource( 4 )
 hframes = 32
 vframes = 32

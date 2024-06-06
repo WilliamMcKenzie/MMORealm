@@ -14,6 +14,7 @@ var enemies_state_collection = {}
 func _ready():
 	StartServer()
 	CreateIsland("perseus", ["nexus"], Vector2.ZERO)
+	CreateObstacle("tree", ["nexus"], Vector2(80, 80), "Small")
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
@@ -104,7 +105,6 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id] = enemy
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy_id, spawn_position, 0)
 		enemies_state_collection[enemy_id] = {"T": OS.get_system_time_msecs(), "P": spawn_position, "I": instance_tree, "N":enemy_name}
-	
 remote func SendProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -119,8 +119,8 @@ func CreateIsland(instance_name, instance_tree, portal_position):
 		var instance = load("res://Scenes/Instances/Island/Island.tscn").instance()
 		instance.name = instance_id
 		instance.GenerateIslandMap()
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
 		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs()+99999999999999, "P": portal_position, "I": instance_tree, "N":"island", "Type":"DungeonPortals"}
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
 func CreateDungeon(instance_name, instance_tree, portal_position):
 	var instance_id = generate_unique_id()
 	var instance_map = Dungeons.GenerateDungeon(instance_name)
@@ -130,6 +130,16 @@ func CreateDungeon(instance_name, instance_tree, portal_position):
 		instance.map = instance_map
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
 		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs()+10000, "P": portal_position, "I": instance_tree, "N":instance_name, "Type":"DungeonPortals"}
+
+#OBSTACLES
+func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size):
+	var obstacle_id = generate_unique_id()
+	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
+		var obstacle = load("res://Scenes/Instances/Obstacles/"+hitbox_size+".tscn").instance()
+		obstacle.name = obstacle_id
+		obstacle.position = obstacle_position
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(obstacle)
+		objects_state_collection[obstacle_id] = {"T": OS.get_system_time_msecs()+9999999999999, "P": obstacle_position, "I": instance_tree, "N":obstacle_name, "Type":"Obstacles"}
 
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
@@ -156,16 +166,14 @@ remote func EnterInstance(instance_id):
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = island_node.GetMapSpawnpoint()
 			
-			print("Returning island data")
-			
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
 			rpc_id(player_id, "ReturnIslandData", { "Name":objects_state_collection[instance_id]["N"], "Id":instance_id, "P": spawnpoint})
-remote func FetchIslandChunk(start, finish):
+remote func FetchIslandChunk(chunk):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
 	var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 	if(island_node.has_method("GetIslandChunk")):
-		rpc_id(player_id, "ReturnIslandChunk", island_node.GetIslandChunk(start, finish))
+		rpc_id(player_id, "ReturnIslandChunk", island_node.GetIslandChunk(chunk), chunk)
 func StringifyInstanceTree(instance_tree):
 	var res = ""
 	for instance in instance_tree:

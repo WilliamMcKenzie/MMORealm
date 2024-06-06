@@ -6,36 +6,29 @@ var last_world_state = 0
 var world_state_buffer = []
 const interpolation_offset = 50
 
-var tiles = []
-var objects = []
-
-var player_coords = Vector2.ZERO
 var generating = false
+var loaded_chunks = {}
 
-func GenerateChunk(chunk):
-	print("Generating...")
-	var render_size = Vector2(30,20)
+func GenerateChunk(chunk_data, chunk):
+	var tiles = chunk_data["Tiles"]
+	var objects = chunk_data["Objects"]
 	
-	var tiles = chunk["Tiles"]
-	
-	for x in render_size.x:
-		for y in render_size.y:
-			var combined_x = (x+player_coords.x)-render_size.x/2
-			var combined_y = (y+player_coords.y)-render_size.y/2
-			
-			$Tiles.set_cell(combined_x,combined_y,tiles[x][y])
-	generating = false
-
-func LoadChunk(position):
-	if generating == true:
-		pass
-	player_coords = Vector2(round((position/8).x), round((position/8).y))
-	var render_size = Vector2(30,20)
-	
-	var end_x = (player_coords.x + player_coords.x)-render_size.x/2
-	var end_y = (player_coords.y + player_coords.y)-render_size.y/2
-	generating = true
-	Server.FetchIslandChunk(player_coords, Vector2(player_coords.x+render_size.x, player_coords.y+render_size.y))
+	for x in range(chunk.x-32, chunk.x+32):
+		for y in range(chunk.y-32, chunk.y+32):
+			$Tiles.set_cell(x,y,tiles[x-chunk.x+32][y-chunk.y+32])
+	for object in objects:
+		var object_node = load("res://Scenes/SupportScenes/Objects/Obstacles/" + object["N"] + ".tscn")
+		var object_instance = object_node.instance()
+		object_instance.position = object["P"]
+		get_node("YSort/Objects").add_child(object_instance)
+		
+func LoadChunk(position, offset):
+	var player_coords = Vector2(round((position/8).x), round((position/8).y))
+	var chunk = Vector2(64*round((player_coords.x+offset.x)/64), 64*round((player_coords.y+offset.y)/64))
+	if loaded_chunks.has(chunk) or generating == true:
+		return
+	loaded_chunks[chunk] = true
+	Server.FetchIslandChunk(chunk)
 
 func _physics_process(delta):
 	var render_time = Server.client_clock - interpolation_offset
@@ -119,16 +112,16 @@ func UpdateObjects(objects_dict, current_instance):
 	for object_id in objects_dict.keys():
 		type = objects_dict[object_id]["Type"]
 		var scene_name = objects_dict[object_id]["N"]+".tscn"
-		if (not get_node("YSort/Objects").has_node(str(object_id))) and (current_instance == objects_dict[object_id]["I"]):
+		if (not get_node("YSort/Objects/"+type).has_node(str(object_id))) and (current_instance == objects_dict[object_id]["I"]):
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
 			object_instance.name = str(object_id)
 			object_instance.object_id = str(object_id)
 			object_instance.position = objects_dict[object_id]["P"]
-			get_node("YSort/Objects").add_child(object_instance)
-	for object_node in get_node("YSort/Objects").get_children():
+			get_node("YSort/Objects/"+type).add_child(object_instance)
+	for object_node in get_node("YSort/Objects/"+type).get_children():
 		if not objects_dict.has(object_node.name):
-			get_node("YSort/Objects/"+object_node.name).queue_free()
+			get_node("YSort/Objects/"+type+"/"+object_node.name).queue_free()
 		
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:

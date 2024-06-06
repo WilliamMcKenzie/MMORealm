@@ -88,16 +88,16 @@ func UpdateObjects(objects_dict, current_instance):
 	for object_id in objects_dict.keys():
 		type = objects_dict[object_id]["Type"]
 		var scene_name = objects_dict[object_id]["N"]+".tscn"
-		if (not get_node("YSort/Objects").has_node(str(object_id))) and (current_instance == objects_dict[object_id]["I"]):
+		if (not get_node("YSort/Objects/"+type).has_node(str(object_id))) and (current_instance == objects_dict[object_id]["I"]):
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
 			object_instance.name = str(object_id)
 			object_instance.object_id = str(object_id)
 			object_instance.position = objects_dict[object_id]["P"]
-			get_node("YSort/Objects").add_child(object_instance)
-	for object_node in get_node("YSort/Objects").get_children():
+			get_node("YSort/Objects/"+type).add_child(object_instance)
+	for object_node in get_node("YSort/Objects/"+type).get_children():
 		if not objects_dict.has(object_node.name):
-			get_node("YSort/Objects/"+object_node.name).queue_free()
+			get_node("YSort/Objects/"+type+"/"+object_node.name).queue_free()
 		
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:

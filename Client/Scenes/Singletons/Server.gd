@@ -157,10 +157,10 @@ remote func ReturnIslandData(instance_data):
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
-func FetchIslandChunk(start, finish):
-	rpc_id(1, "FetchIslandChunk", start, finish)
-remote func ReturnIslandChunk(chunk):
-	get_node("../SceneHandler/"+GetCurrentInstance()).GenerateChunk(chunk)
+func FetchIslandChunk(chunk):
+	rpc_id(1, "FetchIslandChunk", chunk)
+remote func ReturnIslandChunk(chunk_data, chunk):
+	get_node("../SceneHandler/"+GetCurrentInstance()).GenerateChunk(chunk_data, chunk)
 
 remote func ShowExpIndicator(xp):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").ShowExpIndicator(xp)
