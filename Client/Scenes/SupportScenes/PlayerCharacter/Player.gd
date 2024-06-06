@@ -102,15 +102,16 @@ func MovePlayer(delta):
 	motion = move_and_slide(motion * stats.speed)
 	if get_parent().get_parent().has_method("LoadChunk"):
 		#Loading all possible chunks you might see around you
+		var chunk_size = 64
 		get_parent().get_parent().LoadChunk(position, Vector2(0, 0))
-		get_parent().get_parent().LoadChunk(position, Vector2(64, 0))
-		get_parent().get_parent().LoadChunk(position, Vector2(64, 64))
-		get_parent().get_parent().LoadChunk(position, Vector2(-64, 0))
-		get_parent().get_parent().LoadChunk(position, Vector2(-64, 64))
-		get_parent().get_parent().LoadChunk(position, Vector2(0, 64))
-		get_parent().get_parent().LoadChunk(position, Vector2(64, -64))
-		get_parent().get_parent().LoadChunk(position, Vector2(0, -64))
-		get_parent().get_parent().LoadChunk(position, Vector2(-64, -64))
+		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, 0))
+		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, chunk_size))
+		get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, 0))
+		get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, chunk_size))
+		get_parent().get_parent().LoadChunk(position, Vector2(0, chunk_size))
+		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, -chunk_size))
+		get_parent().get_parent().LoadChunk(position, Vector2(0, -chunk_size))
+		get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, -chunk_size))
 
 #Here we are sending over the location to the server 60 times a second
 func DefinePlayerState():

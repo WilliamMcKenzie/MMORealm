@@ -10,8 +10,3 @@ extents = Vector2( 4, 4 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 4, 4 )
 shape = SubResource( 1 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 4065, 2360 )
-current = true
-zoom = Vector2( 8, 8 )

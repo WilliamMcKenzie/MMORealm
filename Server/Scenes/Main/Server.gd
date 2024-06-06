@@ -52,6 +52,8 @@ remote func RecievePlayerState(player_state):
 		if(player_state_collection[player_id]["T"] <  player_state["T"]):
 			player_state["I"] = player_state_collection[player_id]["I"]
 			player_state_collection[player_id] = player_state
+			if get_node("Instances/"+StringifyInstanceTree(player_state["I"])+"/YSort/Players").has_node(str(player_id)):
+				get_node("Instances/"+StringifyInstanceTree(player_state["I"])+"/YSort/Players/"+str(player_id)).position = player_state["P"]
 	else:
 		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
@@ -105,12 +107,14 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id] = enemy
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy_id, spawn_position, 0)
 		enemies_state_collection[enemy_id] = {"T": OS.get_system_time_msecs(), "P": spawn_position, "I": instance_tree, "N":enemy_name}
-remote func SendProjectile(projectile_data):
+remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
 	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_method("SpawnProjectile"):
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).SpawnProjectile(projectile_data, player_id)
-	rpc_id(0, "ReceiveProjectile", projectile_data, instance_tree, player_id)
+	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
+func SendEnemyProjectile(projectile_data, enemy_id):
+	pass
 
 #INSTANCES
 func CreateIsland(instance_name, instance_tree, portal_position):
@@ -138,7 +142,7 @@ func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size
 		var obstacle = load("res://Scenes/Instances/Obstacles/"+hitbox_size+".tscn").instance()
 		obstacle.name = obstacle_id
 		obstacle.position = obstacle_position
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(obstacle)
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Objects/Obstacles").add_child(obstacle)
 		objects_state_collection[obstacle_id] = {"T": OS.get_system_time_msecs()+9999999999999, "P": obstacle_position, "I": instance_tree, "N":obstacle_name, "Type":"Obstacles"}
 
 func generate_unique_id():

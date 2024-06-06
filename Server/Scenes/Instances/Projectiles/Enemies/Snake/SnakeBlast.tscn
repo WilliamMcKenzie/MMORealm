@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8.10921, 2 )
 
-[node name="ServerArrow" type="Node2D"]
+[node name="SnakeBlast" type="Node2D"]
 rotation = -1.6427
 script = ExtResource( 1 )
 

@@ -20,8 +20,3 @@ format = 1
 [node name="Objects" type="YSort" parent="YSort"]
 
 [node name="DungeonPortals" type="YSort" parent="YSort/Objects"]
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 4065, 2360 )
-current = true
-zoom = Vector2( 8, 8 )

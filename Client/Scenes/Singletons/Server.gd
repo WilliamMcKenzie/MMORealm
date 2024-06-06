@@ -87,8 +87,8 @@ remote func DespawnPlayer(player_id):
 
 #WORLD SYNCING
 func SendProjectile(projectile_data):
-	rpc_id(1, "SendProjectile", projectile_data)
-remote func ReceiveProjectile(projectile_data, instance_tree, player_id):
+	rpc_id(1, "SendPlayerProjectile", projectile_data)
+remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
 	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree:
 		pass
 	else:

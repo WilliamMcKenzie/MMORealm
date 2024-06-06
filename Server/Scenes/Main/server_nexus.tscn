@@ -327,3 +327,9 @@ tile_data = PoolIntArray( -1507338, 19, 1, -1507337, 19, 1, -1507336, 19, 1, -15
 [node name="Objects" type="YSort" parent="YSort"]
 
 [node name="DungeonPortals" type="YSort" parent="YSort/Objects"]
+
+[node name="Obstacles" type="YSort" parent="YSort/Objects"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )

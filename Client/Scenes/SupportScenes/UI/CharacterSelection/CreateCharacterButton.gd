@@ -13,7 +13,7 @@ func createCharacter():
 			"attack" : 40,
 			"defense" : 40,
 			"speed" : 100,
-			"dexterity" : 40,
+			"dexterity" : 70,
 			"vitality" : 40,
 			"wisdom" : 40
 		},

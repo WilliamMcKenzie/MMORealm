@@ -12,7 +12,7 @@ var initial_position = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 func _ready():
-	$Area2D.connect("area_entered", self, "Interaction")
+	$ProjectileHitbox.connect("area_entered", self, "Interaction")
 	SelfDestruct()
 
 func SetData(data):
@@ -32,6 +32,13 @@ func SetDirection(direction: Vector2):
 	velocity = direction.normalized()
 
 func Interaction(body):
-	if (piercing == false) and (body.get_parent().get_parent().name == "Enemies") :
-		body.get_parent().DealDamage(damage)
+	var player = body.get_parent().name == "PlayerCharacter"
+	var enemy = (piercing == false) and (body.get_parent().name == "Enemies")
+	var enemy_ai = body.get_parent().name == "Ai"
+	var wall = body.name != "ProjectileHitbox" and body.get_parent().get_parent().name != "Enemies" and body.get_parent().get_parent().name != "Players"
+	
+	if enemy_ai or player:
+		pass
+	elif enemy or wall:
+		print(body.get_parent().name)
 		queue_free()
