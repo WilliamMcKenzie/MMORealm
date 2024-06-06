@@ -1,11 +1,14 @@
-MMORealm architecture
+Commands
 
-3 servers:
+#To spawn in enemy
+/spawn {enemy}
+#To open dungeon
+/d {dungeon}
 
-Gateway - peers with authentication and clients (interface to the internet)
-Authentication - peers with gateway and worlds (verifys username/password, prevents ip spam)
-Worlds - peers with clients and authentication (gets token from authentication to authenticate user)
+Dungeon List:
 
-1 client:
+test_dungeon
 
-Client - gets token from gateway allowing enter to world. 
+Enemy List:
+
+snake
