@@ -1,17 +1,17 @@
 Commands
 
-/spawn {enemy}
+  /spawn {enemy}
 
-/d {dungeon}
+  /d {dungeon}
 
 
 
 Dungeon List:
 
-test_dungeon
+  test_dungeon
 
 
 
 Enemy List:
 
-snake
+  snake
