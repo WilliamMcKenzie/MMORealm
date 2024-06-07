@@ -22,14 +22,16 @@ func _physics_process(delta):
 			get_node("/root/Server").enemies_state_collection[name]["P"] = position
 
 func _on_PlayerDetection_area_entered(body):
-	current_state = ENGAGE
-	print("Switching...")
-	print(current_state)
+	if body.get_parent().name == "PlayerCharacter":
+		current_state = ENGAGE
+		print("Switching...")
+		print(current_state)
 
-func _on_PlayerDetection_area_exited(area):
-	current_state = IDLE
-	print("Switching...")
-	print(current_state)
+func _on_PlayerDetection_area_exited(body):
+	if body.get_parent().name == "PlayerCharacter":
+		current_state = IDLE
+		print("Switching...")
+		print(current_state)
 
 func _on_Hitbox_area_entered(area):
 	if "player_id" in area.get_parent():

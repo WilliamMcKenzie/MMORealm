@@ -32,7 +32,7 @@ func _Peer_Disconnected(id):
 		player_state_collection.erase(id)
 		rpc_id(0, "DespawnPlayer", id)
 
-remote func FetchPlayerData():
+remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
 	rpc_id(player_id, "ReturnPlayerData", player_data)

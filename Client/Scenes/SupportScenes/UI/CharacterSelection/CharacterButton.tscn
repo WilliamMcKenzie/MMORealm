@@ -138,16 +138,15 @@ text = "Piker - Level 1"
 position = Vector2( -50, -11 )
 scale = Vector2( 1.3, 1.3 )
 
-[node name="Ring" type="Sprite" parent="Button/ItemsResizeContainer"]
+[node name="Weapon" type="Sprite" parent="Button/ItemsResizeContainer"]
 material = SubResource( 2 )
-position = Vector2( 223, 63 )
+position = Vector2( 114, 63 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 1 )
 hframes = 26
 vframes = 26
-frame = 130
 
-[node name="Ability" type="Sprite" parent="Button/ItemsResizeContainer"]
+[node name="Helm" type="Sprite" parent="Button/ItemsResizeContainer"]
 material = SubResource( 2 )
 position = Vector2( 148, 63 )
 scale = Vector2( 3, 3 )
@@ -164,12 +163,3 @@ texture = ExtResource( 1 )
 hframes = 26
 vframes = 26
 frame = 104
-
-[node name="Weapon" type="Sprite" parent="Button/ItemsResizeContainer"]
-material = SubResource( 2 )
-position = Vector2( 114, 63 )
-scale = Vector2( 3, 3 )
-texture = ExtResource( 1 )
-hframes = 26
-vframes = 26
-frame = 52

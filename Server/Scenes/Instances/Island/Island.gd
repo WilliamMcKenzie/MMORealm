@@ -9,7 +9,19 @@ var environment_caps = Vector3(0.4, 0.3, 0.04)
 var map_as_array = []
 var map_objects = {}
 
+#Players spawn points
 var spawn_points = []
+
+#Enemies spawn points
+var beach_spawn_points = []
+var forest_spawn_points = []
+var plains_spawn_points = []
+var mountains_spawn_points = []
+
+var beach_npcs = ["snake"]
+var forest_npcs = ["snake"]
+var plains_npcs = ["snake"]
+var mountains_npcs = ["snake"]
 
 var enemy_list = {}
 
@@ -63,14 +75,25 @@ func GenerateIslandMap():
 	noise.octaves = 1.0
 	noise.period = 12
 	PopulateTiles()
-	ArrayToTiles()
 func _ready():
+	ArrayToTiles()
 	PopulateObstacles()
 func ArrayToTiles():
 	for x in range(map_size.x):
 		for y in range(map_size.y):
-			if map_as_array[x][y] == 2:
+			var enemy_seed = rand_range(0, 30)
+			var map_tile = map_as_array[x][y]
+			
+			if map_tile == 2:
 				spawn_points.append(Vector2(x*8, y*8))
+			
+			#Enemy spawning
+			if map_tile == 2 and enemy_seed > 29.8:
+				get_node("/root/Server").SpawnNPC(beach_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
+			elif map_tile == 3 and enemy_seed > 29.8:
+				get_node("/root/Server").SpawnNPC(forest_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
+			elif map_tile == 4 and enemy_seed > 29.8:
+				get_node("/root/Server").SpawnNPC(plains_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
 			#For visualizing realms
 			#$Tiles.set_cell(x, y, map_as_array[x][y])
 func PopulateTiles():
