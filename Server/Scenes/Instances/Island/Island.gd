@@ -88,14 +88,14 @@ func ArrayToTiles():
 				spawn_points.append(Vector2(x*8, y*8))
 			
 			#Enemy spawning
-			if map_tile == 2 and enemy_seed > 29.8:
-				get_node("/root/Server").SpawnNPC(beach_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
-			elif map_tile == 3 and enemy_seed > 29.8:
-				get_node("/root/Server").SpawnNPC(forest_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
-			elif map_tile == 4 and enemy_seed > 29.8:
-				get_node("/root/Server").SpawnNPC(plains_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
+			#if map_tile == 2 and enemy_seed > 29.8:
+				#get_node("/root/Server").SpawnNPC(beach_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
+			#elif map_tile == 3 and enemy_seed > 29.8:
+				#get_node("/root/Server").SpawnNPC(forest_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
+			#elif map_tile == 4 and enemy_seed > 29.8:
+				#get_node("/root/Server").SpawnNPC(plains_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
 			#For visualizing realms
-			#$Tiles.set_cell(x, y, map_as_array[x][y])
+			$Tiles.set_cell(x, y, map_as_array[x][y])
 func PopulateTiles():
 	var center = map_size / 2
 	var ocean_distance = center.length() * 1.3

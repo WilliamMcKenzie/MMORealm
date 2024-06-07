@@ -38,7 +38,7 @@ func StringifyInstanceTree(instance_tree):
 	return res.left(res.length() - 1) 
 
 func FillPlayerContainer(player_container):
-	var selectedPlayer = ServerData.test_data
+	var selectedPlayer = ServerData.player_data["williamqmckenzie@gmail.com"]
 	player_container.character = selectedPlayer.characters[0]
 
 func VerificationExpiration():
