@@ -202,25 +202,31 @@ remote func RecieveChatMessage(message):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_position = player_state_collection[player_id]["P"]
 	var instance_tree = player_state_collection[player_id]["I"]
-	
-	if message[0] == "/":
-		if message_words[0] == "/tp":
-			var selected_player_id = int(message.substr(4,-1))
-			if player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
-				player_state_collection[player_id]["P"] = player_state_collection[selected_player_id]["P"]
-				rpc_id(player_id, "MovePlayer", player_state_collection[player_id]["P"])
-				rpc_id(player_id, "RecieveChat", "You have teleported to " + message.substr(4,-1), "System")
-			else:
-				rpc_id(player_id, "RecieveChat", "Invalid player ID: " + message.substr(4,-1), "System")
-		if message_words[0] == "/d":
-			CreateDungeon(message.substr(3,-1), instance_tree, player_position)
-			rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
-		if message_words[0] == "/spawn":
-			SpawnNPC(message.substr(7,-1), instance_tree, player_position)
-			rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
-	else:
-		print("server has recieved message : " + message)
-		rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))
+	if len(message) >= 1:
+		if message[0] == "/":
+			if message_words[0] == "/tp":
+				var selected_player_id = int(message.substr(4,-1))
+				if player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
+					player_state_collection[player_id]["P"] = player_state_collection[selected_player_id]["P"]
+					rpc_id(player_id, "MovePlayer", player_state_collection[player_id]["P"])
+					rpc_id(player_id, "RecieveChat", "You have teleported to " + message.substr(4,-1), "System")
+				else:
+					rpc_id(player_id, "RecieveChat", "Invalid player ID: " + message.substr(4,-1), "System")
+			if message_words[0] == "/d":
+				if message.substr(3,-1) in Dungeons.valid_names:
+					CreateDungeon(message.substr(3,-1), instance_tree, player_position)
+					rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
+				else:
+					rpc_id(player_id, "RecieveChat", "Error spawning dungeon", "System")
+			if message_words[0] == "/spawn":
+				if message.substr(7,-1) in ServerData.enemy_data:
+					SpawnNPC(message.substr(7,-1), instance_tree, player_position)
+					rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
+				else:
+					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "System")
+		else:
+			print("server has recieved message : " + message)
+			rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))
 
 func SetHealth(player_id, max_health,health):
 	rpc_id(player_id,"SetHealth",max_health,health)
