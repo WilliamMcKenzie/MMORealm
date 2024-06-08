@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="NoiseTexture" id=1]
+
+[node name="LootMenu" type="Node2D"]
+
+[node name="Background" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.278431 )
+position = Vector2( 505, 366 )
+scale = Vector2( 0.689453, 0.314453 )
+texture = SubResource( 1 )

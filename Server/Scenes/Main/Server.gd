@@ -32,7 +32,7 @@ func _Peer_Disconnected(id):
 		player_state_collection.erase(id)
 		rpc_id(0, "DespawnPlayer", id)
 
-remote func FetchPlayerData():
+remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
 	rpc_id(player_id, "ReturnPlayerData", player_data)
@@ -153,8 +153,12 @@ func generate_unique_id():
 
 remote func Nexus():
 	var player_id = get_tree().get_rpc_sender_id()
-	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
 	rpc_id(player_id, "ConfirmNexus")
+	var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
+	
+	get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players").remove_child(player_container)
+	get_node("Instances/"+StringifyInstanceTree(["nexus"])+"/YSort/Players").add_child(player_container)
+	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
 	
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -162,17 +166,24 @@ remote func EnterInstance(instance_id):
 		var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
 		instance_tree.append(str(instance_id))
 		
+		var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
 		#For dungeons
-		if not objects_state_collection[instance_id]["N"] == "island":	 
+		if not objects_state_collection[instance_id]["N"] == "island":	
 			rpc_id(player_id, "ReturnDungeonData", { "Map":get_node("Instances/"+StringifyInstanceTree(instance_tree)).map, "Name":objects_state_collection[instance_id]["N"], "Id":instance_id})
+			
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players").remove_child(player_container)
+			get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players").add_child(player_container)
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": instance_tree}
 		#For islands (Map is a node instead of array here)
 		else:
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = island_node.GetMapSpawnpoint()
 			
-			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
 			rpc_id(player_id, "ReturnIslandData", { "Name":objects_state_collection[instance_id]["N"], "Id":instance_id, "P": spawnpoint})
+
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players").remove_child(player_container)
+			get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players").add_child(player_container)
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
 remote func FetchIslandChunk(chunk):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
