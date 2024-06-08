@@ -102,11 +102,10 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"State":"Idle",
 			"Exp" : enemy_data.exp
 		}
-		print("Spawned at: " + str(OS.get_system_time_msecs()))
 		#Put enemy into whatever instance node it should be put into
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id] = enemy
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy_id, spawn_position, 0)
-		enemies_state_collection[enemy_id] = {"T": OS.get_system_time_msecs(), "P": spawn_position, "I": instance_tree, "N":enemy_name}
+		#enemies_state_collection[enemy_id] = {"T": OS.get_system_time_msecs(), "P": spawn_position, "I": instance_tree, "N":enemy_name}
 remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -183,12 +182,24 @@ remote func EnterInstance(instance_id):
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players").remove_child(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players").add_child(player_container)
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
-remote func FetchIslandChunk(chunk):
+remote func FetchChunk(chunk):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	var instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+	if(instance_node.has_method("GetChunk")):
+		rpc_id(player_id, "ReturnChunk", instance_node.GetChunk(chunk), chunk)
+remote func FetchChunkData(chunk):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	var instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+	if(instance_node.has_method("GetChunkData")):
+		rpc_id(player_id, "ReturnChunkData", instance_node.GetChunkData(chunk), chunk)
+remote func FetchIslandEnemies(chunk):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
 	var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
-	if(island_node.has_method("GetIslandChunk")):
-		rpc_id(player_id, "ReturnIslandChunk", island_node.GetIslandChunk(chunk), chunk)
+	if(island_node.has_method("GetIslandEnemies")):
+		rpc_id(player_id, "ReturnIslandEnemies", island_node.GetIslandEnemies(chunk), chunk)
 func StringifyInstanceTree(instance_tree):
 	var res = ""
 	for instance in instance_tree:

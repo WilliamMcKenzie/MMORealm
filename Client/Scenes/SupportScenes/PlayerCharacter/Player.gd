@@ -46,6 +46,8 @@ func SetSpriteData(sprite, path):
 	sprite.frame = path[3]
 # warning-ignore:unused_argument
 func _physics_process(delta):
+	#if get_parent().get_parent().has_method("FetchChunkData"):
+		#get_parent().get_parent().FetchChunkData(position, Vector2(0, 0))
 	MovePlayer(delta)
 	DefinePlayerState()
 
@@ -104,14 +106,14 @@ func MovePlayer(delta):
 		#Loading all possible chunks you might see around you
 		var chunk_size = 64
 		get_parent().get_parent().LoadChunk(position, Vector2(0, 0))
-		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, 0))
-		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, chunk_size))
-		get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, 0))
-		get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, chunk_size))
-		get_parent().get_parent().LoadChunk(position, Vector2(0, chunk_size))
-		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, -chunk_size))
-		get_parent().get_parent().LoadChunk(position, Vector2(0, -chunk_size))
-		get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, -chunk_size))
+		#get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, 0))
+		#get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, chunk_size))
+		#get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, 0))
+		#get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, chunk_size))
+		#get_parent().get_parent().LoadChunk(position, Vector2(0, chunk_size))
+		#get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, -chunk_size))
+		#get_parent().get_parent().LoadChunk(position, Vector2(0, -chunk_size))
+		#get_parent().get_parent().LoadChunk(position, Vector2(-chunk_size, -chunk_size))
 
 #Here we are sending over the location to the server 60 times a second
 func DefinePlayerState():

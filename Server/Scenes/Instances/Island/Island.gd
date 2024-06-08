@@ -1,9 +1,11 @@
 extends Node2D
 
+#Map generation
 var noise
 var map_size = Vector2(1000,1000)
+
+var chunk_size = 64
 var tile_cap = 0.5
-var road_caps = Vector2(0.05, 0.02)
 var environment_caps = Vector3(0.4, 0.3, 0.04)
 
 var map_as_array = []
@@ -11,91 +13,42 @@ var map_objects = {}
 
 #Players spawn points
 var spawn_points = []
-
 #Enemies spawn points
-var beach_spawn_points = []
-var forest_spawn_points = []
-var plains_spawn_points = []
-var mountains_spawn_points = []
-
-var beach_npcs = ["snake"]
-var forest_npcs = ["snake"]
-var plains_npcs = ["snake"]
-var mountains_npcs = ["snake"]
-
+var enemy_spawn_points = {}
 var enemy_list = {}
+
+#Chunks
+var chunk_sensor = preload("res://Scenes/Instances/Island/ChunkSensor.tscn")
+var chunks = {}
 
 var arrow_projectile = preload("res://Scenes/Instances/Projectiles/ServerArrow.tscn")
 var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
-
-func SpawnProjectile(projectile_data, player_id):
-	var projectile_instance = arrow_projectile.instance()
-	projectile_instance.player_id = player_id
-	projectile_instance.projectile_name = projectile_data["Projectile"]
-	projectile_instance.position = projectile_data["Position"]
-	projectile_instance.tile_range = projectile_data["TileRange"]
-	projectile_instance.SetDirection(projectile_data["Direction"])
-	projectile_instance.look_at(projectile_data["MousePosition"])
-	
-	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
-	projectile_instance.SetData(data)
-	
-	add_child(projectile_instance)
-func SpawnEnemy(enemy_id, position, hitbox_type):
-	var new_enemy = enemy_8x8.instance()
-	new_enemy.position = position
-	new_enemy.name = enemy_id
-	get_node("YSort/Enemies/").add_child(new_enemy, true)
-
-func _physics_process(delta):
-	for enemy_id in enemy_list.keys():
-		if(enemy_list[enemy_id]["Health"] < 1):
-			enemy_list.erase(enemy_id)
-			get_node("/root/Server").enemies_state_collection.erase(enemy_id)
-
-func GetMapSpawnpoint():
-	randomize()
-	return spawn_points[rand_range(0, spawn_points.size())]
-func GetIslandChunk(chunk):
-	var result = []
-	var objects = []
-	for x in range(chunk.x-32, chunk.x+32):
-		result.append([])
-		for y in range(chunk.y-32, chunk.y+32):
-			result[result.size()-1].append(map_as_array[x][y])
-			if map_objects.has(Vector2(x*8, y*8)):
-				objects.append(map_objects[Vector2(x*8, y*8)])
-	return {
-		"Tiles" : result,
-		"Objects" : objects
-	}
 
 func GenerateIslandMap():
 	noise = OpenSimplexNoise.new()
 	noise.octaves = 1.0
 	noise.period = 12
+	PopulateChunkSensors()
 	PopulateTiles()
-func _ready():
-	ArrayToTiles()
-	PopulateObstacles()
-func ArrayToTiles():
-	for x in range(map_size.x):
-		for y in range(map_size.y):
-			var enemy_seed = rand_range(0, 30)
-			var map_tile = map_as_array[x][y]
-			
-			if map_tile == 2:
-				spawn_points.append(Vector2(x*8, y*8))
-			
-			#Enemy spawning
-			#if map_tile == 2 and enemy_seed > 29.8:
-				#get_node("/root/Server").SpawnNPC(beach_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
-			#elif map_tile == 3 and enemy_seed > 29.8:
-				#get_node("/root/Server").SpawnNPC(forest_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
-			#elif map_tile == 4 and enemy_seed > 29.8:
-				#get_node("/root/Server").SpawnNPC(plains_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
-			#For visualizing realms
-			$Tiles.set_cell(x, y, map_as_array[x][y])
+
+func PopulateChunkSensors():
+	for x in range(0, map_size.x, chunk_size):
+		for y in range(0, map_size.y, chunk_size):
+			var chunk_sensor_instance = chunk_sensor.instance()
+			chunk_sensor_instance.chunk_size = chunk_size
+			chunk_sensor_instance.chunk = Vector2(x, y)
+			chunk_sensor_instance.position = Vector2(x*8, y*8)
+			get_node("ChunkSensors").add_child(chunk_sensor_instance)
+func AddChunkData(chunk, id):
+	if chunks.has(chunk):
+		chunks[chunk][id] = enemy_list[id]
+	else:
+		chunks[chunks] = {}
+		chunks[chunks][id] = enemy_list[id]
+func RemoveChunkData(chunk, id):
+	if chunks.has(chunk) and chunks[chunk].has(id):
+		chunks[chunk].erase(id)
+
 func PopulateTiles():
 	var center = map_size / 2
 	var ocean_distance = center.length() * 1.3
@@ -135,6 +88,27 @@ func PopulateTiles():
 				map_as_array[x][y] = 1
 			else:
 				map_as_array[x][y] = 0
+func _ready():
+	ArrayToTiles()
+	PopulateObstacles()
+func ArrayToTiles():
+	var spawn_point_index = 0
+	for x in range(map_size.x):
+		for y in range(map_size.y):
+			var enemy_seed = rand_range(0, 30)
+			var map_tile = map_as_array[x][y]
+			
+			if map_tile == 2:
+				spawn_points.append(Vector2(x*8, y*8))
+			
+			#Enemy spawning
+			if map_tile == 2 and enemy_seed > 29.8:
+				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": "snake"}
+
+			#elif map_tile == 4 and enemy_seed > 29.8:
+				#get_node("/root/Server").SpawnNPC(plains_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
+			#For visualizing realms
+			#$Tiles.set_cell(x, y, map_as_array[x][y])
 func PopulateObstacles():
 	for x in range(map_size.x):
 		for y in range(map_size.y):
@@ -155,6 +129,7 @@ func PopulateObstacles():
 				CreateObstacle("rock1", get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8), "small", name)
 			elif map_tile == 5 and obstacle_seed > 29.8:
 				CreateObstacle("rock2", get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8), "small", name)
+
 func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size, island_id):
 	var obstacle_id = get_node("/root/Server").generate_unique_id()
 	var instance_tree_str = get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/"+str(island_id)
@@ -164,3 +139,55 @@ func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size
 		obstacle.position = obstacle_position
 		get_node("/root/Server/Instances/"+instance_tree_str+"/YSort/Objects").add_child(obstacle)
 		map_objects[obstacle_position] = {"P": obstacle_position, "I": instance_tree, "N":obstacle_name, "Type":"Obstacles"}
+
+#Enemies
+func SpawnEnemy(enemy_id, position, hitbox_type):
+	var new_enemy = enemy_8x8.instance()
+	new_enemy.position = position
+	new_enemy.name = enemy_id
+	get_node("YSort/Enemies/").add_child(new_enemy, true)
+
+func SpawnProjectile(projectile_data, player_id):
+	var projectile_instance = arrow_projectile.instance()
+	projectile_instance.player_id = player_id
+	projectile_instance.projectile_name = projectile_data["Projectile"]
+	projectile_instance.position = projectile_data["Position"]
+	projectile_instance.tile_range = projectile_data["TileRange"]
+	projectile_instance.SetDirection(projectile_data["Direction"])
+	projectile_instance.look_at(projectile_data["MousePosition"])
+	
+	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
+	projectile_instance.SetData(data)
+	
+	add_child(projectile_instance)
+
+func GetMapSpawnpoint():
+	randomize()
+	return spawn_points[rand_range(0, spawn_points.size())]
+func GetChunk(chunk):
+	var tiles = []
+	var objects = []
+	
+	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
+		tiles.append([])
+		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
+			tiles[tiles.size()-1].append(map_as_array[x][y])
+			if map_objects.has(Vector2(x*8, y*8)):
+				objects.append(map_objects[Vector2(x*8, y*8)])
+			if enemy_spawn_points.has(Vector2(x,y)) and enemy_spawn_points[Vector2(x,y)]["Alive"] == false:
+				var instance_tree = get_node("/root/Server").objects_state_collection[name]["I"].duplicate(true)
+				instance_tree.append(name)
+				get_node("/root/Server").SpawnNPC(enemy_spawn_points[Vector2(x,y)]["Enemy"], instance_tree, Vector2(x*8, y*8))
+	return {
+		"Tiles" : tiles,
+		"Objects" : objects
+	}
+func GetChunkData(chunk):
+	var enemies = {}
+	
+	if chunks.has(chunk) and (not chunks[chunk].empty()):
+		enemies = chunks[chunk]
+	
+	return {
+		"Enemies" : enemies
+	}

@@ -7,7 +7,7 @@ enum {
 
 var current_state = IDLE
 onready var player_detection_zone = $Ai/PlayerDetection
-onready var hitbox_zone = $Hitbox
+onready var hitbox_zone = $EnemyHitbox
 
 func DealDamage(damage):
 	get_parent().get_parent().get_parent().enemy_list[name]["Health"] -= damage
@@ -19,7 +19,6 @@ func _physics_process(delta):
 		position += Vector2(0.1, 0.1)
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
 			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
-			get_node("/root/Server").enemies_state_collection[name]["P"] = position
 
 func _on_PlayerDetection_area_entered(body):
 	if body.get_parent().name == "PlayerCharacter":

@@ -24,7 +24,6 @@ func SpawnProjectile(projectile_data, player_id):
 	projectile_instance.SetData(data)
 	
 	add_child(projectile_instance)
-	print("Shot")
 
 func SpawnEnemy(enemy_id, position, hitbox_type):
 	var new_enemy = enemy_8x8.instance()

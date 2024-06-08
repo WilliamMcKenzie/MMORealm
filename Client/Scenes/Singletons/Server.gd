@@ -33,8 +33,11 @@ func _physics_process(delta):
 	
 
 func ConnectToServer():
+	print("EHHHEHEE")
 	network.create_client(ip_address, port)
 	get_tree().network_peer = network
+	print("EHHHEHEEs")
+	print(get_tree().network_peer)
 	
 	get_tree().connect("connection_failed", self, "_onConnectionFailed")
 	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
@@ -42,6 +45,7 @@ func ConnectToServer():
 func _onConnectionFailed():
 	print("Connection failed.")
 func _onConnectionSucceeded():
+	print("HAYYEE")
 	print("Connection succeeded!")
 	rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 	var timer = Timer.new()
@@ -157,10 +161,20 @@ remote func ReturnIslandData(instance_data):
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
+
+#For tiles and stuff
+#One time call
 func FetchIslandChunk(chunk):
-	rpc_id(1, "FetchIslandChunk", chunk)
-remote func ReturnIslandChunk(chunk_data, chunk):
+	rpc_id(1, "FetchChunk", chunk)
+remote func ReturnChunk(chunk_data, chunk):
 	get_node("../SceneHandler/"+GetCurrentInstance()).GenerateChunk(chunk_data, chunk)
+
+#For enemies and stuff
+#Called 20 times per second
+func FetchChunkData(chunk):
+	rpc_id(1, "FetchChunkData", chunk)
+remote func ReturnChunkData(chunk_data, chunk):
+	get_node("../SceneHandler/"+GetCurrentInstance()).UpdateChunk(chunk_data, chunk)
 
 remote func ShowExpIndicator(xp):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").ShowExpIndicator(xp)
