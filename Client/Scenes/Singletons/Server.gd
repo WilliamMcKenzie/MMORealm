@@ -23,6 +23,8 @@ var dungeon_container = preload("res://Scenes/MainScenes/dungeon_container.tscn"
 #For player hierarchy
 var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 
+var projectile = load("res://Scenes/SupportScenes/Projectiles/Arrow/Arrow.tscn")
+
 func _physics_process(delta):
 	client_clock += (int(delta*1000) + delta_latency)
 	delta_latency = 0
@@ -168,3 +170,22 @@ remote func ShowExpIndicator(xp):
 remote func SetHealth(max_health, current_health):
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	var player_health_bar = map_instance.get_node("YSort/player/PlayerUI/HealthUI").ChangeHealth(max_health, current_health)
+#var projectile_data = {
+#		"Damage":damage,
+#		"Position":position,
+#		"Projectile":gear.weapon.projectile,
+#		"MousePosition":mouse_position,
+#		"Direction":direction,
+#		"TileRange":gear.weapon.range
+#	}
+remote func RecieveEnemyProjectile(projectile_data):
+	
+	var projectile_instance = projectile.instance()
+	
+	projectile_instance.position = projectile_data.Position
+	#Set projectile data
+	projectile_instance.damage = projectile_data.Damage
+	projectile_instance.tile_range = projectile_data.TileRange
+	
+	projectile_instance.set_direction(projectile_data.Direction)
+	projectile_instance.look_at(projectile.MousePosition)

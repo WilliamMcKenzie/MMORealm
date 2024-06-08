@@ -113,8 +113,9 @@ remote func SendPlayerProjectile(projectile_data):
 	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_method("SpawnProjectile"):
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).SpawnProjectile(projectile_data, player_id)
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
+	
 func SendEnemyProjectile(projectile_data, enemy_id):
-	pass
+	rpc("RecieveEnemyProjectile", projectile_data)
 
 #INSTANCES
 func CreateIsland(instance_name, instance_tree, portal_position):
