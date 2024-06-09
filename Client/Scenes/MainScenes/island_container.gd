@@ -87,7 +87,7 @@ func _physics_process(delta):
 				var players1 = world_state_buffer[1]["P"]
 				
 				var current_player = player == str(get_tree().get_network_unique_id())
-				var lost_player = not players1.has(player)
+				var lost_player = not players1.has(player) or not players0.has(player)
 				
 				if current_player or lost_player:
 					continue;

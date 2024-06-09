@@ -32,15 +32,11 @@ func _physics_process(delta):
 		position += velocity
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
 			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
-		
-		print(target)
-		print((target-position).length())
+
 		if (target - position).length() <= 2:
 			if (initial_position-position).length() >= wander_range:
-				print("enemy strayed to far from start, returning")
 				target = initial_position
 			else:
-				print("finding new target")
 				target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
 func _on_PlayerDetection_area_entered(area):
 	pass
