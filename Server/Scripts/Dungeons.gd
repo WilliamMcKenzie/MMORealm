@@ -1,5 +1,7 @@
 extends Node
 
+var valid_names = ["island","test_dungeon"]
+
 func GenerateDungeon(instance_name):
 	if instance_name == "island":
 		return GenerateIslandMap()
