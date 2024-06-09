@@ -27,7 +27,6 @@ func _physics_process(delta):
 		position += velocity
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
 			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
-			get_node("/root/Server").enemies_state_collection[name]["P"] = position
 		
 		if (target - position).length() >= 10:
 			target = position + Vector2(rand_range(0,100),rand_range(0,100))
