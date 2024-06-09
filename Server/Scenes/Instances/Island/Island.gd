@@ -33,10 +33,50 @@ var arrow_projectile = preload("res://Scenes/Instances/Projectiles/ServerArrow.t
 var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
 
 # warning-ignore:unused_argument
+var sync_clock_counter = 0
 func _physics_process(delta):
 	for enemy_id in enemy_list.keys():
 		if(enemy_list[enemy_id]["Health"] < 1):
+			var enemy_position = enemy_list[enemy_id]["Position"]
+			var enemy_coords = Vector2(round((enemy_position/8).x), round((enemy_position/8).y))
+			var chunk = Vector2(chunk_size*round((enemy_coords.x)/chunk_size), chunk_size*round((enemy_coords.y)/chunk_size))
+			
+			if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):
+				chunks[chunk]["E"].erase(enemy_id)
+			
 			enemy_list.erase(enemy_id)
+			
+	sync_clock_counter += 1
+	if sync_clock_counter ==  60*5:
+		sync_clock_counter = 0
+		for chunk in chunks:
+			if IsChunkRadiusEmpty(chunk):
+				for id in chunks[chunk]["E"].keys():
+					enemy_list.erase(id)
+					get_node("YSort/Enemies/").remove_child(get_node("YSort/Enemies/"+str(id)))
+				chunks[chunk]["E"] = {}
+#Check if chunks around chunk have any players
+func IsChunkRadiusEmpty(chunk):
+	var is_empty = true
+	
+	var chunk_size = 32
+	var offsets = [
+		Vector2(0, 0),
+		Vector2(chunk_size, 0),
+		Vector2(chunk_size, chunk_size),
+		Vector2(-chunk_size, 0),
+		Vector2(-chunk_size, chunk_size),
+		Vector2(0, chunk_size),
+		Vector2(chunk_size, -chunk_size),
+		Vector2(0, -chunk_size),
+		Vector2(-chunk_size, -chunk_size)
+	]
+	
+	for offset in offsets:
+		if chunks.has(chunk + offset) and chunks[chunk + offset]["P"].size() != 0:
+			is_empty = false
+			
+	return is_empty
 
 func UpdatePlayer(player_id, player_state):
 	if player_list.has(str(player_id)):
@@ -71,7 +111,7 @@ func SpawnProjectile(projectile_data, player_id):
 
 func SpawnEnemy(enemy, enemy_id):
 	var new_enemy = enemy_8x8.instance()
-	enemy_list[enemy_id] = enemy
+	enemy_list[str(enemy_id)] = enemy
 	new_enemy.position = enemy["Position"] + position
 	new_enemy.name = enemy_id
 	get_node("YSort/Enemies/").add_child(new_enemy, true)
@@ -113,9 +153,6 @@ func OpenPortal(portal_name, instance_tree, position):
 		add_child(dungeon_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 
-
-
-
 func GetMapSpawnpoint():
 	randomize()
 	return spawn_points[rand_range(0, spawn_points.size())]
@@ -129,8 +166,8 @@ func GetIslandChunk(chunk):
 			if map_objects.has(Vector2(x*8, y*8)):
 				objects.append(map_objects[Vector2(x*8, y*8)])
 			
-			#Spawn enemies in chunk
-			if enemy_spawn_points.has(Vector2(x,y)) and enemy_spawn_points[Vector2(x,y)]["Alive"] == false:
+			var full_chunk = chunks.has(chunk) and chunks[chunk]["E"].size() > 10
+			if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk:
 				var instance_tree = get_parent().object_list[name]["InstanceTree"].duplicate(true)
 				instance_tree.append(name)
 				get_node("/root/Server").SpawnNPC(enemy_spawn_points[Vector2(x,y)]["Enemy"], instance_tree, Vector2(x*8, y*8))
@@ -212,27 +249,27 @@ func PopulateChunkSensors():
 			chunk_sensor_instance.position = Vector2(x*8, y*8)
 			get_node("ChunkSensors").add_child(chunk_sensor_instance)
 func AddChunkData(chunk, id, player):
-	var valid_enemy = enemy_list.has(id)
-	var valid_player = player_list.has(id)
+	var valid_enemy = (enemy_list.has(str(id))) and (player == false)
+	var valid_player = (player_list.has(str(id))) and (player == true)
 	
-	if not valid_enemy or not valid_player:
+	if not valid_enemy and not valid_player:
 		return
 	
 	if chunks.has(chunk) and player == true:
-		chunks[chunk]["P"][id] = player_list[id]
+		chunks[chunk]["P"][id] = player_list[str(id)]
 	elif chunks.has(chunk):
-		chunks[chunk]["E"][id] = enemy_list[id]
+		chunks[chunk]["E"][id] = enemy_list[str(id)]
 
 	elif player == true:
 		chunks[chunk] = {}
 		chunks[chunk]["P"] = {}
 		chunks[chunk]["E"] = {}
-		chunks[chunk]["P"][id] = player_list[id]
+		chunks[chunk]["P"][id] = player_list[str(id)]
 	else:
 		chunks[chunk] = {}
 		chunks[chunk]["P"] = {}
 		chunks[chunk]["E"] = {}
-		chunks[chunks]["E"][id] = enemy_list[id]
+		chunks[chunk]["E"][id] = enemy_list[str(id)]
 func RemoveChunkData(chunk, id):
 	if chunks.has(chunk) and chunks[chunk]["P"].has(id):
 		chunks[chunk]["P"].erase(id)

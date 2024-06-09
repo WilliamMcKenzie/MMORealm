@@ -640,7 +640,10 @@ texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
 
-[node name="Axis" type="Node2D" parent="."]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 59 )
+
+[node name="Axis" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Axis"]
 shape = SubResource( 59 )

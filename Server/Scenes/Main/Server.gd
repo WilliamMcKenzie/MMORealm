@@ -71,7 +71,7 @@ remote func RecievePlayerState(player_state):
 		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
 func SendWorldState(id, world_state):
-	rpc_unreliable_id(id, "RecieveWorldState", world_state)
+	rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
 
 #TOKENS
 func _on_TokenExpiration_timeout():
@@ -116,7 +116,6 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"Exp" : enemy_data.exp
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
-
 remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -173,8 +172,6 @@ remote func EnterInstance(instance_id):
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
 			
-			print("REMOVING: " + "Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"]))
-			print("ADDING: " + "Instances/"+StringifyInstanceTree(instance_tree))
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
 			player_instance_tracker[instance_tree].append(player_id)
 remote func FetchIslandChunk(chunk):

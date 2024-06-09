@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/Npcs/BasicEnemy.gd" type="Script" id=1]
 [ext_resource path="res://Assets/npcs/enemies_8x8.png" type="Texture" id=2]
@@ -54,6 +54,49 @@ shader_param/line_thickness = 0.4
 shader_param/glow_thickness = 0.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
 
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 2 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "Walk"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 1,
+"values": [  ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1e-05, 3.62915e-05 ),
+"update": 0,
+"values": [ Vector2( 0, 2 ), Vector2( 1, 2 ) ]
+}
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5, 5 )
 
@@ -67,7 +110,12 @@ scale = Vector2( 1.00334, 1 )
 texture = ExtResource( 2 )
 hframes = 26
 vframes = 26
-frame = 2
+frame = 52
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Walk"
+anims/RESET = SubResource( 6 )
+anims/Walk = SubResource( 7 )
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2

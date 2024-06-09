@@ -12,14 +12,15 @@ func _ready():
 func AddChunkData(body):
 	var enemy = body.name == "EnemyHitbox"
 	var player = body.name == "PlayerHitbox"
+	
 	if enemy:
 		get_parent().get_parent().AddChunkData(chunk, body.get_parent().name, false)
 	elif player:
-		get_parent().get_parent().AddChunkData(chunk, body.get_parent().name, true)
+		get_parent().get_parent().AddChunkData(chunk, body.get_parent().get_parent().name, true)
 func RemoveChunkData(body):
 	var enemy = body.name == "EnemyHitbox"
 	var player = body.name == "PlayerHitbox"
 	if enemy:
-		get_parent().get_parent().RemoveChunkData(chunk, body.get_parent().name, false)
+		get_parent().get_parent().RemoveChunkData(chunk, body.get_parent().name)
 	elif player:
-		get_parent().get_parent().AddChunkData(chunk, body.get_parent().name, true)
+		get_parent().get_parent().RemoveChunkData(chunk, body.get_parent().get_parent().name)

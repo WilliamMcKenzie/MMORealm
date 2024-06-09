@@ -67,6 +67,7 @@ scale = Vector2( 1.00334, 1 )
 texture = ExtResource( 2 )
 hframes = 26
 vframes = 26
+frame = 58
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2

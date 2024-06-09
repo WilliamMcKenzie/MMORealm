@@ -10,6 +10,7 @@ func _physics_process(delta):
 		for instance_tree in get_node("/root/Server").player_instance_tracker.keys():
 			if instance_tree[instance_tree.size()-1].split(" ")[0] == "island":
 				SendIslandData(instance_tree)
+				continue
 			var node = get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree))
 			node.object_list = CleanObjects(node.object_list).duplicate(true)
 			
@@ -26,19 +27,35 @@ func _physics_process(delta):
 func SendIslandData(instance_tree):
 	var node = get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree))
 	node.object_list = CleanObjects(node.object_list).duplicate(true)
-		
+	
+	var chunk_size = 32
 	for chunk in node.chunks.keys():
 		if node.chunks[chunk]["P"].keys().size() > 0:
-			var chunk_data = node.GetChunkData(chunk)
+			var result = { "E" : {}, "P" : {}, "O" : {} }
+			var chunk_data = []
+			chunk_data.append(node.GetChunkData(chunk))
+			chunk_data.append(node.GetChunkData(chunk + Vector2(chunk_size, 0)))
+			chunk_data.append(node.GetChunkData(chunk + Vector2(chunk_size, chunk_size)))
+			chunk_data.append(node.GetChunkData(chunk + Vector2(-chunk_size, 0)))
+			chunk_data.append(node.GetChunkData(chunk + Vector2(-chunk_size, chunk_size)))
+			chunk_data.append(node.GetChunkData(chunk + Vector2(0, chunk_size)))
+			chunk_data.append(node.GetChunkData(chunk + Vector2(chunk_size, -chunk_size)))
+			chunk_data.append(node.GetChunkData(chunk + Vector2(0, -chunk_size)))
+			chunk_data.append(node.GetChunkData(chunk + Vector2(-chunk_size, -chunk_size)))
+			
+			for chunk_data_value in chunk_data:
+				result["E"].merge(chunk_data_value["E"])
+				result["P"].merge(chunk_data_value["P"])
+				result["O"].merge(chunk_data_value["O"])
 			
 			world_state = {}
-			world_state["P"] = chunk_data["P"]
-			world_state["E"] = chunk_data["E"]
-			world_state["O"] = chunk_data["O"]
+			world_state["P"] = result["P"]
+			world_state["E"] = result["E"]
+			world_state["O"] = result["O"]
 			world_state["T"] = OS.get_system_time_msecs()
 						
 			#We add speed checks here
-			for id in node.world_state["P"]:
+			for id in node.chunks[chunk]["P"]:
 				get_node("/root/Server").SendWorldState(id, world_state)
 
 func CleanObjects(objects):
