@@ -29,8 +29,9 @@ func CreatePlayerContainer(player_id):
 	var instance_tree = get_node("/root/Server").player_state_collection[player_id]["I"]
 	var new_player_container = player_container_scene.instance()
 	new_player_container.name = str(player_id)
-	get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players").add_child(new_player_container, true)
+	get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(new_player_container)
 	FillPlayerContainer(get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)))
+
 func StringifyInstanceTree(instance_tree):
 	var res = ""
 	for instance in instance_tree:

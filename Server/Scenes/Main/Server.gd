@@ -6,15 +6,22 @@ var network = NetworkedMultiplayerENet.new()
 
 var expected_tokens = []
 
-#For rendering the positions/instance to the player
+#List of all the current instances with their current connected player ids
+#Keys are the instance trees
+#Values are the player ids in a list
+var player_instance_tracker = {["nexus"] : []}
+
+#Keep track of players instance
+#Keys are player ids
+#Values are instance trees, position, animation and last updated time-
+#-in this format: { "T" : {time}, "I" : {index_tree}, "P" : {position}, "A" : {animationstate}}
 var player_state_collection = {}
-var objects_state_collection = {}
-var enemies_state_collection = {}
 
 func _ready():
 	StartServer()
-	CreateIsland("perseus", ["nexus"], Vector2.ZERO)
-	CreateObstacle("tree", ["nexus"], Vector2(80, 80), "Small")
+	
+	#Open realm
+	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
@@ -27,10 +34,10 @@ func _Peer_Connected(id):
 	PlayerVerification.Start(id)
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
-	if(get_parent().has_node(str(id))):	
-		get_parent().get_node(str(id)).queue_free()
-		player_state_collection.erase(id)
-		rpc_id(0, "DespawnPlayer", id)
+	if player_instance_tracker[player_state_collection[id]["I"]].has(id):
+		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
+	player_state_collection.erase(id)
+	rpc_id(0, "DespawnPlayer", id)
 
 remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -45,7 +52,7 @@ remote func FetchServerTime(client_time):
 remote func DetermineLatency(client_time):
 	var player_id =  get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "ReturnLatency", client_time)
-	
+
 remote func RecievePlayerState(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	if player_state_collection.has(player_id):
@@ -53,12 +60,13 @@ remote func RecievePlayerState(player_state):
 			player_state["I"] = player_state_collection[player_id]["I"]
 			player_state_collection[player_id] = player_state
 			if get_node("Instances/"+StringifyInstanceTree(player_state["I"])+"/YSort/Players").has_node(str(player_id)):
-				get_node("Instances/"+StringifyInstanceTree(player_state["I"])+"/YSort/Players/"+str(player_id)).position = player_state["P"]
+				get_node("Instances/"+StringifyInstanceTree(player_state["I"])).UpdatePlayer(player_id, player_state)
 	else:
+		player_instance_tracker[["nexus"]].append(player_id)
 		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
-func SendWorldState(world_state):
-	rpc_unreliable_id(0, "RecieveWorldState", world_state)
+func SendWorldState(id, world_state):
+	rpc_unreliable_id(id, "RecieveWorldState", world_state)
 
 #TOKENS
 func _on_TokenExpiration_timeout():
@@ -102,11 +110,8 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"State":"Idle",
 			"Exp" : enemy_data.exp
 		}
-		print("Spawned at: " + str(OS.get_system_time_msecs()))
-		#Put enemy into whatever instance node it should be put into
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id] = enemy
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy_id, spawn_position, 0)
-		enemies_state_collection[enemy_id] = {"T": OS.get_system_time_msecs(), "P": spawn_position, "I": instance_tree, "N":enemy_name}
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
+
 remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -117,35 +122,6 @@ remote func SendPlayerProjectile(projectile_data):
 func SendEnemyProjectile(projectile_data, enemy_id):
 	rpc("RecieveEnemyProjectile", projectile_data)
 
-#INSTANCES
-func CreateIsland(instance_name, instance_tree, portal_position):
-	var instance_id = instance_name
-	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
-		var instance = load("res://Scenes/Instances/Island/Island.tscn").instance()
-		instance.name = instance_id
-		instance.GenerateIslandMap()
-		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs()+99999999999999, "P": portal_position, "I": instance_tree, "N":"island", "Type":"DungeonPortals"}
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
-func CreateDungeon(instance_name, instance_tree, portal_position):
-	var instance_id = generate_unique_id()
-	var instance_map = Dungeons.GenerateDungeon(instance_name)
-	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
-		var instance = load("res://Scenes/Instances/Dungeons/Dungeon.tscn").instance()
-		instance.name = instance_id
-		instance.map = instance_map
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)).add_child(instance)
-		objects_state_collection[instance_id] = {"T": OS.get_system_time_msecs()+10000, "P": portal_position, "I": instance_tree, "N":instance_name, "Type":"DungeonPortals"}
-
-#OBSTACLES
-func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size):
-	var obstacle_id = generate_unique_id()
-	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
-		var obstacle = load("res://Scenes/Instances/Obstacles/"+hitbox_size+".tscn").instance()
-		obstacle.name = obstacle_id
-		obstacle.position = obstacle_position
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Objects/Obstacles").add_child(obstacle)
-		objects_state_collection[obstacle_id] = {"T": OS.get_system_time_msecs()+9999999999999, "P": obstacle_position, "I": instance_tree, "N":obstacle_name, "Type":"Obstacles"}
-
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
 	var random_value = randi()
@@ -155,35 +131,47 @@ remote func Nexus():
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "ConfirmNexus")
 	var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
+	var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
 	
-	get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players").remove_child(player_container)
-	get_node("Instances/"+StringifyInstanceTree(["nexus"])+"/YSort/Players").add_child(player_container)
+	player_instance_tracker[instance_tree].erase(player_id)
+	player_instance_tracker[["nexus"]].append(player_id)
+	get_node("Instances/"+StringifyInstanceTree(instance_tree)).RemovePlayer(player_container)
+	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnPlayer(player_container)
+	
 	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
 	
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
-	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_node(instance_id):
+	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"]))
+	
+	if current_instance_node.has_node(instance_id):
 		var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
+		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+		
+		player_instance_tracker[instance_tree].erase(player_id)
 		instance_tree.append(str(instance_id))
 		
-		var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
 		#For dungeons
-		if not objects_state_collection[instance_id]["N"] == "island":	
-			rpc_id(player_id, "ReturnDungeonData", { "Map":get_node("Instances/"+StringifyInstanceTree(instance_tree)).map, "Name":objects_state_collection[instance_id]["N"], "Id":instance_id})
+		if not current_instance_node.object_list[instance_id]["Name"] == "island":	
+			rpc_id(player_id, "ReturnDungeonData", { "Map": get_node("Instances/"+StringifyInstanceTree(instance_tree)).map, "Name": current_instance_node.object_list[instance_id]["Name"], "Id": instance_id})
 			
-			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players").remove_child(player_container)
-			get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players").add_child(player_container)
-			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": instance_tree}
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
+			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": { "A" : "Idle", "C" : Vector2.ZERO }, "I": instance_tree}
+			player_instance_tracker[instance_tree].append(player_id)
 		#For islands (Map is a node instead of array here)
 		else:
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = island_node.GetMapSpawnpoint()
 			
-			rpc_id(player_id, "ReturnIslandData", { "Name":objects_state_collection[instance_id]["N"], "Id":instance_id, "P": spawnpoint})
-
-			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players").remove_child(player_container)
-			get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players").add_child(player_container)
+			rpc_id(player_id, "ReturnIslandData", { "Name": current_instance_node.object_list[instance_id]["Name"], "Id":instance_id, "Position": spawnpoint})
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
+			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
+			
+			print("REMOVING: " + "Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"]))
+			print("ADDING: " + "Instances/"+StringifyInstanceTree(instance_tree))
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
+			player_instance_tracker[instance_tree].append(player_id)
 remote func FetchIslandChunk(chunk):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -213,7 +201,7 @@ remote func RecieveChatMessage(message):
 			else:
 				rpc_id(player_id, "RecieveChat", "Invalid player ID: " + message.substr(4,-1), "System")
 		if message_words[0] == "/d":
-			CreateDungeon(message.substr(3,-1), instance_tree, player_position)
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal(message.substr(3,-1), instance_tree, player_position)
 			rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
 		if message_words[0] == "/spawn":
 			SpawnNPC(message.substr(7,-1), instance_tree, player_position)

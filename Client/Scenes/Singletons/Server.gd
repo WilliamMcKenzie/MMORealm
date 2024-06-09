@@ -23,8 +23,6 @@ var dungeon_container = preload("res://Scenes/MainScenes/dungeon_container.tscn"
 #For player hierarchy
 var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 
-var projectile = load("res://Scenes/SupportScenes/Projectiles/Arrow/Arrow.tscn")
-
 func _physics_process(delta):
 	client_clock += (int(delta*1000) + delta_latency)
 	delta_latency = 0
@@ -44,6 +42,7 @@ func ConnectToServer():
 func _onConnectionFailed():
 	print("Connection failed.")
 func _onConnectionSucceeded():
+	print("HAYYEE")
 	print("Connection succeeded!")
 	rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 	var timer = Timer.new()
@@ -153,16 +152,26 @@ remote func ReturnIslandData(instance_data):
 	island_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
 	island_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	island_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
-	island_instance.get_node("YSort/player").global_position = instance_data["P"]
+	island_instance.get_node("YSort/player").global_position = instance_data["Position"]
 	island_instance.name = instance_data["Id"]
 	
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
+
+#For tiles and stuff
+#One time call
 func FetchIslandChunk(chunk):
 	rpc_id(1, "FetchIslandChunk", chunk)
 remote func ReturnIslandChunk(chunk_data, chunk):
 	get_node("../SceneHandler/"+GetCurrentInstance()).GenerateChunk(chunk_data, chunk)
+
+#For enemies and stuff
+#Called 20 times per second
+func FetchChunkData(chunk):
+	rpc_id(1, "FetchChunkData", chunk)
+remote func ReturnChunkData(chunk_data, chunk):
+	get_node("../SceneHandler/"+GetCurrentInstance()).UpdateChunk(chunk_data, chunk)
 
 remote func ShowExpIndicator(xp):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").ShowExpIndicator(xp)
@@ -170,22 +179,3 @@ remote func ShowExpIndicator(xp):
 remote func SetHealth(max_health, current_health):
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	var player_health_bar = map_instance.get_node("YSort/player/PlayerUI/HealthUI").ChangeHealth(max_health, current_health)
-#var projectile_data = {
-#		"Damage":damage,
-#		"Position":position,
-#		"Projectile":gear.weapon.projectile,
-#		"MousePosition":mouse_position,
-#		"Direction":direction,
-#		"TileRange":gear.weapon.range
-#	}
-remote func RecieveEnemyProjectile(projectile_data):
-	
-	var projectile_instance = projectile.instance()
-	
-	projectile_instance.position = projectile_data.Position
-	#Set projectile data
-	projectile_instance.damage = projectile_data.Damage
-	projectile_instance.tile_range = projectile_data.TileRange
-	
-	projectile_instance.set_direction(projectile_data.Direction)
-	projectile_instance.look_at(projectile.MousePosition)

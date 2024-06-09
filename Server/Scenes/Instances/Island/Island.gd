@@ -18,15 +18,34 @@ var forest_spawn_points = []
 var plains_spawn_points = []
 var mountains_spawn_points = []
 
-var beach_npcs = ["snake"]
-var forest_npcs = ["snake"]
-var plains_npcs = ["snake"]
-var mountains_npcs = ["snake"]
-
+var player_list = {}
 var enemy_list = {}
+var object_list = {}
 
 var arrow_projectile = preload("res://Scenes/Instances/Projectiles/ServerArrow.tscn")
 var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
+
+# warning-ignore:unused_argument
+func _physics_process(delta):
+	for enemy_id in enemy_list.keys():
+		if(enemy_list[enemy_id]["Health"] < 1):
+			enemy_list.erase(enemy_id)
+
+func UpdatePlayer(player_id, player_state):
+	if player_list.has(str(player_id)):
+		player_list[str(player_id)]["Position"] = player_state["P"]
+		player_list[str(player_id)]["Animation"] = player_state["A"]
+		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["Position"]
+func SpawnPlayer(player_container):
+	player_list[player_container.name] = {
+			"Name": player_container.name,
+			"Position": player_container.position,
+			"Animation": { "A" : "Idle", "C" : Vector2.ZERO }
+		}
+	get_node("YSort/Players").add_child(player_container)
+func RemovePlayer(player_container):
+	player_list.erase(player_container.name)
+	var player_container_node = get_node("YSort/Players").remove_child(player_container)
 
 func SpawnProjectile(projectile_data, player_id):
 	var projectile_instance = arrow_projectile.instance()
@@ -41,17 +60,50 @@ func SpawnProjectile(projectile_data, player_id):
 	projectile_instance.SetData(data)
 	
 	add_child(projectile_instance)
-func SpawnEnemy(enemy_id, position, hitbox_type):
+
+func SpawnEnemy(enemy, enemy_id):
 	var new_enemy = enemy_8x8.instance()
-	new_enemy.position = position
+	enemy_list[enemy_id] = enemy
+	new_enemy.position = enemy["Position"]
 	new_enemy.name = enemy_id
 	get_node("YSort/Enemies/").add_child(new_enemy, true)
+	
+func OpenPortal(portal_name, instance_tree, position):
+	var instance_id = get_node("/root/Server").generate_unique_id()
+	if portal_name == "island":
+		var island_instance = load("res://Scenes/Instances/Island/Island.tscn").instance()
+		island_instance.name = instance_id
+		
+		object_list[instance_id] = {
+			"Name":"island",
+			"Type":"DungeonPortals",
+			"EndTime": OS.get_system_time_msecs()+99999999999999,
+			"Position": position,
+			"InstanceTree": instance_tree
+		}
+		
+		island_instance.GenerateIslandMap()
+		add_child(island_instance)
+		Instances.AddInstanceToTracker(instance_tree, instance_id)
+	else:
+		var instance_map = Dungeons.GenerateDungeon(portal_name)
+		var dungeon_instance = load("res://Scenes/Instances/Dungeons/Dungeon.tscn").instance()
+		dungeon_instance.name = instance_id
+		dungeon_instance.map = instance_map
+		
+		object_list[instance_id] = {
+			"Name":portal_name,
+			"Type":"DungeonPortals",
+			"EndTime": OS.get_system_time_msecs()+10000,
+			"Position": position,
+			"InstanceTree": instance_tree
+		}
+		
+		add_child(dungeon_instance)
+		Instances.AddInstanceToTracker(instance_tree, instance_id)
 
-func _physics_process(delta):
-	for enemy_id in enemy_list.keys():
-		if(enemy_list[enemy_id]["Health"] < 1):
-			enemy_list.erase(enemy_id)
-			get_node("/root/Server").enemies_state_collection.erase(enemy_id)
+
+
 
 func GetMapSpawnpoint():
 	randomize()
@@ -81,6 +133,7 @@ func _ready():
 func ArrayToTiles():
 	for x in range(map_size.x):
 		for y in range(map_size.y):
+# warning-ignore:unused_variable
 			var enemy_seed = rand_range(0, 30)
 			var map_tile = map_as_array[x][y]
 			
@@ -95,7 +148,7 @@ func ArrayToTiles():
 			#elif map_tile == 4 and enemy_seed > 29.8:
 				#get_node("/root/Server").SpawnNPC(plains_npcs[0], get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8))
 			#For visualizing realms
-			$Tiles.set_cell(x, y, map_as_array[x][y])
+			#$Tiles.set_cell(x, y, map_as_array[x][y])
 func PopulateTiles():
 	var center = map_size / 2
 	var ocean_distance = center.length() * 1.3
@@ -144,17 +197,17 @@ func PopulateObstacles():
 			if map_tile <= 2:
 				pass
 			elif map_tile == 3 and obstacle_seed > 29.9:
-				CreateObstacle("tree", get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("tree", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
 			elif map_tile == 3 and obstacle_seed > 29.8:
-				CreateObstacle("red_shroom1", get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("red_shroom1", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
 			elif map_tile == 3 and obstacle_seed < 0.1:
-				CreateObstacle("red_shroom2", get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("red_shroom2", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
 			elif map_tile == 4 and obstacle_seed > 29.8:
-				CreateObstacle("twig", get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("twig", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
 			elif map_tile == 5 and obstacle_seed > 29.9:
-				CreateObstacle("rock1", get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("rock1", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
 			elif map_tile == 5 and obstacle_seed > 29.8:
-				CreateObstacle("rock2", get_node("/root/Server").objects_state_collection[name]["I"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("rock2", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
 func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size, island_id):
 	var obstacle_id = get_node("/root/Server").generate_unique_id()
 	var instance_tree_str = get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/"+str(island_id)
