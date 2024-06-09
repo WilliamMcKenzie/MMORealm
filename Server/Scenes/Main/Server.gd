@@ -38,7 +38,8 @@ func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
 	if player_instance_tracker[player_state_collection[id]["I"]].has(id):
 		var instance_tree = player_state_collection[id]["I"]
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)).RemovePlayer(get_node("/root/Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id)))
+		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
+		get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])).RemovePlayer(player_container)
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
 	player_state_collection.erase(id)
 	rpc_id(0, "DespawnPlayer", id)
@@ -210,9 +211,15 @@ remote func RecieveChatMessage(message):
 					rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
 				else:
 					rpc_id(player_id, "RecieveChat", "Error spawning dungeon", "System")
-			if message_words[0] == "/spawn":
-				if message.substr(7,-1) in ServerData.enemy_data:
-					SpawnNPC(message.substr(7,-1), instance_tree, player_position)
+			if message_words[0] == "/spawn" and message_words.size() > 1:
+				var valid_enemy = message_words[1] in ServerData.enemy_data
+				var multiple_enemies = message_words.size() > 2 and int(message_words[2])
+				
+				if valid_enemy and multiple_enemies:
+					for i in range(int(message_words[2])):
+						SpawnNPC(message_words[1], instance_tree, player_position)
+				elif valid_enemy:
+					SpawnNPC(message_words[1], instance_tree, player_position)
 					rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
 				else:
 					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "System")

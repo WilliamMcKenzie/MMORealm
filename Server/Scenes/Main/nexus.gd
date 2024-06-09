@@ -20,15 +20,17 @@ func UpdatePlayer(player_id, player_state):
 		player_list[str(player_id)]["Animation"] = player_state["A"]
 		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["Position"]
 func SpawnPlayer(player_container):
-	player_list[player_container.name] = {
-			"Name": player_container.name,
-			"Position": player_container.position,
-			"Animation": { "A" : "Idle", "C" : Vector2.ZERO }
-		}
-	get_node("YSort/Players").add_child(player_container)
+	if player_container:
+		player_list[player_container.name] = {
+				"Name": player_container.name,
+				"Position": player_container.position,
+				"Animation": { "A" : "Idle", "C" : Vector2.ZERO }
+			}
+		get_node("YSort/Players").add_child(player_container)
 func RemovePlayer(player_container):
-	player_list.erase(player_container.name)
-	var player_container_node = get_node("YSort/Players").remove_child(player_container)
+	if player_container:
+		player_list.erase(player_container.name)
+		get_node("YSort/Players").remove_child(player_container)
 
 func SpawnProjectile(projectile_data, player_id):
 	var projectile_instance = arrow_projectile.instance()

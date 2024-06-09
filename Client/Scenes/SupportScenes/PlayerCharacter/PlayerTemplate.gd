@@ -31,6 +31,6 @@ func ShootProjectile():
 			projectile_instance.damage = projectile_data["Damage"]
 			projectile_instance.tile_range = projectile_data["TileRange"]
 			projectile_instance.set_direction(projectile_data["Direction"])
-			projectile_instance.look_at(projectile_data["MousePosition"])
 			projectile_dict.erase(projectile_time)
 			get_parent().add_child(projectile_instance)
+			get_parent().get_node(projectile_instance.name).look_at(projectile_data["MousePosition"])

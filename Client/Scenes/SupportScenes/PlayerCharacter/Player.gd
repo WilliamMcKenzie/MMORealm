@@ -142,8 +142,8 @@ func ShootProjectile():
 	projectile_instance.tile_range = gear.weapon.range
 	
 	projectile_instance.set_direction(direction)
-	projectile_instance.look_at(mouse_position)
 	get_parent().add_child(projectile_instance)
+	get_parent().get_node(projectile_instance.name).look_at(mouse_position)
 
 func CalculateDamageWithMultiplier(damage):
 	return (damage*(0.5 + (float(stats.attack)/float(50))))
