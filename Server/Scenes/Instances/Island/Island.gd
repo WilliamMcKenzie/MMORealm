@@ -277,13 +277,13 @@ func PopulateObstacles():
 			if map_tile <= 2:
 				pass
 			elif map_tile == 3 and obstacle_seed > 29.9:
-				CreateObstacle("tree", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("tree", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "Small", name)
 			elif map_tile == 4 and obstacle_seed > 29.8:
-				CreateObstacle("twig", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("twig", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "Small", name)
 			elif map_tile == 5 and obstacle_seed > 29.9:
-				CreateObstacle("rock1", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("rock1", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "Small", name)
 			elif map_tile == 5 and obstacle_seed > 29.8:
-				CreateObstacle("rock2", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "small", name)
+				CreateObstacle("rock2", get_parent().object_list[name]["InstanceTree"], Vector2(x*8, y*8), "Small", name)
 func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size, island_id):
 	var obstacle_id = get_node("/root/Server").generate_unique_id()
 	var instance_tree_str = get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/"+str(island_id)
