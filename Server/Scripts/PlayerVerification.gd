@@ -57,8 +57,6 @@ func VerificationExpiration():
 					main_interface.ReturnTokenVerificationResults(key, false)
 					main_interface.network.disconnect_peer(key)
 	
-
-	
 	
 	
 	

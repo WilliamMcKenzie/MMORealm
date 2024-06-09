@@ -1,13 +1,10 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/characters/character.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4, 4 )
 
 [sub_resource type="AnimationNodeAnimation" id=30]
 animation = "attack_left"
@@ -412,9 +409,6 @@ shader_param/bladeSwingNew = Color( 0.564706, 0.317647, 0.14902, 1 )
 shader_param/bowDarkOrigin = Color( 0.666667, 0.631373, 0, 1 )
 shader_param/bowDarkNew = Color( 0, 0, 0, 0 )
 
-[sub_resource type="RectangleShape2D" id=18]
-extents = Vector2( 4.99, 5 )
-
 [sub_resource type="Shader" id=53]
 code = "shader_type canvas_item;
 
@@ -568,14 +562,13 @@ shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
+[sub_resource type="RectangleShape2D" id=59]
+extents = Vector2( 3.75, 4.25 )
+
 [node name="player" type="KinematicBody2D"]
 position = Vector2( 343, 265 )
+collision_mask = 0
 script = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-scale = Vector2( 1.051, 1.04 )
-shape = SubResource( 1 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 16 )
@@ -608,14 +601,6 @@ texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
 script = ExtResource( 5 )
-
-[node name="Axis" type="Area2D" parent="."]
-visible = false
-position = Vector2( 0.02, 0 )
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Axis"]
-position = Vector2( -0.00997925, 0 )
-shape = SubResource( 18 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -654,3 +639,8 @@ position = Vector2( 4.00002, 49 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
+
+[node name="Axis" type="Node2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 59 )

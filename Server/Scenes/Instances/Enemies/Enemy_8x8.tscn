@@ -12,6 +12,7 @@ radius = 76.0066
 script = ExtResource( 1 )
 
 [node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2( 4, 4 )
@@ -20,6 +21,7 @@ shape = SubResource( 1 )
 [node name="Ai" type="Node2D" parent="."]
 
 [node name="PlayerDetection" type="Area2D" parent="Ai"]
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ai/PlayerDetection"]
 position = Vector2( 4, 4 )
