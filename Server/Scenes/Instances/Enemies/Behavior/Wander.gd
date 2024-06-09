@@ -16,6 +16,7 @@ var velocity
 func _ready():
 	initial_position = position
 	target = position
+	
 
 func DealDamage(damage):
 	get_parent().get_parent().get_parent().enemy_list[name]["Health"] -= damage
