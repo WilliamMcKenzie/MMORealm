@@ -34,10 +34,10 @@ func SpawnProjectile(projectile_data, player_id):
 	var projectile_instance = arrow_projectile.instance()
 	projectile_instance.player_id = player_id
 	projectile_instance.projectile_name = projectile_data["Projectile"]
-	projectile_instance.position = projectile_data["Position"]
+	projectile_instance.position = projectile_data["Position"] + self.position
 	projectile_instance.tile_range = projectile_data["TileRange"]
 	projectile_instance.SetDirection(projectile_data["Direction"])
-	projectile_instance.look_at(projectile_data["MousePosition"])
+	projectile_instance.look_at(projectile_data["MousePosition"] + self.position)
 	
 	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
 	projectile_instance.SetData(data)
@@ -66,6 +66,7 @@ func OpenPortal(portal_name, instance_tree, position):
 		}
 		
 		island_instance.GenerateIslandMap()
+		island_instance.position = Instances.GetFreeInstancePosition()
 		add_child(island_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 	else:
@@ -73,6 +74,7 @@ func OpenPortal(portal_name, instance_tree, position):
 		var dungeon_instance = load("res://Scenes/Instances/Dungeons/Dungeon.tscn").instance()
 		dungeon_instance.name = instance_id
 		dungeon_instance.map = instance_map
+		dungeon_instance.position = Instances.GetFreeInstancePosition()
 		
 		object_list[instance_id] = {
 			"Name":portal_name,

@@ -102,7 +102,7 @@ func MovePlayer(delta):
 	motion = move_and_slide(motion * stats.speed)
 	if get_parent().get_parent().has_method("LoadChunk"):
 		#Loading all possible chunks you might see around you
-		var chunk_size = 64
+		var chunk_size = 32
 		get_parent().get_parent().LoadChunk(position, Vector2(0, 0))
 		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, 0))
 		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, chunk_size))

@@ -27,7 +27,7 @@ func _physics_process(delta):
 		
 		position += velocity
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
-			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
+			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
 
 func _on_PlayerDetection_area_entered(area):
 	if area.get_parent().name == "PlayerCharacter":

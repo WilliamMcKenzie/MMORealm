@@ -4,7 +4,22 @@ var item_data
 
 var enemy_data = {
 	"snake" : {
+		"health" : 40,
+		"defense" : 1,
+		"exp" : 20
+	},
+	"crab" : {
+		"health" : 60,
+		"defense" : 1,
+		"exp" : 20
+	},
+	"tribesman" : {
 		"health" : 100,
+		"defense" : 1,
+		"exp" : 20
+	},
+	"shaman" : {
+		"health" : 200,
 		"defense" : 1,
 		"exp" : 20
 	}

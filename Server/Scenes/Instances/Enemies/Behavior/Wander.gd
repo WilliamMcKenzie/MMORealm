@@ -18,15 +18,13 @@ func DealDamage(damage):
 func _physics_process(delta):
 	if current_state == ENGAGE:
 		
-		
 		var y_move = -sin(position.angle_to_point(target)) * 0.2
 		var x_move = -cos(position.angle_to_point(target)) * 0.2
 		velocity = Vector2(x_move, y_move)
-		print(target)
 		
 		position += velocity
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
-			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
+			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
 		
 		if (target - position).length() >= 10:
 			target = position + Vector2(rand_range(0,100),rand_range(0,100))

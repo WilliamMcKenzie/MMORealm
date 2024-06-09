@@ -1,5 +1,7 @@
 extends Node
 
+var collision_layer = 1
+
 var player_list = {}
 var enemy_list = {}
 var object_list = {}
@@ -52,6 +54,7 @@ func SpawnEnemy(enemy, enemy_id):
 func OpenPortal(portal_name, instance_tree, position):
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if portal_name == "island":
+		instance_id = "island " + get_node("/root/Server").generate_unique_id()
 		var island_instance = load("res://Scenes/Instances/Island/Island.tscn").instance()
 		island_instance.name = instance_id
 		
@@ -64,6 +67,7 @@ func OpenPortal(portal_name, instance_tree, position):
 		}
 		
 		island_instance.GenerateIslandMap()
+		island_instance.position = Instances.GetFreeInstancePosition()
 		add_child(island_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 	else:
@@ -71,6 +75,7 @@ func OpenPortal(portal_name, instance_tree, position):
 		var dungeon_instance = load("res://Scenes/Instances/Dungeons/Dungeon.tscn").instance()
 		dungeon_instance.name = instance_id
 		dungeon_instance.map = instance_map
+		dungeon_instance.position = Instances.GetFreeInstancePosition()
 		
 		object_list[instance_id] = {
 			"Name":portal_name,

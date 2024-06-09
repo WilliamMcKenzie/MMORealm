@@ -7,15 +7,16 @@ var world_state_buffer = []
 const interpolation_offset = 50
 
 var generating = false
+var chunk_size = 32
 var loaded_chunks = {}
 
 func GenerateChunk(chunk_data, chunk):
 	var tiles = chunk_data["Tiles"]
 	var objects = chunk_data["Objects"]
 	
-	for x in range(chunk.x-32, chunk.x+32):
-		for y in range(chunk.y-32, chunk.y+32):
-			$Tiles.set_cell(x,y,tiles[x-chunk.x+32][y-chunk.y+32])
+	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
+		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
+			$Tiles.set_cell(x,y,tiles[x-chunk.x+(chunk_size/2)][y-chunk.y+(chunk_size/2)])
 	for object in objects:
 		var object_node = load("res://Scenes/SupportScenes/Objects/Obstacles/" + object["N"] + ".tscn")
 		var object_instance = object_node.instance()
@@ -24,7 +25,7 @@ func GenerateChunk(chunk_data, chunk):
 		
 func LoadChunk(position, offset):
 	var player_coords = Vector2(round((position/8).x), round((position/8).y))
-	var chunk = Vector2(64*round((player_coords.x+offset.x)/64), 64*round((player_coords.y+offset.y)/64))
+	var chunk = Vector2(chunk_size*round((player_coords.x+offset.x)/chunk_size), chunk_size*round((player_coords.y+offset.y)/chunk_size))
 	if loaded_chunks.has(chunk) or generating == true:
 		return
 	loaded_chunks[chunk] = true
@@ -105,7 +106,7 @@ func UpdateWorldState(world_state):
 #Enemy nodes
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
-		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+"/"+enemy_name+".tscn")
+		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+".tscn")
 		var enemy_instance = enemy_scene.instance()
 		enemy_instance.name = enemy_id
 		enemy_instance.position = enemy_position

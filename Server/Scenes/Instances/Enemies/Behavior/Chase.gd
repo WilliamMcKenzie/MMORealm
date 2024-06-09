@@ -18,17 +18,13 @@ func DealDamage(damage):
 func _physics_process(delta):
 	if current_state == ENGAGE:
 		
-		
-		var y_move = -sin(position.angle_to_point(target.position)) * 0.2
-		var x_move = -cos(position.angle_to_point(target.position)) * 0.2
+		var y_move = -sin(position.angle_to_point(target.position)) * 0.7
+		var x_move = -cos(position.angle_to_point(target.position)) * 0.7
 		velocity = Vector2(x_move, y_move)
-		print(target.position)
-		print(sin(position.angle_to_point(target.position)))
-		print(cos(position.angle_to_point(target.position)))
 		
 		position += velocity
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
-			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
+			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
 
 func _on_PlayerDetection_area_entered(area):
 	if area.get_parent().name == "PlayerCharacter":

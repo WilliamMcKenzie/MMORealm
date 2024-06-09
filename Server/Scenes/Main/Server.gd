@@ -6,6 +6,8 @@ var network = NetworkedMultiplayerENet.new()
 
 var expected_tokens = []
 
+#We need to make each instance have a unique posiition and not intersect with one another
+var instance_positions = { Vector2.ZERO : true }
 #List of all the current instances with their current connected player ids
 #Keys are the instance trees
 #Values are the player ids in a list
@@ -35,6 +37,8 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
 	if player_instance_tracker[player_state_collection[id]["I"]].has(id):
+		var instance_tree = player_state_collection[id]["I"]
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).RemovePlayer(get_node("/root/Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id)))
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
 	player_state_collection.erase(id)
 	rpc_id(0, "DespawnPlayer", id)
@@ -181,7 +185,7 @@ remote func FetchIslandChunk(chunk):
 func StringifyInstanceTree(instance_tree):
 	var res = ""
 	for instance in instance_tree:
-		res += (instance+"/")
+		res += (str(instance)+"/")
 	return res.left(res.length() - 1) 
 
 #COMMANDS

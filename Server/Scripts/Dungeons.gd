@@ -9,8 +9,7 @@ func GenerateDungeon(instance_name):
 		return GenerateTestDungeon()
 
 func GenerateIslandMap():
-	pass
-	
+	pass	
 
 func GenerateTestDungeon():
 	randomize()

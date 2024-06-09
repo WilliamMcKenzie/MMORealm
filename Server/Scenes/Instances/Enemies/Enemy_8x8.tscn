@@ -6,7 +6,7 @@
 extents = Vector2( 4, 4 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 39.0512
+radius = 76.0066
 
 [node name="Enemy" type="Node2D" groups=["NPCEnemies"]]
 script = ExtResource( 1 )

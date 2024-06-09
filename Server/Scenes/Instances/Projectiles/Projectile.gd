@@ -35,7 +35,7 @@ func Interaction(body):
 	var player = body.get_parent().name == "PlayerCharacter"
 	var enemy = (piercing == false) and (body.get_parent().name == "Enemies")
 	var enemy_ai = body.get_parent().name == "Ai"
-	var wall = body.name != "ProjectileHitbox" and body.get_parent().get_parent().name != "Enemies" and body.get_parent().get_parent().name != "Players"
+	var wall = body.get_parent().name != "ChunkSensors" and body.name != "ProjectileHitbox" and body.get_parent().get_parent().name != "Enemies" and body.get_parent().get_parent().name != "Players"
 	
 	if enemy_ai or player:
 		pass

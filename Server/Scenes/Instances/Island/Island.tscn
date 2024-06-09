@@ -20,3 +20,9 @@ format = 1
 [node name="Objects" type="YSort" parent="YSort"]
 
 [node name="DungeonPortals" type="YSort" parent="YSort/Objects"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2( 1000, 0 )
+zoom = Vector2( 8, 8 )
+
+[node name="ChunkSensors" type="Node2D" parent="."]
