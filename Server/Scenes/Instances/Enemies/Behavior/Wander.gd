@@ -5,11 +5,18 @@ enum {
 	ENGAGE
 }
 
-var current_state = IDLE
+var current_state = ENGAGE
 onready var player_detection_zone = $Ai/PlayerDetection
 onready var hitbox_zone = $Hitbox
-var target = position
+var wander_range = 15
+var initial_position
+var target
 var velocity
+
+func _ready():
+	initial_position = position
+	target = position
+
 func DealDamage(damage):
 	get_parent().get_parent().get_parent().enemy_list[name]["Health"] -= damage
 	if get_parent().get_parent().get_parent().enemy_list[name]["Health"] < 1:
@@ -26,8 +33,20 @@ func _physics_process(delta):
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
 			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
 		
-		if (target - position).length() >= 10:
-			target = position + Vector2(rand_range(0,100),rand_range(0,100))
+		print(target)
+		print((target-position).length())
+		if (target - position).length() <= 2:
+			if (initial_position-position).length() >= wander_range:
+				print("enemy strayed to far from start, returning")
+				target = initial_position
+			else:
+				print("finding new target")
+				target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+func _on_PlayerDetection_area_entered(area):
+	pass
+	
+func _on_PlayerDetection_area_exited(area):
+	pass
 
 func _on_Hitbox_area_entered(area):
 	if "player_id" in area.get_parent():
