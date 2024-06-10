@@ -15,7 +15,7 @@ func selectionScreen():
 	var selectionScreenInstance = get_node("CharacterSelection")
 	# We will implement actually showing created characters once we have them on the auth server
 	# selectionScreenInstance.characters = player.characters
-	selectionScreenInstance.populateCharacters()
+	selectionScreenInstance.PopulateCharacters()
 	selectionScreenInstance.visible = true
 	
 func enterGame(character):

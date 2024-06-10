@@ -7,7 +7,7 @@ var characters = []
 onready var placeholders = [$Placeholder1,$Placeholder2,$Placeholder3,$Placeholder4]
 
 
-func populateCharacters():
+func PopulateCharacters():
 	var i = 0
 	for character in characters:
 		var buttonInstance = CharacterButton.instance()
