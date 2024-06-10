@@ -113,18 +113,23 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"MaxHealth":enemy_data.health,
 			"Defense":enemy_data.defense,
 			"State":"Idle",
+			"Behavior":enemy_data.behavior,
 			"Exp" : enemy_data.exp
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
+
 remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
-	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_method("SpawnProjectile"):
-		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).SpawnProjectile(projectile_data, player_id)
+	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_method("SpawnPlayerProjectile"):
+		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).SpawnPlayerProjectile(projectile_data, player_id)
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
-func SendEnemyProjectile(projectile_data, enemy_id):
-	rpc("RecieveEnemyProjectile", projectile_data)
+func SendEnemyProjectile(projectile_data, instance_tree, enemy_id, position_offset):
+	var data_to_send = projectile_data.duplicate(true)
+	data_to_send["Position"] = data_to_send["Position"] - position_offset
+	data_to_send["TargetPosition"] = data_to_send["TargetPosition"] - position_offset
+	rpc("RecieveEnemyProjectile", data_to_send, instance_tree, enemy_id)
 
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
@@ -224,5 +229,11 @@ remote func RecieveChatMessage(message):
 			print("server has recieved message : " + message)
 			rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))
 
-func SetHealth(player_id, max_health,health):
-	rpc_id(player_id,"SetHealth",max_health,health)
+#PLAYER INTERACTION
+
+func NotifyDeath(player_id, enemy_name):
+	rpc_id(player_id, "CharacterDied", enemy_name)
+	rpc("RecieveChat", str(player_id) + " has been killed!", "System")
+
+func SetHealth(player_id, max_health, health):
+	rpc_id(player_id,"SetHealth",max_health, health)

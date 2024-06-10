@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/projectiles/projectiles_8x8.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/SupportScenes/Projectiles/Arrow/Arrow.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/SupportScenes/Projectiles/Players/Arrow/Arrow.gd" type="Script" id=2]
 
 [sub_resource type="Shader" id=2]
 code = "shader_type canvas_item;
@@ -58,20 +58,21 @@ shader_param/glow_color = Color( 0, 0, 0, 0.2 )
 extents = Vector2( 8.10921, 1.96048 )
 
 [node name="Arrow" type="Node2D"]
-rotation = -1.6427
+rotation = -1.5708
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 3 )
-rotation = 0.792494
+position = Vector2( 1, 4.37114e-08 )
+rotation = 1.5708
 texture = ExtResource( 1 )
 hframes = 26
 vframes = 26
+frame = 1
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( -1.42847, 5.91266 )
-collision_layer = 2
-collision_mask = 0
+collision_layer = 16
 
 [node name="Hitbox" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 1.26756, -5.81781 )

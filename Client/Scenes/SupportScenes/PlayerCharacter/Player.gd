@@ -29,7 +29,7 @@ var last_shot_time = 0
 onready var animationTree = $AnimationTree
 
 func _ready():
-	var projectile_path = "res://Scenes/SupportScenes/Projectiles/" + str(gear.weapon.projectile) + "/" + str(gear.weapon.projectile) + ".tscn"
+	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(gear.weapon.projectile) + "/" + str(gear.weapon.projectile) + ".tscn"
 	projectile = load(projectile_path)
 	PopulateInventory()
 

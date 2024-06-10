@@ -23,7 +23,7 @@ func ShootProjectile():
 	for projectile_time in projectile_dict.keys():
 		if projectile_time <= OS.get_system_time_msecs():
 			var projectile_data = projectile_dict[projectile_time]
-			var projectile_node = load("res://Scenes/SupportScenes/Projectiles/" + str(projectile_data["Projectile"]) + "/" + str(projectile_data["Projectile"]) + ".tscn")
+			var projectile_node = load("res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_data["Projectile"]) + "/" + str(projectile_data["Projectile"]) + ".tscn")
 			var projectile_instance = projectile_node.instance()
 			projectile_instance.position = $Axis.global_position
 			
@@ -32,5 +32,5 @@ func ShootProjectile():
 			projectile_instance.tile_range = projectile_data["TileRange"]
 			projectile_instance.set_direction(projectile_data["Direction"])
 			projectile_dict.erase(projectile_time)
-			get_parent().add_child(projectile_instance)
-			get_parent().get_node(projectile_instance.name).look_at(projectile_data["MousePosition"])
+			get_parent().get_parent().add_child(projectile_instance)
+			get_parent().get_parent().get_node(projectile_instance.name).look_at(projectile_data["MousePosition"])

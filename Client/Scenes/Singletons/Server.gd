@@ -89,11 +89,18 @@ remote func DespawnPlayer(player_id):
 #WORLD SYNCING
 func SendProjectile(projectile_data):
 	rpc_id(1, "SendPlayerProjectile", projectile_data)
+
 remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
 	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree:
 		pass
 	else:
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
+
+remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
+	if instance_tree != current_instance_tree:
+		pass
+	elif get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
 	
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
@@ -175,7 +182,10 @@ remote func ReturnChunkData(chunk_data, chunk):
 
 remote func ShowExpIndicator(xp):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").ShowExpIndicator(xp)
+
 #ENEMIES
+remote func CharacterDied(enemy_name):
+	print("OWch:::" + str(enemy_name))
+
 remote func SetHealth(max_health, current_health):
-	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
-	var player_health_bar = map_instance.get_node("YSort/player/PlayerUI/HealthUI").ChangeHealth(max_health, current_health)
+	GameUI.get_node("Health").ChangeHealth(max_health, current_health)

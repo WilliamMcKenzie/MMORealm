@@ -1,18 +1,19 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/Instances/Projectiles/Projectile.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Instances/Projectiles/Enemies/Projectile.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8.10921, 2 )
 
-[node name="SnakeBlast" type="Node2D"]
+[node name="ServerArrow" type="Node2D"]
 rotation = -1.6427
 script = ExtResource( 1 )
 
-[node name="ProjectileHitbox" type="Area2D" parent="."]
+[node name="EnemyProjectileHitbox" type="Area2D" parent="."]
 position = Vector2( -1.42847, 5.91266 )
+collision_layer = 16
 
-[node name="Hitbox" type="CollisionShape2D" parent="ProjectileHitbox"]
+[node name="Hitbox" type="CollisionShape2D" parent="EnemyProjectileHitbox"]
 position = Vector2( 1.38763, -5.91552 )
 rotation = 0.0698132
 scale = Vector2( 0.727, 0.619 )

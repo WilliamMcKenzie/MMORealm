@@ -10,7 +10,7 @@ onready var player_detection_zone = $Ai/PlayerDetection
 onready var hitbox_zone = $Hitbox
 var target = "None"
 var velocity
-func DealDamage(damage):
+func DealDamage(damage, player_id):
 	get_parent().get_parent().get_parent().enemy_list[name]["Health"] -= damage
 	if get_parent().get_parent().get_parent().enemy_list[name]["Health"] < 1:
 		queue_free()
@@ -38,4 +38,4 @@ func _on_PlayerDetection_area_exited(area):
 
 func _on_Hitbox_area_entered(area):
 	if "player_id" in area.get_parent():
-		DealDamage(area.get_parent().damage)
+		DealDamage(area.get_parent().damage, area.get_parent().player_id)

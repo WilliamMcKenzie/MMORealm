@@ -2,26 +2,31 @@ extends Node
 
 var item_data
 
+
 var enemy_data = {
 	"snake" : {
 		"health" : 40,
 		"defense" : 1,
-		"exp" : 20
+		"exp" : 20,
+		"behavior" : "Chase"
 	},
 	"crab" : {
 		"health" : 60,
 		"defense" : 1,
-		"exp" : 20
+		"exp" : 20,
+		"behavior" : "Wander"
 	},
 	"tribesman" : {
 		"health" : 100,
 		"defense" : 1,
-		"exp" : 20
+		"exp" : 20,
+		"behavior" : "Chase"
 	},
 	"shaman" : {
 		"health" : 200,
 		"defense" : 1,
-		"exp" : 20
+		"exp" : 20,
+		"behavior" : "Chase"
 	}
 }
 

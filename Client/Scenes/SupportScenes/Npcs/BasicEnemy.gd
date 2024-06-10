@@ -4,12 +4,34 @@ var distanceTraveled
 var velocity = Vector2.ZERO
 
 var damageIndicatorScene = preload("res://Scenes/SupportScenes/UI/DamageIndicator/DamageIndicator.tscn")
+var projectile_dict = {}
+
+func _physics_process(delta):
+	if projectile_dict != {}:
+		ShootProjectile()
 
 func _ready():
 	$Area2D.connect("area_entered", self, "OnHit")
 
 func MoveEnemy(new_position):
 	set_position(new_position)
+
+func ShootProjectile():
+	for projectile_time in projectile_dict.keys():
+		if projectile_time <= OS.get_system_time_msecs():
+			var projectile_data = projectile_dict[projectile_time]
+			var projectile_node = load("res://Scenes/SupportScenes/Projectiles/Enemies/" + str(projectile_data["Projectile"]) + "/" + str(projectile_data["Projectile"]) + ".tscn")
+			var projectile_instance = projectile_node.instance()
+			projectile_instance.position = projectile_data["Position"]
+			
+			#Set projectile data
+			projectile_instance.damage = projectile_data["Damage"]
+			projectile_instance.tile_range = projectile_data["TileRange"]
+			projectile_instance.set_direction(projectile_data["Direction"])
+			projectile_instance.look_at(projectile_data["TargetPosition"])
+			projectile_dict.erase(projectile_time)
+			get_parent().get_parent().add_child(projectile_instance)
+			get_parent().get_parent().get_node(projectile_instance.name).look_at(projectile_data["TargetPosition"])
 
 #Damage Taken section
 func OnHit(body):

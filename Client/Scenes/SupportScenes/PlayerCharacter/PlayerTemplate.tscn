@@ -779,7 +779,6 @@ material = SubResource( 52 )
 texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
-frame = 8
 script = ExtResource( 2 )
 
 [node name="Axis" type="Node2D" parent="."]

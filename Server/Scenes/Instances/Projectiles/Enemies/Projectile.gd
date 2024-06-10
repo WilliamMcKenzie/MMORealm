@@ -1,7 +1,7 @@
 extends Node2D
 
 var projectile_name
-var player_id
+var enemy_id
 
 var damage = 0
 var speed = 50
@@ -12,7 +12,7 @@ var initial_position = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 func _ready():
-	$ProjectileHitbox.connect("area_entered", self, "Interaction")
+	$EnemyProjectileHitbox.connect("area_entered", self, "Interaction")
 	SelfDestruct()
 
 func SetData(data):
@@ -35,10 +35,11 @@ func Interaction(body):
 	var player = body.get_parent().name == "PlayerCharacter"
 	var enemy = (piercing == false) and (body.get_parent().name == "Enemies")
 	var enemy_ai = body.get_parent().name == "Ai"
-	var wall = body.get_parent().name != "ChunkSensors" and body.name != "ProjectileHitbox" and body.get_parent().get_parent().name != "Enemies" and body.get_parent().get_parent().name != "Players"
+	var wall = body.get_parent().name != "ChunkSensors" and body.name != "PlayerProjectileHitbox" and body.name != "EnemyProjectileHitbox" and body.get_parent().get_parent().name != "Enemies" and body.get_parent().get_parent().name != "Players"
 	
-	if enemy_ai or player:
+	if enemy_ai or enemy:
 		pass
-	elif enemy or wall:
-		print(body.get_parent().name)
+	elif wall:
+		queue_free()
+	elif player and not piercing:
 		queue_free()

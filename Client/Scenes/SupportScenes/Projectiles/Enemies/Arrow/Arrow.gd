@@ -27,13 +27,11 @@ func _process(delta):
 	
 func selfDestruct():
 	yield(get_tree().create_timer(0.5), "timeout")
-	print("uque free")	
 	queue_free()
 	
 func set_direction(direction: Vector2):
 	velocity = direction.normalized()
 
 func interaction(body):
-	print(body)
-	if (piercing == false) and (body.get_parent().name == "Enemies") :
+	if (piercing == false) and (body.get_parent().get_parent().name == "Players") :
 		queue_free()
