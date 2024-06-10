@@ -54,10 +54,9 @@ onready var player_data = {
 			{
 				"stats" : {
 					"health" : 100,
-					"mana" : 100,
 					"attack" : 40,
 					"defense" : 40,
-					"speed" : 100,
+					"speed" : 40,
 					"dexterity" : 40,
 					"vitality" : 40,
 					"wisdom" : 40
@@ -111,7 +110,6 @@ onready var player_data = {
 			{
 				"stats" : {
 					"health" : 100,
-					"mana" : 100,
 					"attack" : 20,
 					"defense" : 40,
 					"speed" : 20,

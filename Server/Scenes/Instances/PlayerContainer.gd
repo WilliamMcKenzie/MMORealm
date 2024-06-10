@@ -5,6 +5,10 @@ var character
 
 var health = 100
 
+var stats = {
+	"health" : 100
+}
+
 func DealDamage(damage, enemy_id):
 	health -= damage
 	get_node("/root/Server").SetHealth(int(name), 100, health)
