@@ -80,6 +80,8 @@ remote func ReturnTokenVerificationResults(results):
 	else:
 		print("Login failed")
 
+#INVENTORY/ITEMS
+
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
 	get_node("../SceneHandler/"+GetCurrentInstance()).SpawnNewPlayer(player_id, spawn_position)
@@ -185,7 +187,7 @@ remote func ShowExpIndicator(xp):
 
 #ENEMIES
 remote func CharacterDied(enemy_name):
-	print("OWch:::" + str(enemy_name))
+	print("Dead")
 
 remote func SetHealth(max_health, current_health):
 	GameUI.get_node("Health").ChangeHealth(max_health, current_health)

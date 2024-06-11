@@ -155,7 +155,7 @@ scale = Vector2( 3, 3 )
 texture = ExtResource( 1 )
 hframes = 26
 vframes = 26
-frame = 32
+frame = 35
 
 [node name="Helm" type="Sprite" parent="Button/ItemsResizeContainer"]
 material = SubResource( 2 )
@@ -164,7 +164,7 @@ scale = Vector2( 3, 3 )
 texture = ExtResource( 1 )
 hframes = 26
 vframes = 26
-frame = 186
+frame = 238
 
 [node name="Armor" type="Sprite" parent="Button/ItemsResizeContainer"]
 material = SubResource( 2 )
@@ -173,4 +173,4 @@ scale = Vector2( 3, 3 )
 texture = ExtResource( 1 )
 hframes = 26
 vframes = 26
-frame = 108
+frame = 238

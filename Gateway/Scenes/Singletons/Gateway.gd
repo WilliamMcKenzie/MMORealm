@@ -28,6 +28,25 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
 
+remote func CreateCharacter(email, password):
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	var valid_request = true
+	if(email == ""):
+		valid_request = false
+	if(password == ""):
+		valid_request = false
+	if(password.length() < 7):
+		valid_request = false
+	if valid_request == false:
+		ReturnCreateCharacterRequest(valid_request, null, player_id)
+	else:
+		print("Request accepted")
+		Authenticate.CreateCharacter(email.to_lower(), password, player_id)
+
+func ReturnCreateCharacterRequest(result, new_character, player_id):
+	rpc_id(player_id, "ReturnCreateCharacterRequest", result, new_character)
+	network.disconnect_peer(player_id)
+
 remote func CreateAccountRequest(email, password):
 	var player_id = custom_multiplayer.get_rpc_sender_id()
 	var valid_request = true

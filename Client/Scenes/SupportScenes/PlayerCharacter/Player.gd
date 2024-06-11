@@ -34,16 +34,18 @@ func _ready():
 	PopulateInventory()
 
 func PopulateInventory():
-	SetSpriteData(WeaponSlot, gear.weapon.path)
-	SetSpriteData(AbilitySlot, gear.ability.path)
-	SetSpriteData(ArmorSlot, gear.armor.path)
-	SetSpriteData(RingSlot, gear.ring.path)
+	if gear.has("weapon"):
+		SetSpriteData(WeaponSlot, gear.weapon.path)
+	if gear.has("helmet"):
+		SetSpriteData(AbilitySlot, gear.helmet.path)
+	if gear.has("armor"):
+		SetSpriteData(ArmorSlot, gear.armor.path)
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
 	sprite.texture = spriteTexture
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
-	sprite.frame = path[3]
+	sprite.frame_coords = path[3]
 # warning-ignore:unused_argument
 func _physics_process(delta):
 	MovePlayer(delta)

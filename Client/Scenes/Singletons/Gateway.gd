@@ -8,7 +8,7 @@ var gateway_api = MultiplayerAPI.new()
 
 var email
 var password
-var new_account
+var task
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -22,11 +22,11 @@ func _process(delta):
 	custom_multiplayer.poll()
 	
 
-func ConnectToServer(_email, _password, _new_account):
+func ConnectToServer(_email, _password, _task):
 	network = NetworkedMultiplayerENet.new()
 	gateway_api = MultiplayerAPI.new()
 	email = _email
-	new_account = _new_account
+	task = _task
 	password = _password
 	
 	network.create_client(ip_address, port)
@@ -44,10 +44,21 @@ func _onConnectionFailed():
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
-	if(new_account):
+	if(task == 2):
+		RequestCreateCharacter()
+	if(task == 1):
 		RequestCreateAccount()
 	else:
 		RequestLogin()
+	
+func RequestCreateCharacter():
+	rpc_id(1, "CreateCharacter", email, password)
+	email = ""
+	password = ""
+remote func ReturnCreateCharacterRequest(result, new_character):
+	if result == true:
+		get_node("../SceneHandler/Home/CharacterSelection").characters.append(new_character)
+		get_node("../SceneHandler/Home/CharacterSelection").PopulateCharacters()
 	
 func RequestCreateAccount():
 	print("Requesting create account from gateway")

@@ -30,7 +30,7 @@ func SignupAttempt():
 		loginButton.disabled = true
 		signupButton.disabled = true
 		print("Attempting login!!")
-		Gateway.ConnectToServer(email, password, true)
+		Gateway.ConnectToServer(email, password, 1)
 
 func LoginAttempt():
 	if email == "" or password == "":
@@ -39,11 +39,13 @@ func LoginAttempt():
 		loginButton.disabled = true
 		signupButton.disabled = true
 		print("Attempting login!!")
-		Gateway.ConnectToServer(email, password, false)
+		Gateway.ConnectToServer(email, password, 0)
 func LoginResult(result):
 	loginButton.disabled = false
 	signupButton.disabled = false
 	if(result == true):
-		get_node("/root/SceneHandler/Home").selectionScreen()
+		get_node("/root/SceneHandler/Home").email = email
+		get_node("/root/SceneHandler/Home").password = password
+		get_node("/root/SceneHandler/Home").AuthenticatedUser(email)
 	else:
 		print("Invalid credentials")

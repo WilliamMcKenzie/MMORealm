@@ -22,6 +22,12 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Authentication server connection succeeded!")
 
+func CreateCharacter(email, password, player_id):
+	rpc_id(1, "CreateCharacter", email, password, player_id)
+
+remote func ReturnCreateCharacterRequest(result, new_character, player_id):
+	Gateway.ReturnCreateCharacterRequest(result, new_character, player_id)
+
 func CreateAccount(email, password, player_id):
 	print("Sending signal...")
 	rpc_id(1, "CreateAccount", email, password, player_id)

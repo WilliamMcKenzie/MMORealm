@@ -45,7 +45,6 @@ func _Peer_Disconnected(id):
 	rpc_id(0, "DespawnPlayer", id)
 
 #INVENTORY/ITEMS
-
 remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()

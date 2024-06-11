@@ -25,21 +25,6 @@ remote func CreateAccount(email, password, player_id):
 	var gateway_id = get_tree().get_rpc_sender_id()
 	var result
 	var message
-	
-	#Temporary no checks until we have databsae
-	result = true
-	message = 3
-	#This is where we would attatch the email/password to a database
-	var salt = GenerateSalt()
-	var hashed_password = GenerateHashedPassword(password, salt)
-	print("Returning result...")
-
-	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
-
-remote func CreateAccountREAL(email, password, player_id):
-	var gateway_id = get_tree().get_rpc_sender_id()
-	var result
-	var message
 	if PlayerData.player_data.has(email):
 		result = false
 		message = 2
@@ -49,11 +34,61 @@ remote func CreateAccountREAL(email, password, player_id):
 		#This is where we would attatch the email/password to a database
 		var salt = GenerateSalt()
 		var hashed_password = GenerateHashedPassword(password, salt)
-		PlayerData.player_data[email] = {"password": hashed_password, "salt": salt}
+		PlayerData.player_data[email] = {"password": hashed_password, "salt": salt, "account_data": {
+			"character_slots": 1,
+			"gold": 4000,
+			"characters":[]
+		}}
 		PlayerData.savePlayerIDs()
 	print("Returning result...")
 	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
 		
+remote func CreateCharacter(email, password, player_id):
+	if not PlayerData.player_data.has(email):
+		return
+	
+	var new_character = {
+		"stats" : {
+			"health" : 100,
+			"attack" : 30,
+			"defense" : 0,
+			"speed" : 30,
+			"dexterity" : 30,
+			"vitality" : 30
+		},
+		"level" : 1,
+		"class" : "Apprentice",
+		"gear" : {
+			"weapon" : {
+				"name": "Emerald Staff",
+				"description" : "A simple yet effective weapon.",
+				"damage" : [15,25],
+				"rof" : 100,
+				"stats" : {
+					
+				},
+				"range" : 8,
+				"tier" : 0,
+				"projectile" : "EmeraldBlast",
+				"path" : ["items/items_8x8.png", 26, 26, Vector2(0,1)]
+			}
+		},
+		"path" : ["characters/characters_8x8.png", 13, 26, Vector2(0,0)]
+	}
+	
+	var gateway_id = get_tree().get_rpc_sender_id()
+	var result = false
+	var account_data = PlayerData.player_data[email].account_data
+	
+	var char_slots = account_data.character_slots
+	var characters = account_data.characters
+	
+	if char_slots > characters.size():
+		result = true
+		PlayerData.player_data[email].account_data.characters.append(new_character)
+		
+	rpc_id(gateway_id, "ReturnCreateCharacterRequest", result, new_character, player_id)
+
 func GenerateSalt():
 	randomize()
 	var salt = str(randi()).sha256_text()
@@ -68,21 +103,6 @@ func GenerateHashedPassword(password, salt):
 	return hashed_password
 
 remote func AuthenticatePlayer(email, password, player_id):
-	var token
-	var hashed_password
-	var result
-	var gateway_id = get_tree().get_rpc_sender_id()
-	
-	#Temporary no checks until we get database
-	result = true
-	randomize()
-	token = str(randi()).sha256_text() + str(OS.get_unix_time())
-	var gameserver = "GameServer1"
-	GameServers.DistributeLogToken(token, gameserver)
-	
-	rpc_id(gateway_id, "AuthenticateResults", result, player_id, token)
-
-remote func AuthenticatePlayerREAL(email, password, player_id):
 	var token
 	var hashed_password
 	var result

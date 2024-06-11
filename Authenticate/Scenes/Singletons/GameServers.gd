@@ -26,7 +26,6 @@ func StartServer():
 	custom_multiplayer.connect("network_peer_connected", self, "_Peer_Connected")
 	custom_multiplayer.connect("network_peer_disconnected", self, "_Peer_Disconnected")
 
-
 func _Peer_Connected(id):
 	print("Game server " + str(id) + " has connected!")
 	gameserverlist["GameServer1"] = id
