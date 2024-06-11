@@ -13,7 +13,6 @@ var velocity = Vector2.ZERO
 
 func _ready():
 	$PlayerProjectileHitbox.connect("area_entered", self, "Interaction")
-	SelfDestruct()
 
 func SetData(data):
 	damage = data.damage
@@ -23,11 +22,9 @@ func SetData(data):
 	
 func _process(delta):
 	position += velocity * delta
-	
-func SelfDestruct():
-	yield(get_tree().create_timer(0.5), "timeout")
-	queue_free()
-	
+	if (position - initial_position).length()/8 > tile_range:
+		queue_free()
+
 func SetDirection(direction: Vector2):
 	velocity = direction.normalized()
 

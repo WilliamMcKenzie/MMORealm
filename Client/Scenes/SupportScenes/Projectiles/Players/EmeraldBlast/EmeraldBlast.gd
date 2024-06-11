@@ -2,7 +2,7 @@ extends Node2D
 
 var damage
 var speed = 50
-var tile_range
+var tile_range = 7
 var piercing
 
 var initial_position = Vector2.ZERO
@@ -23,7 +23,8 @@ func SetData(data):
 	
 func _process(delta):
 	position += velocity * delta
-	print(position - initial_position)
+	if (position - initial_position).length()/8 > tile_range:
+		queue_free()
 	
 func set_direction(direction: Vector2):
 	velocity = direction.normalized()

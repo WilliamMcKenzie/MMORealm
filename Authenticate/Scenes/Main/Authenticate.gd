@@ -52,7 +52,7 @@ remote func CreateCharacter(email, password, player_id):
 			"health" : 100,
 			"attack" : 30,
 			"defense" : 0,
-			"speed" : 30,
+			"speed" : 100,
 			"dexterity" : 30,
 			"vitality" : 30
 		},

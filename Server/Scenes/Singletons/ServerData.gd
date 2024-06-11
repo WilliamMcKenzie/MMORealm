@@ -22,7 +22,7 @@ var enemy_data = {
 		"health" : 40,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Chase"
+		"behavior" : "Wander"
 	},
 	"crab" : {
 		"health" : 60,
@@ -34,13 +34,19 @@ var enemy_data = {
 		"health" : 100,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Chase"
+		"behavior" : "Wander"
 	},
 	"shaman" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Chase"
+		"behavior" : "Wander"
+	},
+	"rock_golem" : {
+		"health" : 200,
+		"defense" : 1,
+		"exp" : 20,
+		"behavior" : "Wander"
 	}
 }
 
@@ -57,7 +63,13 @@ var projectile_data = {
 	"Arrow" : {
 		"damage" : 10,
 		"speed" : 50,
-		"lifetime" : 0.5,
+		"tile_range" : 8,
+		"piercing" : false
+	},
+	"EmeraldBlast" : {
+		"damage" : 10,
+		"speed" : 50,
+		"tile_range" : 8,
 		"piercing" : false
 	}
 }

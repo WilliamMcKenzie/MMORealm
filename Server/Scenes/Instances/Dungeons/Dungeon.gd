@@ -40,9 +40,12 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	projectile_instance.player_id = player_id
 	projectile_instance.projectile_name = projectile_data["Projectile"]
 	projectile_instance.position = projectile_data["Position"] + position
+	projectile_instance.initial_position = projectile_data["Position"] + position
 	projectile_instance.tile_range = projectile_data["TileRange"]
 	projectile_instance.SetDirection(projectile_data["Direction"])
 	projectile_instance.look_at(projectile_data["MousePosition"])
+	
+	print(projectile_instance.position)
 	
 	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
 	projectile_instance.SetData(data)
@@ -53,14 +56,18 @@ func SpawnEnemyProjectile(projectile_data, enemy_id):
 	projectile_instance.enemy_id = enemy_id
 	projectile_instance.projectile_name = projectile_data["Projectile"]
 	projectile_instance.position = projectile_data["Position"]
+	projectile_instance.initial_position = projectile_data["Position"]
 	projectile_instance.tile_range = projectile_data["TileRange"]
 	projectile_instance.SetDirection(projectile_data["Direction"])
 	projectile_instance.look_at(projectile_data["TargetPosition"])
 	
 	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
 	projectile_instance.SetData(data)
-	get_node("/root/Server").SendEnemyProjectile(projectile_data, ["nexus"], enemy_id, self.position)
 	
+	var instance_tree = get_parent().object_list[name]["InstanceTree"].duplicate(true)
+	instance_tree.append(name)
+	
+	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id, position)
 	add_child(projectile_instance)
 
 func SpawnEnemy(enemy, enemy_id):
