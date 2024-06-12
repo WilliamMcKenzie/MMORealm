@@ -102,8 +102,6 @@ func RemovePlayer(player_container):
 	var player_container_node = get_node("YSort/Players").remove_child(player_container)
 
 func SpawnPlayerProjectile(projectile_data, player_id):
-	print("Spawning")
-	
 	var projectile_instance = player_projectiles["arrow"].instance()
 	
 	projectile_instance.character = get_node("YSort/Players/"+str(player_id)).character
