@@ -91,6 +91,11 @@ remote func RecieveCharacterData(character):
 	
 	GameUI.SetCharacterData(character)
 
+func EquipItem(index):
+	rpc_id(1, "EquipItem", index)
+func ChangeItem(index_to_change, from_index):
+	rpc_id(1, "ChangeItem", index_to_change, from_index)
+
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
 	get_node("../SceneHandler/"+GetCurrentInstance()).SpawnNewPlayer(player_id, spawn_position)

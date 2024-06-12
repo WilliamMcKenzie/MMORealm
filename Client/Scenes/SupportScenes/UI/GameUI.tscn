@@ -26,3 +26,4 @@ script = ExtResource( 1 )
 [node name="Health" parent="." instance=ExtResource( 4 )]
 
 [node name="Inventory" parent="." instance=ExtResource( 5 )]
+visible = false

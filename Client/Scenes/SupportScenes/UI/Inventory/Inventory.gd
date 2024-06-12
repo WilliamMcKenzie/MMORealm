@@ -1,5 +1,8 @@
 extends GridContainer
 
+func UseItem(index):
+	Server.EquipItem(index)
+
 func SetInventory(inventory):
 	var inventory_slots = $ResizeContainer.get_children()
 	var i = 0

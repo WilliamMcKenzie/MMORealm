@@ -12,7 +12,7 @@ onready var hitbox_zone = $EnemyHitbox
 var wander_range = 15
 var initial_position
 var target
-var velocity
+var velocity = Vector2(1000, 1000)
 
 func _ready():
 	initial_position = position
@@ -54,7 +54,7 @@ func _physics_process(delta):
 		
 		position += velocity
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
-			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
+			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
 
 		if (target - position).length() <= 2:
 			if (initial_position-position).length() >= wander_range:

@@ -44,11 +44,22 @@ func _Peer_Disconnected(id):
 	player_state_collection.erase(id)
 	rpc_id(0, "DespawnPlayer", id)
 
-#INVENTORY/ITEMS
+#INVENTORY/ITEMS	
+	
 remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
 	rpc_id(player_id, "ReturnPlayerData", player_data)
+
+remote func EquipItem(index):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	var player_data = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).EquipItem(index)
+
+remote func ChangeItem(index_to_change, from_index):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	var player_data = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(index_to_change, from_index)
 
 #PLAYER SYNCING
 remote func FetchServerTime(client_time):
@@ -130,11 +141,8 @@ remote func SendPlayerProjectile(projectile_data):
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).SpawnPlayerProjectile(projectile_data, player_id)
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
-func SendEnemyProjectile(projectile_data, instance_tree, enemy_id, position_offset):
-	var data_to_send = projectile_data.duplicate(true)
-	data_to_send["Position"] = data_to_send["Position"] - position_offset
-	data_to_send["TargetPosition"] = data_to_send["TargetPosition"] - position_offset
-	rpc("RecieveEnemyProjectile", data_to_send, instance_tree, enemy_id)
+func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
+	rpc("RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
 
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
@@ -200,8 +208,9 @@ func StringifyInstanceTree(instance_tree):
 remote func RecieveChatMessage(message):
 	var message_words = message.split(" ")
 	var player_id = get_tree().get_rpc_sender_id()
-	var player_position = player_state_collection[player_id]["P"]
 	var instance_tree = player_state_collection[player_id]["I"]
+	var player_position = player_state_collection[player_id]["P"]
+	
 	if len(message) >= 1:
 		if message[0] == "/":
 			if message_words[0] == "/tp":
@@ -224,9 +233,9 @@ remote func RecieveChatMessage(message):
 				
 				if valid_enemy and multiple_enemies:
 					for i in range(int(message_words[2])):
-						SpawnNPC(message_words[1], instance_tree, player_position)
+						SpawnNPC(message_words[1], instance_tree, player_position - get_node("Instances/"+StringifyInstanceTree(instance_tree)).position)
 				elif valid_enemy:
-					SpawnNPC(message_words[1], instance_tree, player_position)
+					SpawnNPC(message_words[1], instance_tree, player_position - get_node("Instances/"+StringifyInstanceTree(instance_tree)).position)
 					rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
 				else:
 					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "System")
