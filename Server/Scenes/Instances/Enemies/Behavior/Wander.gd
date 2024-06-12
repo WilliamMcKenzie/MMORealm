@@ -46,7 +46,7 @@ func EnemyCombat():
 func _physics_process(delta):
 	if current_state == ENGAGE:
 		
-		EnemyCombat()
+		#EnemyCombat()
 		
 		var y_move = -sin(position.angle_to_point(target)) * 0.2
 		var x_move = -cos(position.angle_to_point(target)) * 0.2
