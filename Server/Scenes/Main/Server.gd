@@ -4,7 +4,7 @@ var max_players = 100
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
-var expected_tokens = []
+var expected_tokens = {}
 
 #We need to make each instance have a unique posiition and not intersect with one another
 var instance_positions = { Vector2.ZERO : true }
@@ -78,13 +78,13 @@ func SendWorldState(id, world_state):
 func _on_TokenExpiration_timeout():
 	var current_time = OS.get_unix_time()
 	var token_time
-	if expected_tokens == []:
+	if expected_tokens == {}:
 		pass
 	else:
-		for i in range(expected_tokens.size() -1, -1, -1):
-			token_time = int(expected_tokens[i].right(64))
+		for i in range(expected_tokens.keys().size() -1, -1, -1):
+			token_time = int(expected_tokens.keys()[i].right(64))
 			if current_time - token_time >= 30:
-				expected_tokens.remove(i)
+				expected_tokens.keys().remove(i)
 
 #Make sure if players manually set tokens to expire say a year from now, they still get kicked
 func _on_VerificationExpiration_timeout():
@@ -93,14 +93,18 @@ func _on_VerificationExpiration_timeout():
 func FetchToken(player_id):
 	rpc_id(player_id, "FetchToken")
 
-remote func ReturnToken(token):
+remote func ReturnToken(token, character_index):
 	var player_id = get_tree().get_rpc_sender_id()
-	PlayerVerification.Verify(player_id, token)
+	PlayerVerification.Verify(player_id, token, character_index)
 
 func ReturnTokenVerificationResults(player_id, result):
 	rpc_id(player_id, "ReturnTokenVerificationResults", result)
 	if result == true:
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
+
+#CHARACTERS
+func SendCharacterData(player_id, character):
+	rpc_id(int(player_id), "RecieveCharacterData", character)
 
 #NPCS/ENEMIES
 func SpawnNPC(enemy_name, instance_tree, spawn_position):

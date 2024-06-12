@@ -102,7 +102,11 @@ func RemovePlayer(player_container):
 	var player_container_node = get_node("YSort/Players").remove_child(player_container)
 
 func SpawnPlayerProjectile(projectile_data, player_id):
+	print("Spawning")
+	
 	var projectile_instance = player_projectiles["arrow"].instance()
+	
+	projectile_instance.character = get_node("YSort/Players/"+str(player_id)).character
 	projectile_instance.player_id = player_id
 	projectile_instance.projectile_name = projectile_data["Projectile"]
 	projectile_instance.position = projectile_data["Position"] + position
@@ -110,8 +114,6 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	projectile_instance.tile_range = projectile_data["TileRange"]
 	projectile_instance.SetDirection(projectile_data["Direction"])
 	projectile_instance.look_at(projectile_data["MousePosition"])
-	
-	print(projectile_instance.position)
 	
 	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
 	projectile_instance.SetData(data)

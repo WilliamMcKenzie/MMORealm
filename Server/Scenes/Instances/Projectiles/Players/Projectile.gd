@@ -2,6 +2,7 @@ extends Node2D
 
 var projectile_name
 var player_id
+var character
 
 var damage = 0
 var speed = 50

@@ -29,6 +29,8 @@ var last_shot_time = 0
 onready var animationTree = $AnimationTree
 
 func _ready():
+	print(gear)
+	
 	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(gear.weapon.projectile) + "/" + str(gear.weapon.projectile) + ".tscn"
 	projectile = load(projectile_path)
 	PopulateInventory()
@@ -129,7 +131,7 @@ func ShootProjectile():
 	#Send projectile to server
 	var projectile_data = {
 		"Damage":damage,
-		"Position":position,
+		"Position":$Axis.global_position,
 		"Projectile":gear.weapon.projectile,
 		"MousePosition":mouse_position,
 		"Direction":direction,

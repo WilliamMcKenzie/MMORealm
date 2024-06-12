@@ -8,6 +8,8 @@ onready var ArmorEle = $Button/ItemsResizeContainer/Armor
 onready var containerButton = $Button
 
 var character
+var character_index
+
 var characterPath = ["characters/characters_8x8.png", 13, 26, Vector2(0,0)]
 var level = 1
 var _class = "Apprentice"
@@ -32,12 +34,12 @@ func AssignParameters(_character):
 	
 func _ready():
 	LevelEle.text = _class + " - Level " + str(level)
-	setSpriteData(CharacterSpriteEle, characterPath)
-	setSpriteData(WeaponEle, weaponPath)
-	setSpriteData(ArmorEle, armorPath)
+	SetSpriteData(CharacterSpriteEle, characterPath)
+	SetSpriteData(WeaponEle, weaponPath)
+	SetSpriteData(ArmorEle, armorPath)
 	containerButton.connect("pressed", self, "EnterGame")
 	
-func setSpriteData(sprite, path):
+func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
 	print(path[0])
 	sprite.texture = spriteTexture
@@ -46,4 +48,4 @@ func setSpriteData(sprite, path):
 	sprite.frame_coords = path[3]
 
 func EnterGame():
-	get_parent().get_parent().EnterGame(character)
+	get_parent().get_parent().EnterGame(character_index, character)
