@@ -8,10 +8,8 @@ enum {
 var current_state = IDLE
 onready var player_detection_zone = $Ai/PlayerDetection
 onready var hitbox_zone = $Hitbox
-var target = "None"
-var velocity
-
-
+var target
+var velocity = Vector2(1000, 1000)
 
 func DealDamage(damage, player_id):
 	get_parent().get_parent().get_parent().enemy_list[name]["Health"] -= damage
@@ -36,7 +34,7 @@ func _on_PlayerDetection_area_entered(area):
 
 func _on_PlayerDetection_area_exited(area):
 	if area.get_parent().name == "PlayerCharacter":
-		target = "None"
+		target = null
 		current_state = IDLE
 
 func _on_Hitbox_area_entered(area):

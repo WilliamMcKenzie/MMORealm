@@ -33,8 +33,15 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("Game server " + str(id) + " has disconnected!")
 
-func DistributeLogToken(token, gameserver):
+func DistributeLogToken(token, email, gameserver):
 	var gameserver_peer_id = gameserverlist[gameserver]
-	rpc_id(gameserver_peer_id, "RecieveLoginToken", token)
+	
+	rpc_id(gameserver_peer_id, "RecieveLoginToken", token, email)
+
+remote func GetAccountData(player_id, email, instance_tree):
+	var gameserver_peer_id = custom_multiplayer.get_rpc_sender_id()
+	var account_data = PlayerData.GetPlayerData(email).account_data
+	
+	rpc_id(gameserver_peer_id, "ReturnAccountData", player_id, instance_tree, account_data)
 
 

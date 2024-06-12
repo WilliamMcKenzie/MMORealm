@@ -31,6 +31,7 @@ func ConnectToServer(_email, _password, _task):
 	
 	network.create_client(ip_address, port)
 	set_custom_multiplayer(gateway_api)
+	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
 

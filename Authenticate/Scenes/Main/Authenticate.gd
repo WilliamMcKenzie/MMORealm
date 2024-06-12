@@ -73,6 +73,28 @@ remote func CreateCharacter(email, password, player_id):
 				"path" : ["items/items_8x8.png", 26, 26, Vector2(0,1)]
 			}
 		},
+		"inventory" : [
+			{
+				"name": "Ultimate Bow",
+				"description" : "A simple yet effective weapon.",
+				"damage" : [15,25],
+				"rof" : 200,
+				"stats" : {
+					
+				},
+				"range" : 8,
+				"tier" : 0,
+				"projectile" : "EmeraldBlast",
+				"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)]
+			},
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+		],
 		"path" : ["characters/characters_8x8.png", 13, 26, Vector2(0,0)]
 	}
 	
@@ -119,5 +141,8 @@ remote func AuthenticatePlayer(email, password, player_id):
 			randomize()
 			token = str(randi()).sha256_text() + str(OS.get_unix_time())
 			var gameserver = "GameServer1"
-			GameServers.DistributeLogToken(token, gameserver)
+			
+			#Change this to instead of distrbuting account data disrbute email
+			#Then on the game server we can use email to get account data from this auth server seperately
+			GameServers.DistributeLogToken(token, email, gameserver)
 	rpc_id(gateway_id, "AuthenticateResults", result, player_id, token)

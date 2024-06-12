@@ -61,7 +61,7 @@ position = Vector2( 0, -1 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
-frame = 104
+frame = 105
 
 [node name="Area2D" type="Area2D" parent="."]
 visible = false
