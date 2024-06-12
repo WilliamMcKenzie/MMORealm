@@ -7,9 +7,9 @@ func _ready():
 
 #Interface Section
 func OnBag(body):
-	if body.get_parent().has_node("Camera2D"):
+	if body.get_parent().has_method("DefinePlayerState"):
 		GameUI.get_node("ShowBag").visible = true
 
 func OffBag(body):
-	if body.get_parent().has_node("Camera2D"):
+	if body.get_parent().has_method("DefinePlayerState"):
 		GameUI.get_node("ShowBag").visible = false
