@@ -1,29 +1,15 @@
-[gd_scene load_steps=3 format=2]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4, 4 )
+[gd_scene load_steps=2 format=2]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 76.0066
 
 [node name="Enemy" type="Node2D" groups=["NPCEnemies"]]
 
-[node name="EnemyHitbox" type="Area2D" parent="."]
-collision_layer = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyHitbox"]
-position = Vector2( 4, 4 )
-shape = SubResource( 1 )
-
-[node name="Ai" type="Node2D" parent="."]
-
-[node name="PlayerDetection" type="Area2D" parent="Ai"]
+[node name="PlayerDetection" type="Area2D" parent="."]
 collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ai/PlayerDetection"]
-position = Vector2( 4, 4 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
 shape = SubResource( 2 )
 
-[connection signal="area_entered" from="EnemyHitbox" to="." method="_on_Hitbox_area_entered"]
-[connection signal="area_entered" from="Ai/PlayerDetection" to="." method="_on_PlayerDetection_area_entered"]
-[connection signal="area_exited" from="Ai/PlayerDetection" to="." method="_on_PlayerDetection_area_exited"]
+[connection signal="area_entered" from="PlayerDetection" to="." method="_on_PlayerDetection_area_entered"]
+[connection signal="area_exited" from="PlayerDetection" to="." method="_on_PlayerDetection_area_exited"]

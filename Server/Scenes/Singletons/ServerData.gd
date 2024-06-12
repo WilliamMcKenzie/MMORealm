@@ -61,7 +61,7 @@ var enemy_projectile_data = {
 
 var projectile_data = {
 	"Arrow" : {
-		"damage" : 10,
+		"damage" : 0,
 		"speed" : 50,
 		"tile_range" : 8,
 		"piercing" : false

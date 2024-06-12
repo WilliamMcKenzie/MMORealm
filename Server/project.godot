@@ -22,6 +22,7 @@ HubConnection="*res://Scenes/Singletons/HubConnection.gd"
 StateProcessing="*res://Scripts/StateProcessing.gd"
 Dungeons="*res://Scripts/Dungeons.gd"
 Instances="*res://Scripts/Instances.gd"
+EnemyHandler="*res://Scenes/Singletons/EnemyHandler.gd"
 
 [global]
 

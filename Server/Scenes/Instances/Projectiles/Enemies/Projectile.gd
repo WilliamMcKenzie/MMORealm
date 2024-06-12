@@ -23,7 +23,7 @@ func SetData(data):
 func _process(delta):
 	position += velocity * delta
 	if (position - initial_position).length()/8 > tile_range:
-		queue_free()
+		hide()
 	
 func SetDirection(direction: Vector2):
 	velocity = direction.normalized()
@@ -37,6 +37,6 @@ func Interaction(body):
 	if enemy_ai or enemy:
 		pass
 	elif wall:
-		queue_free()
+		hide()
 	elif player and not piercing:
-		queue_free()
+		hide()

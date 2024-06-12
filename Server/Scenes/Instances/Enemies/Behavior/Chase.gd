@@ -15,9 +15,8 @@ func DealDamage(damage, player_id):
 	if get_parent().get_parent().get_parent().enemy_list[name]["Health"] < 1:
 		queue_free()
 
-func _physics_process(delta):
-	if current_state == ENGAGE:
-		
+func movement():
+			
 		var y_move = -sin(position.angle_to_point(target.position)) * 0.7
 		var x_move = -cos(position.angle_to_point(target.position)) * 0.7
 		velocity = Vector2(x_move, y_move)
@@ -25,7 +24,13 @@ func _physics_process(delta):
 		position += velocity
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
 			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
+	
 
+
+func _physics_process(delta):
+		if current_state == ENGAGE:
+			movement()
+		
 func _on_PlayerDetection_area_entered(area):
 	if area.get_parent().name == "PlayerCharacter":
 		target = area.get_parent().get_parent()
@@ -35,7 +40,3 @@ func _on_PlayerDetection_area_exited(area):
 	if area.get_parent().name == "PlayerCharacter":
 		target = "None"
 		current_state = IDLE
-
-func _on_Hitbox_area_entered(area):
-	if "player_id" in area.get_parent():
-		DealDamage(area.get_parent().damage, area.get_parent().player_id)
