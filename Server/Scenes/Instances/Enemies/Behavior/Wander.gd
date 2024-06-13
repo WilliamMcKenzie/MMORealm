@@ -45,6 +45,7 @@ func EnemyCombat():
 func movement(delta):
 		if current_state == ENGAGE:
 		
+<<<<<<< HEAD
 			EnemyCombat()
 			
 			var y_move = -sin(position.angle_to_point(target)) * delta * 5
@@ -60,6 +61,17 @@ func movement(delta):
 					target = initial_position
 				else:
 					target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+=======
+		EnemyCombat()
+		
+		var y_move = -sin(position.angle_to_point(target)) * 0.2
+		var x_move = -cos(position.angle_to_point(target)) * 0.2
+		velocity = Vector2(x_move, y_move)
+		
+		position += velocity
+		if get_parent().get_parent().get_parent().enemy_list.has(name):
+			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
+>>>>>>> parent of fb21986 (removed combat temporarily)
 
 func _on_PlayerDetection_area_entered(area):
 	pass
