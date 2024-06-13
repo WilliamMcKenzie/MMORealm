@@ -102,9 +102,11 @@ func _on_VerificationExpiration_timeout():
 	PlayerVerification.VerificationExpiration()
 
 func FetchToken(player_id):
+	print("fetching")
 	rpc_id(player_id, "FetchToken")
 
 remote func ReturnToken(token, character_index):
+	print("Token time")
 	var player_id = get_tree().get_rpc_sender_id()
 	PlayerVerification.Verify(player_id, token, character_index)
 

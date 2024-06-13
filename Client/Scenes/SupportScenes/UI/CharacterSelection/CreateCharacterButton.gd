@@ -12,4 +12,3 @@ func CreateCharacter():
 	
 	Gateway.ConnectToServer(email, password, 2)
 	queue_free()
-	

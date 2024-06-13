@@ -10,6 +10,7 @@ func Start(player_id):
 	main_interface.FetchToken(player_id)
 
 func Verify(player_id, token, character_index):
+	print(main_interface.expected_tokens)
 	var token_verification = false
 	while OS.get_unix_time() - int(token.right(64)) <= 30:
 		if main_interface.expected_tokens.has(token):
@@ -21,7 +22,7 @@ func Verify(player_id, token, character_index):
 		else:
 			print("token:" + token)
 			print(main_interface.expected_tokens)
-			yield(get_tree().create_timer(2), "timeout")
+			yield(get_tree().create_timer(1), "timeout")
 	main_interface.ReturnTokenVerificationResults(player_id, token_verification)
 	if(token_verification == false): #make sure they are disconnected
 		awaiting_verification.erase(player_id)
@@ -30,9 +31,12 @@ func Verify(player_id, token, character_index):
 func CreatePlayerContainer(player_id, email, character_index):
 	var instance_tree = get_node("/root/Server").player_state_collection[player_id]["I"]
 	var new_player_container = player_container_scene.instance()
+	
+	print(character_index)
 	new_player_container.email = email
 	new_player_container.name = str(player_id)
 	new_player_container.character_index = character_index
+	
 	get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(new_player_container)
 	FillPlayerContainer(player_id, email, instance_tree)
 

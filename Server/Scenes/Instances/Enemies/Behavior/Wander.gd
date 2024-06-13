@@ -6,12 +6,8 @@ enum {
 }
 
 var current_state = ENGAGE
-<<<<<<< HEAD
-onready var player_detection_zone = $PlayerDetection
-=======
-onready var player_detection_zone = $Ai/PlayerDetection
-onready var hitbox_zone = $EnemyHitbox
->>>>>>> parent of f9f374e (Changes resolution to 800x360 and aligned UI elements)
+#onready var player_detection_zone = $Ai/PlayerDetection
+#onready var hitbox_zone = $EnemyHitbox
 
 var wander_range = 15
 var initial_position
@@ -49,37 +45,22 @@ func EnemyCombat():
 
 func _physics_process(delta):
 	if current_state == ENGAGE:
-			EnemyCombat()
+		EnemyCombat()
 			
-			var y_move = -sin(position.angle_to_point(target)) * delta * 5
-			var x_move = -cos(position.angle_to_point(target)) * delta * 5
-			velocity = Vector2(x_move, y_move)
-			
-			position += velocity
-			if get_parent().get_parent().get_parent().enemy_list.has(name):
-				get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
-
-			if (target - position).length() <= 5:
-				if (initial_position-position).length() >= wander_range:
-					target = initial_position
-				else:
-					target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
-					
-		#EnemyCombat()
-		
-		var y_move = -sin(position.angle_to_point(target)) * 0.2
-		var x_move = -cos(position.angle_to_point(target)) * 0.2
+		var y_move = -sin(position.angle_to_point(target)) * delta * 5
+		var x_move = -cos(position.angle_to_point(target)) * delta * 5
 		velocity = Vector2(x_move, y_move)
-		
+			
 		position += velocity
 		if get_parent().get_parent().get_parent().enemy_list.has(name):
-			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
+			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position - get_parent().get_parent().get_parent().position
 
-		if (target - position).length() <= 2:
+		if (target - position).length() <= 5:
 			if (initial_position-position).length() >= wander_range:
 				target = initial_position
 			else:
-				target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+				target = position + Vector2(rand_range(-7,7),rand_range(-7,7))		
+		#EnemyCombat()
 
 func _on_PlayerDetection_area_entered(area):
 	pass

@@ -12,7 +12,8 @@ var initial_position = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 func _ready():
-	$EnemyProjectileHitbox.connect("area_entered", self, "Interaction")
+	#$EnemyProjectileHitbox.connect("area_entered", self, "Interaction")
+	pass
 
 func SetData(data):
 	damage = data.damage
