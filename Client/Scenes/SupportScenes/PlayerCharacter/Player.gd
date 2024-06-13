@@ -8,7 +8,6 @@ var health
 
 var expIndicatorScene = preload("res://Scenes/SupportScenes/UI/ExpIndicator/ExpIndicator.tscn")
 
-
 onready var WeaponSlot = $PlayerUI/Gear/Weapon
 onready var AbilitySlot = $PlayerUI/Gear/Ability
 onready var ArmorSlot = $PlayerUI/Gear/Armor
@@ -46,6 +45,7 @@ func SetSpriteData(sprite, path):
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
 	sprite.frame_coords = path[3]
+
 # warning-ignore:unused_argument
 func _physics_process(delta):
 	MovePlayer(delta)
