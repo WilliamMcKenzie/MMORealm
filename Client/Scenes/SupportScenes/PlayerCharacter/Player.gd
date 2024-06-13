@@ -8,7 +8,6 @@ var health
 
 var expIndicatorScene = preload("res://Scenes/SupportScenes/UI/ExpIndicator/ExpIndicator.tscn")
 
-
 onready var WeaponSlot = $PlayerUI/Gear/Weapon
 onready var AbilitySlot = $PlayerUI/Gear/Ability
 onready var ArmorSlot = $PlayerUI/Gear/Armor
@@ -29,8 +28,6 @@ var last_shot_time = 0
 onready var animationTree = $AnimationTree
 
 func _ready():
-	print(gear)
-	
 	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(gear.weapon.projectile) + "/" + str(gear.weapon.projectile) + ".tscn"
 	projectile = load(projectile_path)
 	PopulateInventory()
@@ -48,6 +45,7 @@ func SetSpriteData(sprite, path):
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
 	sprite.frame_coords = path[3]
+
 # warning-ignore:unused_argument
 func _physics_process(delta):
 	MovePlayer(delta)
