@@ -2,6 +2,7 @@ extends Node
 
 var collision_layer = 1
 
+var instance_tree = []
 var player_list = {}
 var enemy_list = {}
 var object_list = {}
@@ -15,7 +16,11 @@ var enemy_projectiles = {
 var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
 
 func _ready():
-	get_node("/root/Server").SpawnNPC("crab", ["nexus"], Vector2.ZERO)
+	if name != "nexus":
+		instance_tree = get_parent().object_list[name]["InstanceTree"].duplicate(true)
+		instance_tree.append(name)
+	else:
+		instance_tree = ["nexus"]
 
 func _physics_process(delta):
 	for enemy_id in enemy_list.keys():
@@ -27,6 +32,7 @@ func UpdatePlayer(player_id, player_state):
 		player_list[str(player_id)]["Position"] = player_state["P"]
 		player_list[str(player_id)]["Animation"] = player_state["A"]
 		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["Position"]
+
 func SpawnPlayer(player_container):
 	if player_container:
 		player_list[player_container.name] = {
@@ -35,16 +41,28 @@ func SpawnPlayer(player_container):
 				"Animation": { "A" : "Idle", "C" : Vector2.ZERO }
 			}
 		get_node("YSort/Players").add_child(player_container)
+
 func RemovePlayer(player_container):
 	if player_container:
 		player_list.erase(player_container.name)
 		get_node("YSort/Players").remove_child(player_container)
 
+func SpawnEnemy(enemy, enemy_id):
+	var new_enemy = enemy_8x8.instance()
+	enemy_list[str(enemy_id)] = enemy
+	new_enemy.position = enemy["Position"] + self.position
+	new_enemy.name = enemy_id
+	new_enemy.set_script(load("res://Scenes/Instances/Enemies/Behavior/"+enemy["Behavior"]+".gd"))
+	get_node("YSort/Enemies/").add_child(new_enemy, true)
+
 func SpawnPlayerProjectile(projectile_data, player_id):
 	var projectile_instance = player_projectiles["arrow"].instance()
+	
+	projectile_instance.character = get_node("YSort/Players/"+str(player_id)).character
 	projectile_instance.player_id = player_id
 	projectile_instance.projectile_name = projectile_data["Projectile"]
 	projectile_instance.position = projectile_data["Position"]
+	projectile_instance.initial_position = projectile_data["Position"]
 	projectile_instance.tile_range = projectile_data["TileRange"]
 	projectile_instance.SetDirection(projectile_data["Direction"])
 	projectile_instance.look_at(projectile_data["MousePosition"])
@@ -53,28 +71,22 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	projectile_instance.SetData(data)
 	
 	add_child(projectile_instance)
+
 func SpawnEnemyProjectile(projectile_data, enemy_id):
 	var projectile_instance = enemy_projectiles["arrow"].instance()
 	projectile_instance.enemy_id = enemy_id
 	projectile_instance.projectile_name = projectile_data["Projectile"]
 	projectile_instance.position = projectile_data["Position"]
+	projectile_instance.initial_position = projectile_data["Position"]
 	projectile_instance.tile_range = projectile_data["TileRange"]
 	projectile_instance.SetDirection(projectile_data["Direction"])
 	projectile_instance.look_at(projectile_data["TargetPosition"])
 	
 	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
 	projectile_instance.SetData(data)
-	get_node("/root/Server").SendEnemyProjectile(projectile_data, ["nexus"], enemy_id, Vector2.ZERO)
 	
+	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
 	add_child(projectile_instance)
-
-func SpawnEnemy(enemy, enemy_id):
-	var new_enemy = enemy_8x8.instance()
-	enemy_list[str(enemy_id)] = enemy
-	new_enemy.position = enemy["Position"]
-	new_enemy.name = enemy_id
-	new_enemy.set_script(load("res://Scenes/Instances/Enemies/Behavior/"+enemy["Behavior"]+".gd"))
-	get_node("YSort/Enemies/").add_child(new_enemy, true)
 	
 func OpenPortal(portal_name, instance_tree, position):
 	var instance_id = get_node("/root/Server").generate_unique_id()
