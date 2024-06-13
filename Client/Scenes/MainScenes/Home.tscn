@@ -328,7 +328,8 @@ current = true
 zoom = Vector2( 0.15, 0.15 )
 
 [node name="UI" type="Node2D" parent="."]
-scale = Vector2( 0.399143, 0.400928 )
+position = Vector2( 31, 17 )
+scale = Vector2( 0.25, 0.25 )
 
 [node name="PlayResizer" type="Node2D" parent="UI"]
 position = Vector2( 40, 36 )
@@ -380,8 +381,8 @@ hframes = 15
 vframes = 15
 
 [node name="LoginPopup" parent="." instance=ExtResource( 5 )]
-position = Vector2( -48, -25 )
-scale = Vector2( 0.25, 0.25 )
+position = Vector2( -21, -12 )
+scale = Vector2( 0.2, 0.2 )
 
 [node name="CharacterSelection" parent="." instance=ExtResource( 7 )]
 position = Vector2( -15, -11 )
