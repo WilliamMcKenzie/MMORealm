@@ -1,4 +1,4 @@
-extends "Map.gd"
+extends "../Map.gd"
 
 var generating = false
 var chunk_size = 32

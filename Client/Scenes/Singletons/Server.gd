@@ -17,9 +17,9 @@ var decimal_collector : float = 0
 
 #Map preloads
 var current_instance_tree = ["nexus"]
-var nexus = preload("res://Scenes/MainScenes/Nexus.tscn")
-var island_container = preload("res://Scenes/MainScenes/Island.tscn")
-var dungeon_container = preload("res://Scenes/MainScenes/Dungeon.tscn")
+var nexus = preload("res://Scenes/MainScenes/Nexus/Nexus.tscn")
+var island_container = preload("res://Scenes/MainScenes/Island/Island.tscn")
+var dungeon_container = preload("res://Scenes/MainScenes/Dungeon/Dungeon.tscn")
 
 #For player hierarchy
 var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")

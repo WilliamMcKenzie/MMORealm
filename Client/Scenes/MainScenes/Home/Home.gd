@@ -2,7 +2,7 @@ extends Control
 
 onready var playButton = $UI/PlayResizer/Play
 
-var nexus = preload("res://Scenes/MainScenes/nexus.tscn")
+var nexus = preload("res://Scenes/MainScenes/Nexus/nexus.tscn")
 
 var email
 var password
