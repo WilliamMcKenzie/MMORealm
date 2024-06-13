@@ -5,12 +5,6 @@ var player_data = {}
 func _ready():
 	updateInfo()
 
-func GetPlayerData(email):
-	if player_data.has(email):
-		return player_data[email]
-	else:
-		return false
-
 func updateInfo():
 	#var player_data_file = File.new()
 	#player_data_file.open("res://Data/PlayerData.json", File.READ)

@@ -5,7 +5,6 @@ var ip_address = "localhost"
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
-var character_index
 var token
 
 #Clock sync
@@ -43,6 +42,7 @@ func ConnectToServer():
 func _onConnectionFailed():
 	print("Connection failed.")
 func _onConnectionSucceeded():
+	print("HAYYEE")
 	print("Connection succeeded!")
 	rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 	var timer = Timer.new()
@@ -73,7 +73,7 @@ remote func ReturnServerTime(server_time, client_time):
 	client_clock = server_time+latency
 	
 remote func FetchToken():
-	rpc_id(1, "ReturnToken", token, character_index)
+	rpc_id(1, "ReturnToken", token)
 remote func ReturnTokenVerificationResults(results):
 	if(results == true):
 		print("Successful token verification")
@@ -81,20 +81,6 @@ remote func ReturnTokenVerificationResults(results):
 		print("Login failed")
 
 #INVENTORY/ITEMS
-func SetCharacterIndex(_character_index):
-	character_index = _character_index
-remote func RecieveCharacterData(character):
-	var player_node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player")
-	player_node.stats = character.stats
-	player_node.gear = character.gear
-	player_node.level = character.level
-	
-	GameUI.SetCharacterData(character)
-
-func EquipItem(index):
-	rpc_id(1, "EquipItem", index)
-func ChangeItem(index_to_change, from_index):
-	rpc_id(1, "ChangeItem", index_to_change, from_index)
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):

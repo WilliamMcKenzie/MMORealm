@@ -24,10 +24,8 @@ func SelectionScreen(player_data):
 	selectionScreenInstance.PopulateCharacters()
 	selectionScreenInstance.visible = true
 	
-func EnterGame(character_index, character):
+func EnterGame(character):
 	Server.ConnectToServer()
-	Server.SetCharacterIndex(character_index)
-	
 	var nexus_instance = nexus.instance()
 	nexus_instance.get_node("YSort/player").stats = character.stats
 	nexus_instance.get_node("YSort/player").gear = character.gear

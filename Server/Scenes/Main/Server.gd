@@ -4,7 +4,7 @@ var max_players = 100
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 
-var expected_tokens = {}
+var expected_tokens = []
 
 #We need to make each instance have a unique posiition and not intersect with one another
 var instance_positions = { Vector2.ZERO : true }
@@ -44,22 +44,11 @@ func _Peer_Disconnected(id):
 	player_state_collection.erase(id)
 	rpc_id(0, "DespawnPlayer", id)
 
-#INVENTORY/ITEMS	
-	
+#INVENTORY/ITEMS
 remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
 	rpc_id(player_id, "ReturnPlayerData", player_data)
-
-remote func EquipItem(index):
-	var player_id = get_tree().get_rpc_sender_id()
-	var instance_tree = player_state_collection[player_id]["I"]
-	var player_data = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).EquipItem(index)
-
-remote func ChangeItem(index_to_change, from_index):
-	var player_id = get_tree().get_rpc_sender_id()
-	var instance_tree = player_state_collection[player_id]["I"]
-	var player_data = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(index_to_change, from_index)
 
 #PLAYER SYNCING
 remote func FetchServerTime(client_time):
@@ -89,13 +78,13 @@ func SendWorldState(id, world_state):
 func _on_TokenExpiration_timeout():
 	var current_time = OS.get_unix_time()
 	var token_time
-	if expected_tokens == {}:
+	if expected_tokens == []:
 		pass
 	else:
-		for i in range(expected_tokens.keys().size() -1, -1, -1):
-			token_time = int(expected_tokens.keys()[i].right(64))
+		for i in range(expected_tokens.size() -1, -1, -1):
+			token_time = int(expected_tokens[i].right(64))
 			if current_time - token_time >= 30:
-				expected_tokens.keys().remove(i)
+				expected_tokens.remove(i)
 
 #Make sure if players manually set tokens to expire say a year from now, they still get kicked
 func _on_VerificationExpiration_timeout():
@@ -104,18 +93,14 @@ func _on_VerificationExpiration_timeout():
 func FetchToken(player_id):
 	rpc_id(player_id, "FetchToken")
 
-remote func ReturnToken(token, character_index):
+remote func ReturnToken(token):
 	var player_id = get_tree().get_rpc_sender_id()
-	PlayerVerification.Verify(player_id, token, character_index)
+	PlayerVerification.Verify(player_id, token)
 
 func ReturnTokenVerificationResults(player_id, result):
 	rpc_id(player_id, "ReturnTokenVerificationResults", result)
 	if result == true:
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
-
-#CHARACTERS
-func SendCharacterData(player_id, character):
-	rpc_id(int(player_id), "RecieveCharacterData", character)
 
 #NPCS/ENEMIES
 func SpawnNPC(enemy_name, instance_tree, spawn_position):
@@ -141,8 +126,11 @@ remote func SendPlayerProjectile(projectile_data):
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).SpawnPlayerProjectile(projectile_data, player_id)
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
-func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
-	rpc("RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
+func SendEnemyProjectile(projectile_data, instance_tree, enemy_id, position_offset):
+	var data_to_send = projectile_data.duplicate(true)
+	data_to_send["Position"] = data_to_send["Position"] - position_offset
+	data_to_send["TargetPosition"] = data_to_send["TargetPosition"] - position_offset
+	rpc("RecieveEnemyProjectile", data_to_send, instance_tree, enemy_id)
 
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()
@@ -208,9 +196,8 @@ func StringifyInstanceTree(instance_tree):
 remote func RecieveChatMessage(message):
 	var message_words = message.split(" ")
 	var player_id = get_tree().get_rpc_sender_id()
-	var instance_tree = player_state_collection[player_id]["I"]
 	var player_position = player_state_collection[player_id]["P"]
-	
+	var instance_tree = player_state_collection[player_id]["I"]
 	if len(message) >= 1:
 		if message[0] == "/":
 			if message_words[0] == "/tp":
@@ -233,9 +220,9 @@ remote func RecieveChatMessage(message):
 				
 				if valid_enemy and multiple_enemies:
 					for i in range(int(message_words[2])):
-						SpawnNPC(message_words[1], instance_tree, player_position - get_node("Instances/"+StringifyInstanceTree(instance_tree)).position)
+						SpawnNPC(message_words[1], instance_tree, player_position)
 				elif valid_enemy:
-					SpawnNPC(message_words[1], instance_tree, player_position - get_node("Instances/"+StringifyInstanceTree(instance_tree)).position)
+					SpawnNPC(message_words[1], instance_tree, player_position)
 					rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
 				else:
 					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "System")

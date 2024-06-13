@@ -308,7 +308,7 @@ points = PoolVector2Array( 8, 24, 0.0625, 24, 0.0625, 16, 8, 16 )
 } ]
 20/z_index = 2
 
-[node name="ServerNexus" type="Node2D"]
+[node name="server_nexus" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )

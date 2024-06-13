@@ -51,8 +51,8 @@ void fragment() {
 shader = SubResource( 2 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.25
-shader_param/glow_thickness = 0.0
-shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/glow_thickness = 4.0
+shader_param/glow_color = Color( 0, 0, 0, 0.2 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8.10921, 1.96048 )

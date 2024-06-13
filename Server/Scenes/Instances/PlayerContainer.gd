@@ -1,22 +1,13 @@
 extends Node
 
-var email
-
-var character = null
-var character_index = null
+var email = "niegel"
+var character
 
 var health = 100
-var stats
 
-func EquipItem(index):
-	print(index)
-func ChangeItem(index_to_change, from_index):
-	print(index_to_change)
-
-func SetCharacter(characters):
-	character = characters[character_index]
-	health = character.stats.health
-	get_node("/root/Server").SendCharacterData(name, character)
+var stats = {
+	"health" : 100
+}
 
 func DealDamage(damage, enemy_id):
 	health -= damage

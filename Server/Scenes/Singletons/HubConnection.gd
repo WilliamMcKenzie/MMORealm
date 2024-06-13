@@ -35,11 +35,5 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
 
-remote func RecieveLoginToken(token, email):
-	gameserver.expected_tokens[token] = email
-	
-func GetAccountData(player_id, email, instance_tree):
-	rpc_id(1, "GetAccountData", player_id, email, instance_tree)
-
-remote func ReturnAccountData(player_id, instance_tree, account_data):
-	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).SetCharacter(account_data.characters)
+remote func RecieveLoginToken(token):
+	gameserver.expected_tokens.append(token)

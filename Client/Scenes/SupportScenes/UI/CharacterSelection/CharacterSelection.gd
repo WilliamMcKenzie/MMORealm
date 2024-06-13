@@ -14,7 +14,6 @@ func PopulateCharacters():
 		if taken_places[i] == false:
 			var buttonInstance = CharacterButton.instance()
 			buttonInstance.AssignParameters(character)
-			buttonInstance.character_index = i
 			buttonInstance.position = placeholders[i].position
 			taken_places[i] = true
 			add_child(buttonInstance)
