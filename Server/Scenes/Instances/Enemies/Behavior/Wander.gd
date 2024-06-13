@@ -41,6 +41,7 @@ func EnemyCombat():
 		shot_cooldown["Arrow"][0] = OS.get_system_time_secs()
 		ShootProjectile()
 
+<<<<<<< Updated upstream
 func movement(delta):
 		if current_state == ENGAGE:
 		
@@ -59,6 +60,27 @@ func movement(delta):
 					target = initial_position
 				else:
 					target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+=======
+func movement(NPC_tick):
+	if current_state == ENGAGE:
+		
+		EnemyCombat()
+		
+		var y_move = -sin(position.angle_to_point(target)) * 0.2 * NPC_tick
+		var x_move = -cos(position.angle_to_point(target)) * 0.2 * NPC_tick
+		velocity = Vector2(x_move, y_move)
+		
+		position += velocity
+		if get_parent().get_parent().get_parent().enemy_list.has(name):
+			get_parent().get_parent().get_parent().enemy_list[name]["Position"] = position
+
+		if (target - position).length() <= 2:
+			if (initial_position-position).length() >= wander_range:
+				target = initial_position
+			else:
+				target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+
+>>>>>>> Stashed changes
 func _on_PlayerDetection_area_entered(area):
 	pass
 	

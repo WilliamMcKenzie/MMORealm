@@ -6,7 +6,6 @@
 extents = Vector2( 8.10921, 2 )
 
 [node name="EmeraldBlast" type="Node2D"]
-visible = false
 rotation = -1.6427
 script = ExtResource( 1 )
 
