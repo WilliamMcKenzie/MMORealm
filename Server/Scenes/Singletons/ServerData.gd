@@ -50,18 +50,9 @@ var enemy_data = {
 	}
 }
 
-var enemy_projectile_data = {
-	"Snake" : {
-		"damage" : 10,
-		"speed" : 50,
-		"lifetime" : 0.5,
-		"piercing" : false
-	}
-}
-
 var projectile_data = {
 	"Arrow" : {
-		"damage" : 10,
+		"damage" : 1,
 		"speed" : 50,
 		"tile_range" : 8,
 		"piercing" : false

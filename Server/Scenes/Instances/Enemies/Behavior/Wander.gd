@@ -26,7 +26,7 @@ func DealDamage(damage, player_id):
 
 func ShootProjectile():
 	var projectile_data = {
-		"Damage":10,
+		"Damage":0,
 		"Position":position,
 		"Projectile":"Arrow",
 		"TargetPosition":target,

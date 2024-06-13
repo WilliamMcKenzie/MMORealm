@@ -1,16 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/EnterPortal.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/SupportScenes/UI/GameUI.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/SupportScenes/UI/HealthBar/HealthBar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/Inventory.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/ui/demo_ui.png" type="Texture" id=6]
 
 [node name="GameUI" type="CanvasLayer"]
 script = ExtResource( 3 )
 
 [node name="ChatControl" parent="." instance=ExtResource( 2 )]
-position = Vector2( -26, -570 )
+position = Vector2( -63, -708 )
 scale = Vector2( 2, 2 )
 z_index = -1
 
@@ -23,6 +24,16 @@ text = "Enter Portal"
 script = ExtResource( 1 )
 
 [node name="Health" parent="." instance=ExtResource( 4 )]
+margin_left = -76.0
+margin_top = -13.0
+margin_right = -876.0
+margin_bottom = -373.0
+rect_scale = Vector2( 0.91, 0.91 )
 
 [node name="Inventory" parent="." instance=ExtResource( 5 )]
 visible = false
+
+[node name="DemoUI" type="Sprite" parent="."]
+position = Vector2( 400, 180 )
+scale = Vector2( 6.25, 6.25 )
+texture = ExtResource( 6 )
