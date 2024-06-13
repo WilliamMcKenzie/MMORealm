@@ -6,8 +6,8 @@ enum {
 }
 
 var current_state = ENGAGE
-onready var player_detection_zone = $Ai/PlayerDetection
-onready var hitbox_zone = $EnemyHitbox
+#onready var player_detection_zone = $Ai/PlayerDetection
+#onready var hitbox_zone = $EnemyHitbox
 
 var wander_range = 15
 var initial_position
