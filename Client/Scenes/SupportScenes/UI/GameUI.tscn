@@ -28,12 +28,12 @@ margin_left = -76.0
 margin_top = -13.0
 margin_right = -876.0
 margin_bottom = -373.0
-rect_scale = Vector2( 0.91, 0.91 )
+rect_scale = Vector2( 0.91, 0.8 )
 
 [node name="Inventory" parent="." instance=ExtResource( 5 )]
 visible = false
 
 [node name="DemoUI" type="Sprite" parent="."]
 position = Vector2( 400, 180 )
-scale = Vector2( 6.25, 6.25 )
+scale = Vector2( 3.125, 3.125 )
 texture = ExtResource( 6 )
