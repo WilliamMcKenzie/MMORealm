@@ -49,12 +49,6 @@ func EnemyCombat():
 
 func _physics_process(delta):
 	if current_state == ENGAGE:
-		
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 0cf71b7 (Update Wander.gd)
 			EnemyCombat()
 			
 			var y_move = -sin(position.angle_to_point(target)) * delta * 5
@@ -70,8 +64,7 @@ func _physics_process(delta):
 					target = initial_position
 				else:
 					target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
-
-=======
+					
 		#EnemyCombat()
 		
 		var y_move = -sin(position.angle_to_point(target)) * 0.2
@@ -87,7 +80,7 @@ func _physics_process(delta):
 				target = initial_position
 			else:
 				target = position + Vector2(rand_range(-7,7),rand_range(-7,7))
->>>>>>> parent of f9f374e (Changes resolution to 800x360 and aligned UI elements)
+
 func _on_PlayerDetection_area_entered(area):
 	pass
 	

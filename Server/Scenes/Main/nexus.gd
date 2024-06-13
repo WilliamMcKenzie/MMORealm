@@ -8,10 +8,10 @@ var enemy_list = {}
 var object_list = {}
 
 var player_projectiles = {
-	"arrow" : preload("res://Scenes/Instances/Projectiles/Players/Arrow.tscn")	
+	"small" : preload("res://Scenes/Instances/Projectiles/Players/ProjectileSmall.tscn")	
 }
 var enemy_projectiles = {
-	"arrow" : preload("res://Scenes/Instances/Projectiles/Enemies/Arrow.tscn")
+	"small" : preload("res://Scenes/Instances/Projectiles/Enemies/ProjectileSmall.tscn")
 }
 var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
 
@@ -34,6 +34,7 @@ func UpdatePlayer(player_id, player_state):
 		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["Position"]
 
 func SpawnPlayer(player_container):
+	print(player_container)
 	if player_container:
 		player_list[player_container.name] = {
 				"Name": player_container.name,
@@ -56,7 +57,7 @@ func SpawnEnemy(enemy, enemy_id):
 	get_node("YSort/Enemies/").add_child(new_enemy, true)
 
 func SpawnPlayerProjectile(projectile_data, player_id):
-	var projectile_instance = player_projectiles["arrow"].instance()
+	var projectile_instance = player_projectiles["small"].instance()
 	
 	projectile_instance.character = get_node("YSort/Players/"+str(player_id)).character
 	projectile_instance.player_id = player_id
@@ -73,7 +74,7 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	add_child(projectile_instance)
 
 func SpawnEnemyProjectile(projectile_data, enemy_id):
-	var projectile_instance = enemy_projectiles["arrow"].instance()
+	var projectile_instance = enemy_projectiles["small"].instance()
 	projectile_instance.enemy_id = enemy_id
 	projectile_instance.projectile_name = projectile_data["Projectile"]
 	projectile_instance.position = projectile_data["Position"]
