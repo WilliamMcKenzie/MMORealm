@@ -32,6 +32,6 @@ visible = false
 visible = false
 
 [node name="DemoUI" type="Sprite" parent="."]
-position = Vector2( 400, 180 )
-scale = Vector2( 3.125, 3.125 )
+position = Vector2( 471, 212 )
+scale = Vector2( 3.7, 3.7 )
 texture = ExtResource( 6 )
