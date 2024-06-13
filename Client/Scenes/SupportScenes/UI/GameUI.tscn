@@ -15,11 +15,10 @@ scale = Vector2( 2, 2 )
 z_index = -1
 
 [node name="EnterPortal" type="Button" parent="."]
-visible = false
-margin_left = 448.0
-margin_top = 395.0
-margin_right = 573.0
-margin_bottom = 446.0
+margin_left = 321.0
+margin_top = 206.0
+margin_right = 446.0
+margin_bottom = 257.0
 text = "Enter Portal"
 script = ExtResource( 1 )
 
