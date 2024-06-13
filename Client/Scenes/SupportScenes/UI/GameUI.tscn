@@ -23,3 +23,9 @@ text = "Enter Portal"
 script = ExtResource( 1 )
 
 [node name="Health" parent="." instance=ExtResource( 4 )]
+<<<<<<< HEAD
+=======
+
+[node name="Inventory" parent="." instance=ExtResource( 5 )]
+visible = false
+>>>>>>> parent of f9f374e (Changes resolution to 800x360 and aligned UI elements)
