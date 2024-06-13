@@ -36,6 +36,7 @@ func _onConnectionSucceeded():
 	print("Connection succeeded!")
 
 remote func RecieveLoginToken(token, email):
+	print("EMAIL")
 	gameserver.expected_tokens[token] = email
 	
 func GetAccountData(player_id, email, instance_tree):
