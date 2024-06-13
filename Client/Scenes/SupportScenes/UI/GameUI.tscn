@@ -1,35 +1,28 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/EnterPortal.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/SupportScenes/UI/GameUI.gd" type="Script" id=3]
 [ext_resource path="res://Scenes/SupportScenes/UI/HealthBar/HealthBar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/Inventory.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Assets/ui/demo_ui.png" type="Texture" id=6]
 
 [node name="GameUI" type="CanvasLayer"]
 script = ExtResource( 3 )
 
 [node name="ChatControl" parent="." instance=ExtResource( 2 )]
-<<<<<<< Updated upstream
 position = Vector2( -60, -729 )
 scale = Vector2( 2, 2 )
-=======
-position = Vector2( -25, -517 )
-scale = Vector2( 1.5, 1.5 )
->>>>>>> Stashed changes
 z_index = -1
 
 [node name="EnterPortal" type="Button" parent="."]
 visible = false
-margin_left = 331.0
-margin_top = 212.0
-margin_right = 456.0
-margin_bottom = 263.0
+margin_left = 448.0
+margin_top = 395.0
+margin_right = 573.0
+margin_bottom = 446.0
 text = "Enter Portal"
 script = ExtResource( 1 )
 
-<<<<<<< Updated upstream
 [node name="Inventory" parent="." instance=ExtResource( 5 )]
 visible = false
 
@@ -37,19 +30,3 @@ visible = false
 margin_left = 233.0
 margin_right = -567.0
 margin_bottom = -360.0
-=======
-[node name="Health" parent="." instance=ExtResource( 4 )]
-margin_left = -75.0
-margin_top = -5.0
-margin_right = -875.0
-margin_bottom = -365.0
-rect_scale = Vector2( 0.91, 0.7 )
-
-[node name="Inventory" parent="." instance=ExtResource( 5 )]
-visible = false
-
-[node name="DEMOUI" type="Sprite" parent="."]
-position = Vector2( 400, 179 )
-scale = Vector2( 6.25, 6.25 )
-texture = ExtResource( 6 )
->>>>>>> Stashed changes

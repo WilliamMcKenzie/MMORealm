@@ -24,11 +24,6 @@ Dungeons="*res://Scripts/Dungeons.gd"
 Instances="*res://Scripts/Instances.gd"
 EnemyHandler="*res://Scenes/Singletons/EnemyHandler.gd"
 
-[display]
-
-window/size/width=800
-window/size/height=360
-
 [global]
 
 physics=false
