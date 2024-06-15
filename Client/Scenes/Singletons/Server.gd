@@ -85,10 +85,7 @@ func SetCharacterIndex(_character_index):
 	character_index = _character_index
 remote func RecieveCharacterData(character):
 	var player_node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player")
-	player_node.stats = character.stats
-	player_node.gear = character.gear
-	player_node.level = character.level
-	
+	player_node.SetCharacter(character)
 	GameUI.SetCharacterData(character)
 
 func EquipItem(index):

@@ -7,6 +7,7 @@ var character_index = null
 
 var health = 100
 var stats
+var gear = {}
 
 func EquipItem(index):
 	print(index)
@@ -16,6 +17,10 @@ func ChangeItem(index_to_change, from_index):
 func SetCharacter(characters):
 	character = characters[character_index]
 	health = character.stats.health
+	
+	for slot in character.gear.keys():
+		gear[slot] = ItemData.GetItem([character.gear[slot].item])
+	
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func DealDamage(damage, enemy_id):

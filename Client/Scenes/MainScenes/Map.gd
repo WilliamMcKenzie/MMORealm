@@ -30,7 +30,7 @@ func _physics_process(delta):
 					continue;
 				elif get_node("YSort/OtherPlayers").has_node(str(player)):
 					var new_position = lerp(players1[player]["Position"], players2[player]["Position"], interpolation_factor)
-					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players2[player]["Animation"])
+					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players2[player]["Animation"], players2[player]["Sprite"])
 				else:
 					SpawnNewPlayer(player, players2[player]["Position"])
 			RefreshPlayers(world_state_buffer[2]["P"])
@@ -69,7 +69,7 @@ func _physics_process(delta):
 				elif get_node("YSort/OtherPlayers").has_node(str(player)):
 					var position_delta = (players1[player]["Position"] - players0[player]["Position"])
 					var new_position = players1[player]["Position"] + (position_delta * extrapolation_factor)
-					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players1[player]["Animation"])
+					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players1[player]["Animation"], players1[player]["Sprite"])
 				else:
 					SpawnNewPlayer(player, players1[player]["Position"])
 

@@ -13,7 +13,7 @@ func SetItem(_item, _quantity):
 	else:
 		$ItemIcon.visible = true
 		$ItemBackground.visible = false
-		SetSpriteData($ItemIcon, item.path)
+		#SetSpriteData($ItemIcon, item.path)
 
 func GetItem():
 	return {

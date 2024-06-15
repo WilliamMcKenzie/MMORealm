@@ -1,12 +1,55 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/PlayerTemplate.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
-[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
-[ext_resource path="res://Assets/characters/character.png" type="Texture" id=4]
+[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=3]
+[ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
+[ext_resource path="res://Assets/items/textures/tile.png" type="Texture" id=5]
 
-[sub_resource type="AnimationNodeAnimation" id=30]
-animation = "attack_left"
+[sub_resource type="ShaderMaterial" id=39]
+render_priority = 1
+shader = ExtResource( 3 )
+shader_param/line_color = Color( 0, 0, 0, 1 )
+shader_param/line_thickness = 0.0
+shader_param/glow_thickness = 0.0
+shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/swordTextureActive = true
+shader_param/bowTextureActive = false
+shader_param/staffTextureActive = false
+shader_param/staffGemTextureActive = false
+shader_param/helmetDarkOrigin = Color( 0.788235, 0.415686, 0, 1 )
+shader_param/helmetDarkNew = Color( 0.368627, 0.329412, 0.329412, 1 )
+shader_param/helmetMediumOrigin = Color( 0.894118, 0.470588, 0, 1 )
+shader_param/helmetMediumNew = Color( 0.423529, 0.388235, 0.388235, 1 )
+shader_param/helmetLightOrigin = Color( 1, 0.52549, 0, 1 )
+shader_param/helmetLightNew = Color( 0.529412, 0.458824, 0.458824, 1 )
+shader_param/bodyDarkOrigin = null
+shader_param/bodyDarkNew = null
+shader_param/bodyMediumOrigin = Color( 0.894118, 0, 0.752941, 1 )
+shader_param/bodyMediumNew = Color( 0.745098, 0.745098, 0.745098, 1 )
+shader_param/bodyLightOrigin = Color( 1, 0, 0.843137, 1 )
+shader_param/bodyLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
+shader_param/bandOrigin = Color( 1, 0, 0.419608, 1 )
+shader_param/bandNew = Color( 0.564706, 0.317647, 0.14902, 1 )
+shader_param/buckleOrigin = Color( 0.823529, 0, 0.34902, 1 )
+shader_param/buckleNew = Color( 0.509804, 0.509804, 0.509804, 1 )
+shader_param/bowOrigin = Color( 1, 0.94902, 0, 1 )
+shader_param/bowNew = Color( 0, 0, 0, 0 )
+shader_param/arrowLightOrigin = Color( 0, 0.843137, 1, 1 )
+shader_param/arrowLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
+shader_param/arrowDarkOrigin = Color( 0, 0.517647, 0.615686, 1 )
+shader_param/arrowDarkNew = Color( 0.745098, 0.745098, 0.745098, 1 )
+shader_param/bladeHiltOrigin = Color( 0, 1, 0.419608, 1 )
+shader_param/bladeHiltNew = Color( 0.564706, 0.317647, 0.14902, 1 )
+shader_param/bladeOrigin = Color( 1, 0, 0, 1 )
+shader_param/bladeNew = Color( 0.517647, 0.517647, 0.517647, 1 )
+shader_param/staffOrigin = null
+shader_param/staffNew = null
+shader_param/staffGemOrigin = null
+shader_param/staffGemNew = null
+shader_param/swordTexture = ExtResource( 5 )
 
 [sub_resource type="AnimationNodeAnimation" id=31]
 animation = "attack_down"
@@ -14,18 +57,21 @@ animation = "attack_down"
 [sub_resource type="AnimationNodeAnimation" id=32]
 animation = "attack_up"
 
-[sub_resource type="AnimationNodeAnimation" id=33]
+[sub_resource type="AnimationNodeAnimation" id=53]
+animation = "attack_left"
+
+[sub_resource type="AnimationNodeAnimation" id=54]
 animation = "attack_right"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=34]
-blend_point_0/node = SubResource( 30 )
-blend_point_0/pos = Vector2( -0.7, 0 )
-blend_point_1/node = SubResource( 31 )
-blend_point_1/pos = Vector2( 0, 0.9 )
-blend_point_2/node = SubResource( 32 )
-blend_point_2/pos = Vector2( 0, -0.9 )
-blend_point_3/node = SubResource( 33 )
-blend_point_3/pos = Vector2( 0.9, 0 )
+blend_point_0/node = SubResource( 31 )
+blend_point_0/pos = Vector2( 0, 1 )
+blend_point_1/node = SubResource( 32 )
+blend_point_1/pos = Vector2( 0, -1 )
+blend_point_2/node = SubResource( 53 )
+blend_point_2/pos = Vector2( 1, 0 )
+blend_point_3/node = SubResource( 54 )
+blend_point_3/pos = Vector2( -1, 0 )
 
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "idle_left"
@@ -97,7 +143,7 @@ graph_offset = Vector2( 0, 31.0419 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=17]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=40]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -111,8 +157,20 @@ tracks/0/keys = {
 "update": 0,
 "values": [ 0 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 3 ) ]
+}
 
-[sub_resource type="Animation" id=29]
+[sub_resource type="Animation" id=41]
 resource_name = "attack_down"
 length = 0.4
 loop = true
@@ -129,7 +187,7 @@ tracks/0/keys = {
 "values": [ 10, 11 ]
 }
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=42]
 resource_name = "attack_left"
 length = 0.4
 loop = true
@@ -146,7 +204,7 @@ tracks/0/keys = {
 "values": [ 6, 7 ]
 }
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=43]
 resource_name = "attack_right"
 length = 0.4
 loop = true
@@ -163,7 +221,7 @@ tracks/0/keys = {
 "values": [ 2, 3 ]
 }
 
-[sub_resource type="Animation" id=28]
+[sub_resource type="Animation" id=44]
 resource_name = "attack_up"
 length = 0.4
 loop = true
@@ -180,7 +238,7 @@ tracks/0/keys = {
 "values": [ 14, 15 ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=45]
 resource_name = "idle_down"
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -195,7 +253,7 @@ tracks/0/keys = {
 "values": [ 8 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=46]
 resource_name = "idle_left"
 length = 0.4
 loop = true
@@ -224,7 +282,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=47]
 resource_name = "idle_right"
 length = 0.4
 loop = true
@@ -253,12 +311,12 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=48]
 resource_name = "idle_up"
 length = 0.4
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath(".:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -266,11 +324,11 @@ tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 12 ]
+"update": 0,
+"values": [ Vector2( 0, 3 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=49]
 resource_name = "walk_down"
 length = 0.4
 loop = true
@@ -287,7 +345,7 @@ tracks/0/keys = {
 "values": [ 9, 8 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=50]
 resource_name = "walk_left"
 length = 0.4
 loop = true
@@ -316,7 +374,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=51]
 resource_name = "walk_right"
 length = 0.4
 loop = true
@@ -345,7 +403,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=52]
 resource_name = "walk_up"
 length = 0.4
 loop = true
@@ -362,458 +420,46 @@ tracks/0/keys = {
 "values": [ 13, 12 ]
 }
 
-[sub_resource type="Shader" id=51]
-code = "shader_type canvas_item;
-
-uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
-uniform float line_thickness : hint_range(0, 10) = 0.4;
-uniform float glow_thickness : hint_range(0, 20) = 4.0;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0);
-
-uniform vec4 helmetDarkOrigin:hint_color;
-uniform vec4 helmetDarkNew:hint_color;
-
-uniform vec4 helmetLightOrigin:hint_color;
-uniform vec4 helmetLightNew:hint_color;
-
-uniform vec4 helmetMediumOrigin:hint_color;
-uniform vec4 helmetMediumNew:hint_color;
-
-uniform vec4 bodyLightOrigin:hint_color;
-uniform vec4 bodyLightNew:hint_color;
-
-uniform vec4 bodyMediumOrigin:hint_color;
-uniform vec4 bodyMediumNew:hint_color;
-
-uniform vec4 bandOrigin:hint_color;
-uniform vec4 bandNew:hint_color;
-
-uniform vec4 buckleOrigin:hint_color;
-uniform vec4 buckleNew:hint_color;
-
-uniform vec4 shouldersLightOrigin:hint_color;
-uniform vec4 shouldersLightNew:hint_color;
-
-uniform vec4 shouldersDarkOrigin:hint_color;
-uniform vec4 shouldersDarkNew:hint_color;
-
-uniform vec4 axeLightOrigin:hint_color;
-uniform vec4 axeLightNew:hint_color;
-
-uniform vec4 axeDarkOrigin:hint_color;
-uniform vec4 axeDarkNew:hint_color;
-
-uniform vec4 bladeOrigin:hint_color;
-uniform vec4 bladeNew:hint_color;
-
-uniform vec4 bowOrigin:hint_color;
-uniform vec4 bowNew:hint_color;
-
-uniform vec4 arrowLightOrigin:hint_color;
-uniform vec4 arrowLightNew:hint_color;
-
-uniform vec4 arrowDarkOrigin:hint_color;
-uniform vec4 arrowDarkNew:hint_color;
-
-uniform vec4 bladeTipOrigin:hint_color;
-uniform vec4 bladeTipNew:hint_color;
-
-uniform vec4 bladeHiltOrigin:hint_color;
-uniform vec4 bladeHiltNew:hint_color;
-
-uniform vec4 bladeSwingOrigin:hint_color;
-uniform vec4 bladeSwingNew:hint_color;
-
-uniform vec4 bowDarkOrigin:hint_color;
-uniform vec4 bowDarkNew:hint_color;
-
-void fragment() {
-	
-    vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-    vec2 glow_size = TEXTURE_PIXEL_SIZE * glow_thickness;
-    
-    float outline = 0.0;
-	vec4 neighborColor;
-
-	// Check each neighboring pixel
-	for (float i = -1.0; i <= 1.0; i++) {
-	    for (float j = -1.0; j <= 1.0; j++) {
-	        if (i == 0.0 && j == 0.0) continue;
-
-	        // Sample the color of the neighboring pixel
-	        neighborColor = texture(TEXTURE, UV + vec2(i * size.x, j * size.y));
-
-	        // Skip outline calculation if the neighboring pixel color matches the color to be excluded
-	        if (neighborColor == shouldersLightOrigin) {
-	            vec2 neighborUV = UV + vec2(i * size.x, j * size.y);
-
-	            // Check if any of the neighboring pixels are not transparent
-	            vec4 upColor = texture(TEXTURE, neighborUV + vec2(0, size.y));
-	            vec4 downColor = texture(TEXTURE, neighborUV + vec2(0, -size.y));
-	            vec4 leftColor = texture(TEXTURE, neighborUV + vec2(-size.x, 0));
-	            vec4 rightColor = texture(TEXTURE, neighborUV + vec2(size.x, 0));
-
-	            if (upColor.a > 0.0 || downColor.a > 0.0 || leftColor.a > 0.0 || rightColor.a > 0.0) {
-	                outline += 1.0; // Increase outline intensity
-	            }
-	        }
-
-	        // Accumulate alpha values of non-excluded pixels
-	        outline += neighborColor.a;
-		}
-	}
-
-	outline = min(outline, 1.0);
-
-    float glow = 0.0;
-    for (float i = 1.0; i <= glow_thickness; i++) {
-        vec2 offset = TEXTURE_PIXEL_SIZE * i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, offset.y)).a / i;
-    }
-    glow = min(glow / glow_thickness, 1.0) - outline;
-
-    vec4 color = texture(TEXTURE, UV);
-    vec4 outline_color = mix(color, line_color, outline - color.a);
-    vec4 glow_color_mixed = mix(outline_color, glow_color, glow * (1.0 - color.a));
-    
-    COLOR = glow_color_mixed;
-	
-	vec4 current_pixel = texture(TEXTURE, UV);
-
-	if(current_pixel == helmetDarkOrigin)
-		COLOR = helmetDarkNew;
-
-	if(current_pixel == helmetLightOrigin)
-		COLOR = helmetLightNew;
-
-	if(current_pixel == helmetMediumOrigin)
-		COLOR = helmetMediumNew;
-
-	if(current_pixel == bodyLightOrigin)
-		COLOR = bodyLightNew;
-
-	if(current_pixel == bodyMediumOrigin)
-		COLOR = bodyMediumNew;
-
-	if(current_pixel == bandOrigin)
-		COLOR = bandNew;
-
-	if(current_pixel == buckleOrigin)
-		COLOR = buckleNew;
-
-	if(current_pixel == shouldersLightOrigin)
-		COLOR = shouldersLightNew;
-
-	if(current_pixel == shouldersDarkOrigin)
-		COLOR = shouldersDarkNew;
-
-	if(current_pixel == axeLightOrigin)
-		COLOR = axeLightNew;
-
-	if(current_pixel == axeDarkOrigin)
-		COLOR = axeDarkNew;
-
-	if(current_pixel == bladeOrigin)
-		COLOR = bladeNew;
-
-	if(current_pixel == bowOrigin)
-		COLOR = bowNew;
-
-	if(current_pixel == arrowLightOrigin)
-		COLOR = arrowLightNew;
-
-	if(current_pixel == arrowDarkOrigin)
-		COLOR = arrowDarkNew;
-
-	if(current_pixel == bladeTipOrigin)
-		COLOR = bladeTipNew;
-
-	if(current_pixel == bladeHiltOrigin)
-		COLOR = bladeHiltNew;
-
-	if(current_pixel == bladeSwingOrigin)
-		COLOR = bladeSwingNew;
-
-	if(current_pixel == bowDarkOrigin)
-		COLOR = bowDarkNew;
-}"
-
-[sub_resource type="ShaderMaterial" id=52]
-render_priority = 1
-shader = SubResource( 51 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.0
-shader_param/glow_thickness = 1.028
-shader_param/glow_color = Color( 1, 1, 1, 0 )
-shader_param/helmetDarkOrigin = Color( 0.788235, 0.415686, 0, 1 )
-shader_param/helmetDarkNew = Color( 0.360784, 0.321569, 0.321569, 1 )
-shader_param/helmetLightOrigin = Color( 1, 0.52549, 0, 1 )
-shader_param/helmetLightNew = Color( 0.529412, 0.458824, 0.458824, 1 )
-shader_param/helmetMediumOrigin = Color( 0.894118, 0.470588, 0, 1 )
-shader_param/helmetMediumNew = Color( 0.415686, 0.384314, 0.384314, 1 )
-shader_param/bodyLightOrigin = Color( 1, 0, 0.843137, 1 )
-shader_param/bodyLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
-shader_param/bodyMediumOrigin = Color( 0.894118, 0, 0.752941, 1 )
-shader_param/bodyMediumNew = Color( 0.745098, 0.745098, 0.745098, 1 )
-shader_param/bandOrigin = Color( 1, 0, 0.419608, 1 )
-shader_param/bandNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/buckleOrigin = Color( 0.823529, 0, 0.34902, 1 )
-shader_param/buckleNew = Color( 0.509804, 0.509804, 0.509804, 1 )
-shader_param/shouldersLightOrigin = Color( 0, 0.52549, 1, 1 )
-shader_param/shouldersLightNew = Color( 0, 0, 0, 0 )
-shader_param/shouldersDarkOrigin = Color( 0.211765, 0, 1, 1 )
-shader_param/shouldersDarkNew = Color( 0.745098, 0.745098, 0.745098, 1 )
-shader_param/axeLightOrigin = Color( 0.631373, 0, 1, 1 )
-shader_param/axeLightNew = Color( 0.4, 0.4, 0.4, 1 )
-shader_param/axeDarkOrigin = Color( 0.509804, 0, 0.807843, 1 )
-shader_param/axeDarkNew = Color( 0.4, 0.4, 0.4, 1 )
-shader_param/bladeOrigin = Color( 1, 0, 0, 1 )
-shader_param/bladeNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/bowOrigin = Color( 1, 0.94902, 0, 1 )
-shader_param/bowNew = Color( 0, 0, 0, 0 )
-shader_param/arrowLightOrigin = Color( 0, 0.843137, 1, 1 )
-shader_param/arrowLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
-shader_param/arrowDarkOrigin = Color( 0, 0.517647, 0.615686, 1 )
-shader_param/arrowDarkNew = Color( 0.745098, 0.745098, 0.745098, 1 )
-shader_param/bladeTipOrigin = Color( 0.211765, 1, 0, 1 )
-shader_param/bladeTipNew = Color( 0.4, 0.4, 0.4, 1 )
-shader_param/bladeHiltOrigin = Color( 0, 1, 0.419608, 1 )
-shader_param/bladeHiltNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/bladeSwingOrigin = Color( 0.682353, 0, 0, 1 )
-shader_param/bladeSwingNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/bowDarkOrigin = Color( 0.666667, 0.631373, 0, 1 )
-shader_param/bowDarkNew = Color( 0, 0, 0, 0 )
-
-[sub_resource type="Shader" id=53]
-code = "shader_type canvas_item;
-
-uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
-uniform float line_thickness : hint_range(0, 10) = 0.25;
-uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
-
-void fragment() {
-    vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-    vec2 glow_size = TEXTURE_PIXEL_SIZE * glow_thickness;
-    
-    float outline = 0.0;
-    outline += texture(TEXTURE, UV + vec2(-size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(0, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(0, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
-    outline = min(outline, 1.0);
-
-    float glow = 0.0;
-    for (float i = 1.0; i <= glow_thickness; i++) {
-        vec2 offset = TEXTURE_PIXEL_SIZE * i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, offset.y)).a / i;
-    }
-    glow = min(glow / glow_thickness, 1.0) - outline;
-
-    vec4 color = texture(TEXTURE, UV);
-    vec4 outline_color = mix(color, line_color, outline - color.a);
-    vec4 glow_color_mixed = mix(outline_color, glow_color, glow * (1.0 - color.a));
-    
-    COLOR = glow_color_mixed;
-}"
-
-[sub_resource type="ShaderMaterial" id=54]
-shader = SubResource( 53 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.25
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
-
-[sub_resource type="Shader" id=55]
-code = "shader_type canvas_item;
-
-uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
-uniform float line_thickness : hint_range(0, 10) = 0.25;
-uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
-
-void fragment() {
-    vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-    vec2 glow_size = TEXTURE_PIXEL_SIZE * glow_thickness;
-    
-    float outline = 0.0;
-    outline += texture(TEXTURE, UV + vec2(-size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(0, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(0, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
-    outline = min(outline, 1.0);
-
-    float glow = 0.0;
-    for (float i = 1.0; i <= glow_thickness; i++) {
-        vec2 offset = TEXTURE_PIXEL_SIZE * i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, offset.y)).a / i;
-    }
-    glow = min(glow / glow_thickness, 1.0) - outline;
-
-    vec4 color = texture(TEXTURE, UV);
-    vec4 outline_color = mix(color, line_color, outline - color.a);
-    vec4 glow_color_mixed = mix(outline_color, glow_color, glow * (1.0 - color.a));
-    
-    COLOR = glow_color_mixed;
-}"
-
-[sub_resource type="ShaderMaterial" id=56]
-shader = SubResource( 55 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.25
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
-
-[sub_resource type="Shader" id=57]
-code = "shader_type canvas_item;
-
-uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
-uniform float line_thickness : hint_range(0, 10) = 0.25;
-uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
-
-void fragment() {
-    vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-    vec2 glow_size = TEXTURE_PIXEL_SIZE * glow_thickness;
-    
-    float outline = 0.0;
-    outline += texture(TEXTURE, UV + vec2(-size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(0, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(0, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
-    outline = min(outline, 1.0);
-
-    float glow = 0.0;
-    for (float i = 1.0; i <= glow_thickness; i++) {
-        vec2 offset = TEXTURE_PIXEL_SIZE * i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, offset.y)).a / i;
-    }
-    glow = min(glow / glow_thickness, 1.0) - outline;
-
-    vec4 color = texture(TEXTURE, UV);
-    vec4 outline_color = mix(color, line_color, outline - color.a);
-    vec4 glow_color_mixed = mix(outline_color, glow_color, glow * (1.0 - color.a));
-    
-    COLOR = glow_color_mixed;
-}"
-
-[sub_resource type="ShaderMaterial" id=58]
-shader = SubResource( 57 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.25
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
-
 [node name="PlayerTemplate" type="KinematicBody2D"]
 position = Vector2( 343, 265 )
 collision_layer = 0
 script = ExtResource( 1 )
+
+[node name="CharacterSprite" type="Sprite" parent="."]
+material = SubResource( 39 )
+texture = ExtResource( 4 )
+flip_h = true
+hframes = 4
+vframes = 4
+frame = 12
+region_enabled = true
+region_rect = Rect2( 0, 0, 80, 40 )
+script = ExtResource( 2 )
+
+[node name="Axis" type="Node2D" parent="."]
+position = Vector2( 0.019989, 0 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 16 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 17 )
-parameters/Attack/blend_position = Vector2( -0.81775, 0.844828 )
-parameters/Idle/blend_position = Vector2( -0.274168, 0.413793 )
-parameters/Walk/blend_position = Vector2( 0.99683, -0.543103 )
+parameters/Attack/blend_position = Vector2( -0.321712, 1.68103 )
+parameters/Idle/blend_position = Vector2( -0.51981, 0.982759 )
+parameters/Walk/blend_position = Vector2( -0.729002, 0.0344827 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../CharacterSprite")
-anims/RESET = SubResource( 2 )
-anims/attack_down = SubResource( 29 )
-anims/attack_left = SubResource( 27 )
-anims/attack_right = SubResource( 26 )
-anims/attack_up = SubResource( 28 )
-anims/idle_down = SubResource( 3 )
-anims/idle_left = SubResource( 5 )
-anims/idle_right = SubResource( 6 )
-anims/idle_up = SubResource( 7 )
-anims/walk_down = SubResource( 4 )
-anims/walk_left = SubResource( 8 )
-anims/walk_right = SubResource( 9 )
-anims/walk_up = SubResource( 10 )
-
-[node name="CharacterSprite" type="Sprite" parent="."]
-material = SubResource( 52 )
-texture = ExtResource( 4 )
-hframes = 4
-vframes = 4
-script = ExtResource( 2 )
-
-[node name="Axis" type="Node2D" parent="."]
-position = Vector2( 0.019989, 0 )
-
-[node name="PlayerUI" type="Node2D" parent="."]
-
-[node name="Gear" type="Node2D" parent="PlayerUI"]
-visible = false
-position = Vector2( 0, -14 )
-
-[node name="Ring" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 52 )
-position = Vector2( 14, 49 )
-texture = ExtResource( 3 )
-hframes = 26
-vframes = 26
-
-[node name="Weapon" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 54 )
-position = Vector2( -16, 49 )
-texture = ExtResource( 3 )
-hframes = 26
-vframes = 26
-
-[node name="Ability" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 56 )
-position = Vector2( -5.99998, 49 )
-texture = ExtResource( 3 )
-hframes = 26
-vframes = 26
-
-[node name="Armor" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 58 )
-position = Vector2( 4.00002, 49 )
-texture = ExtResource( 3 )
-hframes = 26
-vframes = 26
+anims/RESET = SubResource( 40 )
+anims/attack_down = SubResource( 41 )
+anims/attack_left = SubResource( 42 )
+anims/attack_right = SubResource( 43 )
+anims/attack_up = SubResource( 44 )
+anims/idle_down = SubResource( 45 )
+anims/idle_left = SubResource( 46 )
+anims/idle_right = SubResource( 47 )
+anims/idle_up = SubResource( 48 )
+anims/walk_down = SubResource( 49 )
+anims/walk_left = SubResource( 50 )
+anims/walk_right = SubResource( 51 )
+anims/walk_up = SubResource( 52 )

@@ -1,11 +1,11 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=2]
 [ext_resource path="res://Scenes/SupportScenes/UI/CharacterSelection/CharacterButton.gd" type="Script" id=3]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Assets/ui/button.png" type="Texture" id=6]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=7]
 
 [sub_resource type="ShaderMaterial" id=9]
 shader = ExtResource( 2 )
@@ -13,99 +13,46 @@ shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.4
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
-shader_param/helmetDarkOrigin = null
-shader_param/helmetDarkNew = null
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/swordTextureActive = false
+shader_param/bowTextureActive = false
+shader_param/staffTextureActive = false
+shader_param/staffGemTextureActive = false
+shader_param/helmetDarkOrigin = Color( 0, 0, 0, 1 )
+shader_param/helmetDarkNew = Color( 0, 0, 0, 1 )
+shader_param/helmetMediumOrigin = Color( 0, 0, 0, 1 )
+shader_param/helmetMediumNew = null
 shader_param/helmetLightOrigin = null
 shader_param/helmetLightNew = null
-shader_param/helmetMediumOrigin = null
-shader_param/helmetMediumNew = null
-shader_param/bodyLightOrigin = null
-shader_param/bodyLightNew = null
+shader_param/bodyDarkOrigin = Color( 0, 0, 0, 1 )
+shader_param/bodyDarkNew = Color( 0, 0, 0, 1 )
 shader_param/bodyMediumOrigin = null
 shader_param/bodyMediumNew = null
+shader_param/bodyLightOrigin = null
+shader_param/bodyLightNew = null
 shader_param/bandOrigin = null
 shader_param/bandNew = null
 shader_param/buckleOrigin = null
 shader_param/buckleNew = null
-shader_param/shouldersLightOrigin = null
-shader_param/shouldersLightNew = null
-shader_param/shouldersDarkOrigin = null
-shader_param/shouldersDarkNew = null
-shader_param/axeLightOrigin = null
-shader_param/axeLightNew = null
-shader_param/axeDarkOrigin = null
-shader_param/axeDarkNew = null
-shader_param/bladeOrigin = null
-shader_param/bladeNew = null
 shader_param/bowOrigin = null
 shader_param/bowNew = null
 shader_param/arrowLightOrigin = null
 shader_param/arrowLightNew = null
 shader_param/arrowDarkOrigin = null
 shader_param/arrowDarkNew = null
-shader_param/bladeTipOrigin = null
-shader_param/bladeTipNew = null
 shader_param/bladeHiltOrigin = null
 shader_param/bladeHiltNew = null
-shader_param/bladeSwingOrigin = null
-shader_param/bladeSwingNew = null
-shader_param/bowDarkOrigin = null
-shader_param/bowDarkNew = null
+shader_param/bladeOrigin = null
+shader_param/bladeNew = Color( 0, 0, 0, 1 )
+shader_param/staffOrigin = null
+shader_param/staffNew = null
+shader_param/staffGemOrigin = null
+shader_param/staffGemNew = null
 
 [sub_resource type="DynamicFont" id=5]
 outline_size = 1
 font_data = ExtResource( 5 )
-
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-
-uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
-uniform float line_thickness : hint_range(0, 10) = 0.25;
-uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
-
-void fragment() {
-    vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-    vec2 glow_size = TEXTURE_PIXEL_SIZE * glow_thickness;
-    
-    float outline = 0.0;
-    outline += texture(TEXTURE, UV + vec2(-size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(0, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(0, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
-    outline = min(outline, 1.0);
-
-    float glow = 0.0;
-    for (float i = 1.0; i <= glow_thickness; i++) {
-        vec2 offset = TEXTURE_PIXEL_SIZE * i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, offset.y)).a / i;
-    }
-    glow = min(glow / glow_thickness, 1.0) - outline;
-
-    vec4 color = texture(TEXTURE, UV);
-    vec4 outline_color = mix(color, line_color, outline - color.a);
-    vec4 glow_color_mixed = mix(outline_color, glow_color, glow * (1.0 - color.a));
-    
-    COLOR = glow_color_mixed;
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.4
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
 [sub_resource type="DynamicFont" id=10]
 outline_size = 2
@@ -143,7 +90,7 @@ tracks/1/keys = {
 [sub_resource type="Animation" id=12]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("PlayResizer:position")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -152,27 +99,15 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -44, -16 ) ]
+"values": [ Vector2( 0.25, 0.25 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath(".:scale")
+tracks/1/path = NodePath(".:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0.25, 0.25 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath(".:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
@@ -192,9 +127,11 @@ texture = ExtResource( 6 )
 material = SubResource( 9 )
 position = Vector2( 67.5, 31 )
 texture = ExtResource( 4 )
-hframes = 13
-vframes = 26
-frame = 65
+hframes = 4
+vframes = 4
+region_enabled = true
+region_rect = Rect2( 0, 0, 80, 40 )
+script = ExtResource( 7 )
 
 [node name="LevelResizeContainer" type="Node2D" parent="."]
 position = Vector2( 60, 16 )
@@ -209,38 +146,6 @@ grow_horizontal = 2
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 5 )
 text = "Nomad - Level 1"
-
-[node name="ItemsResizeContainer" type="Node2D" parent="."]
-visible = false
-position = Vector2( 31, 25 )
-scale = Vector2( 0.25, 0.25 )
-
-[node name="Weapon" type="Sprite" parent="ItemsResizeContainer"]
-material = SubResource( 2 )
-position = Vector2( 116, 63 )
-scale = Vector2( 3, 3 )
-texture = ExtResource( 1 )
-hframes = 26
-vframes = 26
-frame = 3
-
-[node name="Helm" type="Sprite" parent="ItemsResizeContainer"]
-material = SubResource( 2 )
-position = Vector2( 148, 63 )
-scale = Vector2( 3, 3 )
-texture = ExtResource( 1 )
-hframes = 26
-vframes = 26
-frame = 185
-
-[node name="Armor" type="Sprite" parent="ItemsResizeContainer"]
-material = SubResource( 2 )
-position = Vector2( 176, 63 )
-scale = Vector2( 3, 3 )
-texture = ExtResource( 1 )
-hframes = 26
-vframes = 26
-frame = 107
 
 [node name="PlayResizer" type="Node2D" parent="."]
 position = Vector2( 8, -10 )

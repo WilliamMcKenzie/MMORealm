@@ -1,17 +1,13 @@
 extends KinematicBody2D
 
 #Key variables (Will set these from server immedietly)
-var level
+var character
+
 var stats
 var gear
 var health
 
 var expIndicatorScene = preload("res://Scenes/SupportScenes/UI/ExpIndicator/ExpIndicator.tscn")
-
-onready var WeaponSlot = $PlayerUI/Gear/Weapon
-onready var AbilitySlot = $PlayerUI/Gear/Ability
-onready var ArmorSlot = $PlayerUI/Gear/Armor
-onready var RingSlot = $PlayerUI/Gear/Ring
 
 #Sub variables (Will set these based on key variables onready)
 var projectile
@@ -21,30 +17,67 @@ var y = 0
 
 #We send animation to server to display to other clients.
 var lastAnimation = { "A" : "Idle", "C" : Vector2.ZERO }
-
+var lastSprite = { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice"}
 
 var shoot = false
 var last_shot_time = 0
-onready var animationTree = $AnimationTree
+onready var CharacterSpriteEle = $CharacterSprite
+onready var animation_tree = $AnimationTree
 
 func _ready():
-	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(gear.weapon.projectile) + "/" + str(gear.weapon.projectile) + ".tscn"
+	var projectile = ItemData.GetItem(gear.weapon.item).projectile
+	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile) + "/" + str(projectile) + ".tscn"
 	projectile = load(projectile_path)
-	PopulateInventory()
+	
+	SetCharacterSprite()
 
-func PopulateInventory():
+#Dealing with the characters sprite
+func SetCharacter(_character):
+	character = _character
+	
+	stats = character.stats
+	gear = character.gear
+
+func UpdateCharacter(_character):
+	character = _character
+	
+	stats = character.stats
+	gear = character.gear
+	health = character.health
+	
+	#We recieve new data from server
+	#Ex. player is hit, leveled up, or switched gear
+	#Update the ui here
+
+func SetCharacterSprite():
+	CharacterSpriteEle.SetCharacterClass(character.class)
+	if character.gear.has("weapon"):
+		CharacterSpriteEle.SetCharacterWeapon(ItemData.GetItem(character.gear.weapon.item).type)
+	SetSpriteData(CharacterSpriteEle, CharacterData.GetCharacter(character.class).path)
+	lastSprite = { "R" : $CharacterSprite.get_region_rect(), "C" : character.class, "P" : CharacterSpriteEle.GetParams()}
+	
 	if gear.has("weapon"):
-		SetSpriteData(WeaponSlot, gear.weapon.path)
+		var weapon_colors = ItemData.GetItem(character.gear.weapon.item).colors
+		var weapon_textures = ItemData.GetItem(character.gear.weapon.item).textures
+		SetSpriteColors(CharacterSpriteEle, weapon_colors, weapon_textures)
 	if gear.has("helmet"):
-		SetSpriteData(AbilitySlot, gear.helmet.path)
+		var helmet_colors = ItemData.GetItem(character.gear.helmet.item).colors
+		var helmet_textures = ItemData.GetItem(character.gear.helmet.item).textures
+		SetSpriteColors(CharacterSpriteEle, helmet_colors, helmet_textures)
 	if gear.has("armor"):
-		SetSpriteData(ArmorSlot, gear.armor.path)
+		var armor_colors = ItemData.GetItem(character.gear.armor.item).colors
+		var armor_textures = ItemData.GetItem(character.gear.armor.item).textures
+		SetSpriteColors(CharacterSpriteEle, armor_colors, armor_textures)
+
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
 	sprite.texture = spriteTexture
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
 	sprite.frame_coords = path[3]
+	
+func SetSpriteColors(sprite, colors, textures):
+	sprite.AddColorParams(colors, textures)
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
@@ -87,17 +120,17 @@ func MovePlayer(delta):
 	#Animations
 	var shoot_direction = (get_global_mouse_position() - global_position).normalized()
 	if Input.is_action_pressed("shoot"):
-		animationTree.get("parameters/playback").travel("Attack")
-		animationTree.set("parameters/Idle/blend_position", shoot_direction)
-		animationTree.set("parameters/Attack/blend_position", shoot_direction)
+		animation_tree.get("parameters/playback").travel("Attack")
+		animation_tree.set("parameters/Idle/blend_position", shoot_direction)
+		animation_tree.set("parameters/Attack/blend_position", shoot_direction)
 		lastAnimation = { "A" : "Attack", "C" : shoot_direction }
 	elif motion != Vector2.ZERO:
-		animationTree.get("parameters/playback").travel("Walk")
-		animationTree.set("parameters/Idle/blend_position", motion)
-		animationTree.set("parameters/Walk/blend_position", motion)
+		animation_tree.get("parameters/playback").travel("Walk")
+		animation_tree.set("parameters/Idle/blend_position", motion)
+		animation_tree.set("parameters/Walk/blend_position", motion)
 		lastAnimation = { "A" : "Walk", "C" : motion }
 	else:
-		animationTree.get("parameters/playback").travel("Idle")
+		animation_tree.get("parameters/playback").travel("Idle")
 		lastAnimation["A"] = "Idle"
 
 	motion = motion.normalized()
@@ -117,7 +150,7 @@ func MovePlayer(delta):
 
 #Here we are sending over the location to the server 60 times a second
 func DefinePlayerState():
-	var player_state = {"T":OS.get_system_time_msecs(), "P":get_global_position(), "A":lastAnimation}
+	var player_state = {"T":OS.get_system_time_msecs(), "P":get_global_position(), "A":lastAnimation, "S":lastSprite}
 	Server.SendPlayerState(player_state)
 
 func ShootProjectile():
@@ -128,9 +161,7 @@ func ShootProjectile():
 	
 	#Send projectile to server
 	var projectile_data = {
-		"Damage":damage,
 		"Position":$Axis.global_position,
-		"Projectile":gear.weapon.projectile,
 		"MousePosition":mouse_position,
 		"Direction":direction,
 		"TileRange":gear.weapon.range
@@ -149,7 +180,6 @@ func ShootProjectile():
 
 func CalculateDamageWithMultiplier(damage):
 	return (damage*(0.5 + (float(stats.attack)/float(50))))
-
 
 func ShowExpIndicator(exp_amount):
 	var exp_indicator = expIndicatorScene.instance()

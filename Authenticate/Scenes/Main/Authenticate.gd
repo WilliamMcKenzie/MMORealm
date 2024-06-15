@@ -53,6 +53,11 @@ remote func BuyCharacterSlot(email, password, player_id):
 		PlayerData.player_data[email].account_data.gold -= price
 	rpc_id(gateway_id, "ReturnBuyCharacterSlotRequest", result, player_id)
 
+func generate_unique_id():
+	var timestamp = OS.get_unix_time()
+	var random_value = randi()
+	return (str(timestamp) + "_" + str(random_value)).sha256_text()
+
 remote func CreateCharacter(email, password, player_id):
 	if not PlayerData.player_data.has(email):
 		return
@@ -69,36 +74,15 @@ remote func CreateCharacter(email, password, player_id):
 			"vitality" : 30
 		},
 		"level" : 1,
+		"exp" : 0,
 		"class" : "Apprentice",
 		"gear" : {
 			"weapon" : {
-				"name": "Emerald Staff",
-				"description" : "A simple yet effective weapon.",
-				"damage" : [15,25],
-				"rof" : 100,
-				"stats" : {
-					
-				},
-				"range" : 8,
-				"tier" : 0,
-				"projectile" : "EmeraldBlast",
-				"path" : ["items/items_8x8.png", 26, 26, Vector2(0,1)]
+				"item" : 1,
+				"id" : generate_unique_id()
 			}
 		},
 		"inventory" : [
-			{
-				"name": "Ultimate Bow",
-				"description" : "A simple yet effective weapon.",
-				"damage" : [15,25],
-				"rof" : 200,
-				"stats" : {
-					
-				},
-				"range" : 8,
-				"tier" : 0,
-				"projectile" : "EmeraldBlast",
-				"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)]
-			},
 			null,
 			null,
 			null,
@@ -106,8 +90,8 @@ remote func CreateCharacter(email, password, player_id):
 			null,
 			null,
 			null,
-		],
-		"path" : ["characters/characters_8x8.png", 13, 26, Vector2(0,0)]
+			null,
+		]
 	}
 	
 	var gateway_id = get_tree().get_rpc_sender_id()
@@ -148,35 +132,23 @@ remote func CreateAccount(email, password, player_id):
 			"dexterity" : 30,
 			"vitality" : 30
 		},
-		"level" : 1,
-		"class" : "Apprentice",
+		"level" : 19,
+		"exp" : 0,
+		"class" : "Bulwark",
 		"gear" : {
 			"weapon" : {
-				"name": "Emerald Staff",
-				"description" : "A simple yet effective weapon.",
-				"damage" : [15,25],
-				"rof" : 100,
-				"stats" : {
-					
-				},
-				"range" : 8,
-				"tier" : 0,
-				"projectile" : "EmeraldBlast",
-				"path" : ["items/items_8x8.png", 26, 26, Vector2(0,1)]
+				"item" : 3,
+				"id" : generate_unique_id()
+			},
+			"armor" : {
+				"item" : 2,
+				"id" : generate_unique_id()
 			}
 		},
 		"inventory" : [
 			{
-				"name": "Ultimate Bow",
-				"description" : "A simple yet effective weapon.",
-				"damage" : [15,25],
-				"rof" : 200,
-				"stats" : {
-					
-				},
-				"range" : 8,
-				"tier" : 0,
-				"projectile" : "EmeraldBlast",
+				"item" : 2,
+				"id" : generate_unique_id(),
 				"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)]
 			},
 			null,
@@ -186,8 +158,7 @@ remote func CreateAccount(email, password, player_id):
 			null,
 			null,
 			null,
-		],
-		"path" : ["characters/characters_8x8.png", 13, 26, Vector2(0,0)]
+		]
 	}]
 		}}
 		PlayerData.savePlayerIDs()

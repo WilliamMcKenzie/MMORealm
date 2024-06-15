@@ -7,7 +7,6 @@ var password
 var gold
 
 func AuthenticatedUser():
-	print("Email: " + email)
 	Gateway.ConnectToServer(email, password, 4)
 
 func UpdateGold():
@@ -32,9 +31,7 @@ func EnterGame(character_index, character):
 	Server.SetCharacterIndex(character_index)
 	
 	var nexus_instance = nexus.instance()
-	nexus_instance.get_node("YSort/player").stats = character.stats
-	nexus_instance.get_node("YSort/player").gear = character.gear
-	nexus_instance.get_node("YSort/player").level = character.level
+	nexus_instance.get_node("YSort/player").SetCharacter(character)
 	get_parent().add_child(nexus_instance)
 	GameUI.visible = true
 	queue_free()

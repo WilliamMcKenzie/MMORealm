@@ -31,6 +31,7 @@ func UpdatePlayer(player_id, player_state):
 	if player_list.has(str(player_id)):
 		player_list[str(player_id)]["Position"] = player_state["P"]
 		player_list[str(player_id)]["Animation"] = player_state["A"]
+		player_list[str(player_id)]["Sprite"] = player_state["S"]
 		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["Position"]
 
 func SpawnPlayer(player_container):
@@ -60,7 +61,7 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	
 	projectile_instance.character = get_node("YSort/Players/"+str(player_id)).character
 	projectile_instance.player_id = player_id
-	projectile_instance.projectile_name = projectile_data["Projectile"]
+	projectile_instance.projectile_name = get_node("YSort/Players/"+str(player_id)).gear.weapon.projectile
 	projectile_instance.position = projectile_data["Position"]
 	projectile_instance.initial_position = projectile_data["Position"]
 	projectile_instance.tile_range = projectile_data["TileRange"]

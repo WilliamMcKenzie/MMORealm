@@ -19,6 +19,8 @@ config/icon="res://icon.png"
 Server="*res://Scenes/Singletons/Server.gd"
 Gateway="*res://Scenes/Singletons/Gateway.gd"
 GameUI="*res://Scenes/SupportScenes/UI/GameUI.tscn"
+ItemData="*res://Data/ItemData.gd"
+CharacterData="*res://Data/CharacterData.gd"
 
 [display]
 

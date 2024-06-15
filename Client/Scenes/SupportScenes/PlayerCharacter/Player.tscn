@@ -3,11 +3,8 @@
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
-[ext_resource path="res://Assets/characters/character.png" type="Texture" id=4]
+[ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
-
-[sub_resource type="AnimationNodeAnimation" id=30]
-animation = "attack_left"
 
 [sub_resource type="AnimationNodeAnimation" id=31]
 animation = "attack_down"
@@ -18,15 +15,18 @@ animation = "attack_up"
 [sub_resource type="AnimationNodeAnimation" id=33]
 animation = "attack_right"
 
+[sub_resource type="AnimationNodeAnimation" id=60]
+animation = "attack_right"
+
 [sub_resource type="AnimationNodeBlendSpace2D" id=34]
-blend_point_0/node = SubResource( 30 )
-blend_point_0/pos = Vector2( -0.7, 0 )
-blend_point_1/node = SubResource( 31 )
-blend_point_1/pos = Vector2( 0, 0.9 )
-blend_point_2/node = SubResource( 32 )
-blend_point_2/pos = Vector2( 0, -0.9 )
-blend_point_3/node = SubResource( 33 )
-blend_point_3/pos = Vector2( 0.9, 0 )
+blend_point_0/node = SubResource( 31 )
+blend_point_0/pos = Vector2( 0, 1 )
+blend_point_1/node = SubResource( 32 )
+blend_point_1/pos = Vector2( 0, -1 )
+blend_point_2/node = SubResource( 33 )
+blend_point_2/pos = Vector2( 1, 0 )
+blend_point_3/node = SubResource( 60 )
+blend_point_3/pos = Vector2( -1, 0 )
 
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "idle_left"
@@ -111,6 +111,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 3 ) ]
 }
 
 [sub_resource type="Animation" id=29]
@@ -259,7 +271,7 @@ resource_name = "idle_up"
 length = 0.4
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath(".:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -267,8 +279,8 @@ tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 12 ]
+"update": 0,
+"values": [ Vector2( 0, 3 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -370,44 +382,42 @@ shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.0
 shader_param/glow_thickness = 0.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/swordTextureActive = false
+shader_param/bowTextureActive = false
+shader_param/staffTextureActive = false
+shader_param/staffGemTextureActive = false
 shader_param/helmetDarkOrigin = Color( 0.788235, 0.415686, 0, 1 )
 shader_param/helmetDarkNew = Color( 0.368627, 0.329412, 0.329412, 1 )
-shader_param/helmetLightOrigin = Color( 1, 0.52549, 0, 1 )
-shader_param/helmetLightNew = Color( 0.529412, 0.458824, 0.458824, 1 )
 shader_param/helmetMediumOrigin = Color( 0.894118, 0.470588, 0, 1 )
 shader_param/helmetMediumNew = Color( 0.423529, 0.388235, 0.388235, 1 )
-shader_param/bodyLightOrigin = Color( 1, 0, 0.843137, 1 )
-shader_param/bodyLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
+shader_param/helmetLightOrigin = Color( 1, 0.52549, 0, 1 )
+shader_param/helmetLightNew = Color( 0.529412, 0.458824, 0.458824, 1 )
+shader_param/bodyDarkOrigin = null
+shader_param/bodyDarkNew = null
 shader_param/bodyMediumOrigin = Color( 0.894118, 0, 0.752941, 1 )
 shader_param/bodyMediumNew = Color( 0.745098, 0.745098, 0.745098, 1 )
+shader_param/bodyLightOrigin = Color( 1, 0, 0.843137, 1 )
+shader_param/bodyLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
 shader_param/bandOrigin = Color( 1, 0, 0.419608, 1 )
 shader_param/bandNew = Color( 0.564706, 0.317647, 0.14902, 1 )
 shader_param/buckleOrigin = Color( 0.823529, 0, 0.34902, 1 )
 shader_param/buckleNew = Color( 0.509804, 0.509804, 0.509804, 1 )
-shader_param/shouldersLightOrigin = Color( 0, 0.52549, 1, 1 )
-shader_param/shouldersLightNew = Color( 0, 0, 0, 0 )
-shader_param/shouldersDarkOrigin = Color( 0.211765, 0, 1, 1 )
-shader_param/shouldersDarkNew = Color( 0.745098, 0.745098, 0.745098, 1 )
-shader_param/axeLightOrigin = Color( 0.631373, 0, 1, 1 )
-shader_param/axeLightNew = Color( 0.4, 0.4, 0.4, 1 )
-shader_param/axeDarkOrigin = Color( 0.509804, 0, 0.807843, 1 )
-shader_param/axeDarkNew = Color( 0.4, 0.4, 0.4, 1 )
-shader_param/bladeOrigin = Color( 1, 0, 0, 1 )
-shader_param/bladeNew = Color( 0.517647, 0.517647, 0.517647, 1 )
 shader_param/bowOrigin = Color( 1, 0.94902, 0, 1 )
 shader_param/bowNew = Color( 0, 0, 0, 0 )
 shader_param/arrowLightOrigin = Color( 0, 0.843137, 1, 1 )
 shader_param/arrowLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
 shader_param/arrowDarkOrigin = Color( 0, 0.517647, 0.615686, 1 )
 shader_param/arrowDarkNew = Color( 0.745098, 0.745098, 0.745098, 1 )
-shader_param/bladeTipOrigin = Color( 0.211765, 1, 0, 1 )
-shader_param/bladeTipNew = Color( 0.4, 0.4, 0.4, 1 )
 shader_param/bladeHiltOrigin = Color( 0, 1, 0.419608, 1 )
 shader_param/bladeHiltNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/bladeSwingOrigin = Color( 0.682353, 0, 0, 1 )
-shader_param/bladeSwingNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/bowDarkOrigin = Color( 0.666667, 0.631373, 0, 1 )
-shader_param/bowDarkNew = Color( 0, 0, 0, 0 )
+shader_param/bladeOrigin = Color( 1, 0, 0, 1 )
+shader_param/bladeNew = Color( 0.517647, 0.517647, 0.517647, 1 )
+shader_param/staffOrigin = null
+shader_param/staffNew = null
+shader_param/staffGemOrigin = null
+shader_param/staffGemNew = null
 
 [sub_resource type="Shader" id=53]
 code = "shader_type canvas_item;
@@ -575,7 +585,7 @@ tree_root = SubResource( 16 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 17 )
-parameters/Attack/blend_position = Vector2( -0.81775, 0.844828 )
+parameters/Attack/blend_position = Vector2( -0.0079239, -1.47414 )
 parameters/Idle/blend_position = Vector2( -0.274168, 0.413793 )
 parameters/Walk/blend_position = Vector2( 0.99683, -0.543103 )
 
@@ -600,6 +610,9 @@ material = SubResource( 52 )
 texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
+frame = 12
+region_enabled = true
+region_rect = Rect2( 0, 0, 80, 40 )
 script = ExtResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="."]

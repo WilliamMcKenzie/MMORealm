@@ -1,14 +1,38 @@
 extends KinematicBody2D
 
 onready var animationTree = $AnimationTree
+onready var CharacterSprite = $CharacterSprite
 var projectile_dict = {}
+var last_sprite_data
 
 func _physics_process(delta):
 	if projectile_dict != {}:
 		ShootProjectile()
 
-func MovePlayer(new_position, animation):
+func SetCharacterSprite(sprite_data):
+	if last_sprite_data == sprite_data:
+		return
+	last_sprite_data = sprite_data
+		
+	var character_class = sprite_data["C"]
+	var region_rect = sprite_data["R"]
+	var params = sprite_data["P"]
+	
+	CharacterSprite.SetCharacterClass(character_class)
+	CharacterSprite.SetParams(params)
+	SetSpriteData(CharacterSprite, CharacterData.GetCharacter(character_class).path)
+	CharacterSprite.region_rect = region_rect
+
+func SetSpriteData(sprite, path):
+	var spriteTexture = load("res://Assets/"+path[0]) 
+	sprite.texture = spriteTexture
+	sprite.hframes = path[1]
+	sprite.vframes = path[2]
+	sprite.frame_coords = path[3]
+
+func MovePlayer(new_position, animation, sprite_data):
 	set_position(new_position)
+	SetCharacterSprite(sprite_data)
 	
 	if animation is Dictionary and animation.has("A") and animation.has("C"):
 		var animationType = animation["A"]
