@@ -28,6 +28,30 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
 
+remote func FetchAccountData(email, password):
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	Authenticate.GenericRequest(email.to_lower(), password, player_id, "FetchAccountData")
+func ReturnAccountData(account_data, player_id):
+	rpc_id(player_id, "ReturnAccountData", account_data)
+	network.disconnect_peer(player_id)
+
+remote func BuyCharacterSlot(email, password):
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	var valid_request = true
+	if(email == ""):
+		valid_request = false
+	if(password == ""):
+		valid_request = false
+	if(password.length() < 7):
+		valid_request = false
+	if valid_request == false:
+		ReturnBuyCharacterSlotRequest(valid_request, player_id)
+	else:
+		Authenticate.GenericRequest(email.to_lower(), password, player_id, "BuyCharacterSlot")
+func ReturnBuyCharacterSlotRequest(result, player_id):
+	rpc_id(player_id, "ReturnBuyCharacterSlotRequest", result)
+	network.disconnect_peer(player_id)
+
 remote func CreateCharacter(email, password):
 	var player_id = custom_multiplayer.get_rpc_sender_id()
 	var valid_request = true
@@ -41,8 +65,7 @@ remote func CreateCharacter(email, password):
 		ReturnCreateCharacterRequest(valid_request, null, player_id)
 	else:
 		print("Request accepted")
-		Authenticate.CreateCharacter(email.to_lower(), password, player_id)
-
+		Authenticate.GenericRequest(email.to_lower(), password, player_id, "CreateCharacter")
 func ReturnCreateCharacterRequest(result, new_character, player_id):
 	rpc_id(player_id, "ReturnCreateCharacterRequest", result, new_character)
 	network.disconnect_peer(player_id)
@@ -60,7 +83,7 @@ remote func CreateAccountRequest(email, password):
 		ReturnCreateAccountRequest(valid_request, player_id, 1)
 	else:
 		print("Request accepted")
-		Authenticate.CreateAccount(email.to_lower(), password, player_id)
+		Authenticate.GenericRequest(email.to_lower(), password, player_id, "CreateAccount")
 func ReturnCreateAccountRequest(result, player_id, message):
 	rpc_id(player_id, "ReturnCreateAccountRequest", result, message)
 	network.disconnect_peer(player_id)

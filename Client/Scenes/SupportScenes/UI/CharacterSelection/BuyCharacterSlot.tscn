@@ -1,0 +1,171 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=2]
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
+[ext_resource path="res://Assets/ui/button.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/SupportScenes/UI/CharacterSelection/BuyCharacterSlot.gd" type="Script" id=5]
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 2 )
+shader_param/line_color = Color( 0, 0, 0, 1 )
+shader_param/line_thickness = 0.4
+shader_param/glow_thickness = 4.0
+shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/helmetDarkOrigin = null
+shader_param/helmetDarkNew = null
+shader_param/helmetLightOrigin = null
+shader_param/helmetLightNew = null
+shader_param/helmetMediumOrigin = null
+shader_param/helmetMediumNew = null
+shader_param/bodyLightOrigin = null
+shader_param/bodyLightNew = null
+shader_param/bodyMediumOrigin = null
+shader_param/bodyMediumNew = null
+shader_param/bandOrigin = null
+shader_param/bandNew = null
+shader_param/buckleOrigin = null
+shader_param/buckleNew = null
+shader_param/shouldersLightOrigin = null
+shader_param/shouldersLightNew = null
+shader_param/shouldersDarkOrigin = null
+shader_param/shouldersDarkNew = null
+shader_param/axeLightOrigin = null
+shader_param/axeLightNew = null
+shader_param/axeDarkOrigin = null
+shader_param/axeDarkNew = null
+shader_param/bladeOrigin = null
+shader_param/bladeNew = null
+shader_param/bowOrigin = null
+shader_param/bowNew = null
+shader_param/arrowLightOrigin = null
+shader_param/arrowLightNew = null
+shader_param/arrowDarkOrigin = null
+shader_param/arrowDarkNew = null
+shader_param/bladeTipOrigin = null
+shader_param/bladeTipNew = null
+shader_param/bladeHiltOrigin = null
+shader_param/bladeHiltNew = null
+shader_param/bladeSwingOrigin = null
+shader_param/bladeSwingNew = null
+shader_param/bowDarkOrigin = null
+shader_param/bowDarkNew = null
+
+[sub_resource type="DynamicFont" id=5]
+outline_size = 1
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=7]
+resource_name = "PlayAnimation"
+loop = true
+tracks/0/type = "method"
+tracks/0/path = NodePath("PlayResizer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"values": [  ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("PlayResizer:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1.2, 1.2 ), Vector2( 1, 1 ), Vector2( 1.2, 1.2 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("PlayResizer:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -56, -16 ), Vector2( -16, 20 ), Vector2( -56, -16 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayResizer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -44, -16 ) ]
+}
+
+[node name="BuyCharacterSlot" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="Background" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.462745 )
+position = Vector2( 67, 26 )
+scale = Vector2( 0.15, 0.22 )
+texture = ExtResource( 4 )
+
+[node name="Gold" type="Sprite" parent="."]
+material = SubResource( 4 )
+position = Vector2( 67, 31 )
+texture = ExtResource( 3 )
+hframes = 26
+vframes = 26
+frame = 572
+
+[node name="CostResizeContainer" type="Node2D" parent="."]
+position = Vector2( 60, 16 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="Cost" type="Label" parent="CostResizeContainer"]
+margin_left = -4.0
+margin_top = 4.0
+margin_right = 60.0
+margin_bottom = 23.0
+grow_horizontal = 2
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 5 )
+
+[node name="ButtonResizer" type="Node2D" parent="."]
+position = Vector2( 11, -9 )
+scale = Vector2( 0.285572, 0.285572 )
+
+[node name="Create" type="TextureButton" parent="ButtonResizer"]
+margin_left = 164.582
+margin_top = 164.582
+margin_right = 230.582
+margin_bottom = 192.582
+
+[node name="Label" type="Label" parent="ButtonResizer/Create"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 66.0
+margin_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 0
+custom_fonts/font = SubResource( 6 )
+text = "Buy Slot"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ButtonResizer/Create"]
+root_node = NodePath("")
+autoplay = "PlayAnimation"
+anims/PlayAnimation = SubResource( 7 )
+anims/RESET = SubResource( 8 )

@@ -21,30 +21,42 @@ func _Peer_Connected(id):
 func _Peer_Disconnected(id):
 	print("Gateway " + str(id) + " has disconnected to authentication server!")
 
-remote func CreateAccount(email, password, player_id):
+remote func FetchAccountData(email, password, player_id):
+	if not PlayerData.player_data.has(email):
+		return 
+	if PlayerData.player_data[email].password != GenerateHashedPassword(password, PlayerData.player_data[email].salt):
+		return
+	
 	var gateway_id = get_tree().get_rpc_sender_id()
-	var result
-	var message
-	if PlayerData.player_data.has(email):
-		result = false
-		message = 2
-	else:
+	var account_data = PlayerData.player_data[email].account_data
+	
+	rpc_id(gateway_id, "ReturnAccountData", account_data, player_id)
+
+remote func BuyCharacterSlot(email, password, player_id):
+	if not PlayerData.player_data.has(email):
+		return
+	if PlayerData.player_data[email].password != GenerateHashedPassword(password, PlayerData.player_data[email].salt):
+		return
+	
+	var gateway_id = get_tree().get_rpc_sender_id()
+	var result = false
+	var account_data = PlayerData.player_data[email].account_data
+	
+	var character_slots = account_data.character_slots
+	var gold = account_data.gold
+	
+	var price = 500 + (character_slots*200)
+	
+	if gold > price:
 		result = true
-		message = 3
-		#This is where we would attatch the email/password to a database
-		var salt = GenerateSalt()
-		var hashed_password = GenerateHashedPassword(password, salt)
-		PlayerData.player_data[email] = {"password": hashed_password, "salt": salt, "account_data": {
-			"character_slots": 1,
-			"gold": 4000,
-			"characters":[]
-		}}
-		PlayerData.savePlayerIDs()
-	print("Returning result...")
-	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
-		
+		PlayerData.player_data[email].account_data.character_slots += 1
+		PlayerData.player_data[email].account_data.gold -= price
+	rpc_id(gateway_id, "ReturnBuyCharacterSlotRequest", result, player_id)
+
 remote func CreateCharacter(email, password, player_id):
 	if not PlayerData.player_data.has(email):
+		return
+	if PlayerData.player_data[email].password != GenerateHashedPassword(password, PlayerData.player_data[email].salt):
 		return
 	
 	var new_character = {
@@ -110,6 +122,76 @@ remote func CreateCharacter(email, password, player_id):
 		PlayerData.player_data[email].account_data.characters.append(new_character)
 		
 	rpc_id(gateway_id, "ReturnCreateCharacterRequest", result, new_character, player_id)
+
+remote func CreateAccount(email, password, player_id):
+	var gateway_id = get_tree().get_rpc_sender_id()
+	var result
+	var message
+	if PlayerData.player_data.has(email):
+		result = false
+		message = 2
+	else:
+		result = true
+		message = 3
+		#This is where we would attatch the email/password to a database
+		var salt = GenerateSalt()
+		var hashed_password = GenerateHashedPassword(password, salt)
+		PlayerData.player_data[email] = {"password": hashed_password, "salt": salt, "account_data": {
+			"character_slots": 1,
+			"gold": 5000,
+			"characters":[{
+		"stats" : {
+			"health" : 100,
+			"attack" : 30,
+			"defense" : 0,
+			"speed" : 100,
+			"dexterity" : 30,
+			"vitality" : 30
+		},
+		"level" : 1,
+		"class" : "Apprentice",
+		"gear" : {
+			"weapon" : {
+				"name": "Emerald Staff",
+				"description" : "A simple yet effective weapon.",
+				"damage" : [15,25],
+				"rof" : 100,
+				"stats" : {
+					
+				},
+				"range" : 8,
+				"tier" : 0,
+				"projectile" : "EmeraldBlast",
+				"path" : ["items/items_8x8.png", 26, 26, Vector2(0,1)]
+			}
+		},
+		"inventory" : [
+			{
+				"name": "Ultimate Bow",
+				"description" : "A simple yet effective weapon.",
+				"damage" : [15,25],
+				"rof" : 200,
+				"stats" : {
+					
+				},
+				"range" : 8,
+				"tier" : 0,
+				"projectile" : "EmeraldBlast",
+				"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)]
+			},
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+		],
+		"path" : ["characters/characters_8x8.png", 13, 26, Vector2(0,0)]
+	}]
+		}}
+		PlayerData.savePlayerIDs()
+	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
 
 func GenerateSalt():
 	randomize()

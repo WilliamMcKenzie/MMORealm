@@ -22,22 +22,23 @@ func _onConnectionFailed():
 func _onConnectionSucceeded():
 	print("Authentication server connection succeeded!")
 
-func CreateCharacter(email, password, player_id):
-	rpc_id(1, "CreateCharacter", email, password, player_id)
+func GenericRequest(email, password, player_id, destination):
+	rpc_id(1, destination, email, password, player_id)
+
+remote func ReturnAccountData(account_data, player_id):
+	Gateway.ReturnAccountData(account_data, player_id)
+
+remote func ReturnBuyCharacterSlotRequest(result, player_id):
+	Gateway.ReturnBuyCharacterSlotRequest(result, player_id)
 
 remote func ReturnCreateCharacterRequest(result, new_character, player_id):
 	Gateway.ReturnCreateCharacterRequest(result, new_character, player_id)
-
-func CreateAccount(email, password, player_id):
-	print("Sending signal...")
-	rpc_id(1, "CreateAccount", email, password, player_id)
 
 remote func ReturnCreateAccountRequest(result, player_id, message):
 	Gateway.ReturnCreateAccountRequest(result, player_id, message)
 
 func AuthenticatePlayer(email, password, id):
 	rpc_id(1, "AuthenticatePlayer", email, password, id) 
-
 remote func AuthenticateResults(result, player_id, token):
 	Gateway.ReturnLoginRequest(player_id, result, token)
 

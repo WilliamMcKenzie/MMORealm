@@ -45,21 +45,36 @@ func _onConnectionFailed():
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
+	if(task == 4):
+		FetchAccountData()
+	if(task == 3):
+		RequestBuyCharacterSlot()
 	if(task == 2):
 		RequestCreateCharacter()
 	if(task == 1):
 		RequestCreateAccount()
-	else:
+	if(task == 0):
 		RequestLogin()
+
+func FetchAccountData():
+	rpc_id(1, "FetchAccountData", email, password)
 	
+remote func ReturnAccountData(account_data):
+	get_node("../SceneHandler/Home").SelectionScreen(account_data)
+
+func RequestBuyCharacterSlot():
+	rpc_id(1, "BuyCharacterSlot", email, password)
+remote func ReturnBuyCharacterSlotRequest(result):
+	if result == true:
+		get_node("../SceneHandler/Home/CharacterSelection").AddCharacterSlot()
+		get_node("../SceneHandler/Home/CharacterSelection").Populate()
+
 func RequestCreateCharacter():
 	rpc_id(1, "CreateCharacter", email, password)
-	email = ""
-	password = ""
 remote func ReturnCreateCharacterRequest(result, new_character):
 	if result == true:
 		get_node("../SceneHandler/Home/CharacterSelection").characters.append(new_character)
-		get_node("../SceneHandler/Home/CharacterSelection").PopulateCharacters()
+		get_node("../SceneHandler/Home/CharacterSelection").Populate()
 	
 func RequestCreateAccount():
 	print("Requesting create account from gateway")
@@ -85,9 +100,6 @@ remote func ReturnCreateAccountRequest(results, message):
 
 func RequestLogin():
 	rpc_id(1, "LoginRequest", email, password)
-	email = ""
-	password = ""
-
 remote func ReturnLogin(result, token):
 	if(result):
 		Server.token = token

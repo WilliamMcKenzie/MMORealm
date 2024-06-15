@@ -1,7 +1,5 @@
 extends Node2D
 
-onready var emailEle = $ResizeContainer/Email
-onready var passwordEle = $ResizeContainer/Password
 onready var loginButton = $ResizeContainer/Login
 onready var signupButton = $ResizeContainer/Signup
 
@@ -11,16 +9,7 @@ var password = ""
 func _ready():
 	loginButton.connect("pressed", self, "LoginAttempt")
 	signupButton.connect("pressed", self, "SignupAttempt")
-	emailEle.connect("text_changed", self, "EmailHandler")
-	passwordEle.connect("text_changed", self, "PasswordHandler")
-
-func EmailHandler():
-	email = emailEle.text
-	print(email)
-func PasswordHandler():
-	password = passwordEle.text
-	print(password)
-
+	
 func SignupAttempt():
 	if email == "" or password == "":
 		print("Invalid credentials: Email/password cannot be blank")
@@ -38,7 +27,6 @@ func LoginAttempt():
 	else:
 		loginButton.disabled = true
 		signupButton.disabled = true
-		print("Attempting login!!")
 		Gateway.ConnectToServer(email, password, 0)
 func LoginResult(result):
 	loginButton.disabled = false
@@ -46,6 +34,12 @@ func LoginResult(result):
 	if(result == true):
 		get_node("/root/SceneHandler/Home").email = email
 		get_node("/root/SceneHandler/Home").password = password
-		get_node("/root/SceneHandler/Home").AuthenticatedUser(email)
+		get_node("/root/SceneHandler/Home").AuthenticatedUser()
 	else:
 		print("Invalid credentials")
+
+
+func _on_Password_text_changed(_password):
+	password = _password
+func _on_Email_text_changed(_email):
+	email = _email

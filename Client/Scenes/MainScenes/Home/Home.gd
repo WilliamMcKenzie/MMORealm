@@ -1,28 +1,31 @@
 extends Control
 
-onready var playButton = $UI/PlayResizer/Play
-
 var nexus = preload("res://Scenes/MainScenes/Nexus/nexus.tscn")
 
 var email
 var password
+var gold
 
-func _ready():
-	playButton.connect("pressed", self, "play")
+func AuthenticatedUser():
+	print("Email: " + email)
+	Gateway.ConnectToServer(email, password, 4)
 
-func AuthenticatedUser(email):
-	#Server.FetchPlayerData(email)
-	SelectionScreen({ "characters" : [] })
-	pass
+func UpdateGold():
+	var ui = get_node("UI")
+	ui.get_node("Gold/Gold").text = str(gold)
 
-func SelectionScreen(player_data):
-	get_node("UI").visible = false
+func SelectionScreen(account_data):
 	get_node("LoginPopup").visible = false
-	var selectionScreenInstance = get_node("CharacterSelection")
-	# We will implement actually showing created characters once we have them on the auth server
-	selectionScreenInstance.characters = player_data.characters
-	selectionScreenInstance.PopulateCharacters()
-	selectionScreenInstance.visible = true
+	get_node("UI").visible = true
+	
+	var selection_screen = get_node("CharacterSelection")
+	selection_screen.characters = account_data.characters
+	selection_screen.character_slots = account_data.character_slots
+	selection_screen.Populate()
+	selection_screen.visible = true
+	
+	gold = account_data.gold
+	UpdateGold()
 	
 func EnterGame(character_index, character):
 	Server.ConnectToServer()

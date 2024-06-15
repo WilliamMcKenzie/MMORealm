@@ -1,11 +1,11 @@
 extends Node2D
 
-onready var CharacterSpriteEle = $Button/Character
-onready var LevelEle = $Button/ResizeContainer/Level
-onready var WeaponEle = $Button/ItemsResizeContainer/Weapon
-onready var AbilityEle = $Button/ItemsResizeContainer/Helm
-onready var ArmorEle = $Button/ItemsResizeContainer/Armor
-onready var containerButton = $Button
+onready var CharacterSpriteEle = $Character
+onready var LevelEle = $LevelResizeContainer/Level
+onready var WeaponEle = $ItemsResizeContainer/Weapon
+onready var AbilityEle = $ItemsResizeContainer/Helm
+onready var ArmorEle = $ItemsResizeContainer/Armor
+onready var PlayButton = $PlayResizer/Play
 
 var character
 var character_index
@@ -37,7 +37,7 @@ func _ready():
 	SetSpriteData(CharacterSpriteEle, characterPath)
 	SetSpriteData(WeaponEle, weaponPath)
 	SetSpriteData(ArmorEle, armorPath)
-	containerButton.connect("pressed", self, "EnterGame")
+	PlayButton.connect("pressed", self, "EnterGame")
 	
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
