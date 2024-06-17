@@ -26,12 +26,9 @@ CharacterData="*res://Data/CharacterData.gd"
 
 window/size/width=800
 window/size/height=360
-window/size/fullscreen=true
-window/size/test_width=800
-window/size/test_height=360
+window/per_pixel_transparency/allowed=true
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
-window/stretch/shrink=0.85
 
 [global]
 
@@ -41,6 +38,7 @@ displa=false
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+theme/custom="res://Resources/main_theme.tres"
 
 [input]
 

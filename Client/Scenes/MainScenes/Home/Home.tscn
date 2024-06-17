@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
@@ -7,17 +7,7 @@
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=5]
 [ext_resource path="res://Assets/tiles/tileset.png" type="Texture" id=6]
 [ext_resource path="res://Scenes/MainScenes/Home/Home.gd" type="Script" id=7]
-
-[sub_resource type="StyleBoxFlat" id=17]
-bg_color = Color( 0, 0, 0, 0.32549 )
-
-[sub_resource type="StyleBoxFlat" id=15]
-bg_color = Color( 0, 0, 0, 0.352941 )
-shadow_color = Color( 1, 0, 0, 0 )
-
-[sub_resource type="Theme" id=16]
-LineEdit/styles/normal = SubResource( 17 )
-TextEdit/styles/normal = SubResource( 15 )
+[ext_resource path="res://Resources/main_theme.tres" type="Theme" id=8]
 
 [sub_resource type="TileSet" id=11]
 0/name = "tileset.png 0"
@@ -284,7 +274,7 @@ font_data = ExtResource( 2 )
 [node name="Home" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = SubResource( 16 )
+theme = ExtResource( 8 )
 script = ExtResource( 7 )
 
 [node name="BackgroundTiles" type="TileMap" parent="."]
@@ -304,7 +294,7 @@ zoom = Vector2( 0.15, 0.15 )
 
 [node name="UI" type="Node2D" parent="."]
 visible = false
-position = Vector2( 22, -3 )
+position = Vector2( 22, 3 )
 scale = Vector2( 0.25, 0.25 )
 
 [node name="Sprite" type="Sprite" parent="UI"]
@@ -314,9 +304,9 @@ scale = Vector2( 4, 800 )
 texture = SubResource( 5 )
 
 [node name="Account" type="TextureButton" parent="UI"]
-margin_left = -92.0
+margin_left = -48.0
 margin_top = 16.0
-margin_right = -68.0
+margin_right = -24.0
 margin_bottom = 40.0
 
 [node name="Sprite" type="Sprite" parent="UI/Account"]
@@ -329,9 +319,9 @@ vframes = 26
 frame = 573
 
 [node name="Leaderboard" type="TextureButton" parent="UI"]
-margin_left = -64.0
+margin_left = -20.0
 margin_top = 16.0
-margin_right = -40.0
+margin_right = 4.0
 margin_bottom = 40.0
 
 [node name="Sprite" type="Sprite" parent="UI/Leaderboard"]
@@ -344,9 +334,9 @@ vframes = 26
 frame = 574
 
 [node name="Gold" type="TextureButton" parent="UI"]
-margin_left = 432.0
+margin_left = 384.0
 margin_top = 16.0
-margin_right = 456.0
+margin_right = 408.0
 margin_bottom = 40.0
 
 [node name="Sprite" type="Sprite" parent="UI/Gold"]
