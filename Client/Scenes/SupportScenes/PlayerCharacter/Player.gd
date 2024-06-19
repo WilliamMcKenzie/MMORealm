@@ -114,11 +114,11 @@ func MovePlayer(delta):
 	var current_time = OS.get_ticks_msec() / 1000.0
 	var time_between_shots = 1 / (6.5 * (stats.dexterity + 17.3) / 75)
 	if current_time - last_shot_time >= time_between_shots and shoot == true:
-		ShootProjectile()
+		#ShootProjectile()
 		last_shot_time = current_time
 		
 	#Animations
-	var shoot_direction = (get_global_mouse_position() - global_position).normalized()
+	var shoot_direction = (get_global_mouse_position() - position)
 	if Input.is_action_pressed("shoot"):
 		animation_tree.get("parameters/playback").travel("Attack")
 		animation_tree.set("parameters/Idle/blend_position", shoot_direction)

@@ -15,4 +15,4 @@ func OnPortal(body):
 func OffPortal(body):
 	if body.get_parent().has_method("DefinePlayerState"):
 		GameUI.get_node("EnterPortal").visible = false
-		GameUI.get_node("EnterPortal").portal_id = null
+		GameUI.get_node("EnterPortal").portal_id = "NULL"

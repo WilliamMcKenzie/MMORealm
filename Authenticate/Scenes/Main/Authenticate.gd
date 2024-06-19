@@ -148,8 +148,7 @@ remote func CreateAccount(email, password, player_id):
 		"inventory" : [
 			{
 				"item" : 2,
-				"id" : generate_unique_id(),
-				"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)]
+				"id" : generate_unique_id()
 			},
 			null,
 			null,

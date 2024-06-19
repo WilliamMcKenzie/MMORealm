@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var chat_input = $HBoxContainer/ChatInput
+onready var chat_input = $HBoxContainer/PanelContainer/MarginContainer/ChatInput
 var chat = load("res://Scenes/SupportScenes/UI/Chat/ChatMsg.tscn")
 
 func _ready():

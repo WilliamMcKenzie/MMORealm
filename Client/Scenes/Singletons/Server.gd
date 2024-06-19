@@ -169,7 +169,7 @@ remote func ReturnIslandData(instance_data):
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 
 	#island_instance.GenerateIslandMap(map_data["Tiles"], map_data["Objects"])
-	island_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	island_instance.get_node("YSort/player").character = map_instance.get_node("YSort/player").character
 	island_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	island_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
 	island_instance.get_node("YSort/player").global_position = instance_data["Position"]

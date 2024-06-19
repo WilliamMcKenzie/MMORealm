@@ -1,10 +1,17 @@
-extends GridContainer
+extends CanvasLayer
 
 func UseItem(index):
 	Server.EquipItem(index)
 
+func OpenInventory():
+	var animator = $InventoryAnimations
+	animator.play("ShowInventory")
+func CloseInventory():
+	var animator = $InventoryAnimations
+	animator.play("HideInventory")
+
 func SetInventory(inventory):
-	var inventory_slots = $ResizeContainer.get_children()
+	var inventory_slots = $BackpackContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()
 	var i = 0
 	
 	for slot in inventory_slots:
@@ -12,7 +19,7 @@ func SetInventory(inventory):
 		i += 1
 
 func SetGear(gear):
-	var gear_slots = $GearContainer.get_children()
+	var gear_slots = $PanelContainer/MarginContainer/GearContainer.get_children()
 	
 	if gear.has("weapon"):
 		gear_slots[0].SetItem(gear["weapon"], 1)

@@ -1,0 +1,143 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
+[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=2]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 2 )
+shader_param/line_color = Color( 0, 0, 0, 1 )
+shader_param/line_thickness = 0.4
+shader_param/glow_thickness = 4.0
+shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/swordTextureActive = false
+shader_param/bowTextureActive = false
+shader_param/staffTextureActive = false
+shader_param/staffGemTextureActive = false
+shader_param/helmetDarkOrigin = null
+shader_param/helmetDarkNew = null
+shader_param/helmetMediumOrigin = null
+shader_param/helmetMediumNew = null
+shader_param/helmetLightOrigin = null
+shader_param/helmetLightNew = null
+shader_param/bodyDarkOrigin = null
+shader_param/bodyDarkNew = null
+shader_param/bodyMediumOrigin = null
+shader_param/bodyMediumNew = null
+shader_param/bodyLightOrigin = null
+shader_param/bodyLightNew = null
+shader_param/bandOrigin = null
+shader_param/bandNew = null
+shader_param/buckleOrigin = null
+shader_param/buckleNew = null
+shader_param/bowOrigin = null
+shader_param/bowNew = null
+shader_param/arrowLightOrigin = null
+shader_param/arrowLightNew = null
+shader_param/arrowDarkOrigin = null
+shader_param/arrowDarkNew = null
+shader_param/bladeHiltOrigin = null
+shader_param/bladeHiltNew = null
+shader_param/bladeOrigin = null
+shader_param/bladeNew = null
+shader_param/staffOrigin = null
+shader_param/staffNew = null
+shader_param/staffGemOrigin = null
+shader_param/staffGemNew = null
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 220, 10, 10 )
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 2 )
+shader_param/line_color = Color( 0, 0, 0, 1 )
+shader_param/line_thickness = 0.4
+shader_param/glow_thickness = 4.0
+shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/swordTextureActive = false
+shader_param/bowTextureActive = false
+shader_param/staffTextureActive = false
+shader_param/staffGemTextureActive = false
+shader_param/helmetDarkOrigin = null
+shader_param/helmetDarkNew = null
+shader_param/helmetMediumOrigin = null
+shader_param/helmetMediumNew = null
+shader_param/helmetLightOrigin = null
+shader_param/helmetLightNew = null
+shader_param/bodyDarkOrigin = null
+shader_param/bodyDarkNew = null
+shader_param/bodyMediumOrigin = null
+shader_param/bodyMediumNew = null
+shader_param/bodyLightOrigin = null
+shader_param/bodyLightNew = null
+shader_param/bandOrigin = null
+shader_param/bandNew = null
+shader_param/buckleOrigin = null
+shader_param/buckleNew = null
+shader_param/bowOrigin = null
+shader_param/bowNew = null
+shader_param/arrowLightOrigin = null
+shader_param/arrowLightNew = null
+shader_param/arrowDarkOrigin = null
+shader_param/arrowDarkNew = null
+shader_param/bladeHiltOrigin = null
+shader_param/bladeHiltNew = null
+shader_param/bladeOrigin = null
+shader_param/bladeNew = null
+shader_param/staffOrigin = null
+shader_param/staffNew = null
+shader_param/staffGemOrigin = null
+shader_param/staffGemNew = null
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 50, 220.5, 10, 10 )
+
+[node name="CurrencyTracker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Gold" type="HBoxContainer" parent="."]
+margin_right = 59.0
+margin_bottom = 23.0
+custom_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="Gold"]
+material = SubResource( 2 )
+margin_right = 23.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 23, 23 )
+texture = SubResource( 1 )
+stretch_mode = 1
+
+[node name="GoldAmount" type="Label" parent="Gold"]
+margin_left = 23.0
+margin_top = 2.0
+margin_right = 59.0
+margin_bottom = 21.0
+text = "1000"
+
+[node name="Reputation" type="HBoxContainer" parent="."]
+margin_top = 27.0
+margin_right = 59.0
+margin_bottom = 50.0
+custom_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="Reputation"]
+material = SubResource( 4 )
+margin_right = 23.0
+margin_bottom = 23.0
+rect_min_size = Vector2( 23, 23 )
+texture = SubResource( 3 )
+stretch_mode = 1
+
+[node name="ReputationAmount" type="Label" parent="Reputation"]
+margin_left = 23.0
+margin_top = 2.0
+margin_right = 50.0
+margin_bottom = 21.0
+text = "100"

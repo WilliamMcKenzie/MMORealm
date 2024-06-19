@@ -16,7 +16,7 @@ animation = "attack_up"
 animation = "attack_right"
 
 [sub_resource type="AnimationNodeAnimation" id=60]
-animation = "attack_right"
+animation = "attack_left"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=34]
 blend_point_0/node = SubResource( 31 )
@@ -87,7 +87,7 @@ blend_point_3/pos = Vector2( 0, -1 )
 
 [sub_resource type="AnimationNodeStateMachine" id=16]
 states/Attack/node = SubResource( 34 )
-states/Attack/position = Vector2( 714, 176.042 )
+states/Attack/position = Vector2( 715, 176.042 )
 states/Idle/node = SubResource( 15 )
 states/Idle/position = Vector2( 635, 110 )
 states/Walk/node = SubResource( 23 )
@@ -572,8 +572,8 @@ shader_param/line_thickness = 0.25
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 
-[sub_resource type="RectangleShape2D" id=59]
-extents = Vector2( 3.75, 4.25 )
+[sub_resource type="RectangleShape2D" id=61]
+extents = Vector2( 4, 4 )
 
 [node name="player" type="KinematicBody2D"]
 position = Vector2( 343, 265 )
@@ -585,7 +585,7 @@ tree_root = SubResource( 16 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 17 )
-parameters/Attack/blend_position = Vector2( -0.0079239, -1.47414 )
+parameters/Attack/blend_position = Vector2( -0.81141, -0.318966 )
 parameters/Idle/blend_position = Vector2( -0.274168, 0.413793 )
 parameters/Walk/blend_position = Vector2( 0.99683, -0.543103 )
 
@@ -654,10 +654,12 @@ texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 59 )
-
 [node name="Axis" type="Area2D" parent="."]
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Axis"]
-shape = SubResource( 59 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Axis"]
+scale = Vector2( 0.9, 1.1 )
+shape = SubResource( 61 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2( 0.9, 1.1 )
+shape = SubResource( 61 )

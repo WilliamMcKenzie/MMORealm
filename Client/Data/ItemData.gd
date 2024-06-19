@@ -38,7 +38,7 @@ var items = {
 		"tier" : 0,
 		"projectile" : "Small",
 		
-		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,6)],
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,5)],
 		"colors" : {
 			"helmetDarkNew" : RgbToColor(46.0, 57.0, 84.0),
 			"helmetLightNew" : RgbToColor(80.0, 89.0, 111.0),
