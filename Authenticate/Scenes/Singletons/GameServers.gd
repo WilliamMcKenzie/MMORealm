@@ -38,10 +38,19 @@ func DistributeLogToken(token, email, gameserver):
 	
 	rpc_id(gameserver_peer_id, "RecieveLoginToken", token, email)
 
-remote func GetAccountData(player_id, email, instance_tree):
+remote func GetAccountData(player_id, email):
 	var gameserver_peer_id = custom_multiplayer.get_rpc_sender_id()
 	var account_data = PlayerData.GetPlayerData(email).account_data
 	
-	rpc_id(gameserver_peer_id, "ReturnAccountData", player_id, instance_tree, account_data)
+	rpc_id(gameserver_peer_id, "ReturnAccountData", player_id, account_data)
+
+#Next task is probably to save the characters on the auth server when they are updated. Then we can use characters that last between sessions
+remote func UpdateCharacterData(email, character_data, character_index):
+	if not PlayerData.player_data.has(email):
+		return
+	
+	var account_data = PlayerData.player_data[email].account_data
+	var characters = account_data.characters
+	characters[character_index] = character_data
 
 

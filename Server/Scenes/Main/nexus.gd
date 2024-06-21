@@ -92,6 +92,7 @@ func SpawnEnemyProjectile(projectile_data, enemy_id):
 func SpawnLootBag(_loot, player_id, instance_tree, position):
 	var loot_id = "loot "+get_node("/root/Server").generate_unique_id()
 	var soulbound = false
+	var loot_bag_tier = 0
 	var loot = [
 		null,
 		null,
@@ -103,39 +104,43 @@ func SpawnLootBag(_loot, player_id, instance_tree, position):
 		null,
 	]
 	
-	
-	var highest_loot_tier = 0
-	var loot_bag_tier = 0
-	var loot_bag_tier_translation = {
-		0 : 0,
-		1 : 0,
-		2 : 1,
-		3 : 1,
-		4 : 2,
-		5 : 2,
-		6 : 3
-	}
-	
-	var i = 0
-	for raw_item in _loot:
-		loot[i] = raw_item
-		i += 1
-		var item = ServerData.GetItem(raw_item.item)
-		if int(item.tier) > highest_loot_tier:
-			highest_loot_tier = int(item.tier)
-		elif item.tier == "UT":
-			highest_loot_tier = 6
-	loot_bag_tier = loot_bag_tier_translation[highest_loot_tier]
-	
-	if loot_bag_tier > 1:
-		soulbound = true
-			
+	if player_id != null:
+		var highest_loot_tier = 0
+		var loot_bag_tier_translation = {
+			0 : 0,
+			1 : 0,
+			2 : 1,
+			3 : 1,
+			4 : 2,
+			5 : 2,
+			6 : 3,
+		}
+		
+		var i = 0
+		for raw_item in _loot:
+			loot[i] = raw_item
+			i += 1
+			var item = ServerData.GetItem(raw_item.item)
+			if int(item.tier) > highest_loot_tier:
+				highest_loot_tier = int(item.tier)
+			elif item.tier == "UT":
+				highest_loot_tier = 6
+		loot_bag_tier = loot_bag_tier_translation[highest_loot_tier]
+		
+		if loot_bag_tier > 1:
+			soulbound = true
+	else:
+		var i = 0
+		for raw_item in _loot:
+			loot[i] = raw_item
+			i += 1
+		
 	object_list[loot_id] = {
 		"Name": "Bag"+str(loot_bag_tier),
 		"Soulbound": soulbound,
 		"Tier": loot_bag_tier,
 		"Loot": loot,
-		"PlayerId": player_id,
+		"PlayerId": str(player_id),
 		"Type": "LootBags",
 		"EndTime": OS.get_system_time_msecs()+9999999999,
 		"Position": position,

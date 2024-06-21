@@ -1,10 +1,10 @@
-extends TextureButton
+extends PanelContainer
 
 var loot = null
 var id = null
 
 func _ready():
-	connect("pressed", self, "OpenLootBag")
+	$MarginContainer/TextureButton.connect("pressed", self, "OpenLootBag")
 
 func ActivateLootButton(_id, _loot):
 	id = _id

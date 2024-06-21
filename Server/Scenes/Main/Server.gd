@@ -82,6 +82,11 @@ remote func ChangeItem(to_data, from_data):
 	else:
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(to_data, from_data)
 
+remote func DropItem(data):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).DropItem(data)
+
 #PLAYER SYNCING
 remote func FetchServerTime(client_time):
 	var player_id =  get_tree().get_rpc_sender_id()
@@ -254,13 +259,28 @@ remote func RecieveChatMessage(message):
 				
 				if valid_enemy and multiple_enemies:
 					for i in range(int(message_words[2])):
-						SpawnNPC(message_words[1], instance_tree, player_position - get_node("Instances/"+StringifyInstanceTree(instance_tree)).position)
+						SpawnNPC(message_words[1], instance_tree, player_position)
 				elif valid_enemy:
-					SpawnNPC(message_words[1], instance_tree, player_position - get_node("Instances/"+StringifyInstanceTree(instance_tree)).position)
+					SpawnNPC(message_words[1], instance_tree, player_position)
 					rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
 				else:
 					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "System")
-		else:
+			if message_words[0] == "/loot" and message_words.size() == 2:
+				var valid = int(message_words[1]) in ServerData.items
+				var item = ServerData.GetItem(int(message_words[1]))
+				
+				if valid and (item.tier == "UT" or int(item.tier) > 1):
+					get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnLootBag([ 
+					{
+						"item" : int(message_words[1]),
+						"id" : generate_unique_id()
+					}], player_id, instance_tree, player_position)
+				elif valid:
+					get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnLootBag([ 
+					{
+						"item" : int(message_words[1]),
+						"id" : generate_unique_id()
+					}], null, instance_tree, player_position)
 			print("server has recieved message : " + message)
 			rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))
 

@@ -26,13 +26,14 @@ func StopDragging():
 	dragging = false
 	
 	var timer = Timer.new()
-	timer.wait_time = 0.1
+	timer.wait_time = 0.2
 	timer.one_shot = true
 	add_child(timer)
 	timer.start()
 	yield(timer, "timeout")
 	
 	GameUI.SetCharacterData(GameUI.last_character)
+	GameUI.get_node("Inventory").SetLoot(GameUI.get_node("Inventory").loot_container_id, GameUI.get_node("Inventory").loot)
 
 func get_drag_data(position):
 	if item == null:

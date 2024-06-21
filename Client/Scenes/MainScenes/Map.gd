@@ -113,6 +113,9 @@ func RefreshObjects(objects):
 			#Loot bags
 			if type == "LootBags":
 				object_instance.loot = objects[object]["Loot"]
+				
+				if objects[object]["Soulbound"] == true and objects[object]["PlayerId"] != str(Server.get_tree().get_network_unique_id()):
+					continue
 			
 			get_node("YSort/Objects/"+type).add_child(object_instance)
 	for type in expiring_types:
@@ -120,9 +123,8 @@ func RefreshObjects(objects):
 			
 			if not objects.has(object_node.name):
 				get_node("YSort/Objects/"+type+"/"+object_node.name).queue_free()
-				
 			#Loot bags
-			if type == "LootBags":
+			elif type == "LootBags":
 				object_node.UpdateLoot(objects[object_node.name]["Loot"])
 
 #Player nodes

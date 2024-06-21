@@ -69,12 +69,13 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,5)],
 		"colors" : {
-			"helmetDarkNew" : RgbToColor(46.0, 57.0, 84.0),
-			"helmetLightNew" : RgbToColor(80.0, 89.0, 111.0),
-			"helmetMediumNew" : RgbToColor(64.0, 73.0, 97.0),
+			"bodyMediumNew" : RgbToColor(0.0, 106.0, 138.0),
+			"bodyLightNew" : RgbToColor(0.0, 125.0, 163.0),
+			"bandNew" : RgbToColor(225.0, 179.0, 36.0),
+			"buckleNew" : RgbToColor(234.0, 234.0, 78.0),
 		},
 		"textures" : {
-			"bodyTexture" : "tile",
+			
 		}
 	},
 	3 : {
@@ -84,7 +85,7 @@ var items = {
 		"slot" : "weapon",
 		
 		"damage" : [15,25],
-		"rof" : 200,
+		"rof" : 300,
 		"stats" : {
 					
 		},
@@ -94,10 +95,12 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)],
 		"colors" : {
-			"arrowNew" : RgbToColor(175.0, 106.0, 107.0)
+			"arrowLightNew" : RgbToColor(125.0, 30.0, 156.0),
+			"arrowDarkNew" : RgbToColor(125.0, 30.0, 156.0),
+			"bowNew" : RgbToColor(74.0, 33.0, 4.0),
 		},
 		"textures" : {
-			"bowTexture" : "tile",
+			
 		}
 	},
 	4 : {
@@ -117,10 +120,10 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,1)],
 		"colors" : {
-			"arrowNew" : RgbToColor(175.0, 106.0, 107.0)
+			"staffGemNew" : RgbToColor(251.0, 255.0, 145.0)
 		},
 		"textures" : {
-			"bowTexture" : "tile",
+			"staffTexture" : "flame",
 		}
 	},
 }

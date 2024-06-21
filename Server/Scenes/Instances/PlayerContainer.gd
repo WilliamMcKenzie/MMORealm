@@ -22,6 +22,7 @@ func EquipItem(index):
 	gear[selected_item.slot] = selected_item
 	
 	get_node("/root/Server").SendCharacterData(name, character)
+	HubConnection.UpdateCharacterData(email, character, character_index)
 	
 func ChangeItem(to_data, from_data):
 	var remove_gear = false
@@ -57,6 +58,21 @@ func ChangeItem(to_data, from_data):
 	character[to_data.parent][to_data.index] = selected_item_raw
 	
 	get_node("/root/Server").SendCharacterData(name, character)
+	HubConnection.UpdateCharacterData(email, character, character_index)
+
+func DropItem(data):
+	var selected_item_raw = character[data.parent][data.index]
+	var Server = get_node("/root/Server")
+	var instance_tree = Server.player_state_collection[int(name)]["I"]
+	
+	Server.get_node("Instances/"+Server.StringifyInstanceTree(instance_tree)).SpawnLootBag([selected_item_raw], null, instance_tree, Server.player_state_collection[int(name)]["P"])
+	
+	if data.parent == "gear":
+		gear.erase(data.index)
+	character[data.parent][data.index] = null
+	
+	get_node("/root/Server").SendCharacterData(name, character)
+	HubConnection.UpdateCharacterData(email, character, character_index)
 
 func LootItem(to_data, from_data):
 	#Getting loot bag contents
@@ -65,6 +81,10 @@ func LootItem(to_data, from_data):
 		loot_id = to_data.parent
 	else:
 		loot_id = from_data.parent
+	
+	#Check if it is soulbound, if so make sure the right player is requesting
+	if get_parent().get_parent().get_parent().object_list[loot_id].Soulbound == true and get_parent().get_parent().get_parent().object_list[loot_id].PlayerId != name:
+		return
 	var loot = get_parent().get_parent().get_parent().object_list[loot_id].Loot
 	
 	#Identifying items
@@ -125,8 +145,12 @@ func LootItem(to_data, from_data):
 	if to_data.parent.split(" ")[0] == "loot" and from_data.parent.split(" ")[0] == "loot":
 		loot[to_data.index] = selected_item_raw
 		loot[from_data.index] = replaced_item_raw
+		
+	if loot == [null,null,null,null,null,null,null,null]:
+		get_parent().get_parent().get_parent().object_list.erase(loot_id)
 
 	get_node("/root/Server").SendCharacterData(name, character)
+	HubConnection.UpdateCharacterData(email, character, character_index)
 
 func SetCharacter(characters):
 	character = characters[character_index]
@@ -135,7 +159,7 @@ func SetCharacter(characters):
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
 			gear[slot] = ServerData.GetItem(character.gear[slot].item)
-	
+			
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func DealDamage(damage, enemy_id):

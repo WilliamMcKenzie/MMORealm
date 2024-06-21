@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/square_background.png-c1831c2eb8c324480c976fc5f2a91b4e.stex"
+path="res://.import/flame.png-a8844aeeb03bd3fd7fe0903d0f12885e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ui/square_background.png"
-dest_files=[ "res://.import/square_background.png-c1831c2eb8c324480c976fc5f2a91b4e.stex" ]
+source_file="res://Assets/items/textures/flame.png"
+dest_files=[ "res://.import/flame.png-a8844aeeb03bd3fd7fe0903d0f12885e.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

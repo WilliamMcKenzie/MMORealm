@@ -34,7 +34,7 @@ func CreatePlayerContainer(player_id, email, character_index):
 	new_player_container.name = str(player_id)
 	new_player_container.character_index = character_index
 	get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(new_player_container)
-	FillPlayerContainer(player_id, email, instance_tree)
+	FillPlayerContainer(player_id, email)
 
 func StringifyInstanceTree(instance_tree):
 	var res = ""
@@ -42,8 +42,8 @@ func StringifyInstanceTree(instance_tree):
 		res += (instance+"/")
 	return res.left(res.length() - 1) 
 
-func FillPlayerContainer(player_id, email, instance_tree):
-	HubConnection.GetAccountData(player_id, email, instance_tree)
+func FillPlayerContainer(player_id, email):
+	HubConnection.GetAccountData(player_id, email)
 
 func VerificationExpiration():
 	var current_time = OS.get_unix_time()

@@ -92,6 +92,8 @@ func EquipItem(index):
 	rpc_id(1, "EquipItem", index)
 func ChangeItem(to_data, from_data):
 	rpc_id(1, "ChangeItem", to_data, from_data)
+func DropItem(data):
+	rpc_id(1, "DropItem", data)
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):

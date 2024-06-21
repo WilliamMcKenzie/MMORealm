@@ -3,7 +3,7 @@
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
-[ext_resource path="res://Assets/ui/button.png" type="Texture" id=4]
+[ext_resource path="res://Assets/ui/square_background.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/UI/CharacterSelection/BuyCharacterSlot.gd" type="Script" id=5]
 
 [sub_resource type="ShaderMaterial" id=4]
@@ -116,9 +116,9 @@ tracks/0/keys = {
 script = ExtResource( 5 )
 
 [node name="Background" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0.462745 )
-position = Vector2( 67, 26 )
-scale = Vector2( 0.15, 0.22 )
+modulate = Color( 1, 1, 1, 0.313726 )
+position = Vector2( 67, 25 )
+scale = Vector2( 0.3125, 0.203125 )
 texture = ExtResource( 4 )
 
 [node name="Gold" type="Sprite" parent="."]

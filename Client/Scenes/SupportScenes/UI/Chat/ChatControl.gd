@@ -22,3 +22,5 @@ func _physics_process(delta):
 		chat_input.grab_focus()
 		chat_input.text = "/"
 		chat_input.caret_position = chat_input.text.length()
+		if GameUI.is_inventory_open == true:
+			GameUI.ToggleInventory()

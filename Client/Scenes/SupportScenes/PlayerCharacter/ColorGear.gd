@@ -1,15 +1,17 @@
 extends Sprite
 
 var texture_params = {
-	#"helmetTexture" : "tile",
-	#"bodyTexture" : "tile",
-	#"swordTexture" : "tile",
-	#"bowTexture" : "tile",
-	#"staffTexture" : "tile",
-	#"staffGemTexture" : "tile",
+	
+}
+var default_texture_params = {
+	
 }
 
 var color_params = {
+	
+}
+
+var default_color_params = {
 	
 	"helmetDarkOrigin" : RgbToColor(201.0, 106.0, 0),
 	"helmetDarkNew" : RgbToColor(94.0, 84.0, 84.0),
@@ -38,9 +40,25 @@ var color_params = {
 	"bladeOrigin" : RgbToColor(255.0, 0, 0),
 	"bladeNew" : RgbToColor(132.0, 132.0, 132.0),
 	
-	"bladeHiltOrigin" : RgbToColor(0, 255.0, 107.0),
-	"bladeHiltNew" : RgbToColor(144.0, 81.0, 38.0)
+	"bladeHiltOrigin" : RgbToColor(0.0, 255.0, 107.0),
+	"bladeHiltNew" : RgbToColor(144.0, 81.0, 38.0),
+	
+	"bowOrigin" : RgbToColor(255.0, 242.0, 0.0),
+	"bowNew" : RgbToColor(144.0, 81.0, 38.0),
+	
+	"arrowLightOrigin" : RgbToColor(0, 215.0, 255.0),
+	"arrowLightNew" : RgbToColor(216.0, 216.0, 216.0),
+	
+	"arrowDarkOrigin" : RgbToColor(0, 185.0, 219.0),
+	"arrowDarkNew" : RgbToColor(190.0, 190.0, 190.0),
+	
+	"staffOrigin" : RgbToColor(161.0, 0.0, 255.0),
+	"staffNew" : RgbToColor(144.0, 81.0, 38.0),
+	
+	"staffGemOrigin" : RgbToColor(0.0, 229.0, 255.0),
+	"staffGemNew" : RgbToColor(255.0, 255.0, 255.0),
 }
+
 func GetParams():
 	return {
 		"TextureParams" : texture_params,
@@ -49,17 +67,10 @@ func GetParams():
 func SetParams(params):
 	texture_params = params["TextureParams"]
 	color_params = params["ColorParams"]
-	ColorGear()
-
-func AddColorParams(item_colors, item_textures):
-	for key in item_colors.keys():
-		color_params[key] = item_colors[key]
-	for key in item_textures.keys():
-		texture_params[key] = item_textures[key]
-	ColorGear()
+	ColorGear({})
 
 func _ready():
-	ColorGear()
+	ColorGear({})
 
 func RgbToColor(r, g, b):
 	return Color(r/255, g/255, b/255)
@@ -80,11 +91,24 @@ func SetCharacterWeapon(weapon_type):
 		rect.position.x = 160.0
 	self.region_rect = rect
 
-func ColorGear():
+func ColorGear(gear):
 	var shader_material = ShaderMaterial.new()
 	shader_material.shader = load("res://Resources/ColorGear.gdshader")
 	
 	self.material = shader_material
+	
+	#Get color params
+	color_params = default_color_params.duplicate(true)
+	texture_params = default_texture_params.duplicate(true)
+	for slot in gear.keys():
+		var item = gear[slot]
+		var item_colors = item.colors
+		var item_textures = item.textures
+		
+		for key in item_colors.keys():
+			color_params[key] = item_colors[key]
+		for key in item_textures.keys():
+			texture_params[key] = item_textures[key]
 	
 	for _color in color_params.keys():
 		shader_material.set_shader_param(_color, color_params[_color])

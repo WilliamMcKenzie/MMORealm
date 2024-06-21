@@ -46,6 +46,9 @@ func SetCharacter(_character):
 		var projectile_type = gear.weapon.projectile
 		var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
 		projectile = load(projectile_path)
+	
+	if is_inside_tree():
+		SetCharacterSprite()
 
 func UpdateCharacter(_character):
 	character = _character
@@ -60,23 +63,11 @@ func UpdateCharacter(_character):
 
 func SetCharacterSprite():
 	CharacterSpriteEle.SetCharacterClass(character.class)
-	if character.gear.has("weapon"):
+	if character.gear["weapon"] != null:
 		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
 	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
+	CharacterSpriteEle.ColorGear(gear)
 	lastSprite = { "R" : $CharacterSprite.get_region_rect(), "C" : character.class, "P" : CharacterSpriteEle.GetParams()}
-	
-	if gear.has("weapon"):
-		var weapon_colors = ClientData.GetItem(character.gear.weapon.item).colors
-		var weapon_textures = ClientData.GetItem(character.gear.weapon.item).textures
-		SetSpriteColors(CharacterSpriteEle, weapon_colors, weapon_textures)
-	if gear.has("helmet"):
-		var helmet_colors = ClientData.GetItem(character.gear.helmet.item).colors
-		var helmet_textures = ClientData.GetItem(character.gear.helmet.item).textures
-		SetSpriteColors(CharacterSpriteEle, helmet_colors, helmet_textures)
-	if gear.has("armor"):
-		var armor_colors = ClientData.GetItem(character.gear.armor.item).colors
-		var armor_textures = ClientData.GetItem(character.gear.armor.item).textures
-		SetSpriteColors(CharacterSpriteEle, armor_colors, armor_textures)
 
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
@@ -84,9 +75,6 @@ func SetSpriteData(sprite, path):
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
 	sprite.frame_coords = path[3]
-	
-func SetSpriteColors(sprite, colors, textures):
-	sprite.AddColorParams(colors, textures)
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
