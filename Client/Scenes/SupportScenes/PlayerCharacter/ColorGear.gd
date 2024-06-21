@@ -67,7 +67,7 @@ func RgbaToColor(r, g, b, a):
 	return Color(r/255, g/255, b/255, a)
 
 func SetCharacterClass(character_class):
-	var character = CharacterData.GetCharacter(character_class)
+	var character = ClientData.GetCharacter(character_class)
 	var rect = character.rect
 	self.set_region_rect(rect)
 func SetCharacterWeapon(weapon_type):

@@ -80,10 +80,15 @@ remote func CreateCharacter(email, password, player_id):
 			"weapon" : {
 				"item" : 1,
 				"id" : generate_unique_id()
-			}
+			},
+			"helmet" : null,
+			"armor" : null
 		},
 		"inventory" : [
-			null,
+			{
+				"item" : 3,
+				"id" : generate_unique_id()
+			},
 			null,
 			null,
 			null,
@@ -123,42 +128,7 @@ remote func CreateAccount(email, password, player_id):
 		PlayerData.player_data[email] = {"password": hashed_password, "salt": salt, "account_data": {
 			"character_slots": 1,
 			"gold": 5000,
-			"characters":[{
-		"stats" : {
-			"health" : 100,
-			"attack" : 30,
-			"defense" : 0,
-			"speed" : 100,
-			"dexterity" : 30,
-			"vitality" : 30
-		},
-		"level" : 19,
-		"exp" : 0,
-		"class" : "Bulwark",
-		"gear" : {
-			"weapon" : {
-				"item" : 3,
-				"id" : generate_unique_id()
-			},
-			"armor" : {
-				"item" : 2,
-				"id" : generate_unique_id()
-			}
-		},
-		"inventory" : [
-			{
-				"item" : 2,
-				"id" : generate_unique_id()
-			},
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-		]
-	}]
+			"characters":[]
 		}}
 		PlayerData.savePlayerIDs()
 	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)

@@ -50,25 +50,25 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=3]
 shader = SubResource( 2 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.25
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.2 )
+shader_param/line_thickness = 0.4
+shader_param/glow_thickness = 0.0
+shader_param/glow_color = Color( 0, 0, 0, 0 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8.10921, 1.96048 )
 
-[node name="Arrow" type="Node2D"]
+[node name="WhiteSwipe" type="Node2D"]
 rotation = -1.5708
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 3 )
-position = Vector2( 1, 4.37114e-08 )
+position = Vector2( 1, 0.5 )
 rotation = 1.5708
 texture = ExtResource( 1 )
 hframes = 26
 vframes = 26
-frame = 1
+frame = 2
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( -1.42847, 5.91266 )

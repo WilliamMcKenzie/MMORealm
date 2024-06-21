@@ -1,17 +1,17 @@
 extends Node
 
 var collision_layer = 1
-
 var instance_tree = []
+
 var player_list = {}
 var enemy_list = {}
 var object_list = {}
 
 var player_projectiles = {
-	"arrow" : preload("res://Scenes/Instances/Projectiles/Players/Arrow.tscn")	
+	"small" : preload("res://Scenes/Instances/Projectiles/Players/Small.tscn")	
 }
 var enemy_projectiles = {
-	"arrow" : preload("res://Scenes/Instances/Projectiles/Enemies/Arrow.tscn")
+	"small" : preload("res://Scenes/Instances/Projectiles/Enemies/Small.tscn")
 }
 var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
 
@@ -57,24 +57,24 @@ func SpawnEnemy(enemy, enemy_id):
 	get_node("YSort/Enemies/").add_child(new_enemy, true)
 
 func SpawnPlayerProjectile(projectile_data, player_id):
-	var projectile_instance = player_projectiles["arrow"].instance()
+	
+	var player_weapon = get_node("YSort/Players/"+str(player_id)).gear.weapon
+	var projectile_instance = player_projectiles["small"].instance()
 	
 	projectile_instance.character = get_node("YSort/Players/"+str(player_id)).character
 	projectile_instance.player_id = player_id
-	projectile_instance.projectile_name = get_node("YSort/Players/"+str(player_id)).gear.weapon.projectile
-	projectile_instance.position = projectile_data["Position"]
-	projectile_instance.initial_position = projectile_data["Position"]
-	projectile_instance.tile_range = projectile_data["TileRange"]
+	projectile_instance.position = get_node("YSort/Players/"+str(player_id)).position
+	projectile_instance.initial_position = get_node("YSort/Players/"+str(player_id)).position
 	projectile_instance.SetDirection(projectile_data["Direction"])
 	projectile_instance.look_at(projectile_data["MousePosition"])
 	
-	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
+	var data = ServerData.GetProjectile(player_weapon.projectile)
 	projectile_instance.SetData(data)
 	
 	add_child(projectile_instance)
 
 func SpawnEnemyProjectile(projectile_data, enemy_id):
-	var projectile_instance = enemy_projectiles["arrow"].instance()
+	var projectile_instance = enemy_projectiles["small"].instance()
 	projectile_instance.enemy_id = enemy_id
 	projectile_instance.projectile_name = projectile_data["Projectile"]
 	projectile_instance.position = projectile_data["Position"]
@@ -83,16 +83,70 @@ func SpawnEnemyProjectile(projectile_data, enemy_id):
 	projectile_instance.SetDirection(projectile_data["Direction"])
 	projectile_instance.look_at(projectile_data["TargetPosition"])
 	
-	var data = ServerData.GetProjectileData(projectile_data["Projectile"])
+	var data = ServerData.GetProjectile(projectile_data["Projectile"])
 	projectile_instance.SetData(data)
 	
 	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
 	add_child(projectile_instance)
+
+func SpawnLootBag(_loot, player_id, instance_tree, position):
+	var loot_id = "loot "+get_node("/root/Server").generate_unique_id()
+	var soulbound = false
+	var loot = [
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+	]
 	
+	
+	var highest_loot_tier = 0
+	var loot_bag_tier = 0
+	var loot_bag_tier_translation = {
+		0 : 0,
+		1 : 0,
+		2 : 1,
+		3 : 1,
+		4 : 2,
+		5 : 2,
+		6 : 3
+	}
+	
+	var i = 0
+	for raw_item in _loot:
+		loot[i] = raw_item
+		i += 1
+		var item = ServerData.GetItem(raw_item.item)
+		if int(item.tier) > highest_loot_tier:
+			highest_loot_tier = int(item.tier)
+		elif item.tier == "UT":
+			highest_loot_tier = 6
+	loot_bag_tier = loot_bag_tier_translation[highest_loot_tier]
+	
+	if loot_bag_tier > 1:
+		soulbound = true
+			
+	object_list[loot_id] = {
+		"Name": "Bag"+str(loot_bag_tier),
+		"Soulbound": soulbound,
+		"Tier": loot_bag_tier,
+		"Loot": loot,
+		"PlayerId": player_id,
+		"Type": "LootBags",
+		"EndTime": OS.get_system_time_msecs()+9999999999,
+		"Position": position,
+		"InstanceTree": instance_tree
+	}
+	
+
 func OpenPortal(portal_name, instance_tree, position):
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if portal_name == "island":
-		instance_id = "island " + get_node("/root/Server").generate_unique_id()
+		instance_id = "island " + instance_id
 		var island_instance = load("res://Scenes/Instances/Island/Island.tscn").instance()
 		island_instance.name = instance_id
 		

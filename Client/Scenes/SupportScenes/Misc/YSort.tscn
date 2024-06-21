@@ -14,3 +14,7 @@ position = Vector2( 0, 0 )
 [node name="Objects" type="YSort" parent="."]
 
 [node name="DungeonPortals" type="YSort" parent="Objects"]
+
+[node name="LootBags" type="YSort" parent="Objects"]
+
+[node name="Obstacles" type="YSort" parent="Objects"]

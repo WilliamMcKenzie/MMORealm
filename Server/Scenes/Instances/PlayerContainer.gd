@@ -10,16 +10,131 @@ var stats
 var gear = {}
 
 func EquipItem(index):
-	print(index)
-func ChangeItem(index_to_change, from_index):
-	print(index_to_change)
+	var selected_item_raw = character.inventory[index]
+	if selected_item_raw == null:
+		return
+	
+	var selected_item = ServerData.GetItem(selected_item_raw.item)
+	var replaced_item = character.gear[selected_item.slot]
+	
+	character.inventory[index] = replaced_item
+	character.gear[selected_item.slot] = selected_item_raw
+	gear[selected_item.slot] = selected_item
+	
+	get_node("/root/Server").SendCharacterData(name, character)
+	
+func ChangeItem(to_data, from_data):
+	var remove_gear = false
+	
+	var selected_item_raw = character[from_data.parent][from_data.index]
+	var replaced_item_raw = character[to_data.parent][to_data.index]
+	
+	#Item you are dragging
+	var selected_item = ServerData.GetItem(selected_item_raw.item)
+	
+	if selected_item_raw == null and replaced_item_raw == null:
+		return
+		
+	#When you are trying to place a item in the wrong gear slot
+	if to_data.parent == "gear":
+		if to_data.index != selected_item.slot:
+			return
+		else:
+			gear[to_data.index] = selected_item
+			
+	#Vice versa, trying to place gear slot into inventory
+	if from_data.parent == "gear":
+		if replaced_item_raw != null:
+			var replaced_item = ServerData.GetItem(replaced_item_raw.item)
+			
+			if replaced_item.slot != from_data.index:
+				return
+			gear[from_data.index] = replaced_item
+		else:
+			gear.erase(from_data.index)
+	
+	character[from_data.parent][from_data.index] = replaced_item_raw
+	character[to_data.parent][to_data.index] = selected_item_raw
+	
+	get_node("/root/Server").SendCharacterData(name, character)
+
+func LootItem(to_data, from_data):
+	#Getting loot bag contents
+	var loot_id
+	if to_data.parent.split(" ")[0] == "loot":
+		loot_id = to_data.parent
+	else:
+		loot_id = from_data.parent
+	var loot = get_parent().get_parent().get_parent().object_list[loot_id].Loot
+	
+	#Identifying items
+	var selected_item_raw
+	var replaced_item_raw
+	
+	#Set dragging item
+	if from_data.parent.split(" ")[0] == "loot":
+		selected_item_raw = loot[from_data.index]
+	else:
+		selected_item_raw = character[from_data.parent][from_data.index]
+	#Set item to replace
+	if to_data.parent.split(" ")[0] == "loot":
+		replaced_item_raw = loot[to_data.index]
+	else:
+		replaced_item_raw = character[to_data.parent][to_data.index]
+	
+	#Item you are dragging
+	var selected_item = ServerData.GetItem(selected_item_raw.item)
+	
+	#Different Scenarios
+	
+	#Taking loot into inventory
+	if to_data.parent == "inventory":
+		loot[from_data.index] = replaced_item_raw
+		character[to_data.parent][to_data.index] = selected_item_raw
+	
+	#From gear to loot
+	if from_data.parent == "gear":
+		if replaced_item_raw != null:
+			var replaced_item = ServerData.GetItem(replaced_item_raw.item)
+			
+			if replaced_item.slot != selected_item.slot:
+				return
+			gear[from_data.index] = replaced_item
+		else:
+			gear.erase(from_data.index)
+		
+		loot[to_data.index] = selected_item_raw
+		character[from_data.parent][from_data.index] = replaced_item_raw
+	
+	#From loot to gear
+	if to_data.parent == "gear":
+		if to_data.index != selected_item.slot:
+			return
+		else:
+			gear[to_data.index] = selected_item
+		
+		loot[from_data.index] = replaced_item_raw
+		character[to_data.parent][to_data.index] = selected_item_raw
+	
+	#Putting inventory item into loot bag
+	if from_data.parent == "inventory":
+		loot[to_data.index] = selected_item_raw
+		character[from_data.parent][from_data.index] = replaced_item_raw
+
+	#Moving around items inside loot bag
+	if to_data.parent.split(" ")[0] == "loot" and from_data.parent.split(" ")[0] == "loot":
+		loot[to_data.index] = selected_item_raw
+		loot[from_data.index] = replaced_item_raw
+
+	get_node("/root/Server").SendCharacterData(name, character)
 
 func SetCharacter(characters):
 	character = characters[character_index]
 	health = character.stats.health
 	
 	for slot in character.gear.keys():
-		gear[slot] = ItemData.GetItem([character.gear[slot].item])
+		if character.gear[slot] != null:
+			gear[slot] = ServerData.GetItem(character.gear[slot].item)
 	
 	get_node("/root/Server").SendCharacterData(name, character)
 

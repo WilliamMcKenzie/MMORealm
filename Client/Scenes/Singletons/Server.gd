@@ -90,8 +90,8 @@ remote func RecieveCharacterData(character):
 
 func EquipItem(index):
 	rpc_id(1, "EquipItem", index)
-func ChangeItem(index_to_change, from_index):
-	rpc_id(1, "ChangeItem", index_to_change, from_index)
+func ChangeItem(to_data, from_data):
+	rpc_id(1, "ChangeItem", to_data, from_data)
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
@@ -139,9 +139,11 @@ func Nexus():
 remote func ConfirmNexus():
 	var nexus_instance = nexus.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
-	nexus_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	
+	nexus_instance.get_node("YSort/player").character = map_instance.get_node("YSort/player").character
 	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	
 	nexus_instance.name = "nexus"
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(nexus_instance)
@@ -155,11 +157,13 @@ func EnterInstance(instance_id):
 remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
-	dungeon_instance.get_node("YSort/player").level = map_instance.get_node("YSort/player").level
+	
+	dungeon_instance.get_node("YSort/player").character = map_instance.get_node("YSort/player").character
 	dungeon_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	dungeon_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
 	dungeon_instance.name = instance_data["Id"]
 	dungeon_instance.PopulateDungeon(instance_data)
+	
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
 	current_instance_tree.append(instance_data["Id"])

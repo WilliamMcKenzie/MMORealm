@@ -1,12 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
-[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/SupportScenes/Objects/LootBags/Bag.gd" type="Script" id=1]
+[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=2]
+[ext_resource path="res://Assets/objects/objects_8x8.png" type="Texture" id=3]
 
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 1 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 2 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.5
+shader_param/line_thickness = 0.4
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
@@ -46,18 +47,24 @@ shader_param/staffNew = null
 shader_param/staffGemOrigin = null
 shader_param/staffGemNew = null
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 80.5, 220, 10, 10 )
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4, 4 )
 
-[node name="LootMenu" type="VBoxContainer"]
-margin_right = 30.0
-margin_bottom = 30.0
+[node name="Bag" type="Node2D"]
+script = ExtResource( 1 )
 
-[node name="LootButton" type="TextureButton" parent="."]
-material = SubResource( 1 )
-margin_right = 30.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 30, 30 )
-texture_normal = SubResource( 2 )
-expand = true
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 2 )
+position = Vector2( 0, -1 )
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 3 )
+hframes = 26
+vframes = 26
+frame = 104
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, -1 )
+shape = SubResource( 1 )

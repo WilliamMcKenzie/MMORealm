@@ -24,6 +24,23 @@ func _ready():
 	
 	#Open realm
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
+	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
+			{
+				"item" : 1,
+				"id" : generate_unique_id()
+			}], null, ["nexus"], Vector2(50, 50))
+	
+	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
+			{
+				"item" : 2,
+				"id" : generate_unique_id()
+			}], null, ["nexus"], Vector2(80, 50))
+	
+	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
+			{
+				"item" : 4,
+				"id" : generate_unique_id()
+			}], null, ["nexus"], Vector2(120, 50))
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network
@@ -56,10 +73,14 @@ remote func EquipItem(index):
 	var instance_tree = player_state_collection[player_id]["I"]
 	var player_data = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).EquipItem(index)
 
-remote func ChangeItem(index_to_change, from_index):
+remote func ChangeItem(to_data, from_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
-	var player_data = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(index_to_change, from_index)
+	
+	if to_data.parent.split(" ")[0] == "loot" or from_data.parent.split(" ")[0] == "loot":
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).LootItem(to_data, from_data)
+	else:
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(to_data, from_data)
 
 #PLAYER SYNCING
 remote func FetchServerTime(client_time):
@@ -121,7 +142,7 @@ func SendCharacterData(player_id, character):
 func SpawnNPC(enemy_name, instance_tree, spawn_position):
 	var enemy_id = generate_unique_id()
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
-		var enemy_data = ServerData.GetEnemyData(enemy_name)
+		var enemy_data = ServerData.GetEnemy(enemy_name)
 		var enemy = {
 			"Name":enemy_name,
 			"Position":spawn_position,
@@ -228,7 +249,7 @@ remote func RecieveChatMessage(message):
 				else:
 					rpc_id(player_id, "RecieveChat", "Error spawning dungeon", "System")
 			if message_words[0] == "/spawn" and message_words.size() > 1:
-				var valid_enemy = message_words[1] in ServerData.enemy_data
+				var valid_enemy = message_words[1] in ServerData.enemies
 				var multiple_enemies = message_words.size() > 2 and int(message_words[2])
 				
 				if valid_enemy and multiple_enemies:

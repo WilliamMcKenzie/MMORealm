@@ -102,7 +102,7 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="Gold" type="HBoxContainer" parent="."]
-margin_right = 59.0
+margin_right = 40.0
 margin_bottom = 23.0
 custom_constants/separation = 0
 
@@ -117,13 +117,13 @@ stretch_mode = 1
 [node name="GoldAmount" type="Label" parent="Gold"]
 margin_left = 23.0
 margin_top = 2.0
-margin_right = 59.0
+margin_right = 32.0
 margin_bottom = 21.0
-text = "1000"
+text = "0"
 
 [node name="Reputation" type="HBoxContainer" parent="."]
 margin_top = 27.0
-margin_right = 59.0
+margin_right = 40.0
 margin_bottom = 50.0
 custom_constants/separation = 0
 
@@ -138,6 +138,6 @@ stretch_mode = 1
 [node name="ReputationAmount" type="Label" parent="Reputation"]
 margin_left = 23.0
 margin_top = 2.0
-margin_right = 50.0
+margin_right = 32.0
 margin_bottom = 21.0
-text = "100"
+text = "0"

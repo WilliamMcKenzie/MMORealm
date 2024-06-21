@@ -25,10 +25,10 @@ onready var CharacterSpriteEle = $CharacterSprite
 onready var animation_tree = $AnimationTree
 
 func _ready():
-	var projectile = ItemData.GetItem(gear.weapon.item).projectile
-	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile) + "/" + str(projectile) + ".tscn"
+	var projectile_type = gear.weapon.projectile
+	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
 	projectile = load(projectile_path)
-	
+
 	SetCharacterSprite()
 
 #Dealing with the characters sprite
@@ -36,7 +36,16 @@ func SetCharacter(_character):
 	character = _character
 	
 	stats = character.stats
-	gear = character.gear
+	gear = {}
+	
+	for slot in character.gear.keys():
+		if character.gear[slot] != null:
+			gear[slot] = ClientData.GetItem(int(character.gear[slot].item))
+	
+	if gear.has("weapon"):
+		var projectile_type = gear.weapon.projectile
+		var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
+		projectile = load(projectile_path)
 
 func UpdateCharacter(_character):
 	character = _character
@@ -52,21 +61,21 @@ func UpdateCharacter(_character):
 func SetCharacterSprite():
 	CharacterSpriteEle.SetCharacterClass(character.class)
 	if character.gear.has("weapon"):
-		CharacterSpriteEle.SetCharacterWeapon(ItemData.GetItem(character.gear.weapon.item).type)
-	SetSpriteData(CharacterSpriteEle, CharacterData.GetCharacter(character.class).path)
+		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
+	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
 	lastSprite = { "R" : $CharacterSprite.get_region_rect(), "C" : character.class, "P" : CharacterSpriteEle.GetParams()}
 	
 	if gear.has("weapon"):
-		var weapon_colors = ItemData.GetItem(character.gear.weapon.item).colors
-		var weapon_textures = ItemData.GetItem(character.gear.weapon.item).textures
+		var weapon_colors = ClientData.GetItem(character.gear.weapon.item).colors
+		var weapon_textures = ClientData.GetItem(character.gear.weapon.item).textures
 		SetSpriteColors(CharacterSpriteEle, weapon_colors, weapon_textures)
 	if gear.has("helmet"):
-		var helmet_colors = ItemData.GetItem(character.gear.helmet.item).colors
-		var helmet_textures = ItemData.GetItem(character.gear.helmet.item).textures
+		var helmet_colors = ClientData.GetItem(character.gear.helmet.item).colors
+		var helmet_textures = ClientData.GetItem(character.gear.helmet.item).textures
 		SetSpriteColors(CharacterSpriteEle, helmet_colors, helmet_textures)
 	if gear.has("armor"):
-		var armor_colors = ItemData.GetItem(character.gear.armor.item).colors
-		var armor_textures = ItemData.GetItem(character.gear.armor.item).textures
+		var armor_colors = ClientData.GetItem(character.gear.armor.item).colors
+		var armor_textures = ClientData.GetItem(character.gear.armor.item).textures
 		SetSpriteColors(CharacterSpriteEle, armor_colors, armor_textures)
 
 func SetSpriteData(sprite, path):
@@ -112,14 +121,16 @@ func MovePlayer(delta):
 	motion.y += y
 	
 	var current_time = OS.get_ticks_msec() / 1000.0
-	var time_between_shots = 1 / (6.5 * (stats.dexterity + 17.3) / 75)
-	if current_time - last_shot_time >= time_between_shots and shoot == true:
-		#ShootProjectile()
-		last_shot_time = current_time
+	
+	if gear.has("weapon"):
+		var time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100)
+		if current_time - last_shot_time >= time_between_shots and shoot == true and not GameUI.is_inventory_open:
+			ShootProjectile()
+			last_shot_time = current_time
 		
 	#Animations
 	var shoot_direction = (get_global_mouse_position() - position)
-	if Input.is_action_pressed("shoot"):
+	if Input.is_action_pressed("shoot") and not GameUI.is_inventory_open:
 		animation_tree.get("parameters/playback").travel("Attack")
 		animation_tree.set("parameters/Idle/blend_position", shoot_direction)
 		animation_tree.set("parameters/Attack/blend_position", shoot_direction)
@@ -171,6 +182,7 @@ func ShootProjectile():
 	projectile_instance.position = $Axis.global_position
 	
 	#Set projectile data
+	projectile_instance.projectile = gear.weapon.projectile
 	projectile_instance.damage = damage
 	projectile_instance.tile_range = gear.weapon.range
 	

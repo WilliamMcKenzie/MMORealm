@@ -20,7 +20,7 @@ func SetCharacterSprite(sprite_data):
 	
 	CharacterSprite.SetCharacterClass(character_class)
 	CharacterSprite.SetParams(params)
-	SetSpriteData(CharacterSprite, CharacterData.GetCharacter(character_class).path)
+	SetSpriteData(CharacterSprite, ClientData.GetCharacter(character_class).path)
 	CharacterSprite.region_rect = region_rect
 
 func SetSpriteData(sprite, path):
@@ -47,8 +47,9 @@ func ShootProjectile():
 	for projectile_time in projectile_dict.keys():
 		if projectile_time <= OS.get_system_time_msecs():
 			var projectile_data = projectile_dict[projectile_time]
-			var projectile_node = load("res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_data["Projectile"]) + "/" + str(projectile_data["Projectile"]) + ".tscn")
-			var projectile_instance = projectile_node.instance()
+			var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_data["Projectile"]) + ".tscn"
+			var projectile = load(projectile_path)
+			var projectile_instance = projectile.instance()
 			projectile_instance.position = $Axis.global_position
 			
 			#Set projectile data

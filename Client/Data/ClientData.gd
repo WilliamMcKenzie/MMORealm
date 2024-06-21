@@ -63,6 +63,10 @@ var items = {
 		"slot" : "armor",
 		"tier" : "5",
 		
+		"stats" : {
+					
+		},
+		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,5)],
 		"colors" : {
 			"helmetDarkNew" : RgbToColor(46.0, 57.0, 84.0),

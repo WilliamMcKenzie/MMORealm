@@ -95,6 +95,7 @@ func RefreshEnemies(enemies):
 func RefreshObjects(objects):
 	var expiring_types = [
 		"DungeonPortals",
+		"LootBags",
 	]
 	
 	for object in objects.keys():
@@ -104,14 +105,25 @@ func RefreshObjects(objects):
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
+			
 			object_instance.name = str(object)
 			object_instance.object_id = str(object)
 			object_instance.position = objects[object]["Position"]
+			
+			#Loot bags
+			if type == "LootBags":
+				object_instance.loot = objects[object]["Loot"]
+			
 			get_node("YSort/Objects/"+type).add_child(object_instance)
 	for type in expiring_types:
 		for object_node in get_node("YSort/Objects/"+type).get_children():
+			
 			if not objects.has(object_node.name):
 				get_node("YSort/Objects/"+type+"/"+object_node.name).queue_free()
+				
+			#Loot bags
+			if type == "LootBags":
+				object_node.UpdateLoot(objects[object_node.name]["Loot"])
 
 #Player nodes
 func SpawnNewPlayer(player_id, spawn_position):

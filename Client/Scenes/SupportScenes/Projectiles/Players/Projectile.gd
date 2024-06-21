@@ -1,8 +1,9 @@
 extends Node2D
 
+var projectile
 var damage
-var speed = 50
-var tile_range = 4
+var speed = 0
+var tile_range = 0
 var piercing
 
 var initial_position = Vector2.ZERO
@@ -10,12 +11,7 @@ var velocity = Vector2.ZERO
 
 func _ready():
 	initial_position = position
-	var projectile_data_file = File.new()
-	projectile_data_file.open("res://Data/Projectiles.json", File.READ)
-	var projectile_data_json = JSON.parse(projectile_data_file.get_as_text())
-	projectile_data_file.close()
-	var projectile_data = projectile_data_json.result
-	SetData(projectile_data.arrow)
+	SetData(ClientData.GetProjectile(projectile))
 func SetData(data):
 	speed = data.speed
 	piercing = data.piercing

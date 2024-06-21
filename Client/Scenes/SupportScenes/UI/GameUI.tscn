@@ -35,19 +35,15 @@ margin_right = 83.0
 margin_bottom = 31.0
 text = "Enter"
 
-[node name="Health" parent="." instance=ExtResource( 4 )]
-margin_left = 247.0
-margin_top = 6.0
-margin_right = -249.0
-margin_bottom = -330.0
-
 [node name="MiniMapContainer" type="HBoxContainer" parent="."]
-margin_left = 670.0
-margin_top = 6.0
-margin_right = 793.0
-margin_bottom = 60.0
+margin_left = 752.0
+margin_top = 5.0
+margin_right = 875.0
+margin_bottom = 65.0
+rect_scale = Vector2( 1.3, 1.3 )
 
 [node name="MiniMap" parent="MiniMapContainer" instance=ExtResource( 8 )]
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 88.0
@@ -55,27 +51,39 @@ margin_bottom = 60.0
 rect_min_size = Vector2( 88, 54 )
 
 [node name="MiniMapButtons" parent="MiniMapContainer" instance=ExtResource( 9 )]
-margin_left = 92.0
-margin_right = 122.0
+margin_right = 30.0
 margin_bottom = 60.0
 
-[node name="ExpContainer" type="HBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 6.0
-margin_right = 116.0
-margin_bottom = 56.0
-
-[node name="ExpBar" parent="ExpContainer" instance=ExtResource( 5 )]
+[node name="Health" parent="." instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 50.0
-margin_bottom = 50.0
+margin_left = 253.0
+margin_top = 6.0
+margin_right = 557.0
+margin_bottom = 30.0
 
-[node name="CurrencyTracker" parent="ExpContainer" instance=ExtResource( 7 )]
-margin_left = 54.0
-margin_right = 113.0
-margin_bottom = 50.0
+[node name="LeftContainer" type="VBoxContainer" parent="."]
+margin_left = 9.0
+margin_top = 6.0
+margin_right = 63.0
+margin_bottom = 60.0
+
+[node name="ExpContainer" type="HBoxContainer" parent="LeftContainer"]
+margin_right = 54.0
+margin_bottom = 54.0
+
+[node name="ExpBar" parent="LeftContainer/ExpContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 54.0
+margin_bottom = 54.0
+
+[node name="CurrencyTracker" parent="LeftContainer/ExpContainer" instance=ExtResource( 7 )]
+visible = false
+margin_left = 58.0
+margin_right = 90.0
+margin_bottom = 54.0
 
 [node name="Inventory" parent="." instance=ExtResource( 1 )]
-scale = Vector2( 2, 2 )
-transform = Transform2D( 2, 0, 0, 2, 0, 0 )

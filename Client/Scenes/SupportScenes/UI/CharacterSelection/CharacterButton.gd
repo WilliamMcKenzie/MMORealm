@@ -23,25 +23,25 @@ func AssignParameters(_character):
 	var gear = _character.gear
 	character = _character
 	
-	characterPath = CharacterData.GetCharacter(character.class).path
+	characterPath = ClientData.GetCharacter(character.class).path
 	level = character.level
 	character_class = character.class
 	
-	if gear.has("weapon"):
-		weapon_colors = ItemData.GetItem(character.gear.weapon.item).colors
-		weapon_textures = ItemData.GetItem(character.gear.weapon.item).textures
-	if gear.has("helmet"):
-		helmet_colors = ItemData.GetItem(character.gear.helmet.item).colors
-		helmet_textures = ItemData.GetItem(character.gear.helmet.item).textures
-	if gear.has("armor"):
-		armor_colors = ItemData.GetItem(character.gear.armor.item).colors
-		armor_textures = ItemData.GetItem(character.gear.armor.item).textures
+	if gear["weapon"] != null:
+		weapon_colors = ClientData.GetItem(character.gear.weapon.item).colors
+		weapon_textures = ClientData.GetItem(character.gear.weapon.item).textures
+	if gear["helmet"] != null:
+		helmet_colors = ClientData.GetItem(character.gear.helmet.item).colors
+		helmet_textures = ClientData.GetItem(character.gear.helmet.item).textures
+	if gear["armor"] != null:
+		armor_colors = ClientData.GetItem(character.gear.armor.item).colors
+		armor_textures = ClientData.GetItem(character.gear.armor.item).textures
 
 func _ready():
 	LevelEle.text = character_class + " - Level " + str(level)
 	CharacterSpriteEle.SetCharacterClass(character_class)
 	if character.gear.has("weapon"):
-		CharacterSpriteEle.SetCharacterWeapon(ItemData.GetItem(character.gear.weapon.item).type)
+		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
 	
 	SetSpriteData(CharacterSpriteEle, characterPath)
 	SetSpriteColors(CharacterSpriteEle, weapon_colors, weapon_textures)
