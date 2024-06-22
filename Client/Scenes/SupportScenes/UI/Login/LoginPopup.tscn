@@ -1,8 +1,9 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Login/Login.gd" type="Script" id=1]
-[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scenes/Resources/Roboto.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/ui/button.png" type="Texture" id=3]
+
 
 [sub_resource type="GradientTexture" id=1]
 

@@ -1,8 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
+[ext_resource path="res://Scenes/Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Assets/objects/objects_8x8.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/SupportScenes/Objects/Obstacles/Obstacle.gd" type="Script" id=3]
+
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 1 )

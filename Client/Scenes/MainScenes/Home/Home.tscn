@@ -1,13 +1,14 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
-[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scenes/Resources/Roboto.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Scenes/SupportScenes/UI/CharacterSelection/CharacterSelection.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/SupportScenes/UI/Login/LoginPopup.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=5]
+[ext_resource path="res://Scenes/Resources/ColorGear.gdshader" type="Shader" id=5]
 [ext_resource path="res://Assets/tiles/tileset.png" type="Texture" id=6]
 [ext_resource path="res://Scenes/MainScenes/Home/Home.gd" type="Script" id=7]
-[ext_resource path="res://Resources/main_theme.tres" type="Theme" id=8]
+[ext_resource path="res://Scenes/Resources/main_theme.tres" type="Theme" id=8]
+
 
 [sub_resource type="TileSet" id=11]
 0/name = "tileset.png 0"

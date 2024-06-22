@@ -5,31 +5,31 @@ var enemies = {
 		"health" : 40,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	},
 	"crab" : {
 		"health" : 60,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	},
 	"tribesman" : {
 		"health" : 100,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	},
 	"shaman" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	},
 	"rock_golem" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	}
 }
 

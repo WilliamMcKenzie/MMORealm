@@ -1,10 +1,11 @@
 [gd_scene load_steps=50 format=2]
 
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
+[ext_resource path="res://Scenes/Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
+
 
 [sub_resource type="AnimationNodeAnimation" id=31]
 animation = "attack_down"

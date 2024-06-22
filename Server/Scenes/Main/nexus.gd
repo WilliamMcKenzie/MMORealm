@@ -7,8 +7,11 @@ var player_list = {}
 var enemy_list = {}
 var object_list = {}
 
+var tick_rate = 1
+var running_time = 0
+var last_tick = 0
 var player_projectiles = {
-	"small" : preload("res://Scenes/Instances/Projectiles/Players/Small.tscn")	
+	"small" : preload("res://Scenes/Instances/Projectiles/Players/Small.tscn")
 }
 var enemy_projectiles = {
 	"small" : preload("res://Scenes/Instances/Projectiles/Enemies/Small.tscn")
@@ -23,10 +26,34 @@ func _ready():
 		instance_tree = ["nexus"]
 
 func _physics_process(delta):
-	for enemy_id in enemy_list.keys():
-		if(enemy_list[enemy_id]["Health"] < 1):
-			enemy_list.erase(enemy_id)
 
+	running_time += delta
+	for i in range(floor((running_time-last_tick)/tick_rate)):
+		print(((running_time-last_tick)/tick_rate))
+		for enemy_id in enemy_list.keys():
+			if(enemy_list[enemy_id]["Health"] < 1):
+				enemy_list.erase(enemy_id)
+				continue
+			if (enemy_list[enemy_id]["Behavior"] == 1):
+				
+				var target = enemy_list[enemy_id]["Target"]
+				var position = enemy_list[enemy_id]["Position"]
+				
+				var x_move = -cos(position.angle_to_point(target))* 1
+				var y_move = -cos(position.angle_to_point(target))* 1
+				
+				enemy_list[enemy_id]["Position"] += Vector2(x_move,y_move)
+				
+				print(target)
+				print((target-position).length())
+				if (target - position).length() <= 2:
+					if (enemy_list[enemy_id]["AnchorPosition"]-position).length() >= 20:
+						print("enemy strayed to far from start, returning")
+						enemy_list[enemy_id]["Target"] = enemy_list[enemy_id]["AnchorPosition"]
+					else:
+						print("finding new target")
+						enemy_list[enemy_id]["Target"] = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+		last_tick = running_time
 func UpdatePlayer(player_id, player_state):
 	if player_list.has(str(player_id)):
 		player_list[str(player_id)]["Position"] = player_state["P"]
@@ -49,13 +76,8 @@ func RemovePlayer(player_container):
 		get_node("YSort/Players").remove_child(player_container)
 
 func SpawnEnemy(enemy, enemy_id):
-	var new_enemy = enemy_8x8.instance()
+	
 	enemy_list[str(enemy_id)] = enemy
-	new_enemy.position = enemy["Position"] + self.position
-	new_enemy.name = enemy_id
-	new_enemy.set_script(load("res://Scenes/Instances/Enemies/Behavior/"+enemy["Behavior"]+".gd"))
-	get_node("YSort/Enemies/").add_child(new_enemy, true)
-
 func SpawnPlayerProjectile(projectile_data, player_id):
 	
 	var player_weapon = get_node("YSort/Players/"+str(player_id)).gear.weapon

@@ -104,7 +104,7 @@ remote func RecievePlayerState(player_state):
 		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
 func SendWorldState(id, world_state):
-	rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
+	rpc_unreliable_id(int(id), "Recieved", world_state)
 
 #TOKENS
 func _on_TokenExpiration_timeout():
@@ -151,7 +151,10 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"Defense":enemy_data.defense,
 			"State":"Idle",
 			"Behavior":enemy_data.behavior,
-			"Exp" : enemy_data.exp
+			"Exp" : enemy_data.exp,
+			"Target" : spawn_position,
+			"AnchorPosition" : spawn_position
+
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 

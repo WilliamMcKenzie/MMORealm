@@ -51,10 +51,10 @@ func _physics_process(delta):
 				else:
 					SpawnNewEnemy(enemy, enemies2[enemy]["Position"], enemies2[enemy]["Name"])
 			RefreshEnemies(world_state_buffer[2]["E"])
-			
+
 			#Update objects
 			RefreshObjects(world_state_buffer[2]["O"])
-			
+
 		elif render_time > world_state_buffer[1]["T"]:
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 			for player in world_state_buffer[1]["P"].keys():
@@ -81,6 +81,7 @@ func UpdateWorldState(world_state):
 #Enemy nodes
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
+		print("spawn enemy called with params " + str(enemy_id) + " " + str(enemy_position) + " " + str(enemy_name))
 		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+".tscn")
 		var enemy_instance = enemy_scene.instance()
 		enemy_instance.name = enemy_id
@@ -90,7 +91,7 @@ func RefreshEnemies(enemies):
 	for enemy_node in get_node("YSort/Enemies").get_children():
 		if not enemies.has(enemy_node.name):
 			get_node("YSort/Enemies/"+enemy_node.name).queue_free()
-
+ 
 #Object nodes
 func RefreshObjects(objects):
 	var expiring_types = [

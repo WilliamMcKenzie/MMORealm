@@ -38,7 +38,7 @@ displa=false
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
-theme/custom="res://Resources/main_theme.tres"
+theme/custom="res://Scenes/Resources/main_theme.tres"
 
 [input]
 
