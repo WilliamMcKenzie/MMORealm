@@ -31,7 +31,10 @@ func _physics_process(delta):
 	if decimal_collector >= 1.00:
 		client_clock += 1
 		decimal_collector -= 1
-	
+
+func UpdateJoystickActions(output):
+	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").joystick_output = output
 
 func ConnectToServer():
 	network.create_client(ip_address, port)

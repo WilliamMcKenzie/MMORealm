@@ -15,6 +15,9 @@ var projectile
 var x = 0
 var y = 0
 
+#For the attack joystick
+var joystick_output = Vector2.ZERO
+
 #We send animation to server to display to other clients.
 var lastAnimation = { "A" : "Idle", "C" : Vector2.ZERO }
 var lastSprite = { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice"}
@@ -98,10 +101,15 @@ func MovePlayer(delta):
 	if(Input.is_action_pressed("right")):
 		x += 1
 
+	if joystick_output == Vector2.ZERO:
+		shoot = false
 	if(Input.is_action_just_pressed("shoot")):
 		shoot = true
 	if (Input.is_action_just_released("shoot")):
 		shoot = false
+	if joystick_output != Vector2.ZERO:
+		shoot = true
+	
 	if (Input.is_action_just_pressed("nexus")):
 		Server.Nexus()
 
@@ -123,6 +131,11 @@ func MovePlayer(delta):
 		animation_tree.set("parameters/Idle/blend_position", shoot_direction)
 		animation_tree.set("parameters/Attack/blend_position", shoot_direction)
 		lastAnimation = { "A" : "Attack", "C" : shoot_direction }
+	elif joystick_output != Vector2.ZERO and not GameUI.is_inventory_open:
+		animation_tree.get("parameters/playback").travel("Attack")
+		animation_tree.set("parameters/Idle/blend_position", joystick_output)
+		animation_tree.set("parameters/Attack/blend_position", joystick_output)
+		lastAnimation = { "A" : "Attack", "C" : joystick_output }
 	elif motion != Vector2.ZERO:
 		animation_tree.get("parameters/playback").travel("Walk")
 		animation_tree.set("parameters/Idle/blend_position", motion)
@@ -157,6 +170,10 @@ func ShootProjectile():
 	var direction = (mouse_position - position).normalized()
 	var projectile_instance = projectile.instance()
 	var damage = round(CalculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
+	
+	if joystick_output != Vector2.ZERO:
+		mouse_position = joystick_output + position
+		direction = joystick_output
 	
 	#Send projectile to server
 	var projectile_data = {

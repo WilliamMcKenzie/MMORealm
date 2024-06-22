@@ -79,13 +79,13 @@ var items = {
 		}
 	},
 	3 : {
-		"name": "Greenie Bow",
-		"description" : "Tester bow for testers.",
+		"name": "Shadowbringer Bow",
+		"description" : "A ominous bow, forged from the very essence of darkness.",
 		"type" : "Bow",
 		"slot" : "weapon",
 		
 		"damage" : [15,25],
-		"rof" : 300,
+		"rof" : 100,
 		"stats" : {
 					
 		},
@@ -110,13 +110,13 @@ var items = {
 		"slot" : "weapon",
 		
 		"damage" : [40,70],
-		"rof" : 120,
+		"rof" : 300,
 		"stats" : {
 					
 		},
 		"range" : 8,
 		"tier" : "UT",
-		"projectile" : "GoldenArrow",
+		"projectile" : "FlameBlast",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,1)],
 		"colors" : {
@@ -138,6 +138,12 @@ var projectiles = {
 	"GoldenArrow" : {
 		"damage" : 50,
 		"speed" : 100,
+		"tile_range" : 8,
+		"piercing" : true
+	},
+	"FlameBlast" : {
+		"damage" : 50,
+		"speed" : 150,
 		"tile_range" : 8,
 		"piercing" : false
 	}
