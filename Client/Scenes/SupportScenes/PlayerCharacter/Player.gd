@@ -15,6 +15,9 @@ var projectile
 var x = 0
 var y = 0
 
+#For the attack joystick
+var joystick_output = Vector2.ZERO
+
 #We send animation to server to display to other clients.
 var lastAnimation = { "A" : "Idle", "C" : Vector2.ZERO }
 var lastSprite = { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice"}
@@ -46,6 +49,9 @@ func SetCharacter(_character):
 		var projectile_type = gear.weapon.projectile
 		var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
 		projectile = load(projectile_path)
+	
+	if is_inside_tree():
+		SetCharacterSprite()
 
 func UpdateCharacter(_character):
 	character = _character
@@ -60,23 +66,11 @@ func UpdateCharacter(_character):
 
 func SetCharacterSprite():
 	CharacterSpriteEle.SetCharacterClass(character.class)
-	if character.gear.has("weapon"):
+	if character.gear["weapon"] != null:
 		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
 	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
+	CharacterSpriteEle.ColorGear(gear)
 	lastSprite = { "R" : $CharacterSprite.get_region_rect(), "C" : character.class, "P" : CharacterSpriteEle.GetParams()}
-	
-	if gear.has("weapon"):
-		var weapon_colors = ClientData.GetItem(character.gear.weapon.item).colors
-		var weapon_textures = ClientData.GetItem(character.gear.weapon.item).textures
-		SetSpriteColors(CharacterSpriteEle, weapon_colors, weapon_textures)
-	if gear.has("helmet"):
-		var helmet_colors = ClientData.GetItem(character.gear.helmet.item).colors
-		var helmet_textures = ClientData.GetItem(character.gear.helmet.item).textures
-		SetSpriteColors(CharacterSpriteEle, helmet_colors, helmet_textures)
-	if gear.has("armor"):
-		var armor_colors = ClientData.GetItem(character.gear.armor.item).colors
-		var armor_textures = ClientData.GetItem(character.gear.armor.item).textures
-		SetSpriteColors(CharacterSpriteEle, armor_colors, armor_textures)
 
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
@@ -84,9 +78,6 @@ func SetSpriteData(sprite, path):
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
 	sprite.frame_coords = path[3]
-	
-func SetSpriteColors(sprite, colors, textures):
-	sprite.AddColorParams(colors, textures)
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
@@ -110,10 +101,15 @@ func MovePlayer(delta):
 	if(Input.is_action_pressed("right")):
 		x += 1
 
+	if joystick_output == Vector2.ZERO:
+		shoot = false
 	if(Input.is_action_just_pressed("shoot")):
 		shoot = true
 	if (Input.is_action_just_released("shoot")):
 		shoot = false
+	if joystick_output != Vector2.ZERO:
+		shoot = true
+	
 	if (Input.is_action_just_pressed("nexus")):
 		Server.Nexus()
 
@@ -135,6 +131,11 @@ func MovePlayer(delta):
 		animation_tree.set("parameters/Idle/blend_position", shoot_direction)
 		animation_tree.set("parameters/Attack/blend_position", shoot_direction)
 		lastAnimation = { "A" : "Attack", "C" : shoot_direction }
+	elif joystick_output != Vector2.ZERO and not GameUI.is_inventory_open:
+		animation_tree.get("parameters/playback").travel("Attack")
+		animation_tree.set("parameters/Idle/blend_position", joystick_output)
+		animation_tree.set("parameters/Attack/blend_position", joystick_output)
+		lastAnimation = { "A" : "Attack", "C" : joystick_output }
 	elif motion != Vector2.ZERO:
 		animation_tree.get("parameters/playback").travel("Walk")
 		animation_tree.set("parameters/Idle/blend_position", motion)
@@ -169,6 +170,10 @@ func ShootProjectile():
 	var direction = (mouse_position - position).normalized()
 	var projectile_instance = projectile.instance()
 	var damage = round(CalculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
+	
+	if joystick_output != Vector2.ZERO:
+		mouse_position = joystick_output + position
+		direction = joystick_output
 	
 	#Send projectile to server
 	var projectile_data = {

@@ -8,6 +8,22 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Control",
+"class": "AttackJoystick",
+"language": "GDScript",
+"path": "res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd"
+}, {
+"base": "Control",
+"class": "MoveJoystick",
+"language": "GDScript",
+"path": "res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd"
+} ]
+_global_script_class_icons={
+"AttackJoystick": "",
+"MoveJoystick": ""
+}
+
 [application]
 
 config/name="Client"
@@ -81,15 +97,21 @@ command={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":47,"unicode":0,"echo":false,"script":null)
  ]
 }
-1={
+attack_up={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":49,"unicode":0,"echo":false,"script":null)
- ]
+"events": [  ]
 }
-0={
+attack_down={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":48,"unicode":0,"echo":false,"script":null)
- ]
+"events": [  ]
+}
+attack_left={
+"deadzone": 0.5,
+"events": [  ]
+}
+attack_right={
+"deadzone": 0.5,
+"events": [  ]
 }
 
 [layer_names]

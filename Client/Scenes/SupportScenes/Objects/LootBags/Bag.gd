@@ -15,8 +15,8 @@ func UpdateLoot(_loot):
 #Interface Section
 func OnBag(body):
 	if body.get_parent().has_method("DefinePlayerState"):
-		GameUI.get_node("MiniMapContainer/MiniMapButtons/LootButton").ActivateLootButton(object_id, loot)
+		GameUI.get_node("UtilityButtons/LootButton").ActivateLootButton(object_id, loot)
 
 func OffBag(body):
 	if body.get_parent().has_method("DefinePlayerState"):
-		GameUI.get_node("MiniMapContainer/MiniMapButtons/LootButton").DisableLootButton()
+		GameUI.get_node("UtilityButtons/LootButton").DisableLootButton()

@@ -44,7 +44,7 @@ func UpdateScrollButtons():
 	else:
 		ScrollRight.get_node("Sprite").modulate.a = 1
 
-func ScrollLeft():
+func ScrollLeftAction():
 	if scroll_index < 1:
 		pass
 	else:
@@ -53,7 +53,7 @@ func ScrollLeft():
 		AddCharacterButton(scroll_index)
 		UpdateScrollButtons()
 
-func ScrollRight():
+func ScrollRightAction():
 	if scroll_index > characters.size()-1:
 		pass
 	elif scroll_index == characters.size()-1:

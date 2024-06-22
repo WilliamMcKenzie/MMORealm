@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/ChatControl.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/ChatInput.gd" type="Script" id=2]
+[ext_resource path="res://Assets/ui/rectangle_background.png" type="Texture" id=3]
 
-[sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0, 0, 0, 0.239216 )
+[sub_resource type="StyleBoxTexture" id=5]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 384, 128 )
+modulate_color = Color( 1, 1, 1, 0.313726 )
 
 [sub_resource type="Theme" id=3]
 PanelContainer/styles/panel = SubResource( 5 )

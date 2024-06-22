@@ -31,7 +31,10 @@ func _physics_process(delta):
 	if decimal_collector >= 1.00:
 		client_clock += 1
 		decimal_collector -= 1
-	
+
+func UpdateJoystickActions(output):
+	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").joystick_output = output
 
 func ConnectToServer():
 	network.create_client(ip_address, port)
@@ -92,6 +95,8 @@ func EquipItem(index):
 	rpc_id(1, "EquipItem", index)
 func ChangeItem(to_data, from_data):
 	rpc_id(1, "ChangeItem", to_data, from_data)
+func DropItem(data):
+	rpc_id(1, "DropItem", data)
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):

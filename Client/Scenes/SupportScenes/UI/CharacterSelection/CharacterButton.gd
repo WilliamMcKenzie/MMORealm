@@ -4,6 +4,7 @@ onready var CharacterSpriteEle = $Character
 onready var LevelEle = $LevelResizeContainer/Level
 onready var PlayButton = $PlayResizer/Play
 
+var gear = {}
 var character
 var character_index
 
@@ -11,31 +12,16 @@ var characterPath = ["characters/characters_8x8.png", 13, 26, Vector2(0,0)]
 var level = 1
 var character_class = "Apprentice"
 
-var weapon_colors = {}
-var helmet_colors = {}
-var armor_colors = {}
-
-var weapon_textures = {}
-var helmet_textures = {}
-var armor_textures = {}
-
 func AssignParameters(_character):
-	var gear = _character.gear
 	character = _character
 	
 	characterPath = ClientData.GetCharacter(character.class).path
 	level = character.level
 	character_class = character.class
 	
-	if gear["weapon"] != null:
-		weapon_colors = ClientData.GetItem(character.gear.weapon.item).colors
-		weapon_textures = ClientData.GetItem(character.gear.weapon.item).textures
-	if gear["helmet"] != null:
-		helmet_colors = ClientData.GetItem(character.gear.helmet.item).colors
-		helmet_textures = ClientData.GetItem(character.gear.helmet.item).textures
-	if gear["armor"] != null:
-		armor_colors = ClientData.GetItem(character.gear.armor.item).colors
-		armor_textures = ClientData.GetItem(character.gear.armor.item).textures
+	for slot in character.gear.keys():
+		if character.gear[slot] != null:
+			gear[slot] = ClientData.GetItem(int(character.gear[slot].item))
 
 func _ready():
 	LevelEle.text = character_class + " - Level " + str(level)
@@ -44,9 +30,7 @@ func _ready():
 		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
 	
 	SetSpriteData(CharacterSpriteEle, characterPath)
-	SetSpriteColors(CharacterSpriteEle, weapon_colors, weapon_textures)
-	SetSpriteColors(CharacterSpriteEle, helmet_colors, helmet_textures)
-	SetSpriteColors(CharacterSpriteEle, armor_colors, armor_textures)
+	CharacterSpriteEle.ColorGear(gear)
 	
 	PlayButton.connect("pressed", self, "EnterGame")
 	
@@ -56,9 +40,6 @@ func SetSpriteData(sprite, path):
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
 	sprite.frame_coords = path[3]
-	
-func SetSpriteColors(sprite, colors, textures):
-	sprite.AddColorParams(colors, textures)
 
 func EnterGame():
 	get_parent().get_parent().EnterGame(character_index, character)

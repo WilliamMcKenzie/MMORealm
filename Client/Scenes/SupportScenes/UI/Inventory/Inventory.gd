@@ -6,7 +6,7 @@ var loot = null
 var loot_container_id = null
 
 func _ready():
-	$CloseInventory.connect("button_down", self, "ToggleInventory")
+	$InventoryBackground.connect("button_down", self, "ToggleInventory")
 
 func InspectItem(_item):
 	if inspecting_item == _item:
@@ -82,11 +82,11 @@ func ToggleInventory():
 func OpenInventory():
 	var animator = $InventoryAnimations
 	animator.play("ShowInventory")
-	$CloseInventory.visible = true
+	$InventoryBackground.visible = true
 func CloseInventory():
 	var animator = $InventoryAnimations
 	animator.play("HideInventory")
-	$CloseInventory.visible = false
+	$InventoryBackground.visible = false
 
 func SetInventory(inventory):
 	var inventory_slots = $BackpackContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()
@@ -139,4 +139,5 @@ func EquipItem(i):
 	Server.EquipItem(i)
 func ChangeItem(to_data, from_data):
 	Server.ChangeItem(to_data, from_data)
-	
+func DropItem(data):
+	Server.DropItem(data)

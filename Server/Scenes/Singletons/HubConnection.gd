@@ -38,8 +38,12 @@ func _onConnectionSucceeded():
 remote func RecieveLoginToken(token, email):
 	gameserver.expected_tokens[token] = email
 	
-func GetAccountData(player_id, email, instance_tree):
-	rpc_id(1, "GetAccountData", player_id, email, instance_tree)
+func GetAccountData(player_id, email):
+	rpc_id(1, "GetAccountData", player_id, email)
 
-remote func ReturnAccountData(player_id, instance_tree, account_data):
+remote func ReturnAccountData(player_id, account_data):
+	var instance_tree = get_node("/root/Server").player_state_collection[player_id]["I"]
 	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).SetCharacter(account_data.characters)
+
+func UpdateCharacterData(email, character_data, character_index):
+	rpc_id(1, "UpdateCharacterData", email, character_data, character_index)

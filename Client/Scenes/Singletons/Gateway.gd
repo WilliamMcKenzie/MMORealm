@@ -37,13 +37,17 @@ func ConnectToServer(_email, _password, _task):
 
 	custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
 	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
+	
+	get_node("../SceneHandler/Home/LoginPopup/ResizeContainer/WarningLabel").text = "Gatewya"
 
 func _onConnectionFailed():
+	get_node("../SceneHandler/Home/LoginPopup/ResizeContainer/WarningLabel").text = "Connection failed"
 	print("Connection failed, gateway server down.")
 	get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
 	get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
 	
 func _onConnectionSucceeded():
+	get_node("../SceneHandler/Home/LoginPopup/ResizeContainer/WarningLabel").text = "Connection succedded"
 	print("Connection succeeded!")
 	if(task == 4):
 		FetchAccountData()
@@ -82,6 +86,7 @@ func RequestCreateAccount():
 	email = ""
 	password = ""
 remote func ReturnCreateAccountRequest(results, message):
+	get_node("../SceneHandler/Home/LoginPopup/ResizeContainer/WarningLabel").text = "Results recievededd"
 	print("Results recieved")
 	print(results)
 	print(message)
