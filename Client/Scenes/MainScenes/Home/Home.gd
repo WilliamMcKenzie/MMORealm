@@ -1,6 +1,6 @@
 extends Control
 
-var nexus = preload("res://Scenes/MainScenes/Nexus/nexus.tscn")
+var nexus = preload("res://Scenes/MainScenes/Nexus/Nexus.tscn")
 
 var email
 var password

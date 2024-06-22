@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
 [ext_resource path="res://Assets/items/textures/tile.png" type="Texture" id=6]
+[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/Joystick.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd" type="Script" id=9]
 
 [sub_resource type="AnimationNodeAnimation" id=31]
 animation = "attack_down"
@@ -668,3 +671,15 @@ shape = SubResource( 61 )
 visible = false
 scale = Vector2( 0.9, 1.1 )
 shape = SubResource( 61 )
+
+[node name="Joysticks" type="CanvasLayer" parent="."]
+
+[node name="Joystick" parent="Joysticks" instance=ExtResource( 7 )]
+visible = false
+script = ExtResource( 9 )
+
+[node name="Joystick2" parent="Joysticks" instance=ExtResource( 7 )]
+visible = false
+margin_left = 680.0
+margin_right = 880.0
+script = ExtResource( 8 )

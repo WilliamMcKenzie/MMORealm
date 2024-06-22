@@ -91,5 +91,12 @@ text = "Signup"
 align = 1
 valign = 1
 
+[node name="WarningLabel" type="Label" parent="ResizeContainer"]
+margin_left = 403.0
+margin_top = 156.0
+margin_right = 443.0
+margin_bottom = 175.0
+text = "NO WARNING HERE"
+
 [connection signal="text_changed" from="ResizeContainer/Password" to="." method="_on_Password_text_changed"]
 [connection signal="text_changed" from="ResizeContainer/Email" to="." method="_on_Email_text_changed"]
