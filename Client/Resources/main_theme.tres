@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=8 format=2]
 
-[ext_resource path="res://Scenes/Resources/Roboto.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/ui/border_small.png" type="Texture" id=2]
 [ext_resource path="res://Assets/ui/rectangle_background.png" type="Texture" id=3]
 

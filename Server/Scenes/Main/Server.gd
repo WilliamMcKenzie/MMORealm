@@ -159,7 +159,6 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"Exp" : enemy_data.exp,
 			"Target" : spawn_position,
 			"AnchorPosition" : spawn_position
-
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 

@@ -37,6 +37,7 @@ func _physics_process(delta):
 			
 			#Update enemies
 			for enemy in world_state_buffer[2]["E"].keys():
+				print(enemy)
 				var enemies1 = world_state_buffer[1]["E"]
 				var enemies2 = world_state_buffer[2]["E"]
 				

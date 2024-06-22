@@ -29,7 +29,6 @@ func _physics_process(delta):
 
 	running_time += delta
 	for i in range(floor((running_time-last_tick)/tick_rate)):
-		print(((running_time-last_tick)/tick_rate))
 		for enemy_id in enemy_list.keys():
 			if(enemy_list[enemy_id]["Health"] < 1):
 				enemy_list.erase(enemy_id)
@@ -44,9 +43,11 @@ func _physics_process(delta):
 				
 				enemy_list[enemy_id]["Position"] += Vector2(x_move,y_move)
 				
+				print("Target:")
 				print(target)
 				print((target-position).length())
 				if (target - position).length() <= 2:
+					print("here we are")
 					if (enemy_list[enemy_id]["AnchorPosition"]-position).length() >= 20:
 						print("enemy strayed to far from start, returning")
 						enemy_list[enemy_id]["Target"] = enemy_list[enemy_id]["AnchorPosition"]
@@ -76,8 +77,8 @@ func RemovePlayer(player_container):
 		get_node("YSort/Players").remove_child(player_container)
 
 func SpawnEnemy(enemy, enemy_id):
-	
 	enemy_list[str(enemy_id)] = enemy
+
 func SpawnPlayerProjectile(projectile_data, player_id):
 	
 	var player_weapon = get_node("YSort/Players/"+str(player_id)).gear.weapon

@@ -1,6 +1,6 @@
 [gd_scene load_steps=54 format=2]
 
-[ext_resource path="res://Scenes/Resources/ColorGear.gdshader" type="Shader" id=1]
+[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/Joystick.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=8]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd" type="Script" id=9]
+
 
 
 [sub_resource type="AnimationNodeAnimation" id=31]
