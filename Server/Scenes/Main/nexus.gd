@@ -7,7 +7,7 @@ var player_list = {}
 var enemy_list = {}
 var object_list = {}
 
-var tick_rate = 1
+var tick_rate = 0.25
 var running_time = 0
 var last_tick = 0
 var player_projectiles = {
@@ -38,12 +38,12 @@ func _physics_process(delta):
 				var target = enemy_list[enemy_id]["Target"]
 				var position = enemy_list[enemy_id]["Position"]
 				
-				var x_move = -cos(position.angle_to_point(target))* 1
-				var y_move = -cos(position.angle_to_point(target))* 1
+				var x_move = -cos(position.angle_to_point(target))* 4
+				var y_move = -sin(position.angle_to_point(target))* 4
 				
 				enemy_list[enemy_id]["Position"] += Vector2(x_move,y_move)
 				
-				if (target - position).length() <= 2:
+				if (target - position).length() <= 4:
 					if (enemy_list[enemy_id]["AnchorPosition"]-position).length() >= 20:
 						enemy_list[enemy_id]["Target"] = enemy_list[enemy_id]["AnchorPosition"]
 					else:

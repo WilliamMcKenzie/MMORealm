@@ -38,6 +38,7 @@ func OnHit(body):
 	if ("damage" in body.get_parent()):
 		ShowDamageIndicator(-1*body.get_parent().damage)
 		body.get_parent().interaction(self)
+		Server.NPCHit(name,body.get_parent().damage)
 
 func ShowDamageIndicator(damage_amount):
 	var damage_indicator = damageIndicatorScene.instance()

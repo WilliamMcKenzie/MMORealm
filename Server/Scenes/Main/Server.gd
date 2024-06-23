@@ -81,7 +81,7 @@ remote func ChangeItem(to_data, from_data):
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).LootItem(to_data, from_data)
 	else:
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(to_data, from_data)
-
+		
 remote func DropItem(data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -260,7 +260,7 @@ remote func RecieveChatMessage(message):
 				var multiple_enemies = message_words.size() > 2 and int(message_words[2])
 				
 				if valid_enemy and multiple_enemies:
-					for i in range(int(message_words[2])):
+					for _i in range(int(message_words[2])):
 						SpawnNPC(message_words[1], instance_tree, player_position)
 				elif valid_enemy:
 					SpawnNPC(message_words[1], instance_tree, player_position)
@@ -290,7 +290,13 @@ remote func RecieveChatMessage(message):
 
 func NotifyDeath(player_id, enemy_name):
 	rpc_id(player_id, "CharacterDied", enemy_name)
-	rpc("RecieveChat", str(player_id) + " has been killed!", "System")
-
+	rpc("RecieveChat", str(player_id) + " has been killed by a "+enemy_name, "System")
+	
 func SetHealth(player_id, max_health, health):
 	rpc_id(player_id,"SetHealth",max_health, health)
+
+remote func NPCHit(enemy_id,damage,player_id):
+	var instance_tree = StringifyInstanceTree(player_state_collection[player_id]["I"])
+	if get_node("Instances/"+instance_tree).enemy_list.has(str(enemy_id)) and get_node("Instances").has_node(instance_tree):
+		get_node("Instances/"+instance_tree).enemy_list[str(enemy_id)]["Health"] -= damage
+
