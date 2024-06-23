@@ -43,16 +43,10 @@ func _physics_process(delta):
 				
 				enemy_list[enemy_id]["Position"] += Vector2(x_move,y_move)
 				
-				print("Target:")
-				print(target)
-				print((target-position).length())
 				if (target - position).length() <= 2:
-					print("here we are")
 					if (enemy_list[enemy_id]["AnchorPosition"]-position).length() >= 20:
-						print("enemy strayed to far from start, returning")
 						enemy_list[enemy_id]["Target"] = enemy_list[enemy_id]["AnchorPosition"]
 					else:
-						print("finding new target")
 						enemy_list[enemy_id]["Target"] = position + Vector2(rand_range(-7,7),rand_range(-7,7))
 		last_tick = running_time
 func UpdatePlayer(player_id, player_state):

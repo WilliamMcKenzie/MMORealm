@@ -109,7 +109,7 @@ remote func RecievePlayerState(player_state):
 		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
 func SendWorldState(id, world_state):
-	rpc_unreliable_id(int(id), "Recieved", world_state)
+	rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
 
 #TOKENS
 func _on_TokenExpiration_timeout():

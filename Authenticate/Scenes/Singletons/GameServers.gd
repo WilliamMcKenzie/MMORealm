@@ -44,7 +44,6 @@ remote func GetAccountData(player_id, email):
 	
 	rpc_id(gameserver_peer_id, "ReturnAccountData", player_id, account_data)
 
-#Next task is probably to save the characters on the auth server when they are updated. Then we can use characters that last between sessions
 remote func UpdateCharacterData(email, character_data, character_index):
 	if not PlayerData.player_data.has(email):
 		return
