@@ -32,9 +32,12 @@ func _physics_process(delta):
 		client_clock += 1
 		decimal_collector -= 1
 
-func UpdateJoystickActions(output):
+func UpdateRightJoystick(output):
 	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
-		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").joystick_output = output
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").right_joystick_output = output.normalized()
+func UpdateLeftJoystick(output):
+	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").left_joystick_output = output.normalized()
 
 func ConnectToServer():
 	network.create_client(ip_address, port)

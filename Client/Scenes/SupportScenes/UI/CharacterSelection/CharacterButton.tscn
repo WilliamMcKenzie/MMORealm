@@ -7,8 +7,6 @@
 [ext_resource path="res://Assets/ui/button.png" type="Texture" id=6]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=7]
 
-
-
 [sub_resource type="ShaderMaterial" id=9]
 shader = ExtResource( 2 )
 shader_param/line_color = Color( 0, 0, 0, 1 )

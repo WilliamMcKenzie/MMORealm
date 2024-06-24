@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Login/Login.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Resources/PillTexture.tres" type="StyleBox" id=3]
 [ext_resource path="res://Assets/ui/pill_background.png" type="Texture" id=4]
+[ext_resource path="res://Resources/main_theme.tres" type="Theme" id=5]
 
 [sub_resource type="DynamicFont" id=2]
 outline_size = 1
@@ -26,6 +27,7 @@ margin_top = 304.0
 margin_right = 644.0
 margin_bottom = 344.0
 grow_horizontal = 2
+theme = ExtResource( 5 )
 
 [node name="PasswordLabel" type="Label" parent="ResizeContainer"]
 margin_left = 370.0
@@ -40,6 +42,7 @@ margin_left = 369.0
 margin_top = 222.0
 margin_right = 646.0
 margin_bottom = 265.0
+theme = ExtResource( 5 )
 
 [node name="EmailLabel" type="Label" parent="ResizeContainer"]
 margin_left = 370.0
@@ -90,13 +93,6 @@ custom_fonts/font = SubResource( 2 )
 text = "Signup"
 align = 1
 valign = 1
-
-[node name="WarningLabel" type="Label" parent="ResizeContainer"]
-margin_left = 403.0
-margin_top = 156.0
-margin_right = 443.0
-margin_bottom = 175.0
-text = "NO WARNING HERE"
 
 [connection signal="text_changed" from="ResizeContainer/Password" to="." method="_on_Password_text_changed"]
 [connection signal="text_changed" from="ResizeContainer/Email" to="." method="_on_Email_text_changed"]

@@ -31,10 +31,10 @@ export(VisibilityMode) var visibility_mode := VisibilityMode.ALWAYS
 export var use_input_actions := true
 
 # Project -> Project Settings -> Input Map
-export var action_left := "attack_left"
-export var action_right := "attack_right"
-export var action_up := "attack_up"
-export var action_down := "attack_down"
+export var action_left := "NULL"
+export var action_right := "NULL"
+export var action_up := "NULL"
+export var action_down := "NULL"
 
 #### PUBLIC VARIABLES ####
 
@@ -126,13 +126,13 @@ func _update_joystick(touch_position: Vector2) -> void:
 		_update_input_actions()
 
 func _update_input_actions():
-	Server.UpdateJoystickActions(_output)
+	Server.UpdateRightJoystick(_output)
 
 func _reset():
 	visible = false
 	_pressed = false
 	_output = Vector2.ZERO
-	Server.UpdateJoystickActions(_output)
+	Server.UpdateRightJoystick(_output)
 	_touch_index = -1
 	_tip.modulate = _default_color
 	_base.rect_position = _base_default_position

@@ -14,8 +14,8 @@ var scroll_index = 0
 onready var active_node = "-1"
 
 func _ready():
-	ScrollLeft.connect("pressed", self, "ScrollLeft")
-	ScrollRight.connect("pressed", self, "ScrollRight")
+	ScrollLeft.connect("pressed", self, "ScrollLeftAction")
+	ScrollRight.connect("pressed", self, "ScrollRightAction")
 
 func AddCharacterSlot():
 	var price = 500 + (character_slots*200)

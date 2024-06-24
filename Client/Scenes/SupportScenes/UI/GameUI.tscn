@@ -53,7 +53,6 @@ anchor_bottom = 0.0
 margin_right = 50.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
-rect_scale = Vector2( 1, 1 )
 
 [node name="BarContainer" type="VBoxContainer" parent="LeftContainer"]
 margin_left = 54.0

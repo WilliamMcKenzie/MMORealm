@@ -5,31 +5,31 @@ var enemies = {
 		"health" : 40,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	},
 	"crab" : {
 		"health" : 60,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	},
 	"tribesman" : {
 		"health" : 100,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	},
 	"shaman" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	},
 	"rock_golem" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : "Wander"
+		"behavior" : 1
 	}
 }
 
@@ -164,8 +164,8 @@ func RgbToColor(r, g, b):
 	return Color(r/255, g/255, b/255)
 
 func GetItem(item):
-	if items.has(item):
-		return items[item]
+	if items.has(int(item)):
+		return items[int(item)]
 	else:
 		return null
 

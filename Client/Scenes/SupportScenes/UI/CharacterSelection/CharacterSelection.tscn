@@ -4,8 +4,6 @@
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=3]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=5]
 
-
-
 [sub_resource type="ShaderMaterial" id=5]
 shader = ExtResource( 3 )
 shader_param/line_color = Color( 0, 0, 0, 1 )

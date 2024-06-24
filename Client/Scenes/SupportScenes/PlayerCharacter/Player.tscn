@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
@@ -6,11 +6,10 @@
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
 [ext_resource path="res://Assets/items/textures/tile.png" type="Texture" id=6]
-[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/Joystick.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/move_Joystick.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/attack_joystick.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd" type="Script" id=9]
-
-
+[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=10]
 
 [sub_resource type="AnimationNodeAnimation" id=31]
 animation = "attack_down"
@@ -26,13 +25,13 @@ animation = "attack_left"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=34]
 blend_point_0/node = SubResource( 31 )
-blend_point_0/pos = Vector2( 0, 1 )
+blend_point_0/pos = Vector2( 0, 0.5 )
 blend_point_1/node = SubResource( 32 )
-blend_point_1/pos = Vector2( 0, -1 )
+blend_point_1/pos = Vector2( 0, -0.5 )
 blend_point_2/node = SubResource( 33 )
-blend_point_2/pos = Vector2( 1, 0 )
+blend_point_2/pos = Vector2( 0.5, 0 )
 blend_point_3/node = SubResource( 60 )
-blend_point_3/pos = Vector2( -1, 0 )
+blend_point_3/pos = Vector2( -0.5, 0 )
 
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "idle_left"
@@ -71,13 +70,13 @@ animation = "walk_up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=23]
 blend_point_0/node = SubResource( 19 )
-blend_point_0/pos = Vector2( -1, 0 )
+blend_point_0/pos = Vector2( -0.5, 0 )
 blend_point_1/node = SubResource( 20 )
-blend_point_1/pos = Vector2( 1, 0 )
+blend_point_1/pos = Vector2( 0.5, 0 )
 blend_point_2/node = SubResource( 21 )
-blend_point_2/pos = Vector2( 0, 1 )
+blend_point_2/pos = Vector2( 0, 0.5 )
 blend_point_3/node = SubResource( 22 )
-blend_point_3/pos = Vector2( 0, -1 )
+blend_point_3/pos = Vector2( 0, -0.5 )
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=24]
 
@@ -230,18 +229,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 4 ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
 
 [sub_resource type="Animation" id=6]
 resource_name = "idle_right"
@@ -258,18 +245,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ 0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -320,19 +295,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 1, 0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
+"values": [ 5, 4 ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -350,18 +313,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 1, 0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
 }
 
 [sub_resource type="Animation" id=10]
@@ -593,7 +544,7 @@ tree_root = SubResource( 16 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 17 )
-parameters/Attack/blend_position = Vector2( -0.81141, -0.318966 )
+parameters/Attack/blend_position = Vector2( 0.00158477, 0.982759 )
 parameters/Idle/blend_position = Vector2( -0.274168, 0.413793 )
 parameters/Walk/blend_position = Vector2( 0.99683, -0.543103 )
 
@@ -680,8 +631,6 @@ shape = SubResource( 61 )
 visible = false
 script = ExtResource( 9 )
 
-[node name="Joystick2" parent="Joysticks" instance=ExtResource( 7 )]
+[node name="Joystick2" parent="Joysticks" instance=ExtResource( 8 )]
 visible = false
-margin_left = 680.0
-margin_right = 880.0
-script = ExtResource( 8 )
+script = ExtResource( 10 )

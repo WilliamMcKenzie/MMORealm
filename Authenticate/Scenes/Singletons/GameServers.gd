@@ -40,16 +40,9 @@ func DistributeLogToken(token, email, gameserver):
 
 remote func GetAccountData(player_id, email):
 	var gameserver_peer_id = custom_multiplayer.get_rpc_sender_id()
-	var account_data = PlayerData.GetPlayerData(email).account_data
+	var account_data = DatabaseInterface.FindUser(email).account_data
 	
 	rpc_id(gameserver_peer_id, "ReturnAccountData", player_id, account_data)
 
 remote func UpdateCharacterData(email, character_data, character_index):
-	if not PlayerData.player_data.has(email):
-		return
-	
-	var account_data = PlayerData.player_data[email].account_data
-	var characters = account_data.characters
-	characters[character_index] = character_data
-
-
+	DatabaseInterface.UpdateCharacter(email, character_data, character_index)
