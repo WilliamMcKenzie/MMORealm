@@ -12,6 +12,13 @@ var port = 25060
 var default_account_data = {
 	"character_slots": 1,
 	"gold": 5000,
+	"achievements": {
+		"Trial By Fire" : false
+	},
+	"statistics": {
+		"tiles_covered" : 0,
+		"damage_taken" : 0,
+	},
 	"characters":[]
 }
 var new_character = {
@@ -26,6 +33,9 @@ var new_character = {
 		"level" : 1,
 		"exp" : 0,
 		"class" : "Apprentice",
+		"statistics": {
+			
+		},
 		"gear" : {
 			"weapon" : {
 				"item" : 1,
