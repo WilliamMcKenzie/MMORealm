@@ -18,6 +18,10 @@ var default_account_data = {
 	"statistics": {
 		"tiles_covered" : 0,
 		"damage_taken" : 0,
+		"bow_projectiles" : 0,
+		"staff_projectiles" : 0,
+		"sword_projectiles" : 0,
+		"projectiles_landed" : 0,
 	},
 	"characters":[]
 }
@@ -34,7 +38,12 @@ var new_character = {
 		"exp" : 0,
 		"class" : "Apprentice",
 		"statistics": {
-			
+			"tiles_covered" : 0,
+			"damage_taken" : 0,
+			"bow_projectiles" : 0,
+			"staff_projectiles" : 0,
+			"sword_projectiles" : 0,
+			"projectiles_landed" : 0,
 		},
 		"gear" : {
 			"weapon" : {

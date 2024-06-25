@@ -56,6 +56,8 @@ func _Peer_Disconnected(id):
 	if player_instance_tracker[player_state_collection[id]["I"]].has(id):
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
+		
+		HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])).RemovePlayer(player_container)
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
 	player_state_collection.erase(id)
@@ -108,6 +110,7 @@ remote func RecievePlayerState(player_state):
 		player_instance_tracker[["nexus"]].append(player_id)
 		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
+
 func SendWorldState(id, world_state):
 	rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
 
@@ -123,7 +126,6 @@ func _on_TokenExpiration_timeout():
 			if current_time - token_time >= 30:
 				expected_tokens.keys().remove(i)
 
-#Make sure if players manually set tokens to expire say a year from now, they still get kicked
 func _on_VerificationExpiration_timeout():
 	PlayerVerification.VerificationExpiration()
 
@@ -146,19 +148,21 @@ func SendCharacterData(player_id, character):
 #NPCS/ENEMIES
 func SpawnNPC(enemy_name, instance_tree, spawn_position):
 	var enemy_id = generate_unique_id()
+	
+	print(spawn_position)
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
 		var enemy_data = ServerData.GetEnemy(enemy_name)
 		var enemy = {
 			"Name":enemy_name,
-			"Position":spawn_position,
+			"Position":spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"Health":enemy_data.health,
 			"MaxHealth":enemy_data.health,
 			"Defense":enemy_data.defense,
 			"State":"Idle",
 			"Behavior":enemy_data.behavior,
 			"Exp" : enemy_data.exp,
-			"Target" : spawn_position,
-			"AnchorPosition" : spawn_position
+			"Target" : spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			"AnchorPosition" : spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 
@@ -172,11 +176,26 @@ remote func SendPlayerProjectile(projectile_data):
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
 	rpc("RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
 
-func generate_unique_id():
-	var timestamp = OS.get_unix_time()
-	var random_value = randi()
-	return (str(timestamp) + "_" + str(random_value)).sha256_text()
+remote func NPCHit(enemy_id, damage):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	var which_achievement = "bow_projectiles"
+	
+	if player_container.gear.has("weapon"):
+		var weapon_type = player_container.gear.weapon.type
+		if weapon_type == "Staff":
+			which_achievement = "staff_projectiles"
+		if weapon_type == "Sword":
+			which_achievement = "sword_projectiles"
 
+	if get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list.has(str(enemy_id)):
+		get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["Health"] -= damage
+		player_container.UpdateStatistics("projectiles_landed", 1)
+		player_container.UpdateStatistics(which_achievement, 1)
+
+#INSTANCES
 remote func Nexus():
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "ConfirmNexus")
@@ -220,17 +239,13 @@ remote func EnterInstance(instance_id):
 			
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
 			player_instance_tracker[instance_tree].append(player_id)
+			
 remote func FetchIslandChunk(chunk):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
 	var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 	if(island_node.has_method("GetIslandChunk")):
 		rpc_id(player_id, "ReturnIslandChunk", island_node.GetIslandChunk(chunk), chunk)
-func StringifyInstanceTree(instance_tree):
-	var res = ""
-	for instance in instance_tree:
-		res += (str(instance)+"/")
-	return res.left(res.length() - 1) 
 
 #COMMANDS
 remote func RecieveChatMessage(message):
@@ -261,9 +276,9 @@ remote func RecieveChatMessage(message):
 				
 				if valid_enemy and multiple_enemies:
 					for _i in range(int(message_words[2])):
-						SpawnNPC(message_words[1], instance_tree, player_position)
+						SpawnNPC(message_words[1], instance_tree, player_position - (get_node("Instances/"+StringifyInstanceTree(instance_tree)).position))
 				elif valid_enemy:
-					SpawnNPC(message_words[1], instance_tree, player_position)
+					SpawnNPC(message_words[1], instance_tree, player_position - (get_node("Instances/"+StringifyInstanceTree(instance_tree)).position))
 					rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
 				else:
 					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "System")
@@ -295,8 +310,16 @@ func NotifyDeath(player_id, enemy_name):
 func SetHealth(player_id, max_health, health):
 	rpc_id(player_id,"SetHealth",max_health, health)
 
-remote func NPCHit(enemy_id,damage,player_id):
-	var instance_tree = StringifyInstanceTree(player_state_collection[player_id]["I"])
-	if get_node("Instances/"+instance_tree).enemy_list.has(str(enemy_id)) and get_node("Instances").has_node(instance_tree):
-		get_node("Instances/"+instance_tree).enemy_list[str(enemy_id)]["Health"] -= damage
 
+#Utility functions 
+
+func StringifyInstanceTree(instance_tree):
+	var res = ""
+	for instance in instance_tree:
+		res += (str(instance)+"/")
+	return res.left(res.length() - 1) 
+
+func generate_unique_id():
+	var timestamp = OS.get_unix_time()
+	var random_value = randi()
+	return (str(timestamp) + "_" + str(random_value)).sha256_text()

@@ -149,9 +149,21 @@ var projectiles = {
 	}
 }
 
+var achievements = {
+	"Trial By Fire" : {
+		"which" : "bow_projectiles",
+		"amount" : 100
+	}
+}
+
 var characters = {
 	"Apprentice" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+			"Bow Projectiles I" :  "Nomad",
+			"Sword Projectiles I" : "Noble",
+			"Staff Projectiles I" : "Scholar",
+		},
 		"rect" : Rect2(0,0,80,40)
 	},
 	"Bulwark" : {
@@ -187,3 +199,8 @@ func GetEnemy(enemy):
 	else:
 		return null
 		
+func GetAchievement(achievement):
+	if achievements.has(achievement):
+		return achievements[achievement]
+	else:
+		return null

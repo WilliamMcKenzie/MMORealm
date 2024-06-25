@@ -57,6 +57,8 @@ func _physics_process(delta):
 
 		elif render_time > world_state_buffer[1]["T"]:
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
+			
+			#Update players
 			for player in world_state_buffer[1]["P"].keys():
 				var players0 = world_state_buffer[0]["P"]
 				var players1 = world_state_buffer[1]["P"]
@@ -72,6 +74,23 @@ func _physics_process(delta):
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players1[player]["Animation"], players1[player]["Sprite"])
 				else:
 					SpawnNewPlayer(player, players1[player]["Position"])
+			
+			#Update enemies
+			for enemy in world_state_buffer[1]["E"].keys():
+				var enemies0 = world_state_buffer[0]["E"]
+				var enemies1 = world_state_buffer[1]["E"]
+				
+				var lost_enemy0 = not enemies0.has(enemy)
+				var lost_enemy1 = not enemies1.has(enemy)
+				
+				if lost_enemy0 or lost_enemy1:
+					continue;
+				elif get_node("YSort/Enemies").has_node(str(enemy)):
+					var position_delta = (enemies1[enemy]["Position"] - enemies0[enemy]["Position"])
+					var new_position = enemies1[enemy]["Position"] + (position_delta * extrapolation_factor)
+					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
+				else:
+					SpawnNewEnemy(enemy, enemies1[enemy]["Position"], enemies1[enemy]["Name"])
 
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:

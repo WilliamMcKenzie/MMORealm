@@ -43,7 +43,10 @@ func GetAccountData(player_id, email):
 
 remote func ReturnAccountData(player_id, account_data):
 	var instance_tree = get_node("/root/Server").player_state_collection[player_id]["I"]
+	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).account_data = account_data
 	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).SetCharacter(account_data.characters)
 
 func UpdateCharacterData(email, character_data, character_index):
 	rpc_id(1, "UpdateCharacterData", email, character_data, character_index)
+func UpdateAccountData(email, account_data):
+	rpc_id(1, "UpdateAccountData", email, account_data)

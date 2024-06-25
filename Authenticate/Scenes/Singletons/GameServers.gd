@@ -46,3 +46,6 @@ remote func GetAccountData(player_id, email):
 
 remote func UpdateCharacterData(email, character_data, character_index):
 	DatabaseInterface.UpdateCharacter(email, character_data, character_index)
+
+remote func UpdateAccountData(email, account_data):
+	DatabaseInterface.UpdateUser(email, account_data)

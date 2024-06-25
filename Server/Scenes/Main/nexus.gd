@@ -7,9 +7,11 @@ var player_list = {}
 var enemy_list = {}
 var object_list = {}
 
-var tick_rate = 0.25
+var tick_rate = 0.1
 var running_time = 0
 var last_tick = 0
+var use_chunks = false
+
 var player_projectiles = {
 	"small" : preload("res://Scenes/Instances/Projectiles/Players/Small.tscn")
 }
@@ -30,7 +32,7 @@ func _physics_process(delta):
 	running_time += delta
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
-			if(enemy_list[enemy_id]["Health"] < 1):
+			if(enemy_list[enemy_id]["Health"] < 1) and use_chunks == false:
 				enemy_list.erase(enemy_id)
 				continue
 			if (enemy_list[enemy_id]["Behavior"] == 1):
@@ -38,8 +40,8 @@ func _physics_process(delta):
 				var target = enemy_list[enemy_id]["Target"]
 				var position = enemy_list[enemy_id]["Position"]
 				
-				var x_move = -cos(position.angle_to_point(target))* 4
-				var y_move = -sin(position.angle_to_point(target))* 4
+				var x_move = -cos(position.angle_to_point(target))*(0.1/tick_rate)
+				var y_move = -sin(position.angle_to_point(target))*(0.1/tick_rate)
 				
 				enemy_list[enemy_id]["Position"] += Vector2(x_move,y_move)
 				

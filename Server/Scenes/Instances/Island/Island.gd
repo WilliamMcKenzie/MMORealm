@@ -26,27 +26,48 @@ var chunks = {}
 
 # warning-ignore:unused_argument
 var sync_clock_counter = 0
+
 func _physics_process(delta):
-	for enemy_id in enemy_list.keys():
-		if(enemy_list[enemy_id]["Health"] < 1):
-			var enemy_position = enemy_list[enemy_id]["Position"]
-			var enemy_coords = Vector2(round((enemy_position/8).x), round((enemy_position/8).y))
-			var chunk = Vector2(chunk_size*round((enemy_coords.x)/chunk_size), chunk_size*round((enemy_coords.y)/chunk_size))
-			
-			if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):
-				chunks[chunk]["E"].erase(enemy_id)
-			
-			enemy_list.erase(enemy_id)
+	use_chunks = true
+	running_time += delta
+	for i in range(floor((running_time-last_tick)/tick_rate)):
+		for enemy_id in enemy_list.keys():
+			var enemy = enemy_list[enemy_id]
+			if(enemy_list[enemy_id]["Health"] < 1):
+				var chunk = CalculateChunk(enemy["Position"])
+				
+				if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):
+					print("erasing id")
+					chunks[chunk]["E"].erase(enemy_id)
+				else:
+					print(chunk)
+					print(enemy_id)
+					print(chunks.has(chunk))
+					print(chunks[chunk])
+				
+				enemy_list.erase(enemy_id)
+				continue
+		last_tick = running_time
 			
 	sync_clock_counter += 1
 	if sync_clock_counter ==  60*5:
 		sync_clock_counter = 0
 		for chunk in chunks:
+			for id in chunks[chunk]["E"].keys():
+				if enemy_list.has(id) and not WithinChunk(chunk, enemy_list[id]["Position"]):
+					chunks[chunk]["E"].erase(id)
+					AddChunkData(CalculateChunk(enemy_list[id]["Position"]), id, false)
+				elif not enemy_list.has(id):
+					chunks[chunk]["E"].erase(id)
 			if IsChunkRadiusEmpty(chunk):
 				for id in chunks[chunk]["E"].keys():
 					enemy_list.erase(id)
-					get_node("YSort/Enemies/").remove_child(get_node("YSort/Enemies/"+str(id)))
 				chunks[chunk]["E"] = {}
+func SpawnEnemy(enemy, enemy_id):
+	enemy_list[str(enemy_id)] = enemy
+	AddChunkData(CalculateChunk(enemy["Position"]), enemy_id, false)
+
+#Chunks utility
 
 #Check if chunks around chunk have any players
 func IsChunkRadiusEmpty(chunk):
@@ -70,6 +91,19 @@ func IsChunkRadiusEmpty(chunk):
 			is_empty = false
 			
 	return is_empty
+
+#Check if a position is within a chunk Vector2
+func WithinChunk(chunk, pos):
+	var enemy_coords = Vector2(round((pos/8).x), round((pos/8).y))
+	var _chunk = Vector2(chunk_size*round((enemy_coords.x)/chunk_size), chunk_size*round((enemy_coords.y)/chunk_size))
+	
+	return _chunk == chunk
+	
+func CalculateChunk(pos):
+	var enemy_coords = Vector2(round((pos/8).x), round((pos/8).y))
+	var chunk = Vector2(chunk_size*round((enemy_coords.x)/chunk_size), chunk_size*round((enemy_coords.y)/chunk_size))
+	
+	return chunk
 
 func GetMapSpawnpoint():
 	randomize()
@@ -112,7 +146,6 @@ func GenerateIslandMap():
 	noise.octaves = 1.0
 	noise.period = 12
 	PopulateTiles()
-
 func PopulateTiles():
 	var center = map_size / 2
 	var ocean_distance = center.length() * 1.3

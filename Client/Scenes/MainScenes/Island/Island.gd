@@ -10,7 +10,8 @@ func GenerateChunk(chunk_data, chunk):
 	
 	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
 		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
-			$Tiles.set_cell(x,y,tiles[x-chunk.x+(chunk_size/2)][y-chunk.y+(chunk_size/2)])
+			var tile = tiles[x-chunk.x+(chunk_size/2)][y-chunk.y+(chunk_size/2)]
+			$Tiles.set_cell(x,y,tile)
 	for object in objects:
 		var object_node = load("res://Scenes/SupportScenes/Objects/Obstacles/" + object["N"] + ".tscn")
 		var object_instance = object_node.instance()

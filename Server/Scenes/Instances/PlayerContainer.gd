@@ -2,6 +2,7 @@ extends Node
 
 var email
 
+var account_data = null
 var character = null
 var character_index = null
 
@@ -164,6 +165,7 @@ func SetCharacter(characters):
 
 func DealDamage(damage, enemy_id):
 	health -= damage
+	
 	get_node("/root/Server").SetHealth(int(name), 100, health)
 	if health < 1:
 		Death(enemy_id)
@@ -172,6 +174,21 @@ func Death(enemy_id):
 	get_parent().get_parent().get_parent().player_list.erase(name)
 	get_node("/root/Server").NotifyDeath(int(name), enemy_id)
 	queue_free()
+
+func UpdateStatistics(which, amount_increase):
+	account_data.statistics[which] += amount_increase
+	
+	for _achievement in account_data.achievements:
+		if account_data.achievements[_achievement] == true:
+			return
+			
+		var achievement = ServerData.GetAchievement(_achievement)
+		if (achievement.which == which and account_data.statistics[which] >= achievement.amount):
+			account_data.achievements[_achievement] = true
+			GetAchievement(_achievement)
+
+func GetAchievement(achievement_name):
+	print("User has unlocked achievement: " + achievement_name)
 
 func _on_PlayerHitbox_area_entered(area):
 	if "enemy_id" in area.get_parent():

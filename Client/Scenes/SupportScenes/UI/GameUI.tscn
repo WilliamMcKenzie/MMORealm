@@ -48,15 +48,16 @@ margin_right = 221.0
 margin_bottom = 63.0
 
 [node name="MiniMap" parent="LeftContainer" instance=ExtResource( 8 )]
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 50.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 50, 50 )
+rect_scale = Vector2( 1, 1 )
 
 [node name="BarContainer" type="VBoxContainer" parent="LeftContainer"]
-margin_left = 54.0
-margin_right = 308.0
+margin_right = 254.0
 margin_bottom = 50.0
 
 [node name="Health" parent="LeftContainer/BarContainer" instance=ExtResource( 4 )]
