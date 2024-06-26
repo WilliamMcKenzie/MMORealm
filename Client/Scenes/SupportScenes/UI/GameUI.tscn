@@ -104,7 +104,6 @@ margin_bottom = 54.0
 [node name="Inventory" parent="." instance=ExtResource( 1 )]
 
 [node name="GameButtons" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="HelmetButton" parent="GameButtons" instance=ExtResource( 12 )]
 margin_left = 686.0
