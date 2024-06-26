@@ -13,12 +13,12 @@ var last_tick = 0
 var use_chunks = false
 
 var player_projectiles = {
-	"small" : preload("res://Scenes/Instances/Projectiles/Players/Small.tscn")
+	"small" : preload("res://Scenes/SupportScenes/Projectiles/Players/Small.tscn")
 }
 var enemy_projectiles = {
-	"small" : preload("res://Scenes/Instances/Projectiles/Enemies/Small.tscn")
+	"small" : preload("res://Scenes/SupportScenes/Projectiles/Enemies/Small.tscn")
 }
-var enemy_8x8 = preload("res://Scenes/Instances/Enemies/Enemy_8x8.tscn")
+var enemy_8x8 = preload("res://Scenes/SupportScenes/Enemies/Enemy_8x8.tscn")
 
 func _ready():
 	if name != "nexus":
@@ -28,7 +28,6 @@ func _ready():
 		instance_tree = ["nexus"]
 
 func _physics_process(delta):
-
 	running_time += delta
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
@@ -50,7 +49,8 @@ func _physics_process(delta):
 						enemy_list[enemy_id]["Target"] = enemy_list[enemy_id]["AnchorPosition"]
 					else:
 						enemy_list[enemy_id]["Target"] = position + Vector2(rand_range(-7,7),rand_range(-7,7))
-		last_tick = running_time
+		if use_chunks == false:
+			last_tick = running_time
 func UpdatePlayer(player_id, player_state):
 	if player_list.has(str(player_id)):
 		player_list[str(player_id)]["Position"] = player_state["P"]
@@ -76,7 +76,8 @@ func SpawnEnemy(enemy, enemy_id):
 	enemy_list[str(enemy_id)] = enemy
 
 func SpawnPlayerProjectile(projectile_data, player_id):
-	
+	if not get_node("YSort/Players/"+str(player_id)).gear.has("weapon"):
+		return
 	var player_weapon = get_node("YSort/Players/"+str(player_id)).gear.weapon
 	var projectile_instance = player_projectiles["small"].instance()
 	
@@ -167,11 +168,12 @@ func SpawnLootBag(_loot, player_id, instance_tree, position):
 	}
 	
 
+
 func OpenPortal(portal_name, instance_tree, position):
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if portal_name == "island":
 		instance_id = "island " + instance_id
-		var island_instance = load("res://Scenes/Instances/Island/Island.tscn").instance()
+		var island_instance = load("res://Scenes/SupportScenes/Island/Island.tscn").instance()
 		island_instance.name = instance_id
 		
 		object_list[instance_id] = {
@@ -188,7 +190,7 @@ func OpenPortal(portal_name, instance_tree, position):
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 	else:
 		var instance_map = Dungeons.GenerateDungeon(portal_name)
-		var dungeon_instance = load("res://Scenes/Instances/Dungeons/Dungeon.tscn").instance()
+		var dungeon_instance = load("res://Scenes/SupportScenes/Dungeons/Dungeon.tscn").instance()
 		dungeon_instance.name = instance_id
 		dungeon_instance.map = instance_map
 		dungeon_instance.position = Instances.GetFreeInstancePosition()

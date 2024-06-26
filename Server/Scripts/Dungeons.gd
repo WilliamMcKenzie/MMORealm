@@ -3,34 +3,105 @@ extends Node
 var valid_names = ["island","test_dungeon"]
 
 func GenerateDungeon(instance_name):
-	if instance_name == "island":
-		return GenerateIslandMap()
 	if instance_name == "test_dungeon":
 		return GenerateTestDungeon()
 
-func GenerateIslandMap():
-	pass	
-
 func GenerateTestDungeon():
 	randomize()
-	var layout = []
-	var rooms_until_boss = 3
+	var layout = {
+		Vector2.ZERO : { "room_type" : "Spawn" }
+	}
+	var coordinates = Vector2.ZERO
 	
-	var boss_has_been_placed = false
-	var boss_root = -1
+	var rooms_until_boss = 5
+	var twist_chance = 0.5
 	
-	for i in range(4):
-		layout.append([])
-		for k in range(rooms_until_boss):
-			if k < rooms_until_boss:
-				if not boss_root == k:
-					layout[i].append("Room")
-				if round(rand_range(0,3)) == 3 and boss_has_been_placed == false:
-					layout[i].append("Boss")
-					boss_has_been_placed = true
-					boss_root = k
-	if not boss_has_been_placed:
-		layout[round(rand_range(0,3))].append("BossRoom")
+	var basic_rooms = [
+		"Room"
+	]
+	
+	var direction_clock = {
+		Vector2(1,0) : Vector2(0,1),
+		Vector2(0,1) : Vector2(-1,0),
+		Vector2(-1,0) : Vector2(0,-1),
+		Vector2(0,-1) : Vector2(1,0),
+	} 
+	var initial_direction = [Vector2(1,0),Vector2(-1,0),Vector2(0,1),Vector2(0,-1)][randi() % 4]
+	var direction = initial_direction
+	
+	for rotation in range(4):
+		print(direction)
+		var path = direction
+		coordinates += direction
+		
+		#First, lets place the main path which contains the boss room.
+		if rotation == 0:
+			for i in range(rooms_until_boss):
+				if(rand_range(0,1) < twist_chance):
+					direction = TwistDirection(direction)
+				
+				#Make sure we arnt going to overwrite another room
+				if layout.has(coordinates+direction):
+					var count = 0
+					while layout.has(coordinates+direction):
+						count += 1
+						if count > 5:
+							break
+						direction = TwistDirection(direction)
+				
+				var room = {
+					"direction" : direction,
+					"room_type" : basic_rooms[round(rand_range(0,basic_rooms.size()-1))],
+					"root_path" : path
+				}
+				layout[coordinates] = room
+				coordinates += direction
+			
+			var boss_room = {
+					"room_type" : "Boss",
+					"root_path" : path
+			}
+			layout[coordinates] = boss_room
+		#Then, put the sub paths which are dead ends.
+		else:
+			for i in range(rooms_until_boss):
+				if(rand_range(0,1) < twist_chance):
+					direction = TwistDirection(direction)
+				
+				var room = {
+					"room_type" : basic_rooms[round(rand_range(0,basic_rooms.size()-1))],
+					"root_path" : path
+				}
+				
+				#Make sure we arnt going to overwrite another room
+				if layout.has(coordinates+direction):
+					var count = 0
+					while layout.has(coordinates+direction):
+						count += 1
+						if count > 5:
+							break
+						direction = TwistDirection(direction)
+				
+				#Make sure we arnt overwriting again, if so then we make sure not to connect with a hallway
+				if not layout.has(coordinates+direction) and i < rooms_until_boss-1:
+					room.direction = direction
+				
+				if not layout.has(coordinates):
+					layout[coordinates] = room
+					coordinates += direction
+				else:
+					break
+		
+		coordinates = Vector2.ZERO
+		direction = direction_clock[path]
 	return layout
 		
 	
+func TwistDirection(direction):
+	var direction_map = {
+		Vector2(1,0) : [Vector2(0,1), Vector2(0,-1)],
+		Vector2(-1,0) : [Vector2(0,1), Vector2(0,-1)],
+		Vector2(0,1) : [Vector2(1,0), Vector2(-1,0)],
+		Vector2(0,-1) : [Vector2(1,0), Vector2(-1,0)],
+	}
+	return direction_map[direction][randi() % 2]

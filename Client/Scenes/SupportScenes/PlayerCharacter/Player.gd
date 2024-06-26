@@ -30,9 +30,10 @@ onready var CharacterSpriteEle = $CharacterSprite
 onready var animation_tree = $AnimationTree
 
 func _ready():
-	var projectile_type = gear.weapon.projectile
-	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
-	projectile = load(projectile_path)
+	if gear.has("weapon") and gear.weapon.has("projectile"):
+		var projectile_type = gear.weapon.projectile
+		var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
+		projectile = load(projectile_path)
 
 	SetCharacterSprite()
 
@@ -89,7 +90,6 @@ func _physics_process(delta):
 	DefinePlayerState()
 
 func MovePlayer(delta):
-	print(position)
 	if GameUI.in_chat == true:
 		return
 	var motion = Vector2.ZERO

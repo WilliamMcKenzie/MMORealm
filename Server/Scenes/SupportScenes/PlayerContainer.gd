@@ -23,7 +23,6 @@ func EquipItem(index):
 	gear[selected_item.slot] = selected_item
 	
 	get_node("/root/Server").SendCharacterData(name, character)
-	HubConnection.UpdateCharacterData(email, character, character_index)
 	
 func ChangeItem(to_data, from_data):
 	var remove_gear = false
@@ -59,9 +58,10 @@ func ChangeItem(to_data, from_data):
 	character[to_data.parent][to_data.index] = selected_item_raw
 	
 	get_node("/root/Server").SendCharacterData(name, character)
-	HubConnection.UpdateCharacterData(email, character, character_index)
 
 func DropItem(data):
+	if "loot" in data.parent:
+		return
 	var selected_item_raw = character[data.parent][data.index]
 	var Server = get_node("/root/Server")
 	var instance_tree = Server.player_state_collection[int(name)]["I"]
@@ -73,7 +73,6 @@ func DropItem(data):
 	character[data.parent][data.index] = null
 	
 	get_node("/root/Server").SendCharacterData(name, character)
-	HubConnection.UpdateCharacterData(email, character, character_index)
 
 func LootItem(to_data, from_data):
 	#Getting loot bag contents
@@ -151,7 +150,6 @@ func LootItem(to_data, from_data):
 		get_parent().get_parent().get_parent().object_list.erase(loot_id)
 
 	get_node("/root/Server").SendCharacterData(name, character)
-	HubConnection.UpdateCharacterData(email, character, character_index)
 
 func SetCharacter(characters):
 	character = characters[character_index]

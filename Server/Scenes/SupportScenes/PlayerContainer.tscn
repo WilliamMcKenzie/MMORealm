@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Scenes/Instances/PlayerContainer.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/Instances/PlayerCharacter.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/SupportScenes/PlayerContainer.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter.gd" type="Script" id=2]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=2]

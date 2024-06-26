@@ -26,7 +26,7 @@ func AssignParameters(_character):
 func _ready():
 	LevelEle.text = character_class + " - Level " + str(level)
 	CharacterSpriteEle.SetCharacterClass(character_class)
-	if character.gear.has("weapon"):
+	if character.gear.has("weapon") and character.gear.weapon != null: 
 		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
 	
 	SetSpriteData(CharacterSpriteEle, characterPath)

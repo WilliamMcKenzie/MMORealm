@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/attack_joystick.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd" type="Script" id=9]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=10]
+[ext_resource path="res://Assets/ui/button.png" type="Texture" id=11]
 
 [sub_resource type="AnimationNodeAnimation" id=31]
 animation = "attack_down"
@@ -563,6 +564,13 @@ anims/walk_down = SubResource( 4 )
 anims/walk_left = SubResource( 8 )
 anims/walk_right = SubResource( 9 )
 anims/walk_up = SubResource( 10 )
+
+[node name="BlackBackground" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 1, -9 )
+z_index = -1000
+z_as_relative = false
+texture = ExtResource( 11 )
 
 [node name="CharacterSprite" type="Sprite" parent="."]
 material = SubResource( 52 )

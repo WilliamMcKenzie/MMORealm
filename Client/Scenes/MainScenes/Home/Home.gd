@@ -34,5 +34,6 @@ func EnterGame(character_index, character):
 	nexus_instance.get_node("YSort/player").SetCharacter(character)
 	get_parent().add_child(nexus_instance)
 	GameUI.visible = true
+	GameUI.get_node("GameButtons").visible = true
 	queue_free()
 	

@@ -166,27 +166,3 @@ func DespawnPlayer(player_id):
 	yield(get_tree().create_timer(0.2), "timeout")
 	if get_node("YSort/OtherPlayers").has_node(str(player_id)):
 		get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()
-
-#For creating new dungeon instances
-func PopulateDungeon(instance_data):
-	var map = instance_data["Map"]
-	var dungeon_name = instance_data["Name"]
-	var id = instance_data["Id"]
-	
-	var room_nodes = {}
-	
-	for path in map:
-		for room in path:
-			room_nodes[room] = load("res://Scenes/SupportScenes/Dungeons/"+dungeon_name+"/"+room+".tscn")
-	
-	var direction_map = {
-		0 : Vector2(0, 1),
-		1 : Vector2(1, 0),
-		2 : Vector2(0, -1),
-		3 : Vector2(-1, 0)
-	}
-	for i in range(map.size()):
-		for k in range(map[i].size()):
-			var room_to_add = room_nodes[map[i][k]].instance()
-			room_to_add.position = direction_map[i]*k*(15)*8
-			add_child(room_to_add)

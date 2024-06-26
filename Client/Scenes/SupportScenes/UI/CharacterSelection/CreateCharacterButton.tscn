@@ -11,7 +11,7 @@ outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 3 )
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 4 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.4
@@ -84,7 +84,7 @@ custom_fonts/font = SubResource( 1 )
 text = "Create Character"
 
 [node name="Character" type="Sprite" parent="."]
-material = SubResource( 4 )
+material = SubResource( 2 )
 position = Vector2( 67.5, 31 )
 texture = ExtResource( 5 )
 hframes = 26

@@ -24,6 +24,8 @@ func _ready():
 	
 	#Open realm
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
+	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("test_dungeon", ["nexus"], Vector2.ZERO)
+	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
 			{
 				"item" : 1,
@@ -57,6 +59,7 @@ func _Peer_Disconnected(id):
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
 		
+		PlayerVerification.verified_emails.erase(player_container.email)
 		HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])).RemovePlayer(player_container)
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
@@ -64,7 +67,6 @@ func _Peer_Disconnected(id):
 	rpc_id(0, "DespawnPlayer", id)
 
 #INVENTORY/ITEMS	
-	
 remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
@@ -194,6 +196,7 @@ remote func NPCHit(enemy_id, damage):
 		get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["Health"] -= damage
 		player_container.UpdateStatistics("projectiles_landed", 1)
 		player_container.UpdateStatistics(which_achievement, 1)
+		print(get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["Health"])
 
 #INSTANCES
 remote func Nexus():
@@ -222,11 +225,14 @@ remote func EnterInstance(instance_id):
 		
 		#For dungeons
 		if not current_instance_node.object_list[instance_id]["Name"] == "island":	
-			rpc_id(player_id, "ReturnDungeonData", { "Map": get_node("Instances/"+StringifyInstanceTree(instance_tree)).map, "Name": current_instance_node.object_list[instance_id]["Name"], "Id": instance_id})
+			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+			var spawnpoint = dungeon_node.GetMapSpawnpoint()
 			
+			rpc_id(player_id, "ReturnDungeonData", { "Map": dungeon_node.map, "Name": current_instance_node.object_list[instance_id]["Name"], "Id": instance_id, "RoomSize" : dungeon_node.room_size, "Position": spawnpoint})
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
-			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": { "A" : "Idle", "C" : Vector2.ZERO }, "I": instance_tree}
+			
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": { "A" : "Idle", "C" : Vector2.ZERO }, "I": instance_tree}
 			player_instance_tracker[instance_tree].append(player_id)
 		#For islands (Map is a node instead of array here)
 		else:
@@ -298,9 +304,9 @@ remote func RecieveChatMessage(message):
 						"item" : int(message_words[1]),
 						"id" : generate_unique_id()
 					}], null, instance_tree, player_position)
+		else:
 			print("server has recieved message : " + message)
 			rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))
-
 #PLAYER INTERACTION
 
 func NotifyDeath(player_id, enemy_name):

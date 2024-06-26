@@ -10,13 +10,17 @@ var initial_position = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 func _ready():
+	$Area2D.connect("body_entered", self, "WallCollision")
 	initial_position = position
 	SetData(ClientData.GetProjectile(projectile))
 func SetData(data):
 	speed = data.speed
 	piercing = data.piercing
 	velocity *= speed
-	
+func WallCollision(area):
+	if area.name == "TileMap":
+		queue_free()
+
 func _process(delta):
 	position += velocity * delta
 	if (position - initial_position).length()/8 > tile_range:
@@ -26,5 +30,5 @@ func set_direction(direction: Vector2):
 	velocity = direction.normalized()
 
 func interaction(body):
-	if (piercing == false) and (body.name == "Axis") :
+	if (piercing == false) and (body.has_method("MoveEnemy")) :
 		queue_free()

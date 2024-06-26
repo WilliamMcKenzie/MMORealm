@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
@@ -8,8 +8,6 @@
 [ext_resource path="res://Assets/tiles/tileset.png" type="Texture" id=6]
 [ext_resource path="res://Scenes/MainScenes/Home/Home.gd" type="Script" id=7]
 [ext_resource path="res://Resources/main_theme.tres" type="Theme" id=8]
-
-
 
 [sub_resource type="TileSet" id=11]
 0/name = "tileset.png 0"
@@ -183,10 +181,10 @@
 
 [sub_resource type="GradientTexture" id=5]
 
-[sub_resource type="ShaderMaterial" id=13]
+[sub_resource type="ShaderMaterial" id=19]
 shader = ExtResource( 5 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.5
+shader_param/line_thickness = 0.4
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
@@ -226,10 +224,53 @@ shader_param/staffNew = null
 shader_param/staffGemOrigin = null
 shader_param/staffGemNew = null
 
-[sub_resource type="ShaderMaterial" id=14]
+[sub_resource type="ShaderMaterial" id=20]
 shader = ExtResource( 5 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.5
+shader_param/line_thickness = 0.4
+shader_param/glow_thickness = 4.0
+shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/swordTextureActive = false
+shader_param/bowTextureActive = false
+shader_param/staffTextureActive = false
+shader_param/staffGemTextureActive = false
+shader_param/helmetDarkOrigin = null
+shader_param/helmetDarkNew = null
+shader_param/helmetMediumOrigin = null
+shader_param/helmetMediumNew = null
+shader_param/helmetLightOrigin = null
+shader_param/helmetLightNew = null
+shader_param/bodyDarkOrigin = null
+shader_param/bodyDarkNew = null
+shader_param/bodyMediumOrigin = null
+shader_param/bodyMediumNew = null
+shader_param/bodyLightOrigin = null
+shader_param/bodyLightNew = null
+shader_param/bandOrigin = null
+shader_param/bandNew = null
+shader_param/buckleOrigin = null
+shader_param/buckleNew = null
+shader_param/bowOrigin = null
+shader_param/bowNew = null
+shader_param/arrowLightOrigin = null
+shader_param/arrowLightNew = null
+shader_param/arrowDarkOrigin = null
+shader_param/arrowDarkNew = null
+shader_param/bladeHiltOrigin = null
+shader_param/bladeHiltNew = null
+shader_param/bladeOrigin = null
+shader_param/bladeNew = null
+shader_param/staffOrigin = null
+shader_param/staffNew = null
+shader_param/staffGemOrigin = null
+shader_param/staffGemNew = null
+
+[sub_resource type="ShaderMaterial" id=21]
+shader = ExtResource( 5 )
+shader_param/line_color = Color( 0, 0, 0, 1 )
+shader_param/line_thickness = 0.4
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
@@ -312,7 +353,7 @@ margin_right = -24.0
 margin_bottom = 40.0
 
 [node name="Sprite" type="Sprite" parent="UI/Account"]
-material = SubResource( 13 )
+material = SubResource( 19 )
 position = Vector2( 12, 12 )
 scale = Vector2( 2.5, 2.5 )
 texture = ExtResource( 1 )
@@ -327,7 +368,7 @@ margin_right = 4.0
 margin_bottom = 40.0
 
 [node name="Sprite" type="Sprite" parent="UI/Leaderboard"]
-material = SubResource( 14 )
+material = SubResource( 20 )
 position = Vector2( 12, 12 )
 scale = Vector2( 2.5, 2.5 )
 texture = ExtResource( 1 )
@@ -342,7 +383,7 @@ margin_right = 408.0
 margin_bottom = 40.0
 
 [node name="Sprite" type="Sprite" parent="UI/Gold"]
-material = SubResource( 14 )
+material = SubResource( 21 )
 position = Vector2( 12, 12 )
 scale = Vector2( 2.5, 2.5 )
 texture = ExtResource( 1 )

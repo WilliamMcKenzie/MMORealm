@@ -21,7 +21,7 @@ var plains_enemies = ["tribesman"]
 var mountain_enemies = ["rock_golem"]
 
 #Chunks
-var chunk_sensor = preload("res://Scenes/Instances/Island/ChunkSensor.tscn")
+var chunk_sensor = preload("res://Scenes/SupportScenes/Island/ChunkSensor.tscn")
 var chunks = {}
 
 # warning-ignore:unused_argument
@@ -29,7 +29,7 @@ var sync_clock_counter = 0
 
 func _physics_process(delta):
 	use_chunks = true
-	running_time += delta
+	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
 			var enemy = enemy_list[enemy_id]
@@ -37,13 +37,7 @@ func _physics_process(delta):
 				var chunk = CalculateChunk(enemy["Position"])
 				
 				if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):
-					print("erasing id")
 					chunks[chunk]["E"].erase(enemy_id)
-				else:
-					print(chunk)
-					print(enemy_id)
-					print(chunks.has(chunk))
-					print(chunks[chunk])
 				
 				enemy_list.erase(enemy_id)
 				continue
@@ -276,7 +270,7 @@ func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size
 	var obstacle_id = get_node("/root/Server").generate_unique_id()
 	var instance_tree_str = get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/"+str(island_id)
 	if get_node("/root/Server/Instances/"+instance_tree_str):
-		var obstacle = load("res://Scenes/Instances/Obstacles/"+hitbox_size+".tscn").instance()
+		var obstacle = load("res://Scenes/SupportScenes/Obstacles/"+hitbox_size+".tscn").instance()
 		obstacle.name = obstacle_id
 		obstacle.position = obstacle_position + self.position
 		get_node("/root/Server/Instances/"+instance_tree_str+"/YSort/Objects").add_child(obstacle)

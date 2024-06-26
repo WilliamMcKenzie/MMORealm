@@ -1,9 +1,10 @@
 extends Node
 
 onready var main_interface = get_tree().get_root().get_node("Server")
-onready var player_container_scene = preload("res://Scenes/Instances/PlayerContainer.tscn")
+onready var player_container_scene = preload("res://Scenes/SupportScenes/PlayerContainer.tscn")
 
 var awaiting_verification = {}
+var verified_emails = {}
 
 func Start(player_id):
 	awaiting_verification[player_id] = { "Timestamp" : OS.get_unix_time()}
@@ -13,6 +14,11 @@ func Verify(player_id, token, character_index):
 	var token_verification = false
 	while OS.get_unix_time() - int(token.right(64)) <= 30:
 		if main_interface.expected_tokens.has(token):
+			
+			#Check if same account is already in the game
+			if(verified_emails.has(main_interface.expected_tokens[token])):
+				break
+				
 			token_verification = true
 			CreatePlayerContainer(player_id, main_interface.expected_tokens[token], character_index)
 			awaiting_verification.erase(player_id)
@@ -28,6 +34,7 @@ func Verify(player_id, token, character_index):
 		main_interface.network.disconnect_peer(player_id)
 
 func CreatePlayerContainer(player_id, email, character_index):
+	verified_emails[email] = true
 	var instance_tree = get_node("/root/Server").player_state_collection[player_id]["I"]
 	var new_player_container = player_container_scene.instance()
 	new_player_container.email = email

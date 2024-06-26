@@ -169,6 +169,8 @@ remote func ReturnDungeonData(instance_data):
 	dungeon_instance.get_node("YSort/player").character = map_instance.get_node("YSort/player").character
 	dungeon_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	dungeon_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	dungeon_instance.get_node("YSort/player").global_position = instance_data["Position"]
+	print(instance_data["Position"])
 	dungeon_instance.name = instance_data["Id"]
 	dungeon_instance.PopulateDungeon(instance_data)
 	

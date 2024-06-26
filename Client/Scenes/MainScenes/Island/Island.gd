@@ -5,13 +5,20 @@ var chunk_size = 32
 var loaded_chunks = {}
 
 func GenerateChunk(chunk_data, chunk):
+	var tile_map = {
+		0 : []
+	}
 	var tiles = chunk_data["Tiles"]
 	var objects = chunk_data["Objects"]
 	
 	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
 		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
 			var tile = tiles[x-chunk.x+(chunk_size/2)][y-chunk.y+(chunk_size/2)]
-			$Tiles.set_cell(x,y,tile)
+			
+			var random_index = randi() % 3
+			if tile != 3:
+				random_index = 0
+			$Tiles.set_cell(x,y,tile,false,false,random_index)
 	for object in objects:
 		var object_node = load("res://Scenes/SupportScenes/Objects/Obstacles/" + object["N"] + ".tscn")
 		var object_instance = object_node.instance()
