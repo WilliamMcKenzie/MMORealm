@@ -15,8 +15,34 @@ func UpdateLoot(_loot):
 #Interface Section
 func OnBag(body):
 	if body.get_parent().has_method("DefinePlayerState"):
-		GameUI.get_node("UtilityButtons/LootButton").ActivateLootButton(object_id, loot)
+		var highest_loot_tier = 0
+		var tier = 0
+		var loot_bag_tier_translation = {
+			0 : 0,
+			1 : 0,
+			2 : 1,
+			3 : 1,
+			4 : 2,
+			5 : 2,
+			6 : 3,
+		}
+		
+		var i = 0
+		for raw_item in loot:
+			if raw_item == null:
+				continue
+			
+			loot[i] = raw_item
+			i += 1
+			var item = ClientData.GetItem(raw_item.item)
+			if int(item.tier) > highest_loot_tier:
+				highest_loot_tier = int(item.tier)
+			elif item.tier == "UT":
+				highest_loot_tier = 6
+
+		tier = loot_bag_tier_translation[highest_loot_tier]
+		GameUI.get_node("UtilityButtons/LootButton").ActivateLootButton(object_id, loot, tier, position)
 
 func OffBag(body):
 	if body.get_parent().has_method("DefinePlayerState"):
-		GameUI.get_node("UtilityButtons/LootButton").DisableLootButton()
+		GameUI.get_node("UtilityButtons/LootButton").DisableLootButton(object_id)

@@ -23,6 +23,7 @@ func _ready():
 	StartServer()
 	
 	#Open realm
+	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("test_dungeon", ["nexus"], Vector2.ZERO)
 	
@@ -151,28 +152,26 @@ func SendCharacterData(player_id, character):
 func SpawnNPC(enemy_name, instance_tree, spawn_position):
 	var enemy_id = generate_unique_id()
 	
-	print(spawn_position)
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
 		var enemy_data = ServerData.GetEnemy(enemy_name)
 		var enemy = {
-			"Name":enemy_name,
-			"Position":spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
-			"Health":enemy_data.health,
-			"MaxHealth":enemy_data.health,
-			"Defense":enemy_data.defense,
-			"State":"Idle",
-			"Behavior":enemy_data.behavior,
-			"Exp" : enemy_data.exp,
-			"Target" : spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
-			"AnchorPosition" : spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			"name":enemy_name,
+			"position":spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			"health":enemy_data.health,
+			"max_health":enemy_data.health,
+			"defense":enemy_data.defense,
+			"state":"Idle",
+			"behavior":enemy_data.behavior,
+			"exp": enemy_data.exp,
+			"damage_tracker": {},
+			"target": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			"anchor_position": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 
 remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
-	if get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).has_method("SpawnPlayerProjectile"):
-		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).SpawnPlayerProjectile(projectile_data, player_id)
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
@@ -193,10 +192,16 @@ remote func NPCHit(enemy_id, damage):
 			which_achievement = "sword_projectiles"
 
 	if get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list.has(str(enemy_id)):
-		get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["Health"] -= damage
+		get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["health"] -= damage
+		var damage_tracker = get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["damage_tracker"]
+		
+		if damage_tracker.has(str(player_id)):
+			damage_tracker[str(player_id)] += damage
+		else:
+			damage_tracker[str(player_id)] = damage
+		
 		player_container.UpdateStatistics("projectiles_landed", 1)
 		player_container.UpdateStatistics(which_achievement, 1)
-		print(get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["Health"])
 
 #INSTANCES
 remote func Nexus():
@@ -307,6 +312,7 @@ remote func RecieveChatMessage(message):
 		else:
 			print("server has recieved message : " + message)
 			rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))
+
 #PLAYER INTERACTION
 
 func NotifyDeath(player_id, enemy_name):

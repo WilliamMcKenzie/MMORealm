@@ -74,6 +74,7 @@ margin_bottom = 30.0
 text = "[Chat] : "
 
 [node name="PanelContainer" type="PanelContainer" parent="HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
 margin_left = 52.0
 margin_right = 192.0
 margin_bottom = 42.0

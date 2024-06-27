@@ -22,7 +22,7 @@ var enemy_8x8 = preload("res://Scenes/SupportScenes/Enemies/Enemy_8x8.tscn")
 
 func _ready():
 	if name != "nexus":
-		instance_tree = get_parent().object_list[name]["InstanceTree"].duplicate(true)
+		instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
 		instance_tree.append(name)
 	else:
 		instance_tree = ["nexus"]
@@ -31,39 +31,47 @@ func _physics_process(delta):
 	running_time += delta
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
-			if(enemy_list[enemy_id]["Health"] < 1) and use_chunks == false:
+			
+			#For everything including island
+			if(enemy_list[enemy_id]["health"] < 1):
+				CalculateLootPool(enemy_list[enemy_id])
+			
+			#For dungeons and nexus
+			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
 				enemy_list.erase(enemy_id)
 				continue
-			if (enemy_list[enemy_id]["Behavior"] == 1):
 				
-				var target = enemy_list[enemy_id]["Target"]
-				var position = enemy_list[enemy_id]["Position"]
+			if (enemy_list[enemy_id]["behavior"] == 1):
+				
+				var target = enemy_list[enemy_id]["target"]
+				var position = enemy_list[enemy_id]["position"]
 				
 				var x_move = -cos(position.angle_to_point(target))*(0.1/tick_rate)
 				var y_move = -sin(position.angle_to_point(target))*(0.1/tick_rate)
 				
-				enemy_list[enemy_id]["Position"] += Vector2(x_move,y_move)
+				enemy_list[enemy_id]["position"] += Vector2(x_move,y_move)
 				
 				if (target - position).length() <= 4:
-					if (enemy_list[enemy_id]["AnchorPosition"]-position).length() >= 20:
-						enemy_list[enemy_id]["Target"] = enemy_list[enemy_id]["AnchorPosition"]
+					if (enemy_list[enemy_id]["anchor_position"]-position).length() >= 20:
+						enemy_list[enemy_id]["target"] = enemy_list[enemy_id]["anchor_position"]
 					else:
-						enemy_list[enemy_id]["Target"] = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+						enemy_list[enemy_id]["target"] = position + Vector2(rand_range(-7,7),rand_range(-7,7))
 		if use_chunks == false:
 			last_tick = running_time
+
 func UpdatePlayer(player_id, player_state):
 	if player_list.has(str(player_id)):
-		player_list[str(player_id)]["Position"] = player_state["P"]
-		player_list[str(player_id)]["Animation"] = player_state["A"]
-		player_list[str(player_id)]["Sprite"] = player_state["S"]
-		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["Position"]
+		player_list[str(player_id)]["position"] = player_state["P"]
+		player_list[str(player_id)]["animation"] = player_state["A"]
+		player_list[str(player_id)]["sprite"] = player_state["S"]
+		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["position"]
 
 func SpawnPlayer(player_container):
 	if player_container:
 		player_list[player_container.name] = {
-				"Name": player_container.name,
-				"Position": player_container.position,
-				"Animation": { "A" : "Idle", "C" : Vector2.ZERO }
+				"name": player_container.name,
+				"position": player_container.position,
+				"animation": { "A" : "Idle", "C" : Vector2.ZERO }
 			}
 		get_node("YSort/Players").add_child(player_container)
 
@@ -154,21 +162,91 @@ func SpawnLootBag(_loot, player_id, instance_tree, position):
 		for raw_item in _loot:
 			loot[i] = raw_item
 			i += 1
-		
+	
 	object_list[loot_id] = {
-		"Name": "Bag"+str(loot_bag_tier),
-		"Soulbound": soulbound,
-		"Tier": loot_bag_tier,
-		"Loot": loot,
-		"PlayerId": str(player_id),
-		"Type": "LootBags",
-		"EndTime": OS.get_system_time_msecs()+9999999999,
-		"Position": position,
-		"InstanceTree": instance_tree
+		"name": "Bag"+str(loot_bag_tier),
+		"soulbound": soulbound,
+		"tier": loot_bag_tier,
+		"loot": loot,
+		"player_id": str(player_id),
+		"type": "LootBags",
+		"end_time": OS.get_system_time_msecs()+40000,
+		"position": position,
+		"instance_tree": instance_tree
+	}
+
+class SortByValue:
+	static func sort_ascending(a, b):
+		if a[1] < b[1]:
+			return true
+		return false
+func CalculateLootPool(enemy):
+	randomize()
+	var player_pool = enemy["damage_tracker"]
+	#var loot_pool = ServerData.GetEnemy(enemy["name"]).loot_pool
+	var loot_pool = {
+		"soulbound_loot" : [
+			{
+				"item" : 4,
+				"chance" : 0.01,
+				"threshold" : 0.15,
+			}
+		],
+		"loot" : [
+			{
+				"item" : 1,
+				"chance" : 0.5,
+			}
+		]
 	}
 	
+	var ordered_pairs = []
+	for player in player_pool.keys():
+		ordered_pairs.append([player, player_pool[player]])
+	
+	ordered_pairs.sort_custom(SortByValue, "sort_ascending")
+	
+	var loot_bags = []
+	var i = 0
+	
+	#Soulbound loot
+	for pair in ordered_pairs:
+		var player_id = pair[0]
+		var damage_percent = pair[1]/enemy["max_health"]
+		var loot_bag = {
+			"player_id" : player_id,
+			"loot" : []
+		}
+		
+		for item in loot_pool.soulbound_loot:
+			if randf() < item.chance and damage_percent > item.threshold:
+				loot_bag.loot.append({
+					"item" : item.item,
+					"id" : get_node("/root/Server").generate_unique_id()
+				})
+		if loot_bag.loot != []:
+			loot_bags.append(loot_bag)
+	
+	#Non soulbound loot
+	var loot_bag = {
+		"player_id" : null,
+		"loot" : []
+	}
+	for item in loot_pool.loot:
+		if randf() < item.chance:
+			loot_bag.loot.append({
+				"item" : item.item,
+				"id" : get_node("/root/Server").generate_unique_id()
+			})
+	if loot_bag.loot != []:
+			loot_bags.append(loot_bag)
+		
+	for _loot_bag in loot_bags:
+		get_node("/root/Server").get_node("Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)).SpawnLootBag(_loot_bag.loot, _loot_bag.player_id, instance_tree, enemy.position+Vector2(rand_range(-3,3), rand_range(-3,3)))
 
-
+func _compare_values(a, b):
+	return a[1] - b[1]
+		
 func OpenPortal(portal_name, instance_tree, position):
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if portal_name == "island":
@@ -177,11 +255,11 @@ func OpenPortal(portal_name, instance_tree, position):
 		island_instance.name = instance_id
 		
 		object_list[instance_id] = {
-			"Name":"island",
-			"Type":"DungeonPortals",
-			"EndTime": OS.get_system_time_msecs()+99999999999999,
-			"Position": position,
-			"InstanceTree": instance_tree
+			"name":"island",
+			"type":"DungeonPortals",
+			"end_time": OS.get_system_time_msecs()+99999999999999,
+			"position": position,
+			"instance_tree": instance_tree
 		}
 		
 		island_instance.GenerateIslandMap()
@@ -196,11 +274,11 @@ func OpenPortal(portal_name, instance_tree, position):
 		dungeon_instance.position = Instances.GetFreeInstancePosition()
 		
 		object_list[instance_id] = {
-			"Name":portal_name,
-			"Type":"DungeonPortals",
-			"EndTime": OS.get_system_time_msecs()+10000,
-			"Position": position,
-			"InstanceTree": instance_tree
+			"name":portal_name,
+			"type":"DungeonPortals",
+			"end_time": OS.get_system_time_msecs()+10000,
+			"position": position,
+			"instance_tree": instance_tree
 		}
 		
 		add_child(dungeon_instance)

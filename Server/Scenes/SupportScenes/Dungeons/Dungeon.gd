@@ -28,7 +28,7 @@ func _physics_process(delta):
 
 #For creating new dungeon instances
 func PopulateDungeon():
-	var dungeon_name = get_parent().object_list[name]["Name"]
+	var dungeon_name = get_parent().object_list[name]["name"]
 	var id = name
 	
 	#We add the hallways after so they go on top of the room tiles

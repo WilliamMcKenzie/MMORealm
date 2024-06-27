@@ -4,6 +4,7 @@ var inspecting_item = null
 
 var loot = null
 var loot_container_id = null
+var loot_containers = {}
 
 func _ready():
 	$InventoryBackground.connect("button_down", self, "ToggleInventory")

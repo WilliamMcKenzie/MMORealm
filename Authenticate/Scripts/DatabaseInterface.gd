@@ -36,6 +36,7 @@ var new_character = {
 		},
 		"level" : 1,
 		"exp" : 0,
+		
 		"class" : "Apprentice",
 		"statistics": {
 			"tiles_covered" : 0,

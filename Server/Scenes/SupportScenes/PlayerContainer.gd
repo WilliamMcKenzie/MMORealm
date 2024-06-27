@@ -75,6 +75,7 @@ func DropItem(data):
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func LootItem(to_data, from_data):
+	
 	#Getting loot bag contents
 	var loot_id
 	if to_data.parent.split(" ")[0] == "loot":
@@ -83,9 +84,10 @@ func LootItem(to_data, from_data):
 		loot_id = from_data.parent
 	
 	#Check if it is soulbound, if so make sure the right player is requesting
-	if get_parent().get_parent().get_parent().object_list[loot_id].Soulbound == true and get_parent().get_parent().get_parent().object_list[loot_id].PlayerId != name:
+	if get_parent().get_parent().get_parent().object_list[loot_id].soulbound == true and get_parent().get_parent().get_parent().object_list[loot_id].player_id != name:
 		return
-	var loot = get_parent().get_parent().get_parent().object_list[loot_id].Loot
+	var loot = get_parent().get_parent().get_parent().object_list[loot_id].loot
+	get_parent().get_parent().get_parent().object_list[loot_id].end_time = OS.get_system_time_msecs()+40000
 	
 	#Identifying items
 	var selected_item_raw

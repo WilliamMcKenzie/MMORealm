@@ -29,10 +29,10 @@ func _physics_process(delta):
 				if current_player or lost_player:
 					continue;
 				elif get_node("YSort/OtherPlayers").has_node(str(player)):
-					var new_position = lerp(players1[player]["Position"], players2[player]["Position"], interpolation_factor)
-					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players2[player]["Animation"], players2[player]["Sprite"])
+					var new_position = lerp(players1[player]["position"], players2[player]["position"], interpolation_factor)
+					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players2[player]["animation"], players2[player]["sprite"])
 				else:
-					SpawnNewPlayer(player, players2[player]["Position"])
+					SpawnNewPlayer(player, players2[player]["position"])
 			RefreshPlayers(world_state_buffer[2]["P"])
 			
 			#Update enemies
@@ -46,10 +46,10 @@ func _physics_process(delta):
 				if lost_enemy1 or lost_enemy2:
 					continue
 				elif get_node("YSort/Enemies").has_node(str(enemy)):
-					var new_position = lerp(enemies1[enemy]["Position"], enemies2[enemy]["Position"], interpolation_factor)
+					var new_position = lerp(enemies1[enemy]["position"], enemies2[enemy]["position"], interpolation_factor)
 					get_node("YSort/Enemies/"+str(enemy)).MoveEnemy(new_position)
 				else:
-					SpawnNewEnemy(enemy, enemies2[enemy]["Position"], enemies2[enemy]["Name"])
+					SpawnNewEnemy(enemy, enemies2[enemy]["position"], enemies2[enemy]["name"])
 			RefreshEnemies(world_state_buffer[2]["E"])
 
 			#Update objects
@@ -69,11 +69,11 @@ func _physics_process(delta):
 				if current_player or lost_player:
 					continue;
 				elif get_node("YSort/OtherPlayers").has_node(str(player)):
-					var position_delta = (players1[player]["Position"] - players0[player]["Position"])
-					var new_position = players1[player]["Position"] + (position_delta * extrapolation_factor)
-					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players1[player]["Animation"], players1[player]["Sprite"])
+					var position_delta = (players1[player]["position"] - players0[player]["position"])
+					var new_position = players1[player]["position"] + (position_delta * extrapolation_factor)
+					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players1[player]["animation"], players1[player]["sprite"])
 				else:
-					SpawnNewPlayer(player, players1[player]["Position"])
+					SpawnNewPlayer(player, players1[player]["position"])
 			
 			#Update enemies
 			for enemy in world_state_buffer[1]["E"].keys():
@@ -86,11 +86,11 @@ func _physics_process(delta):
 				if lost_enemy0 or lost_enemy1:
 					continue;
 				elif get_node("YSort/Enemies").has_node(str(enemy)):
-					var position_delta = (enemies1[enemy]["Position"] - enemies0[enemy]["Position"])
-					var new_position = enemies1[enemy]["Position"] + (position_delta * extrapolation_factor)
+					var position_delta = (enemies1[enemy]["position"] - enemies0[enemy]["position"])
+					var new_position = enemies1[enemy]["position"] + (position_delta * extrapolation_factor)
 					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
 				else:
-					SpawnNewEnemy(enemy, enemies1[enemy]["Position"], enemies1[enemy]["Name"])
+					SpawnNewEnemy(enemy, enemies1[enemy]["position"], enemies1[enemy]["name"])
 
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:
@@ -118,8 +118,8 @@ func RefreshObjects(objects):
 	]
 	
 	for object in objects.keys():
-		var type = objects[object]["Type"]
-		var scene_name = objects[object]["Name"]+".tscn"
+		var type = objects[object]["type"]
+		var scene_name = objects[object]["name"]+".tscn"
 		
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
@@ -127,13 +127,13 @@ func RefreshObjects(objects):
 			
 			object_instance.name = str(object)
 			object_instance.object_id = str(object)
-			object_instance.position = objects[object]["Position"]
+			object_instance.position = objects[object]["position"]
 			
 			#Loot bags
 			if type == "LootBags":
-				object_instance.loot = objects[object]["Loot"]
+				object_instance.loot = objects[object]["loot"]
 				
-				if objects[object]["Soulbound"] == true and objects[object]["PlayerId"] != str(Server.get_tree().get_network_unique_id()):
+				if objects[object]["soulbound"] == true and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
 					continue
 			
 			get_node("YSort/Objects/"+type).add_child(object_instance)
@@ -144,7 +144,7 @@ func RefreshObjects(objects):
 				get_node("YSort/Objects/"+type+"/"+object_node.name).queue_free()
 			#Loot bags
 			elif type == "LootBags":
-				object_node.UpdateLoot(objects[object_node.name]["Loot"])
+				object_node.UpdateLoot(objects[object_node.name]["loot"])
 
 #Player nodes
 func SpawnNewPlayer(player_id, spawn_position):

@@ -130,10 +130,10 @@ var items = {
 
 var projectiles = {
 	"GreySlash" : {
-		"damage" : 10,
-		"speed" : 50,
-		"tile_range" : 8,
-		"piercing" : false
+		"Damage" : 10,
+		"Speed" : 50,
+		"TileRange" : 8,
+		"Piercing" : false
 	},
 	"GoldenArrow" : {
 		"damage" : 50,
@@ -165,11 +165,7 @@ var characters = {
 			"Staff Projectiles I" : "Scholar",
 		},
 		"rect" : Rect2(0,0,80,40)
-	},
-	"Bulwark" : {
-		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
-		"rect" : Rect2(0,40,80,40)
-	},
+	}
 }
 
 func RgbToColor(r, g, b):
