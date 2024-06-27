@@ -60,7 +60,6 @@ func _Peer_Disconnected(id):
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
 	player_state_collection.erase(id)
 	rpc_id(0, "DespawnPlayer", id)
-
 #INVENTORY/ITEMS	
 	
 remote func FetchPlayerData(email):
@@ -158,7 +157,9 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"Behavior":enemy_data.behavior,
 			"Exp" : enemy_data.exp,
 			"Target" : spawn_position,
-			"AnchorPosition" : spawn_position
+			"AnchorPosition" : spawn_position,
+			"CyclePosition" : 0,
+			"Timer" : 1
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 

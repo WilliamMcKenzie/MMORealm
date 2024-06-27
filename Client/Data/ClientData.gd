@@ -2,127 +2,127 @@ extends Node
 
 var enemies = {
 	"snake" : {
-		"health" : 40,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : "Wander"
+		"Health" : 40,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : "Wander"
 	},
 	"crab" : {
-		"health" : 60,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : "Wander"
+		"Health" : 60,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : "Wander"
 	},
 	"tribesman" : {
-		"health" : 100,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : "Wander"
+		"Health" : 100,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : "Wander"
 	},
 	"shaman" : {
-		"health" : 200,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : "Wander"
+		"Health" : 200,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : "Wander"
 	},
 	"rock_golem" : {
-		"health" : 200,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : "Wander"
+		"Health" : 200,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : "Wander"
 	}
 }
 
 var items = {
 	1 : {
-		"name": "Short Sword",
-		"description" : "A simple yet effective weapon.",
-		"type" : "Sword",
-		"slot" : "weapon",
+		"Name": "Short Sword",
+		"Description" : "A simple yet effective weapon.",
+		"Type" : "Sword",
+		"Slot" : "weapon",
 		
-		"damage" : [15,25],
-		"rof" : 100,
-		"stats" : {
-			"vitality" : 1
+		"Damage" : [15,25],
+		"Rof" : 100,
+		"Stats" : {
+			"Vitality" : 1
 		},
-		"range" : 3,
-		"tier" : "0",
-		"projectile" : "GreySlash",
+		"Range" : 3,
+		"Tier" : "0",
+		"Projectile" : "GreySlash",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,0)],
-		"colors" : {
+		"Colors" : {
 			"bladeHiltNew" : RgbToColor(105.0, 51.0, 10.0),
 			"bladeNew" : RgbToColor(174.0, 172.0, 156.0)
 		},
-		"textures" : {}
+		"Textures" : {}
 	},
 	2 : {
-		"name": "Void Armor",
-		"description" : "A soldiers first line of defense.",
-		"type" : "Armor",
-		"slot" : "armor",
-		"tier" : "5",
+		"Name": "Void Armor",
+		"Description" : "A soldiers first line of defense.",
+		"Type" : "Armor",
+		"Slot" : "armor",
+		"Tier" : "5",
 		
-		"stats" : {
+		"Stats" : {
 					
 		},
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,5)],
-		"colors" : {
+		"Colors" : {
 			"bodyMediumNew" : RgbToColor(0.0, 106.0, 138.0),
 			"bodyLightNew" : RgbToColor(0.0, 125.0, 163.0),
 			"bandNew" : RgbToColor(225.0, 179.0, 36.0),
 			"buckleNew" : RgbToColor(234.0, 234.0, 78.0),
 		},
-		"textures" : {
+		"Textures" : {
 			
 		}
 	},
 	3 : {
-		"name": "Shadowbringer Bow",
-		"description" : "A ominous bow, forged from the very essence of darkness.",
-		"type" : "Bow",
-		"slot" : "weapon",
+		"Name": "Shadowbringer Bow",
+		"Description" : "A ominous bow, forged from the very essence of darkness.",
+		"Type" : "Bow",
+		"Slot" : "weapon",
 		
-		"damage" : [15,25],
-		"rof" : 100,
-		"stats" : {
+		"Damage" : [15,25],
+		"Rof" : 100,
+		"Stats" : {
 					
 		},
-		"range" : 6,
-		"tier" : "5",
-		"projectile" : "GoldenArrow",
+		"Range" : 6,
+		"Tier" : "5",
+		"Projectile" : "GoldenArrow",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)],
-		"colors" : {
+		"Colors" : {
 			"arrowLightNew" : RgbToColor(125.0, 30.0, 156.0),
 			"arrowDarkNew" : RgbToColor(125.0, 30.0, 156.0),
 			"bowNew" : RgbToColor(74.0, 33.0, 4.0),
 		},
-		"textures" : {
+		"Textures" : {
 			
 		}
 	},
 	4 : {
-		"name": "Flamespitter",
-		"description" : "The remnants of the great calamity bahamut.",
-		"type" : "Staff",
-		"slot" : "weapon",
+		"Name": "Flamespitter",
+		"Description" : "The remnants of the great calamity bahamut.",
+		"Type" : "Staff",
+		"Slot" : "weapon",
 		
-		"damage" : [40,70],
-		"rof" : 300,
-		"stats" : {
+		"Damage" : [40,70],
+		"Rof" : 300,
+		"Stats" : {
 					
 		},
-		"range" : 8,
-		"tier" : "UT",
-		"projectile" : "FlameBlast",
+		"Range" : 8,
+		"Tier" : "UT",
+		"Projectile" : "FlameBlast",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,1)],
-		"colors" : {
+		"Colors" : {
 			"staffGemNew" : RgbToColor(251.0, 255.0, 145.0)
 		},
-		"textures" : {
+		"Textures" : {
 			"staffTexture" : "flame",
 		}
 	},
@@ -130,22 +130,22 @@ var items = {
 
 var projectiles = {
 	"GreySlash" : {
-		"damage" : 10,
-		"speed" : 50,
-		"tile_range" : 8,
-		"piercing" : false
+		"Damage" : 10,
+		"Speed" : 50,
+		"Tile_range" : 8,
+		"Piercing" : false
 	},
 	"GoldenArrow" : {
-		"damage" : 50,
-		"speed" : 100,
-		"tile_range" : 8,
-		"piercing" : true
+		"Damage" : 50,
+		"Speed" : 100,
+		"Tile_range" : 8,
+		"Piercing" : true
 	},
 	"FlameBlast" : {
-		"damage" : 50,
-		"speed" : 150,
-		"tile_range" : 8,
-		"piercing" : false
+		"Damage" : 50,
+		"Speed" : 150,
+		"Tile_range" : 8,
+		"Piercing" : false
 	}
 }
 

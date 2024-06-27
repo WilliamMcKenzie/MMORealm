@@ -6,11 +6,14 @@ var instance_tree = []
 var player_list = {}
 var enemy_list = {}
 var object_list = {}
+var projectile_list = {}
+
+var proj_id_ticker = 0
 
 var tick_rate = 0.25
 var running_time = 0
 var last_tick = 0
-var player_projectiles = {
+var player_projectiles = {	
 	"small" : preload("res://Scenes/Instances/Projectiles/Players/Small.tscn")
 }
 var enemy_projectiles = {
@@ -26,7 +29,9 @@ func _ready():
 		instance_tree = ["nexus"]
 
 func _physics_process(delta):
-
+	for projectile_id in projectile_list.keys():
+		pass
+func _process(delta):	
 	running_time += delta
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
@@ -34,12 +39,11 @@ func _physics_process(delta):
 				enemy_list.erase(enemy_id)
 				continue
 			if (enemy_list[enemy_id]["Behavior"] == 1):
-				
 				var target = enemy_list[enemy_id]["Target"]
 				var position = enemy_list[enemy_id]["Position"]
 				
-				var x_move = -cos(position.angle_to_point(target))* 4
-				var y_move = -sin(position.angle_to_point(target))* 4
+				var x_move = -cos(position.angle_to_point(target))* 4 * delta
+				var y_move = -sin(position.angle_to_point(target))* 4 * delta
 				
 				enemy_list[enemy_id]["Position"] += Vector2(x_move,y_move)
 				
@@ -47,7 +51,13 @@ func _physics_process(delta):
 					if (enemy_list[enemy_id]["AnchorPosition"]-position).length() >= 20:
 						enemy_list[enemy_id]["Target"] = enemy_list[enemy_id]["AnchorPosition"]
 					else:
-						enemy_list[enemy_id]["Target"] = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+						enemy_list[enemy_id]["Target"] = position + Vector2(rand_range(-100 * delta,100 * delta),rand_range(-100 * delta,100 * delta))
+				
+				if (enemy_list[enemy_id]["Cooldown"] <= 0):
+					SpawnEnemyProjectile(enemy_list[enemy_id]["Projectile"],enemy_id,Vector2(0,0))
+					pass	
+				enemy_list[enemy_id]["Cooldown"] -= delta
+				
 		last_tick = running_time
 func UpdatePlayer(player_id, player_state):
 	if player_list.has(str(player_id)):
@@ -90,21 +100,16 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	
 	add_child(projectile_instance)
 
-func SpawnEnemyProjectile(projectile_data, enemy_id):
-	var projectile_instance = enemy_projectiles["small"].instance()
-	projectile_instance.enemy_id = enemy_id
-	projectile_instance.projectile_name = projectile_data["Projectile"]
-	projectile_instance.position = projectile_data["Position"]
-	projectile_instance.initial_position = projectile_data["Position"]
-	projectile_instance.tile_range = projectile_data["TileRange"]
-	projectile_instance.SetDirection(projectile_data["Direction"])
-	projectile_instance.look_at(projectile_data["TargetPosition"])
+func SpawnEnemyProjectile(projectile, enemy_id, direction):
+	var projectile_data = ServerData.GetProjectile(projectile)
 	
-	var data = ServerData.GetProjectile(projectile_data["Projectile"])
-	projectile_instance.SetData(data)
-	
-	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
-	add_child(projectile_instance)
+	if proj_id_ticker <= 2174000:
+		proj_id_ticker += 1
+	else:
+		proj_id_ticker = 0
+	projectile_list[proj_id_ticker] = projectile_data
+	projectile_list[proj_id_ticker]["Position"] = get_node("YSort/Enemies").get_node(enemy_id).position
+	projectile_list[proj_id_ticker]["EnemyId"] = enemy_id
 
 func SpawnLootBag(_loot, player_id, instance_tree, position):
 	var loot_id = "loot "+get_node("/root/Server").generate_unique_id()

@@ -1,121 +1,144 @@
 extends Node
 
 var enemies = {
-	"snake" : {
-		"health" : 40,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : 1
+		"Snake" : {
+		"Health" : 40,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : 1,
+		
+		attack_pattern = {
+			atk1 = {
+
+			"Projectile" : "GreySlash",
+
+			"Formula" : "x",
+
+			"Lifespan" : 5,
+
+			"Wait" : 1,
+
+			}
+			}
 	},
+
 	"crab" : {
-		"health" : 60,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : 1
+		"Health" : 60,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : 1,
+		"Projectile" : "GreySlash",
+		"Cooldown" : 1
 	},
 	"tribesman" : {
-		"health" : 100,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : 1
+		"Health" : 100,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : 1,
+		"Projectile" : "GreySlash",
+		"Cooldown" : 1
 	},
 	"shaman" : {
-		"health" : 200,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : 1
+		"Health" : 200,
+		"Defense" : 1,
+		"Exp" : 20,
+		"Behavior" : 1,
+		"Projectile" : "GreySlash",
+		"Cooldown" : 1
 	},
 	"rock_golem" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"projectile" : "GreySlash",
+		"cooldown" : 1
 	}
 }
 
 var items = {
 	1 : {
-		"name": "Short Sword",
-		"description" : "A simple yet effective weapon.",
-		"type" : "Sword",
-		"slot" : "weapon",
+		"Name": "Short Sword",
+		"Description" : "A simple yet effective weapon.",
+		"Type" : "Sword",
+		"Slot" : "weapon",
 		
-		"damage" : [15,25],
-		"rof" : 100,
-		"stats" : {
-			"vitality" : 1
+		"Damage" : [15,25],
+		"Rof" : 100,
+		"Stats" : {
+			"Vitality" : 1
 		},
-		"range" : 3,
-		"tier" : "0",
-		"projectile" : "GreySlash",
+		"Range" : 3,
+		"Tier" : "0",
+		"Projectile" : "GreySlash",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,0)],
-		"colors" : {
+		"Colors" : {
 			"bladeHiltNew" : RgbToColor(105.0, 51.0, 10.0),
 			"bladeNew" : RgbToColor(174.0, 172.0, 156.0)
 		},
-		"textures" : {}
+		"Textures" : {}
 	},
 	2 : {
-		"name": "Void Armor",
-		"description" : "A soldiers first line of defense.",
-		"type" : "Armor",
-		"slot" : "armor",
-		"tier" : "5",
+		"Name": "Void Armor",
+		"Description" : "A soldiers first line of defense.",
+		"Type" : "Armor",
+		"Slot" : "armor",
+		"Tier" : "5",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,5)],
-		"colors" : {
+		"Colors" : {
 			"helmetDarkNew" : RgbToColor(46.0, 57.0, 84.0),
 			"helmetLightNew" : RgbToColor(80.0, 89.0, 111.0),
 			"helmetMediumNew" : RgbToColor(64.0, 73.0, 97.0),
 		},
-		"textures" : {
+		"Textures" : {
 			"bodyTexture" : "tile",
 		}
 	},
 	3 : {
-		"name": "Greenie Bow",
-		"description" : "Tester bow for testers.",
-		"type" : "Bow",
-		"slot" : "weapon",
+		"Name": "Greenie Bow",
+		"Description" : "Tester bow for testers.",
+		"Type" : "Bow",
+		"Slot" : "weapon",
 		
-		"damage" : [15,25],
-		"rof" : 200,
-		"stats" : {
+		"Damage" : [15,25],
+		"Rof" : 200,
+		"Stats" : {
 					
 		},
-		"range" : 6,
-		"tier" : "5",
-		"projectile" : "GoldenArrow",
+		"Range" : 6,
+		"Tier" : "5",
+		"Projectile" : "GoldenArrow",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)],
-		"colors" : {
+		"Colors" : {
 			"arrowNew" : RgbToColor(175.0, 106.0, 107.0)
 		},
-		"textures" : {
+		"Textures" : {
 			"bowTexture" : "tile",
 		}
 	},
 	4 : {
-		"name": "Flamespitter",
-		"description" : "The remnants of the great calamity bahamut.",
-		"type" : "Staff",
-		"slot" : "weapon",
+		"Name": "Flamespitter",
+		"Description" : "The remnants of the great calamity bahamut.",
+		"Type" : "Staff",
+		"Slot" : "weapon",
 		
-		"damage" : [40,70],
-		"rof" : 120,
-		"stats" : {
+		"Damage" : [40,70],
+		"Rof" : 120,
+		"Stats" : {
 					
 		},
-		"range" : 8,
-		"tier" : "UT",
-		"projectile" : "GoldenArrow",
+		"Range" : 8,
+		"Tier" : "UT",
+		"Projectile" : "GoldenArrow",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,1)],
-		"colors" : {
+		"Colors" : {
 			"arrowNew" : RgbToColor(175.0, 106.0, 107.0)
 		},
-		"textures" : {
+		"Textures" : {
 			"bowTexture" : "tile",
 		}
 	},
@@ -123,16 +146,18 @@ var items = {
 
 var projectiles = {
 	"GreySlash" : {
-		"damage" : 10,
-		"speed" : 50,
-		"tile_range" : 8,
-		"piercing" : false
+		"Damage" : 10,
+		"Speed" : 50,
+		"Tile_range" : 8,
+		"Piercing" : false,
+		"Size" : Vector2(10,10)
 	},
 	"GoldenArrow" : {
-		"damage" : 50,
-		"speed" : 100,
-		"tile_range" : 8,
-		"piercing" : false
+		"Damage" : 50,
+		"Speed" : 100,
+		"Tile_range" : 8,
+		"Piercing" : false,
+		"Size" : Vector2(10,10)
 	}
 }
 
