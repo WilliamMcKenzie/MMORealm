@@ -11,16 +11,11 @@ func _ready():
 	signupButton.connect("pressed", self, "SignupAttempt")
 	
 func SignupAttempt():
-	$ResizeContainer/WarningLabel.text = "SIGNING IN"
-	
 	if email == "" or password == "":
 		print("Invalid credentials: Email/password cannot be blank")
-		$ResizeContainer/WarningLabel.text = "Blank passwrd"
 	if password.length() < 7:
 		print("Invalid credentials: Password length must be greater then 7.")
-		$ResizeContainer/WarningLabel.text = "shrt passwrd"
 	else:
-		$ResizeContainer/WarningLabel.text = "Attempting logijn"
 		loginButton.disabled = true
 		signupButton.disabled = true
 		print("Attempting login!!")
@@ -28,7 +23,6 @@ func SignupAttempt():
 
 func LoginAttempt():
 	if email == "" or password == "":
-		$ResizeContainer/WarningLabel.text = "Invalid"
 		print("Invalid credentials: Email/password cannot be blank")
 	else:
 		loginButton.disabled = true

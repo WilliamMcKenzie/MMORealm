@@ -1,8 +1,8 @@
-extends TextureButton
+extends PanelContainer
 
 var portal_id
 
 func _ready():
-	connect("pressed", self, "EnterInstance")
+	$MarginContainer/Button.connect("pressed", self, "EnterInstance")
 func EnterInstance():
 	Server.EnterInstance(portal_id)

@@ -32,9 +32,12 @@ func _physics_process(delta):
 		client_clock += 1
 		decimal_collector -= 1
 
-func UpdateJoystickActions(output):
+func UpdateRightJoystick(output):
 	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
-		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").joystick_output = output
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").right_joystick_output = output.normalized()
+func UpdateLeftJoystick(output):
+	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").left_joystick_output = output.normalized()
 
 func ConnectToServer():
 	network.create_client(ip_address, port)
@@ -166,6 +169,8 @@ remote func ReturnDungeonData(instance_data):
 	dungeon_instance.get_node("YSort/player").character = map_instance.get_node("YSort/player").character
 	dungeon_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
 	dungeon_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	dungeon_instance.get_node("YSort/player").global_position = instance_data["Position"]
+	print(instance_data["Position"])
 	dungeon_instance.name = instance_data["Id"]
 	dungeon_instance.PopulateDungeon(instance_data)
 	
@@ -212,5 +217,5 @@ remote func CharacterDied(enemy_name):
 remote func SetHealth(max_health, current_health):
 	GameUI.get_node("Health").ChangeHealth(max_health, current_health)
 
-func NPCHit(enemy_id,damage):
-	rpc_id(1,"NPCHit",enemy_id,damage,get_tree().get_network_unique_id())
+func NPCHit(enemy_id, damage):
+	rpc_id(1, "NPCHit", enemy_id, damage)

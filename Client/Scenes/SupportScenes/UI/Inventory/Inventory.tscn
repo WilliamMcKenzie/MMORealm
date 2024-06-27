@@ -18,7 +18,7 @@ modulate_color = Color( 1, 1, 1, 0.313726 )
 [sub_resource type="ShaderMaterial" id=12]
 shader = ExtResource( 6 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.4
+shader_param/line_thickness = 0.3
 shader_param/glow_thickness = 4.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
@@ -84,11 +84,11 @@ bg_color = Color( 0, 0, 0, 0.313726 )
 
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 5 )
-region = Rect2( 80, 220, 10, 10 )
+region = Rect2( 80, 240, 10, 10 )
 
 [sub_resource type="AtlasTexture" id=18]
 atlas = ExtResource( 5 )
-region = Rect2( 80, 230, 10, 10 )
+region = Rect2( 80, 250, 10, 10 )
 
 [sub_resource type="StyleBoxTexture" id=14]
 texture = ExtResource( 7 )
@@ -474,6 +474,7 @@ margin_bottom = 348.0
 rect_scale = Vector2( 1, 1 )
 
 [node name="LootContainer" type="HBoxContainer" parent="."]
+visible = false
 margin_left = -111.0
 margin_right = -1.0
 margin_bottom = 364.0

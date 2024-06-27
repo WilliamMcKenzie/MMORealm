@@ -57,6 +57,8 @@ func _physics_process(delta):
 
 		elif render_time > world_state_buffer[1]["T"]:
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
+			
+			#Update players
 			for player in world_state_buffer[1]["P"].keys():
 				var players0 = world_state_buffer[0]["P"]
 				var players1 = world_state_buffer[1]["P"]
@@ -72,6 +74,23 @@ func _physics_process(delta):
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players1[player]["Animation"], players1[player]["Sprite"])
 				else:
 					SpawnNewPlayer(player, players1[player]["Position"])
+			
+			#Update enemies
+			for enemy in world_state_buffer[1]["E"].keys():
+				var enemies0 = world_state_buffer[0]["E"]
+				var enemies1 = world_state_buffer[1]["E"]
+				
+				var lost_enemy0 = not enemies0.has(enemy)
+				var lost_enemy1 = not enemies1.has(enemy)
+				
+				if lost_enemy0 or lost_enemy1:
+					continue;
+				elif get_node("YSort/Enemies").has_node(str(enemy)):
+					var position_delta = (enemies1[enemy]["Position"] - enemies0[enemy]["Position"])
+					var new_position = enemies1[enemy]["Position"] + (position_delta * extrapolation_factor)
+					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
+				else:
+					SpawnNewEnemy(enemy, enemies1[enemy]["Position"], enemies1[enemy]["Name"])
 
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:
@@ -81,7 +100,6 @@ func UpdateWorldState(world_state):
 #Enemy nodes
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
-		print("spawn enemy called with params " + str(enemy_id) + " " + str(enemy_position) + " " + str(enemy_name))
 		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+".tscn")
 		var enemy_instance = enemy_scene.instance()
 		enemy_instance.name = enemy_id
@@ -148,27 +166,3 @@ func DespawnPlayer(player_id):
 	yield(get_tree().create_timer(0.2), "timeout")
 	if get_node("YSort/OtherPlayers").has_node(str(player_id)):
 		get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()
-
-#For creating new dungeon instances
-func PopulateDungeon(instance_data):
-	var map = instance_data["Map"]
-	var dungeon_name = instance_data["Name"]
-	var id = instance_data["Id"]
-	
-	var room_nodes = {}
-	
-	for path in map:
-		for room in path:
-			room_nodes[room] = load("res://Scenes/SupportScenes/Dungeons/"+dungeon_name+"/"+room+".tscn")
-	
-	var direction_map = {
-		0 : Vector2(0, 1),
-		1 : Vector2(1, 0),
-		2 : Vector2(0, -1),
-		3 : Vector2(-1, 0)
-	}
-	for i in range(map.size()):
-		for k in range(map[i].size()):
-			var room_to_add = room_nodes[map[i][k]].instance()
-			room_to_add.position = direction_map[i]*k*(15)*8
-			add_child(room_to_add)

@@ -31,10 +31,10 @@ export(VisibilityMode) var visibility_mode := VisibilityMode.ALWAYS
 export var use_input_actions := true
 
 # Project -> Project Settings -> Input Map
-export var action_left := "attack_left"
-export var action_right := "attack_right"
-export var action_up := "attack_up"
-export var action_down := "attack_down"
+export var action_left := "NULL"
+export var action_right := "NULL"
+export var action_up := "NULL"
+export var action_down := "NULL"
 
 #### PUBLIC VARIABLES ####
 
@@ -73,7 +73,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed:
-			if _is_point_inside_joystick_area(event.position) and _touch_index == -1 and GameUI.is_inventory_open == false:
+			if _is_point_inside_joystick_area(event.position) and _touch_index == -1 and GameUI.is_inventory_open == false and GameUI.is_in_ui == false:
 				visible = true
 				if joystick_mode == JoystickMode.DYNAMIC or (joystick_mode == JoystickMode.FIXED and _is_point_inside_base(event.position)):
 					if joystick_mode == JoystickMode.DYNAMIC:
@@ -126,13 +126,13 @@ func _update_joystick(touch_position: Vector2) -> void:
 		_update_input_actions()
 
 func _update_input_actions():
-	Server.UpdateJoystickActions(_output)
+	Server.UpdateRightJoystick(_output)
 
 func _reset():
 	visible = false
 	_pressed = false
 	_output = Vector2.ZERO
-	Server.UpdateJoystickActions(_output)
+	Server.UpdateRightJoystick(_output)
 	_touch_index = -1
 	_tip.modulate = _default_color
 	_base.rect_position = _base_default_position

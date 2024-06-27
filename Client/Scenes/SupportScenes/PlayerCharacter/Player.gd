@@ -15,8 +15,10 @@ var projectile
 var x = 0
 var y = 0
 
-#For the attack joystick
-var joystick_output = Vector2.ZERO
+#For the joysticks
+var left_joystick_output = Vector2.ZERO
+var right_joystick_output = Vector2.ZERO
+var holding_shoot = false
 
 #We send animation to server to display to other clients.
 var lastAnimation = { "A" : "Idle", "C" : Vector2.ZERO }
@@ -28,9 +30,10 @@ onready var CharacterSpriteEle = $CharacterSprite
 onready var animation_tree = $AnimationTree
 
 func _ready():
-	var projectile_type = gear.weapon.projectile
-	var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
-	projectile = load(projectile_path)
+	if gear.has("weapon") and gear.weapon.has("projectile"):
+		var projectile_type = gear.weapon.projectile
+		var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
+		projectile = load(projectile_path)
 
 	SetCharacterSprite()
 
@@ -67,7 +70,9 @@ func UpdateCharacter(_character):
 func SetCharacterSprite():
 	CharacterSpriteEle.SetCharacterClass(character.class)
 	if character.gear["weapon"] != null:
-		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
+		var weapon = ClientData.GetItem(character.gear.weapon.item)
+		if weapon != null:
+			CharacterSpriteEle.SetCharacterWeapon(weapon.type)
 	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
 	CharacterSpriteEle.ColorGear(gear)
 	lastSprite = { "R" : $CharacterSprite.get_region_rect(), "C" : character.class, "P" : CharacterSpriteEle.GetParams()}
@@ -100,15 +105,19 @@ func MovePlayer(delta):
 		x -= 1
 	if(Input.is_action_pressed("right")):
 		x += 1
+	if left_joystick_output != Vector2.ZERO:
+		motion = left_joystick_output
 
-	if joystick_output == Vector2.ZERO:
-		shoot = false
-	if(Input.is_action_just_pressed("shoot")):
-		shoot = true
 	if (Input.is_action_just_released("shoot")):
 		shoot = false
-	if joystick_output != Vector2.ZERO:
+		holding_shoot = false
+	if(Input.is_action_just_pressed("shoot")):
 		shoot = true
+		holding_shoot = true
+	if right_joystick_output != Vector2.ZERO:
+		shoot = true
+	if right_joystick_output == Vector2.ZERO and holding_shoot == false:
+		shoot = false
 	
 	if (Input.is_action_just_pressed("nexus")):
 		Server.Nexus()
@@ -125,27 +134,31 @@ func MovePlayer(delta):
 			last_shot_time = current_time
 		
 	#Animations
-	var shoot_direction = (get_global_mouse_position() - position)
+	var shoot_direction = (get_global_mouse_position() - position).normalized()
+	motion = motion.normalized()
+	
 	if Input.is_action_pressed("shoot") and not GameUI.is_inventory_open:
 		animation_tree.get("parameters/playback").travel("Attack")
 		animation_tree.set("parameters/Idle/blend_position", shoot_direction)
+		animation_tree.set("parameters/Walk/blend_position", shoot_direction)
 		animation_tree.set("parameters/Attack/blend_position", shoot_direction)
 		lastAnimation = { "A" : "Attack", "C" : shoot_direction }
-	elif joystick_output != Vector2.ZERO and not GameUI.is_inventory_open:
+	elif right_joystick_output != Vector2.ZERO and not GameUI.is_inventory_open:
 		animation_tree.get("parameters/playback").travel("Attack")
-		animation_tree.set("parameters/Idle/blend_position", joystick_output)
-		animation_tree.set("parameters/Attack/blend_position", joystick_output)
-		lastAnimation = { "A" : "Attack", "C" : joystick_output }
+		animation_tree.set("parameters/Idle/blend_position", right_joystick_output)
+		animation_tree.set("parameters/Walk/blend_position", right_joystick_output)
+		animation_tree.set("parameters/Attack/blend_position", right_joystick_output)
+		lastAnimation = { "A" : "Attack", "C" : right_joystick_output }
 	elif motion != Vector2.ZERO:
 		animation_tree.get("parameters/playback").travel("Walk")
 		animation_tree.set("parameters/Idle/blend_position", motion)
 		animation_tree.set("parameters/Walk/blend_position", motion)
+		animation_tree.set("parameters/Attack/blend_position", motion)
 		lastAnimation = { "A" : "Walk", "C" : motion }
 	else:
 		animation_tree.get("parameters/playback").travel("Idle")
 		lastAnimation["A"] = "Idle"
-
-	motion = motion.normalized()
+		
 	motion = move_and_slide(motion * stats.speed)
 	if get_parent().get_parent().has_method("LoadChunk"):
 		#Loading all possible chunks you might see around you
@@ -171,9 +184,9 @@ func ShootProjectile():
 	var projectile_instance = projectile.instance()
 	var damage = round(CalculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
 	
-	if joystick_output != Vector2.ZERO:
-		mouse_position = joystick_output + position
-		direction = joystick_output
+	if right_joystick_output != Vector2.ZERO:
+		mouse_position = right_joystick_output + position
+		direction = right_joystick_output
 	
 	#Send projectile to server
 	var projectile_data = {
