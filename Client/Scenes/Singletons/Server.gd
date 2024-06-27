@@ -122,7 +122,7 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 		pass
 	elif get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
-	
+
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 remote func RecieveWorldState(world_state):
