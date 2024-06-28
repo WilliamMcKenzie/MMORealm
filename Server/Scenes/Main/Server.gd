@@ -229,11 +229,11 @@ remote func EnterInstance(instance_id):
 		instance_tree.append(str(instance_id))
 		
 		#For dungeons
-		if not current_instance_node.object_list[instance_id]["Name"] == "island":	
+		if not current_instance_node.object_list[instance_id]["name"] == "island":	
 			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = dungeon_node.GetMapSpawnpoint()
 			
-			rpc_id(player_id, "ReturnDungeonData", { "Map": dungeon_node.map, "Name": current_instance_node.object_list[instance_id]["Name"], "Id": instance_id, "RoomSize" : dungeon_node.room_size, "Position": spawnpoint})
+			rpc_id(player_id, "ReturnDungeonData", { "Map": dungeon_node.map, "Name": current_instance_node.object_list[instance_id]["name"], "Id": instance_id, "RoomSize" : dungeon_node.room_size, "Position": spawnpoint})
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
 			
@@ -244,7 +244,7 @@ remote func EnterInstance(instance_id):
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = island_node.GetMapSpawnpoint()
 			
-			rpc_id(player_id, "ReturnIslandData", { "Name": current_instance_node.object_list[instance_id]["Name"], "Id":instance_id, "Position": spawnpoint})
+			rpc_id(player_id, "ReturnIslandData", { "Name": current_instance_node.object_list[instance_id]["name"], "Id":instance_id, "Position": spawnpoint})
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
 			

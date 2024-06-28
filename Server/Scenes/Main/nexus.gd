@@ -183,22 +183,7 @@ class SortByValue:
 func CalculateLootPool(enemy):
 	randomize()
 	var player_pool = enemy["damage_tracker"]
-	#var loot_pool = ServerData.GetEnemy(enemy["name"]).loot_pool
-	var loot_pool = {
-		"soulbound_loot" : [
-			{
-				"item" : 4,
-				"chance" : 0.01,
-				"threshold" : 0.15,
-			}
-		],
-		"loot" : [
-			{
-				"item" : 1,
-				"chance" : 0.5,
-			}
-		]
-	}
+	var loot_pool = ServerData.GetEnemy(enemy["name"]).loot_pool
 	
 	var ordered_pairs = []
 	for player in player_pool.keys():

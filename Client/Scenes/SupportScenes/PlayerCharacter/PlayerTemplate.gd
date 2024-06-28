@@ -1,27 +1,39 @@
 extends KinematicBody2D
 
 onready var animationTree = $AnimationTree
-onready var CharacterSprite = $CharacterSprite
+onready var CharacterSpriteEle = $CharacterSprite
 var projectile_dict = {}
-var last_sprite_data
+var last_sprite_data = {
+	"P" : {
+		"ColorParams" : {}
+	}
+}
 
 func _physics_process(delta):
 	if projectile_dict != {}:
 		ShootProjectile()
 
 func SetCharacterSprite(sprite_data):
-	if last_sprite_data == sprite_data:
+	var check1 = sprite_data.duplicate(true)
+	check1.erase("P")
+	var answer1 = last_sprite_data.duplicate(true)
+	answer1.erase("P")
+	var check2 = sprite_data["P"]["ColorParams"]
+	var answer2 = last_sprite_data["P"]["ColorParams"]
+	
+	if UtilityFunctions.CompareDictionaries(check1, answer1) and UtilityFunctions.CompareDictionaries(check2, answer2):
 		return
-	last_sprite_data = sprite_data
+	else:
+		last_sprite_data = sprite_data
 		
 	var character_class = sprite_data["C"]
 	var region_rect = sprite_data["R"]
 	var params = sprite_data["P"]
 	
-	CharacterSprite.SetCharacterClass(character_class)
-	CharacterSprite.SetParams(params)
-	SetSpriteData(CharacterSprite, ClientData.GetCharacter(character_class).path)
-	CharacterSprite.region_rect = region_rect
+	CharacterSpriteEle.SetCharacterClass(character_class)
+	CharacterSpriteEle.SetParams(params)
+	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character_class).path)
+	CharacterSpriteEle.region_rect = region_rect
 
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
