@@ -1,35 +1,83 @@
 extends Node
 
+var basic_loot_pools = {
+	"lowlands_1" : {
+		"soulbound_loot" : [
+			{
+				"item" : 4,
+				"chance" : 0.01,
+				"threshold" : 0.15,
+			}
+		],
+		"loot" : [
+			{
+				"item" : 1,
+				"chance" : 0.25,
+			}
+		]
+	},
+	"lowlands_2" : {
+		"soulbound_loot" : [
+				{
+				"item" : 4,
+				"chance" : 0.2,
+				"threshold" : 0.15,
+				},
+				{
+					"item" : 2,
+					"chance" : 0.5,
+					"threshold" : 0.15,
+				},
+				{
+					"item" : 3,
+					"chance" : 0.5,
+					"threshold" : 0.15,
+				}
+		],
+		"loot" : [
+			{
+				"item" : 1,
+				"chance" : 0.25,
+			}
+		]
+	}
+}
+
 var enemies = {
 	"snake" : {
 		"health" : 40,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"]
 	},
 	"crab" : {
 		"health" : 60,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"]
 	},
 	"tribesman" : {
 		"health" : 100,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_2"]
 	},
 	"shaman" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_2"]
 	},
 	"rock_golem" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_2"]
 	}
 }
 

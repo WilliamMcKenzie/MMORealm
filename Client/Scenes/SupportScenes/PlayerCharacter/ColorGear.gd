@@ -67,7 +67,15 @@ func GetParams():
 func SetParams(params):
 	texture_params = params["TextureParams"]
 	color_params = params["ColorParams"]
-	ColorGear({})
+	
+	var mock_gear = {
+		"params" : {
+			"colors" : color_params,
+			"textures" : texture_params,
+		}
+	}
+	
+	ColorGear(mock_gear)
 
 func _ready():
 	ColorGear({})

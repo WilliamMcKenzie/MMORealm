@@ -12,71 +12,71 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=10]
 [ext_resource path="res://Assets/ui/button.png" type="Texture" id=11]
 
-[sub_resource type="AnimationNodeAnimation" id=31]
+[sub_resource type="AnimationNodeAnimation" id=40]
 animation = "attack_down"
 
-[sub_resource type="AnimationNodeAnimation" id=32]
+[sub_resource type="AnimationNodeAnimation" id=41]
 animation = "attack_up"
 
-[sub_resource type="AnimationNodeAnimation" id=33]
+[sub_resource type="AnimationNodeAnimation" id=42]
 animation = "attack_right"
 
-[sub_resource type="AnimationNodeAnimation" id=60]
+[sub_resource type="AnimationNodeAnimation" id=43]
 animation = "attack_left"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=34]
-blend_point_0/node = SubResource( 31 )
+blend_point_0/node = SubResource( 40 )
 blend_point_0/pos = Vector2( 0, 0.5 )
-blend_point_1/node = SubResource( 32 )
+blend_point_1/node = SubResource( 41 )
 blend_point_1/pos = Vector2( 0, -0.5 )
-blend_point_2/node = SubResource( 33 )
+blend_point_2/node = SubResource( 42 )
 blend_point_2/pos = Vector2( 0.5, 0 )
-blend_point_3/node = SubResource( 60 )
+blend_point_3/node = SubResource( 43 )
 blend_point_3/pos = Vector2( -0.5, 0 )
 
-[sub_resource type="AnimationNodeAnimation" id=11]
+[sub_resource type="AnimationNodeAnimation" id=44]
 animation = "idle_left"
 
-[sub_resource type="AnimationNodeAnimation" id=12]
+[sub_resource type="AnimationNodeAnimation" id=45]
 animation = "idle_down"
 
-[sub_resource type="AnimationNodeAnimation" id=13]
+[sub_resource type="AnimationNodeAnimation" id=46]
 animation = "idle_right"
 
-[sub_resource type="AnimationNodeAnimation" id=14]
+[sub_resource type="AnimationNodeAnimation" id=47]
 animation = "idle_up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=15]
-blend_point_0/node = SubResource( 11 )
+blend_point_0/node = SubResource( 44 )
 blend_point_0/pos = Vector2( -1, 0 )
-blend_point_1/node = SubResource( 12 )
+blend_point_1/node = SubResource( 45 )
 blend_point_1/pos = Vector2( 0, 1 )
-blend_point_2/node = SubResource( 13 )
+blend_point_2/node = SubResource( 46 )
 blend_point_2/pos = Vector2( 1, 0 )
-blend_point_3/node = SubResource( 14 )
+blend_point_3/node = SubResource( 47 )
 blend_point_3/pos = Vector2( 0, -1 )
 blend_mode = 1
 
-[sub_resource type="AnimationNodeAnimation" id=19]
+[sub_resource type="AnimationNodeAnimation" id=48]
 animation = "walk_left"
 
-[sub_resource type="AnimationNodeAnimation" id=20]
+[sub_resource type="AnimationNodeAnimation" id=49]
 animation = "walk_right"
 
-[sub_resource type="AnimationNodeAnimation" id=21]
+[sub_resource type="AnimationNodeAnimation" id=50]
 animation = "walk_down"
 
-[sub_resource type="AnimationNodeAnimation" id=22]
+[sub_resource type="AnimationNodeAnimation" id=51]
 animation = "walk_up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=23]
-blend_point_0/node = SubResource( 19 )
+blend_point_0/node = SubResource( 48 )
 blend_point_0/pos = Vector2( -0.5, 0 )
-blend_point_1/node = SubResource( 20 )
+blend_point_1/node = SubResource( 49 )
 blend_point_1/pos = Vector2( 0.5, 0 )
-blend_point_2/node = SubResource( 21 )
+blend_point_2/node = SubResource( 50 )
 blend_point_2/pos = Vector2( 0, 0.5 )
-blend_point_3/node = SubResource( 22 )
+blend_point_3/node = SubResource( 51 )
 blend_point_3/pos = Vector2( 0, -0.5 )
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=24]
@@ -577,7 +577,7 @@ material = SubResource( 52 )
 texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
-frame = 12
+frame = 8
 region_enabled = true
 region_rect = Rect2( 80, 0, 80, 40 )
 script = ExtResource( 5 )

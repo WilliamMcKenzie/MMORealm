@@ -33,8 +33,8 @@ func _physics_process(delta):
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
 			var enemy = enemy_list[enemy_id]
-			if(enemy_list[enemy_id]["Health"] < 1):
-				var chunk = CalculateChunk(enemy["Position"])
+			if(enemy["health"] < 1):
+				var chunk = CalculateChunk(enemy["position"])
 				
 				if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):
 					chunks[chunk]["E"].erase(enemy_id)
@@ -48,9 +48,9 @@ func _physics_process(delta):
 		sync_clock_counter = 0
 		for chunk in chunks:
 			for id in chunks[chunk]["E"].keys():
-				if enemy_list.has(id) and not WithinChunk(chunk, enemy_list[id]["Position"]):
+				if enemy_list.has(id) and not WithinChunk(chunk, enemy_list[id]["position"]):
 					chunks[chunk]["E"].erase(id)
-					AddChunkData(CalculateChunk(enemy_list[id]["Position"]), id, false)
+					AddChunkData(CalculateChunk(enemy_list[id]["position"]), id, false)
 				elif not enemy_list.has(id):
 					chunks[chunk]["E"].erase(id)
 			if IsChunkRadiusEmpty(chunk):
@@ -59,7 +59,7 @@ func _physics_process(delta):
 				chunks[chunk]["E"] = {}
 func SpawnEnemy(enemy, enemy_id):
 	enemy_list[str(enemy_id)] = enemy
-	AddChunkData(CalculateChunk(enemy["Position"]), enemy_id, false)
+	AddChunkData(CalculateChunk(enemy["position"]), enemy_id, false)
 
 #Chunks utility
 
@@ -114,7 +114,7 @@ func GetIslandChunk(chunk):
 			
 			var full_chunk = chunks.has(chunk) and chunks[chunk]["E"].size() > 10
 			if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk:
-				var instance_tree = get_parent().object_list[name]["InstanceTree"].duplicate(true)
+				var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
 				instance_tree.append(name)
 				get_node("/root/Server").SpawnNPC(enemy_spawn_points[Vector2(x,y)]["Enemy"], instance_tree, Vector2(x*8, y*8)-self.position)
 	return {
