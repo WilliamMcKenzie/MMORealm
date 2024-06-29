@@ -1,7 +1,7 @@
 extends Node
 
-var ip_address = "159.203.0.78"
-#var ip_address = "localhost"
+#3var ip_address = "159.203.0.78"
+var ip_address = "localhost"
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
 

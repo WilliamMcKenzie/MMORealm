@@ -8,6 +8,7 @@ var piercing
 var formula
 var time = 0
 var direction
+var path
 onready var expression = Expression.new()
 
 var initial_position = Vector2.ZERO
@@ -17,6 +18,7 @@ func _ready():
 	$Area2D.connect("body_entered", self, "WallCollision")
 	initial_position = position
 	SetData(ClientData.GetProjectile(projectile))
+	path = position
 func SetData(data):
 	speed = data.speed
 	piercing = data.piercing
@@ -28,9 +30,10 @@ func WallCollision(area):
 func _process(delta):
 	time += delta
 	expression.parse(formula,["x"])
-	var initial_offset = velocity * delta * 1
-	var pattern_offset = Vector2(-velocity.y, velocity.x) * expression.execute([time * 25]) * 0.01
-	position += initial_offset + pattern_offset
+	var initial_offset = velocity * delta
+	path = path + initial_offset
+	var pattern_offset = Vector2(-velocity.y, velocity.x) * expression.execute([time * 50]) * 0.05
+	position = path + pattern_offset
 	if (position - initial_position).length()/8 > tile_range:
 		queue_free()
 func set_direction(direction: Vector2):

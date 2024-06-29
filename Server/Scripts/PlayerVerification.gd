@@ -35,6 +35,8 @@ func Verify(player_id, token, character_index):
 
 func CreatePlayerContainer(player_id, email, character_index):
 	verified_emails[email] = true
+	print(player_id)
+	print(get_node("/root/Server").player_state_collection[player_id]["I"])
 	var instance_tree = get_node("/root/Server").player_state_collection[player_id]["I"]
 	var new_player_container = player_container_scene.instance()
 	new_player_container.email = email
