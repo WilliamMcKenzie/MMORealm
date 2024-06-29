@@ -34,10 +34,10 @@ var default_color_params = {
 	"bodyLightOrigin" : RgbToColor(255.0, 255.0, 255.0),
 	"bodyLightNew" : RgbToColor(216.0, 216.0, 216.0),
 	
-	"bodyMediumOrigin" : RgbToColor(255.0, 51.0, 255.0),
+	"bodyMediumOrigin" : RgbToColor(255.0, 204.0, 255.0),
 	"bodyMediumNew" : RgbToColor(190.0, 190.0, 190.0),
 	
-	"bodyDarkOrigin" : RgbToColor(255.0, 100.0, 255.0),
+	"bodyDarkOrigin" : RgbToColor(255.0, 51.0, 255.0),
 	"bodyDarkNew" : RgbToColor(124.0, 124.0, 124.0),
 	
 	"bandOrigin" : RgbToColor(255.0, 0, 100.0),
