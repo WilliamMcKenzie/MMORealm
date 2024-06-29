@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
@@ -181,18 +181,15 @@
 
 [sub_resource type="GradientTexture" id=5]
 
-[sub_resource type="ShaderMaterial" id=19]
+[sub_resource type="ShaderMaterial" id=23]
 shader = ExtResource( 5 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.4
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/line_thickness = 0.5
+shader_param/glow_thickness = 2.406
+shader_param/glow_color = Color( 0, 0, 0, 0.164706 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
-shader_param/swordTextureActive = false
-shader_param/bowTextureActive = false
-shader_param/staffTextureActive = false
-shader_param/staffGemTextureActive = false
+shader_param/weaponTextureActive = false
 shader_param/helmetDarkOrigin = null
 shader_param/helmetDarkNew = null
 shader_param/helmetMediumOrigin = null
@@ -209,76 +206,24 @@ shader_param/bandOrigin = null
 shader_param/bandNew = null
 shader_param/buckleOrigin = null
 shader_param/buckleNew = null
-shader_param/bowOrigin = null
-shader_param/bowNew = null
-shader_param/arrowLightOrigin = null
-shader_param/arrowLightNew = null
-shader_param/arrowDarkOrigin = null
-shader_param/arrowDarkNew = null
-shader_param/bladeHiltOrigin = null
-shader_param/bladeHiltNew = null
-shader_param/bladeOrigin = null
-shader_param/bladeNew = null
-shader_param/staffOrigin = null
-shader_param/staffNew = null
-shader_param/staffGemOrigin = null
-shader_param/staffGemNew = null
+shader_param/weaponOrigin = null
+shader_param/weaponNew = null
+shader_param/weaponSecondaryOrigin = null
+shader_param/weaponSecondaryNew = null
 
-[sub_resource type="ShaderMaterial" id=20]
-shader = ExtResource( 5 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.4
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0 )
-shader_param/helmetTextureActive = false
-shader_param/bodyTextureActive = false
-shader_param/swordTextureActive = false
-shader_param/bowTextureActive = false
-shader_param/staffTextureActive = false
-shader_param/staffGemTextureActive = false
-shader_param/helmetDarkOrigin = null
-shader_param/helmetDarkNew = null
-shader_param/helmetMediumOrigin = null
-shader_param/helmetMediumNew = null
-shader_param/helmetLightOrigin = null
-shader_param/helmetLightNew = null
-shader_param/bodyDarkOrigin = null
-shader_param/bodyDarkNew = null
-shader_param/bodyMediumOrigin = null
-shader_param/bodyMediumNew = null
-shader_param/bodyLightOrigin = null
-shader_param/bodyLightNew = null
-shader_param/bandOrigin = null
-shader_param/bandNew = null
-shader_param/buckleOrigin = null
-shader_param/buckleNew = null
-shader_param/bowOrigin = null
-shader_param/bowNew = null
-shader_param/arrowLightOrigin = null
-shader_param/arrowLightNew = null
-shader_param/arrowDarkOrigin = null
-shader_param/arrowDarkNew = null
-shader_param/bladeHiltOrigin = null
-shader_param/bladeHiltNew = null
-shader_param/bladeOrigin = null
-shader_param/bladeNew = null
-shader_param/staffOrigin = null
-shader_param/staffNew = null
-shader_param/staffGemOrigin = null
-shader_param/staffGemNew = null
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 1 )
+region = Rect2( 10, 220, 10, 10 )
 
-[sub_resource type="ShaderMaterial" id=21]
+[sub_resource type="ShaderMaterial" id=24]
 shader = ExtResource( 5 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.4
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/line_thickness = 0.5
+shader_param/glow_thickness = 2.4
+shader_param/glow_color = Color( 0, 0, 0, 0.207843 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
-shader_param/swordTextureActive = false
-shader_param/bowTextureActive = false
-shader_param/staffTextureActive = false
-shader_param/staffGemTextureActive = false
+shader_param/weaponTextureActive = false
 shader_param/helmetDarkOrigin = null
 shader_param/helmetDarkNew = null
 shader_param/helmetMediumOrigin = null
@@ -295,28 +240,62 @@ shader_param/bandOrigin = null
 shader_param/bandNew = null
 shader_param/buckleOrigin = null
 shader_param/buckleNew = null
-shader_param/bowOrigin = null
-shader_param/bowNew = null
-shader_param/arrowLightOrigin = null
-shader_param/arrowLightNew = null
-shader_param/arrowDarkOrigin = null
-shader_param/arrowDarkNew = null
-shader_param/bladeHiltOrigin = null
-shader_param/bladeHiltNew = null
-shader_param/bladeOrigin = null
-shader_param/bladeNew = null
-shader_param/staffOrigin = null
-shader_param/staffNew = null
-shader_param/staffGemOrigin = null
-shader_param/staffGemNew = null
+shader_param/weaponOrigin = null
+shader_param/weaponNew = null
+shader_param/weaponSecondaryOrigin = null
+shader_param/weaponSecondaryNew = null
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 1 )
+region = Rect2( 20, 220, 10, 10 )
+
+[sub_resource type="ShaderMaterial" id=27]
+shader = ExtResource( 5 )
+shader_param/line_color = Color( 0, 0, 0, 1 )
+shader_param/line_thickness = 0.5
+shader_param/glow_thickness = 3.0
+shader_param/glow_color = Color( 0, 0, 0, 0.075 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = null
+shader_param/helmetDarkNew = null
+shader_param/helmetMediumOrigin = null
+shader_param/helmetMediumNew = null
+shader_param/helmetLightOrigin = null
+shader_param/helmetLightNew = null
+shader_param/bodyDarkOrigin = null
+shader_param/bodyDarkNew = null
+shader_param/bodyMediumOrigin = null
+shader_param/bodyMediumNew = null
+shader_param/bodyLightOrigin = null
+shader_param/bodyLightNew = null
+shader_param/bandOrigin = null
+shader_param/bandNew = null
+shader_param/buckleOrigin = null
+shader_param/buckleNew = null
+shader_param/weaponOrigin = null
+shader_param/weaponNew = null
+shader_param/weaponSecondaryOrigin = null
+shader_param/weaponSecondaryNew = null
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 220, 10, 10 )
 
 [sub_resource type="DynamicFont" id=18]
 outline_size = 1
 font_data = ExtResource( 2 )
 
 [node name="Home" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -400.0
+margin_top = -180.0
+margin_right = 400.0
+margin_bottom = 180.0
 theme = ExtResource( 8 )
 script = ExtResource( 7 )
 
@@ -335,61 +314,47 @@ position = Vector2( 67, 32 )
 current = true
 zoom = Vector2( 0.15, 0.15 )
 
-[node name="UI" type="Node2D" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
 visible = false
-position = Vector2( 22, 3 )
-scale = Vector2( 0.25, 0.25 )
 
-[node name="Sprite" type="Sprite" parent="UI"]
+[node name="Sprite" type="TextureRect" parent="UI"]
 modulate = Color( 1, 1, 1, 0.313726 )
-position = Vector2( -52, -352 )
-scale = Vector2( 4, 800 )
+margin_right = 800.0
+margin_bottom = 57.0
 texture = SubResource( 5 )
+expand = true
 
 [node name="Account" type="TextureButton" parent="UI"]
-margin_left = -48.0
-margin_top = 16.0
-margin_right = -24.0
-margin_bottom = 40.0
-
-[node name="Sprite" type="Sprite" parent="UI/Account"]
-material = SubResource( 19 )
-position = Vector2( 12, 12 )
-scale = Vector2( 2.5, 2.5 )
-texture = ExtResource( 1 )
-hframes = 26
-vframes = 26
-frame = 573
+material = SubResource( 23 )
+margin_left = 10.0
+margin_top = 9.0
+margin_right = 34.0
+margin_bottom = 33.0
+rect_scale = Vector2( 1.5, 1.5 )
+texture_normal = SubResource( 22 )
+expand = true
 
 [node name="Leaderboard" type="TextureButton" parent="UI"]
-margin_left = -20.0
-margin_top = 16.0
-margin_right = 4.0
-margin_bottom = 40.0
-
-[node name="Sprite" type="Sprite" parent="UI/Leaderboard"]
-material = SubResource( 20 )
-position = Vector2( 12, 12 )
-scale = Vector2( 2.5, 2.5 )
-texture = ExtResource( 1 )
-hframes = 26
-vframes = 26
-frame = 574
+material = SubResource( 24 )
+margin_left = 51.0
+margin_top = 9.0
+margin_right = 75.0
+margin_bottom = 33.0
+rect_scale = Vector2( 1.5, 1.5 )
+texture_normal = SubResource( 25 )
+expand = true
 
 [node name="Gold" type="TextureButton" parent="UI"]
-margin_left = 384.0
-margin_top = 16.0
-margin_right = 408.0
-margin_bottom = 40.0
-
-[node name="Sprite" type="Sprite" parent="UI/Gold"]
-material = SubResource( 21 )
-position = Vector2( 12, 12 )
-scale = Vector2( 2.5, 2.5 )
-texture = ExtResource( 1 )
-hframes = 26
-vframes = 26
-frame = 572
+material = SubResource( 27 )
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -49.0
+margin_top = 10.0
+margin_right = -25.0
+margin_bottom = 34.0
+rect_scale = Vector2( 1.5, 1.5 )
+texture_normal = SubResource( 26 )
+expand = true
 
 [node name="Gold" type="Label" parent="UI/Gold"]
 margin_left = -36.0

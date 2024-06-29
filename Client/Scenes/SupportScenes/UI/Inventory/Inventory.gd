@@ -29,8 +29,11 @@ func InspectItem(_item):
 	if item.has("damage"):
 		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.text = "Damage: " + str(item.damage[0]) + "-" + str(item.damage[1])
 		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.visible = true
+		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.text = "Rate of Fire: " + str(item.rof) + "%"
+		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.visible = true
 	else:
 		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.visible = false
+		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.visible = false
 	
 	var stats_node = $InspectItem/MarginContainer/VBoxContainer/ItemStats
 	var item_stats = item.stats

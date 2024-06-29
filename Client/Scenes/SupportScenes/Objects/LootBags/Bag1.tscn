@@ -8,44 +8,31 @@
 shader = ExtResource( 2 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.4
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/glow_thickness = 1.3
+shader_param/glow_color = Color( 0, 0, 0, 0.2 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
-shader_param/swordTextureActive = false
-shader_param/bowTextureActive = false
-shader_param/staffTextureActive = false
-shader_param/staffGemTextureActive = false
-shader_param/helmetDarkOrigin = null
-shader_param/helmetDarkNew = null
-shader_param/helmetMediumOrigin = null
-shader_param/helmetMediumNew = null
-shader_param/helmetLightOrigin = null
-shader_param/helmetLightNew = null
-shader_param/bodyDarkOrigin = null
-shader_param/bodyDarkNew = null
-shader_param/bodyMediumOrigin = null
-shader_param/bodyMediumNew = null
-shader_param/bodyLightOrigin = null
-shader_param/bodyLightNew = null
-shader_param/bandOrigin = null
-shader_param/bandNew = null
-shader_param/buckleOrigin = null
-shader_param/buckleNew = null
-shader_param/bowOrigin = null
-shader_param/bowNew = null
-shader_param/arrowLightOrigin = null
-shader_param/arrowLightNew = null
-shader_param/arrowDarkOrigin = null
-shader_param/arrowDarkNew = null
-shader_param/bladeHiltOrigin = null
-shader_param/bladeHiltNew = null
-shader_param/bladeOrigin = null
-shader_param/bladeNew = null
-shader_param/staffOrigin = null
-shader_param/staffNew = null
-shader_param/staffGemOrigin = null
-shader_param/staffGemNew = null
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 3.5, 4 )
@@ -64,6 +51,7 @@ vframes = 26
 frame = 105
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]

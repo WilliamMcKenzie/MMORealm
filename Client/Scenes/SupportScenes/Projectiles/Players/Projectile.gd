@@ -29,7 +29,7 @@ func _process(delta):
 	time += delta
 	expression.parse(formula,["x"])
 	var initial_offset = velocity * delta * 1
-	var pattern_offset = Vector2(-velocity.y, velocity.x) * expression.execute([time * 25]) * 0.01
+	var pattern_offset = Vector2(-velocity.y, velocity.x) * expression.execute([time * 25]) * 0.01 * expression.execute([time * 25])
 	position += initial_offset + pattern_offset
 	if (position - initial_position).length()/8 > tile_range:
 		queue_free()

@@ -2,67 +2,47 @@ shader_type canvas_item;
 
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
 uniform float line_thickness : hint_range(0, 10) = 0.4;
-uniform float glow_thickness : hint_range(0, 20) = 4.0;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0);
+uniform float glow_thickness : hint_range(0, 20) = 1.3;
+uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
 
 uniform sampler2D helmetTexture;
 uniform sampler2D bodyTexture;
-uniform sampler2D swordTexture;
-uniform sampler2D bowTexture;
-uniform sampler2D staffTexture;
-uniform sampler2D staffGemTexture;
+uniform sampler2D weaponTexture;
 
 uniform bool helmetTextureActive = false;
 uniform bool bodyTextureActive = false;
-uniform bool swordTextureActive = false;
-uniform bool bowTextureActive = false;
-uniform bool staffTextureActive = false;
-uniform bool staffGemTextureActive = false;
+uniform bool weaponTextureActive = false;
 
-uniform vec4 helmetDarkOrigin:hint_color;
-uniform vec4 helmetDarkNew:hint_color;
+uniform vec4 helmetDarkOrigin:hint_color = vec4(33, 53, 23, 0.2);
+uniform vec4 helmetDarkNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 helmetMediumOrigin:hint_color;
-uniform vec4 helmetMediumNew:hint_color;
+uniform vec4 helmetMediumOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 helmetMediumNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 helmetLightOrigin:hint_color;
-uniform vec4 helmetLightNew:hint_color;
+uniform vec4 helmetLightOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 helmetLightNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 bodyDarkOrigin:hint_color;
-uniform vec4 bodyDarkNew:hint_color;
+uniform vec4 bodyDarkOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 bodyDarkNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 bodyMediumOrigin:hint_color;
-uniform vec4 bodyMediumNew:hint_color;
+uniform vec4 bodyMediumOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 bodyMediumNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 bodyLightOrigin:hint_color;
-uniform vec4 bodyLightNew:hint_color;
+uniform vec4 bodyLightOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 bodyLightNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 bandOrigin:hint_color;
-uniform vec4 bandNew:hint_color;
+uniform vec4 bandOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 bandNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 buckleOrigin:hint_color;
-uniform vec4 buckleNew:hint_color;
+uniform vec4 buckleOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 buckleNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 bowOrigin:hint_color;
-uniform vec4 bowNew:hint_color;
+uniform vec4 weaponOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 weaponNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 arrowLightOrigin:hint_color;
-uniform vec4 arrowLightNew:hint_color;
+uniform vec4 weaponSecondaryOrigin:hint_color= vec4(33, 53, 23, 0.2);
+uniform vec4 weaponSecondaryNew:hint_color= vec4(33, 53, 23, 0.2);
 
-uniform vec4 arrowDarkOrigin:hint_color;
-uniform vec4 arrowDarkNew:hint_color;
-
-uniform vec4 bladeHiltOrigin:hint_color;
-uniform vec4 bladeHiltNew:hint_color;
-
-uniform vec4 bladeOrigin:hint_color;
-uniform vec4 bladeNew:hint_color;
-
-uniform vec4 staffOrigin:hint_color;
-uniform vec4 staffNew:hint_color;
-
-uniform vec4 staffGemOrigin:hint_color;
-uniform vec4 staffGemNew:hint_color;
 
 void fragment() {
 	
@@ -140,31 +120,10 @@ void fragment() {
 	if(current_pixel == buckleOrigin)
 		COLOR = buckleNew;
 
-	if(swordTextureActive == true && (current_pixel == bladeOrigin))
-		COLOR = texture(swordTexture, scaled_uv);
-	else if(current_pixel == bladeOrigin)
-			COLOR = bladeNew;
-	if(current_pixel == bladeHiltOrigin)
-			COLOR = bladeHiltNew;
-	
-	if(bowTextureActive == true && (current_pixel == bowOrigin))
-		COLOR = texture(bowTexture, scaled_uv);
-	else if(current_pixel == bowOrigin)
-		COLOR = bowNew;
-
-	if(current_pixel == arrowLightOrigin)
-		COLOR = arrowLightNew;
-
-	if(current_pixel == arrowDarkOrigin)
-		COLOR = arrowDarkNew;
-	
-	if(staffTextureActive == true && (current_pixel == staffOrigin))
-		COLOR = texture(staffTexture, scaled_uv);
-	else if(current_pixel == staffOrigin)
-		COLOR = staffNew;
-		
-	if(staffGemTextureActive == true && (current_pixel == staffGemOrigin))
-		COLOR = texture(staffGemTexture, scaled_uv);
-	else if(current_pixel == staffGemOrigin)
-		COLOR = staffGemNew;
+	if(weaponTextureActive == true && (current_pixel == weaponOrigin))
+		COLOR = texture(weaponTexture, scaled_uv);
+	else if(current_pixel == weaponOrigin)
+			COLOR = weaponNew;
+	if(current_pixel == weaponSecondaryOrigin)
+			COLOR = weaponSecondaryNew;
 }

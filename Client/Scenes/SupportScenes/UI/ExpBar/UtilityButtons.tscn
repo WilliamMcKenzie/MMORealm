@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/ExpBar/LootButton.gd" type="Script" id=2]
@@ -20,6 +20,10 @@ region = Rect2( 69, 219.5, 12, 12 )
 atlas = ExtResource( 1 )
 region = Rect2( 69, 229.5, 12, 12 )
 
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 1 )
+region = Rect2( 70, 220, 10, 10 )
+
 [sub_resource type="ShaderMaterial" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
@@ -30,6 +34,10 @@ region = Rect2( 60, 220.5, 10, 10 )
 atlas = ExtResource( 1 )
 region = Rect2( 60, 230.5, 10, 10 )
 
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 1 )
+region = Rect2( 60, 220, 10, 10 )
+
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 1 )
 region = Rect2( 80, 220, 10, 10 )
@@ -37,6 +45,10 @@ region = Rect2( 80, 220, 10, 10 )
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 1 )
 region = Rect2( 80, 230, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 1 )
+region = Rect2( 80, 220, 10, 10 )
 
 [node name="UtilityButtons" type="VBoxContainer"]
 margin_right = 40.0
@@ -57,6 +69,7 @@ custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
 [node name="TextureButton" type="TextureButton" parent="NearbyButton/MarginContainer"]
+modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 3 )
 margin_left = 4.0
 margin_top = 4.0
@@ -66,6 +79,13 @@ rect_min_size = Vector2( 30, 30 )
 texture_normal = SubResource( 2 )
 texture_hover = SubResource( 6 )
 expand = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="NearbyButton/MarginContainer"]
+material = SubResource( 3 )
+position = Vector2( 5, 4 )
+scale = Vector2( 3, 3 )
+z_index = 22
+normal = SubResource( 11 )
 
 [node name="BackpackButton" type="PanelContainer" parent="."]
 margin_top = 43.0
@@ -83,6 +103,7 @@ custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
 [node name="TextureButton" type="TextureButton" parent="BackpackButton/MarginContainer"]
+modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 4 )
 margin_left = 4.0
 margin_top = 4.0
@@ -92,6 +113,13 @@ rect_min_size = Vector2( 30, 30 )
 texture_normal = SubResource( 1 )
 texture_hover = SubResource( 5 )
 expand = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="BackpackButton/MarginContainer"]
+material = SubResource( 3 )
+position = Vector2( 5, 4 )
+scale = Vector2( 3, 3 )
+z_index = 22
+normal = SubResource( 12 )
 
 [node name="LootButton" type="PanelContainer" parent="."]
 visible = false
@@ -110,6 +138,7 @@ custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
 [node name="TextureButton" type="TextureButton" parent="LootButton/MarginContainer"]
+modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 4 )
 margin_left = 4.0
 margin_top = 4.0
@@ -119,3 +148,10 @@ rect_min_size = Vector2( 30, 30 )
 texture_normal = SubResource( 7 )
 texture_hover = SubResource( 8 )
 expand = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="LootButton/MarginContainer"]
+material = SubResource( 3 )
+position = Vector2( 5, 4 )
+scale = Vector2( 3, 3 )
+z_index = 22
+normal = SubResource( 13 )

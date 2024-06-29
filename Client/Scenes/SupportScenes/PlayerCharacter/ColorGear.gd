@@ -22,50 +22,29 @@ var unique_color_params = {
 
 var default_color_params = {
 	
-	"helmetDarkOrigin" : RgbaToColor(255.0, 255.0, 0, 200),
+	"helmetDarkOrigin" : RgbToColor(0, 0, 255.0),
 	"helmetDarkNew" : RgbToColor(94.0, 84.0, 84.0),
 	
-	"helmetLightOrigin" : RgbToColor(255.0, 100.0, 0),
+	"helmetLightOrigin" : RgbToColor(0, 255.0, 255.0),
 	"helmetLightNew" : RgbToColor(135.0, 117.0, 117.0),
 	
-	"helmetMediumOrigin" : RgbToColor(255.0, 204.0, 225),
+	"helmetMediumOrigin" : RgbToColor(255.0, 0, 255.0),
 	"helmetMediumNew" : RgbToColor(108.0, 99.0, 99.0),
 	
 	"bodyLightOrigin" : RgbToColor(255.0, 255.0, 255.0),
 	"bodyLightNew" : RgbToColor(216.0, 216.0, 216.0),
 	
-	"bodyMediumOrigin" : RgbToColor(255.0, 204.0, 255.0),
+	"bodyMediumOrigin" : RgbToColor(255.0, 255.0, 0),
 	"bodyMediumNew" : RgbToColor(190.0, 190.0, 190.0),
 	
-	"bodyDarkOrigin" : RgbToColor(255.0, 51.0, 255.0),
-	"bodyDarkNew" : RgbToColor(124.0, 124.0, 124.0),
-	
-	"bandOrigin" : RgbToColor(255.0, 0, 100.0),
+	"bandOrigin" : RgbToColor(0, 0, 0),
 	"bandNew" : RgbToColor(144.0, 81.0, 38.0),
 	
-	"buckleOrigin" : RgbToColor(150.0, 0, 100.0),
-	"buckleNew" : RgbToColor(130.0, 130.0, 130.0),
+	"weaponOrigin" : RgbToColor(255.0, 0, 0),
+	"weaponNew" : RgbToColor(132.0, 132.0, 132.0),
 	
-	"bladeOrigin" : RgbToColor(255.0, 0, 0),
-	"bladeNew" : RgbToColor(132.0, 132.0, 132.0),
-	
-	"bladeHiltOrigin" : RgbToColor(0.0, 255.0, 255.0),
-	"bladeHiltNew" : RgbToColor(144.0, 81.0, 38.0),
-	
-	"bowOrigin" : RgbToColor(255.0, 255.0, 0.0),
-	"bowNew" : RgbToColor(144.0, 81.0, 38.0),
-	
-	"arrowLightOrigin" : RgbToColor(0, 0, 255.0),
-	"arrowLightNew" : RgbToColor(216.0, 216.0, 216.0),
-	
-	"arrowDarkOrigin" : RgbToColor(0, 0, 255.0),
-	"arrowDarkNew" : RgbToColor(190.0, 190.0, 190.0),
-	
-	"staffOrigin" : RgbToColor(255.0, 0.0, 255.0),
-	"staffNew" : RgbToColor(144.0, 81.0, 38.0),
-	
-	"staffGemOrigin" : RgbToColor(0.0, 255.0, 0.0),
-	"staffGemNew" : RgbToColor(255.0, 255.0, 255.0),
+	"weaponSecondaryOrigin" : RgbToColor(0, 255.0, 0),
+	"weaponSecondaryNew" : RgbToColor(144.0, 81.0, 38.0),
 }
 
 func GetParams():
@@ -113,6 +92,7 @@ func ColorGear(gear):
 	shader_material.shader = load("res://Resources/ColorGear.gdshader")
 	
 	self.material = shader_material
+	
 	
 	#Get color params
 	color_params = default_color_params.duplicate(true)

@@ -27,15 +27,6 @@ enum VisibilityMode {ALWAYS , TOUCHSCREEN_ONLY }
 
 export(VisibilityMode) var visibility_mode := VisibilityMode.ALWAYS
 
-# Use Input Actions
-export var use_input_actions := true
-
-# Project -> Project Settings -> Input Map
-export var action_left := "NULL"
-export var action_right := "NULL"
-export var action_up := "NULL"
-export var action_down := "NULL"
-
 #### PUBLIC VARIABLES ####
 
 # If the joystick is receiving inputs.
@@ -81,14 +72,11 @@ func _input(event: InputEvent) -> void:
 					_touch_index = event.index
 					_tip.modulate = pressed_color
 					_update_joystick(event.position)
-					get_tree().set_input_as_handled()
 		elif event.index == _touch_index:
 			_reset()
-			get_tree().set_input_as_handled()
 	elif event is InputEventScreenDrag:
 		if event.index == _touch_index:
 			_update_joystick(event.position)
-			get_tree().set_input_as_handled()
 
 func _move_base(new_position: Vector2) -> void:
 	_base.rect_global_position = new_position - _base.rect_pivot_offset * get_global_transform_with_canvas().get_scale()
@@ -122,10 +110,6 @@ func _update_joystick(touch_position: Vector2) -> void:
 		_pressed = false
 		_output = Vector2.ZERO
 	
-	if use_input_actions:
-		_update_input_actions()
-
-func _update_input_actions():
 	Server.UpdateLeftJoystick(_output)
 
 func _reset():
@@ -137,12 +121,3 @@ func _reset():
 	_tip.modulate = _default_color
 	_base.rect_position = _base_default_position
 	_tip.rect_position = _tip_default_position
-	if use_input_actions:
-		if Input.is_action_pressed(action_left) or Input.is_action_just_pressed(action_left):
-			Input.action_release(action_left)
-		if Input.is_action_pressed(action_right) or Input.is_action_just_pressed(action_right):
-			Input.action_release(action_right)
-		if Input.is_action_pressed(action_down) or Input.is_action_just_pressed(action_down):
-			Input.action_release(action_down)
-		if Input.is_action_pressed(action_up) or Input.is_action_just_pressed(action_up):
-			Input.action_release(action_up)

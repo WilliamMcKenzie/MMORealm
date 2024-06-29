@@ -51,8 +51,8 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,0)],
 		"colors" : {
-			"bladeHiltNew" : RgbToColor(105.0, 51.0, 10.0),
-			"bladeNew" : RgbToColor(174.0, 172.0, 156.0)
+			"weaponSecondaryNew" : RgbToColor(105.0, 51.0, 10.0),
+			"weaponNew" : RgbToColor(174.0, 172.0, 156.0)
 		},
 		"textures" : {}
 	},
@@ -72,7 +72,6 @@ var items = {
 			"bodyMediumNew" : RgbToColor(0.0, 106.0, 138.0),
 			"bodyLightNew" : RgbToColor(0.0, 125.0, 163.0),
 			"bandNew" : RgbToColor(225.0, 179.0, 36.0),
-			"buckleNew" : RgbToColor(234.0, 234.0, 78.0),
 		},
 		"textures" : {
 			
@@ -95,9 +94,8 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)],
 		"colors" : {
-			"arrowLightNew" : RgbToColor(125.0, 30.0, 156.0),
-			"arrowDarkNew" : RgbToColor(125.0, 30.0, 156.0),
-			"bowNew" : RgbToColor(74.0, 33.0, 4.0),
+			"weaponSecondaryNew" : RgbToColor(125.0, 30.0, 156.0),
+			"weaponNew" : RgbToColor(74.0, 33.0, 4.0),
 		},
 		"textures" : {
 			
@@ -123,8 +121,7 @@ var items = {
 			"staffGemNew" : RgbToColor(251.0, 255.0, 145.0)
 		},
 		"textures" : {
-			"staffTexture" : "flame",
-			"swordTexture" : "flame",
+			"weaponTexture" : "flame",
 			"bodyTexture" : "flame",
 			"helmetTexture" : "flame",
 		}

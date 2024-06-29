@@ -1,11 +1,10 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
-[ext_resource path="res://Assets/items/textures/tile.png" type="Texture" id=6]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/move_Joystick.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/attack_joystick.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd" type="Script" id=9]
@@ -342,10 +341,7 @@ shader_param/glow_thickness = 0.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
-shader_param/swordTextureActive = false
-shader_param/bowTextureActive = true
-shader_param/staffTextureActive = false
-shader_param/staffGemTextureActive = false
+shader_param/weaponTextureActive = false
 shader_param/helmetDarkOrigin = Color( 0.788235, 0.415686, 0, 1 )
 shader_param/helmetDarkNew = Color( 0.372549, 0.32549, 0.32549, 1 )
 shader_param/helmetMediumOrigin = Color( 0.894118, 0.470588, 0, 1 )
@@ -362,22 +358,10 @@ shader_param/bandOrigin = Color( 1, 0, 0.419608, 1 )
 shader_param/bandNew = Color( 0.564706, 0.317647, 0.14902, 1 )
 shader_param/buckleOrigin = Color( 0, 0, 0, 1 )
 shader_param/buckleNew = Color( 0.509804, 0.509804, 0.509804, 1 )
-shader_param/bowOrigin = Color( 1, 1, 0, 1 )
-shader_param/bowNew = Color( 1, 0.00392157, 0.00392157, 1 )
-shader_param/arrowLightOrigin = Color( 1, 1, 1, 1 )
-shader_param/arrowLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
-shader_param/arrowDarkOrigin = Color( 0, 0, 1, 1 )
-shader_param/arrowDarkNew = Color( 0.745098, 0.745098, 0.745098, 1 )
-shader_param/bladeHiltOrigin = Color( 0, 1, 1, 1 )
-shader_param/bladeHiltNew = Color( 0.588235, 0.333333, 0.160784, 1 )
-shader_param/bladeOrigin = Color( 1, 0, 0, 1 )
-shader_param/bladeNew = Color( 0.498039, 0.498039, 0.498039, 1 )
-shader_param/staffOrigin = Color( 1, 0, 1, 1 )
-shader_param/staffNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/staffGemOrigin = Color( 0, 1, 0, 1 )
-shader_param/staffGemNew = Color( 1, 1, 1, 1 )
-shader_param/bowTexture = ExtResource( 6 )
-shader_param/staffTexture = ExtResource( 6 )
+shader_param/weaponOrigin = null
+shader_param/weaponNew = null
+shader_param/weaponSecondaryOrigin = null
+shader_param/weaponSecondaryNew = null
 
 [sub_resource type="Shader" id=53]
 code = "shader_type canvas_item;

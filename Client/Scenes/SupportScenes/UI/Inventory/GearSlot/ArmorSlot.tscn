@@ -1,15 +1,19 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
-[ext_resource path="res://Assets/objects/objects_8x8.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/SupportScenes/Objects/Obstacles/Obstacle.gd" type="Script" id=3]
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/SupportScenes/UI/Inventory/ItemSlot.gd" type="Script" id=5]
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 2 )
+region = Rect2( 170, 220, 10, 10 )
+
+[sub_resource type="ShaderMaterial" id=9]
 shader = ExtResource( 1 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.4
+shader_param/line_thickness = 0.3
 shader_param/glow_thickness = 1.3
-shader_param/glow_color = Color( 0, 0, 0, 0.2 )
+shader_param/glow_color = Color( 0, 0, 0, 0.1 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
 shader_param/weaponTextureActive = false
@@ -34,33 +38,45 @@ shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
 shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
 shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4, 4 )
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 10, 10, 10, 10 )
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 4.5, 4.5 )
+[node name="0" type="TextureButton"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand = true
+script = ExtResource( 5 )
 
-[node name="Tree" type="Node2D"]
-script = ExtResource( 3 )
+[node name="ItemBackground" type="TextureRect" parent="."]
+modulate = Color( 0.517647, 0.517647, 0.517647, 0.803922 )
+margin_right = 40.0
+margin_bottom = 40.0
+texture = SubResource( 8 )
+expand = true
+stretch_mode = 5
 
-[node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 4 )
-position = Vector2( 4, 4 )
-texture = ExtResource( 2 )
-hframes = 26
-vframes = 26
-frame = 136
-
-[node name="Area2D" type="Area2D" parent="."]
+[node name="ItemIcon" type="TextureRect" parent="."]
 visible = false
+material = SubResource( 9 )
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+texture = SubResource( 6 )
+expand = true
+stretch_mode = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 4, 4 )
-shape = SubResource( 1 )
-
-[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+[node name="ResizeContainer" type="Node2D" parent="."]
 visible = false
+position = Vector2( 31.5, 27 )
+scale = Vector2( 0.6, 0.6 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
-position = Vector2( 4, 4 )
-shape = SubResource( 3 )
+[node name="ItemQuantity" type="Label" parent="ResizeContainer"]
+visible = false
+margin_left = -8.0
+margin_top = 4.0
+margin_right = 32.0
+margin_bottom = 23.0
+text = "x2"

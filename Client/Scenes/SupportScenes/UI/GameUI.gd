@@ -13,8 +13,8 @@ func _ready():
 	$Inventory/LootContainer/CloseButton.connect("pressed", self, "ToggleInventory")
 	$GameButtons/HomeButton.connect("pressed", Server, "Nexus")
 	
-	$GameButtons/HelmetButton.connect("button_down", self, "InUI")
-	$GameButtons/HomeButton.connect("button_down", self, "InUI")
+	$GameButtons/HelmetButton.connect("pressed", self, "InUI")
+	$GameButtons/HomeButton.connect("pressed", self, "InUI")
 
 func InUI():
 	is_in_ui = true

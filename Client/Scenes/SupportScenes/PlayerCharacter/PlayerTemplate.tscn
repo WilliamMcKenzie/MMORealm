@@ -1,10 +1,9 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/PlayerTemplate.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=3]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
-[ext_resource path="res://Assets/items/textures/tile.png" type="Texture" id=5]
 
 [sub_resource type="ShaderMaterial" id=39]
 render_priority = 1
@@ -15,18 +14,15 @@ shader_param/glow_thickness = 0.0
 shader_param/glow_color = Color( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
-shader_param/swordTextureActive = true
-shader_param/bowTextureActive = false
-shader_param/staffTextureActive = false
-shader_param/staffGemTextureActive = false
-shader_param/helmetDarkOrigin = Color( 0.788235, 0.415686, 0, 1 )
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 1, 0, 0, 1 )
 shader_param/helmetDarkNew = Color( 0.368627, 0.329412, 0.329412, 1 )
 shader_param/helmetMediumOrigin = Color( 0.894118, 0.470588, 0, 1 )
 shader_param/helmetMediumNew = Color( 0.423529, 0.388235, 0.388235, 1 )
 shader_param/helmetLightOrigin = Color( 1, 0.52549, 0, 1 )
 shader_param/helmetLightNew = Color( 0.529412, 0.458824, 0.458824, 1 )
-shader_param/bodyDarkOrigin = null
-shader_param/bodyDarkNew = null
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
 shader_param/bodyMediumOrigin = Color( 0.894118, 0, 0.752941, 1 )
 shader_param/bodyMediumNew = Color( 0.745098, 0.745098, 0.745098, 1 )
 shader_param/bodyLightOrigin = Color( 1, 0, 0.843137, 1 )
@@ -35,21 +31,10 @@ shader_param/bandOrigin = Color( 1, 0, 0.419608, 1 )
 shader_param/bandNew = Color( 0.564706, 0.317647, 0.14902, 1 )
 shader_param/buckleOrigin = Color( 0.823529, 0, 0.34902, 1 )
 shader_param/buckleNew = Color( 0.509804, 0.509804, 0.509804, 1 )
-shader_param/bowOrigin = Color( 1, 0.94902, 0, 1 )
-shader_param/bowNew = Color( 0, 0, 0, 0 )
-shader_param/arrowLightOrigin = Color( 0, 0.843137, 1, 1 )
-shader_param/arrowLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
-shader_param/arrowDarkOrigin = Color( 0, 0.517647, 0.615686, 1 )
-shader_param/arrowDarkNew = Color( 0.745098, 0.745098, 0.745098, 1 )
-shader_param/bladeHiltOrigin = Color( 0, 1, 0.419608, 1 )
-shader_param/bladeHiltNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/bladeOrigin = Color( 1, 0, 0, 1 )
-shader_param/bladeNew = Color( 0.517647, 0.517647, 0.517647, 1 )
-shader_param/staffOrigin = null
-shader_param/staffNew = null
-shader_param/staffGemOrigin = null
-shader_param/staffGemNew = null
-shader_param/swordTexture = ExtResource( 5 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 
 [sub_resource type="AnimationNodeAnimation" id=40]
 animation = "attack_down"
