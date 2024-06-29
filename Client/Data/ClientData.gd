@@ -136,19 +136,22 @@ var projectiles = {
 		"damage" : 10,
 		"speed" : 50,
 		"tile_range" : 8,
-		"piercing" : false
+		"piercing" : false,
+		"formula" : "0"
 	},
 	"GoldenArrow" : {
 		"damage" : 50,
 		"speed" : 100,
 		"tile_range" : 8,
-		"piercing" : true
+		"piercing" : true,
+		"formula" : "0"
 	},
 	"FlameBlast" : {
 		"damage" : 50,
 		"speed" : 150,
 		"tile_range" : 8,
-		"piercing" : false
+		"piercing" : false,
+		"formula" : "sin(x)"
 	}
 }
 
