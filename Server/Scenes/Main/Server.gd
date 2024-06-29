@@ -23,6 +23,9 @@ func _ready():
 	StartServer()
 	
 	#Open realm
+	#for i in range(100):
+	#	PlayerVerification.CreateFakePlayerContainer()
+		
 	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("test_dungeon", ["nexus"], Vector2.ZERO)
@@ -56,7 +59,7 @@ func _Peer_Connected(id):
 	PlayerVerification.Start(id)
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
-	if player_instance_tracker[player_state_collection[id]["I"]].has(id):
+	if player_instance_tracker[player_state_collection[id]["I"]].has(id) and get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])+"/YSort/Players/"+str(id)):
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
 		
@@ -64,8 +67,8 @@ func _Peer_Disconnected(id):
 		HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])).RemovePlayer(player_container)
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
-	player_state_collection.erase(id)
-	rpc_id(0, "DespawnPlayer", id)
+		player_state_collection.erase(id)
+		rpc_id(0, "DespawnPlayer", id)
 
 #INVENTORY/ITEMS	
 remote func FetchPlayerData(email):

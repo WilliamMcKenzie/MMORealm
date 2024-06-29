@@ -80,13 +80,39 @@ func DeInspectItem(item):
 
 func ToggleInventory():
 	get_parent().ToggleInventory()
+
 func OpenInventory():
-	var animator = $InventoryAnimations
-	animator.play("ShowInventory")
+	var gear_tween = $GearTween
+	var backpack_tween = $BackpackTween
+	var loot_tween = $LootTween
+	
+	var gear_element = $PanelContainer
+	var backpack_element = $BackpackContainer
+	var loot_element = $LootContainer
+	
+	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, Vector2(0, -110)+gear_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	gear_tween.start()
+	backpack_tween.interpolate_property(backpack_element, "rect_position", backpack_element.rect_position, Vector2(-100, 0)+backpack_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	backpack_tween.start()
+	loot_tween.interpolate_property(loot_element, "rect_position", loot_element.rect_position, Vector2(100, 0)+loot_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	loot_tween.start()
 	$InventoryBackground.visible = true
+
 func CloseInventory():
-	var animator = $InventoryAnimations
-	animator.play("HideInventory")
+	var gear_tween = $GearTween
+	var backpack_tween = $BackpackTween
+	var loot_tween = $LootTween
+	
+	var gear_element = $PanelContainer
+	var backpack_element = $BackpackContainer
+	var loot_element = $LootContainer
+	
+	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, Vector2(0, 110)+gear_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	gear_tween.start()
+	backpack_tween.interpolate_property(backpack_element, "rect_position", backpack_element.rect_position, Vector2(100, 0)+backpack_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	backpack_tween.start()
+	loot_tween.interpolate_property(loot_element, "rect_position", loot_element.rect_position, Vector2(-100, 0)+loot_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	loot_tween.start()
 	$InventoryBackground.visible = false
 
 func SetInventory(inventory):

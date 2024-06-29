@@ -36,8 +36,6 @@ func _physics_process(delta):
 				min_tier = tier
 				_loot = loot_bags[object_id]["Loot"]
 				_id = object_id
-			
-			print(min_tier)
 		
 		if _loot and loot != _loot:
 			loot = _loot

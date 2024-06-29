@@ -48,8 +48,8 @@ func get_drag_data(position):
 	
 	drag_texture.expand = true
 	drag_texture.texture = AtlasTexture.new()
-	drag_texture.texture.atlas = get_node("ItemIcon").texture
-	drag_texture.texture.region = Rect2(get_node("ItemIcon").frame_coords*10, Vector2(10,10))
+	drag_texture.texture.atlas = get_node("ItemIcon").texture.atlas.duplicate(true)
+	drag_texture.texture.region = get_node("ItemIcon").texture.region
 	drag_texture.material = ShaderMaterial.new()
 	drag_texture.material.shader = load("res://Resources/ColorGear.gdshader")
 	drag_texture.material.set_shader_param("line_thickness", 0.3)
@@ -100,8 +100,8 @@ func GetItem():
 
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0])
-	sprite.texture = spriteTexture
-	sprite.hframes = path[1]
-	sprite.vframes = path[2]
-	sprite.frame_coords = path[3]
+	sprite.texture = AtlasTexture.new()
+	
+	sprite.texture.atlas = spriteTexture
+	sprite.texture.region = Rect2(path[3]*10, Vector2(10,10))
 	

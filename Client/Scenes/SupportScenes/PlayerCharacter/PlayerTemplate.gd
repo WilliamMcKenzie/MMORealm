@@ -65,6 +65,7 @@ func ShootProjectile():
 			projectile_instance.position = $Axis.global_position
 			
 			#Set projectile data
+			projectile_instance.projectile = projectile_data["Projectile"]
 			projectile_instance.damage = projectile_data["Damage"]
 			projectile_instance.tile_range = projectile_data["TileRange"]
 			projectile_instance.set_direction(projectile_data["Direction"])

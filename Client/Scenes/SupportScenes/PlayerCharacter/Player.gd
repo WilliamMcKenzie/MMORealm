@@ -22,7 +22,7 @@ var holding_shoot = false
 
 #We send animation to server to display to other clients.
 var lastAnimation = { "A" : "Idle", "C" : Vector2.ZERO }
-var lastSprite = { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice"}
+var lastSprite = { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {}}
 
 var shoot = false
 var last_shot_time = 0
@@ -190,6 +190,8 @@ func ShootProjectile():
 	
 	#Send projectile to server
 	var projectile_data = {
+		"Damage" : damage,
+		"Projectile":gear.weapon.projectile,
 		"Position":$Axis.global_position,
 		"MousePosition":mouse_position,
 		"Direction":direction,

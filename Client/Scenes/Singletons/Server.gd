@@ -14,6 +14,7 @@ var latency_array = []
 var delta_latency = 0
 var client_clock = 0
 var decimal_collector : float = 0
+var sync_clock_counter = 0
 
 #Map preloads
 var current_instance_tree = ["nexus"]
@@ -31,6 +32,13 @@ func _physics_process(delta):
 	if decimal_collector >= 1.00:
 		client_clock += 1
 		decimal_collector -= 1
+	
+	sync_clock_counter += 1
+	if sync_clock_counter > 60:
+		#print(client_clock)
+		#print(OS.get_system_time_msecs())
+		rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
+		sync_clock_counter = 0
 
 func UpdateRightJoystick(output):
 	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
@@ -75,7 +83,7 @@ remote func ReturnLatency(client_time):
 		latency_array.clear()
 
 remote func ReturnServerTime(server_time, client_time):
-	latency = (OS.get_system_time_secs()-client_time)/2
+	latency = (OS.get_system_time_msecs()-client_time)/2
 	client_clock = server_time+latency
 	
 remote func FetchToken():

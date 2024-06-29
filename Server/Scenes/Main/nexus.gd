@@ -71,7 +71,15 @@ func SpawnPlayer(player_container):
 		player_list[player_container.name] = {
 				"name": player_container.name,
 				"position": player_container.position,
-				"animation": { "A" : "Idle", "C" : Vector2.ZERO }
+				"animation": { "A" : "Idle", "C" : Vector2.ZERO },
+				"sprite": { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {
+					"ColorParams" : {},
+					"TextureParams" : {
+						"swordTexture" : "flame",
+						"helmetTexture" : "flame",
+						"bodyTexture" : "flame",
+					}
+				}}
 			}
 		get_node("YSort/Players").add_child(player_container)
 

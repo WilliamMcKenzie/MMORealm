@@ -43,6 +43,72 @@ func CreatePlayerContainer(player_id, email, character_index):
 	get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(new_player_container)
 	FillPlayerContainer(player_id, email)
 
+func CreateFakePlayerContainer():
+	var instance_tree = ["nexus"]
+	var new_player_container = player_container_scene.instance()
+	var default_account_data = {
+		"character_slots": 1,
+		"gold": 5000,
+		"achievements": {
+			"Trial By Fire" : false
+		},
+		"statistics": {
+			"tiles_covered" : 0,
+			"damage_taken" : 0,
+			"bow_projectiles" : 0,
+			"staff_projectiles" : 0,
+			"sword_projectiles" : 0,
+			"projectiles_landed" : 0,
+		},
+		"characters":[{
+			"stats" : {
+				"health" : 100,
+				"attack" : 30,
+				"defense" : 0,
+				"speed" : 30,
+				"dexterity" : 30,
+				"vitality" : 30
+			},
+			"level" : 1,
+			"exp" : 0,
+			
+			"class" : "Apprentice",
+			"statistics": {
+				"tiles_covered" : 0,
+				"damage_taken" : 0,
+				"bow_projectiles" : 0,
+				"staff_projectiles" : 0,
+				"sword_projectiles" : 0,
+				"projectiles_landed" : 0,
+			},
+			"gear" : {
+				"weapon" : {
+					"item" : 1,
+					"id" : get_node("/root/Server").generate_unique_id()
+				},
+				"helmet" : null,
+				"armor" : null
+			},
+			"inventory" : [
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+			]
+		}]
+	}
+	new_player_container.position = Vector2(rand_range(-25,25), rand_range(-25,25))
+	new_player_container.email = str(rand_range(0,5)).sha256_text()
+	new_player_container.name =  str(rand_range(0,5)).sha256_text()
+	new_player_container.character_index = 0
+	get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(new_player_container)
+	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(new_player_container.name)).account_data = default_account_data
+	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(new_player_container.name)).SetCharacter(default_account_data.characters)
+	
 func StringifyInstanceTree(instance_tree):
 	var res = ""
 	for instance in instance_tree:

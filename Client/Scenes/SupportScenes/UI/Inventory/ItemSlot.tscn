@@ -2,10 +2,13 @@
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=2]
-[ext_resource path="res://Assets/ui/item_background.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/ItemSlot.gd" type="Script" id=5]
 
-[sub_resource type="ShaderMaterial" id=5]
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 2 )
+region = Rect2( 140, 220, 10, 10 )
+
+[sub_resource type="ShaderMaterial" id=7]
 shader = ExtResource( 1 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.3
@@ -48,30 +51,35 @@ shader_param/staffNew = null
 shader_param/staffGemOrigin = null
 shader_param/staffGemNew = null
 
-[sub_resource type="ShaderMaterial" id=4]
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 10, 10, 10, 10 )
 
 [node name="0" type="TextureButton"]
 margin_right = 40.0
 margin_bottom = 36.0
 rect_min_size = Vector2( 40, 40 )
 rect_scale = Vector2( 2, 2 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 5 )
 
-[node name="ItemIcon" type="Sprite" parent="."]
-material = SubResource( 5 )
-position = Vector2( 20, 20 )
-scale = Vector2( 4, 4 )
-texture = ExtResource( 2 )
-hframes = 26
-vframes = 26
-frame = 26
-
-[node name="ItemBackground" type="Sprite" parent="."]
+[node name="ItemBackground" type="TextureRect" parent="."]
 modulate = Color( 0.517647, 0.517647, 0.517647, 0.803922 )
-material = SubResource( 4 )
-position = Vector2( 20, 20 )
-scale = Vector2( 0.01, 0.01 )
-texture = ExtResource( 4 )
+margin_right = 40.0
+margin_bottom = 40.0
+texture = SubResource( 8 )
+expand = true
+stretch_mode = 5
+
+[node name="ItemIcon" type="TextureRect" parent="."]
+visible = false
+material = SubResource( 7 )
+margin_right = 40.0
+margin_bottom = 40.0
+texture = SubResource( 6 )
+expand = true
+stretch_mode = 5
 
 [node name="ResizeContainer" type="Node2D" parent="."]
 visible = false
@@ -79,6 +87,7 @@ position = Vector2( 31.5, 27 )
 scale = Vector2( 0.6, 0.6 )
 
 [node name="ItemQuantity" type="Label" parent="ResizeContainer"]
+visible = false
 margin_left = -8.0
 margin_top = 4.0
 margin_right = 32.0

@@ -22,13 +22,23 @@ modulate_color = Color( 1, 1, 1, 0.588235 )
 script = ExtResource( 3 )
 
 [node name="ChatControl" parent="." instance=ExtResource( 2 )]
-position = Vector2( 0, 0 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = -3.0
+margin_top = -361.0
+margin_right = -3.0
+margin_bottom = -361.0
 
 [node name="EnterPortal" type="PanelContainer" parent="."]
-margin_left = 352.0
-margin_top = 179.0
-margin_right = 452.0
-margin_bottom = 224.0
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -22.5
+margin_right = 50.0
+margin_bottom = 22.5
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 10 )
 
@@ -54,16 +64,18 @@ margin_bottom = 27.0
 text = "Enter"
 
 [node name="UtilityButtons" parent="." instance=ExtResource( 9 )]
-margin_left = 754.0
-margin_top = 7.0
-margin_right = 792.0
-margin_bottom = 131.0
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -48.0
+margin_top = 9.0
+margin_right = -10.0
+margin_bottom = 133.0
 
 [node name="LeftContainer" type="HBoxContainer" parent="."]
-margin_left = 13.0
-margin_top = 13.0
-margin_right = 221.0
-margin_bottom = 63.0
+margin_left = 12.0
+margin_top = 11.0
+margin_right = 266.0
+margin_bottom = 61.0
 
 [node name="MiniMap" parent="LeftContainer" instance=ExtResource( 8 )]
 visible = false
@@ -107,15 +119,23 @@ margin_bottom = 54.0
 visible = false
 
 [node name="HelmetButton" parent="GameButtons" instance=ExtResource( 12 )]
-margin_left = 686.0
-margin_top = 248.0
-margin_right = 886.0
-margin_bottom = 448.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -124.0
+margin_top = -114.0
+margin_right = 76.0
+margin_bottom = 186.0
 rect_scale = Vector2( 0.45, 0.45 )
 
 [node name="HomeButton" parent="GameButtons" instance=ExtResource( 11 )]
-margin_left = 727.0
-margin_top = 178.0
-margin_right = 927.0
-margin_bottom = 378.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -74.0
+margin_top = -178.0
+margin_right = 126.0
+margin_bottom = 122.0
 rect_scale = Vector2( 0.3, 0.3 )

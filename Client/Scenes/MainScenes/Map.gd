@@ -121,6 +121,10 @@ func RefreshObjects(objects):
 		var type = objects[object]["type"]
 		var scene_name = objects[object]["name"]+".tscn"
 		
+		#Loot bags
+		if type == "LootBags" and objects[object]["soulbound"] == true and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
+			continue
+		
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
@@ -129,12 +133,8 @@ func RefreshObjects(objects):
 			object_instance.object_id = str(object)
 			object_instance.position = objects[object]["position"]
 			
-			#Loot bags
 			if type == "LootBags":
 				object_instance.loot = objects[object]["loot"]
-				
-				if objects[object]["soulbound"] == true and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
-					continue
 			
 			get_node("YSort/Objects/"+type).add_child(object_instance)
 	for type in expiring_types:

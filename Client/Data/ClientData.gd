@@ -106,7 +106,7 @@ var items = {
 	4 : {
 		"name": "Flamespitter",
 		"description" : "The remnants of the great calamity bahamut.",
-		"type" : "Staff",
+		"type" : "Sword",
 		"slot" : "weapon",
 		
 		"damage" : [40,70],
@@ -124,6 +124,9 @@ var items = {
 		},
 		"textures" : {
 			"staffTexture" : "flame",
+			"swordTexture" : "flame",
+			"bodyTexture" : "flame",
+			"helmetTexture" : "flame",
 		}
 	},
 }

@@ -97,7 +97,7 @@ func _move_tip(new_position: Vector2) -> void:
 	_tip.rect_global_position = new_position - _tip.rect_pivot_offset * _base.get_global_transform_with_canvas().get_scale()
 
 func _is_point_inside_joystick_area(point: Vector2) -> bool:
-	var viewport_width = get_viewport().size.x
+	var viewport_width = get_viewport().get_visible_rect().size.x
 	return point.x < viewport_width / 2
 
 func _is_point_inside_base(point: Vector2) -> bool:
