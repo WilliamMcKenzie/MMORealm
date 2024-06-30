@@ -348,8 +348,8 @@ shader_param/helmetMediumOrigin = Color( 0.894118, 0.470588, 0, 1 )
 shader_param/helmetMediumNew = Color( 0.423529, 0.388235, 0.388235, 1 )
 shader_param/helmetLightOrigin = Color( 1, 0.52549, 0, 1 )
 shader_param/helmetLightNew = Color( 0.529412, 0.458824, 0.458824, 1 )
-shader_param/bodyDarkOrigin = null
-shader_param/bodyDarkNew = null
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
 shader_param/bodyMediumOrigin = Color( 0.894118, 0, 0.752941, 1 )
 shader_param/bodyMediumNew = Color( 0.745098, 0.745098, 0.745098, 1 )
 shader_param/bodyLightOrigin = Color( 1, 0, 0.843137, 1 )
@@ -358,10 +358,10 @@ shader_param/bandOrigin = Color( 1, 0, 0.419608, 1 )
 shader_param/bandNew = Color( 0.564706, 0.317647, 0.14902, 1 )
 shader_param/buckleOrigin = Color( 0, 0, 0, 1 )
 shader_param/buckleNew = Color( 0.509804, 0.509804, 0.509804, 1 )
-shader_param/weaponOrigin = null
-shader_param/weaponNew = null
-shader_param/weaponSecondaryOrigin = null
-shader_param/weaponSecondaryNew = null
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 
 [sub_resource type="Shader" id=53]
 code = "shader_type canvas_item;
@@ -559,6 +559,7 @@ texture = ExtResource( 11 )
 
 [node name="CharacterSprite" type="Sprite" parent="."]
 material = SubResource( 52 )
+position = Vector2( 0, -4 )
 texture = ExtResource( 4 )
 hframes = 4
 vframes = 4
@@ -607,14 +608,14 @@ hframes = 26
 vframes = 26
 
 [node name="Axis" type="Area2D" parent="."]
-visible = false
+position = Vector2( 0, -4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Axis"]
 scale = Vector2( 0.9, 1.1 )
 shape = SubResource( 61 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
+position = Vector2( 0, -4 )
 scale = Vector2( 0.9, 1.1 )
 shape = SubResource( 61 )
 

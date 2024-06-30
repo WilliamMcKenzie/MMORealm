@@ -6,6 +6,7 @@ var id = null
 
 func _ready():
 	$MarginContainer/TouchScreenButton.connect("pressed", self, "OpenLootBag")
+	$MarginContainer/TextureButton.connect("pressed", self, "OpenLootBag")
 
 func _physics_process(delta):
 	if loot_bags.empty():

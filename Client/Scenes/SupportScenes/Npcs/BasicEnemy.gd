@@ -7,6 +7,8 @@ var damageIndicatorScene = preload("res://Scenes/SupportScenes/UI/DamageIndicato
 var projectile_dict = {}
 
 func _physics_process(delta):
+	if not $AnimationPlayer.is_playing():
+		$AnimationPlayer.play("Idle")
 	if projectile_dict != {}:
 		ShootProjectile()
 
@@ -14,11 +16,18 @@ func _ready():
 	$Area2D.connect("area_entered", self, "OnHit")
 
 func MoveEnemy(new_position):
+	var old_position = position
 	set_position(new_position)
+	
+	if new_position.x-old_position.x > 0:
+		$Sprite.flip_h = false
+	elif new_position.x-old_position.x < 0:
+		$Sprite.flip_h = true
 
 func ShootProjectile():
 	for projectile_time in projectile_dict.keys():
 		if projectile_time <= OS.get_system_time_msecs():
+			$AnimationPlayer.play("Attack")
 			var projectile_data = projectile_dict[projectile_time]
 			var projectile_node = load("res://Scenes/SupportScenes/Projectiles/Enemies/" + str(projectile_data["Projectile"]) + "/" + str(projectile_data["Projectile"]) + ".tscn")
 			var projectile_instance = projectile_node.instance()
@@ -41,9 +50,13 @@ func OnHit(body):
 		Server.NPCHit(name,body.get_parent().damage)
 
 func ShowDamageIndicator(damage_amount):
+	var sprite = get_node("Sprite")
+	var shape = get_node("Area2D/Hitbox").shape as RectangleShape2D
+	var _x = shape.extents.x
+	
 	var damage_indicator = damageIndicatorScene.instance()
 	damage_indicator.get_node("DamageLabel").text = str(damage_amount)
-	damage_indicator.position = damage_indicator.position + Vector2(10, -10)
+	damage_indicator.position = sprite.position + Vector2(-_x, -5)
 	
 	add_child(damage_indicator)
 

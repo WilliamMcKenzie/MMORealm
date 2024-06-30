@@ -19,9 +19,10 @@ position = Vector2( 0, -4 )
 texture = ExtResource( 3 )
 hframes = 26
 vframes = 26
-frame = 137
+frame = 135
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 position = Vector2( -4, -8 )
 collision_layer = 0
 collision_mask = 23
@@ -31,6 +32,7 @@ position = Vector2( 4, 4 )
 shape = SubResource( 1 )
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+visible = false
 position = Vector2( -4, -8 )
 collision_layer = 0
 collision_mask = 23

@@ -11,14 +11,37 @@ func GenerateChunk(chunk_data, chunk):
 	var tiles = chunk_data["Tiles"]
 	var objects = chunk_data["Objects"]
 	
+	#key is tile id
+	#value is 
+	#index 0: standard variations (plain grass, plain sand)
+	#index 1: unique variations (seashells, flowers etc)
+	#index 2: chance of unique variation
+	var tile_variations = {
+		0 : [1,0,0],
+		1 : [1,0,0],
+		2 : [2,3,0.01],
+		3 : [3,4,0.08],
+		4 : [3,2,0.05],
+		5 : [2,4,0.25],
+	}
+	
 	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
 		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
 			var tile = tiles[x-chunk.x+(chunk_size/2)][y-chunk.y+(chunk_size/2)]
 			
-			var random_index = randi() % 3
-			if tile != 3:
-				random_index = 0
-			$Tiles.set_cell(x,y,tile,false,false,random_index)
+			var num_variations = tile_variations[tile]
+			var random_index = 0
+			
+			#Standard tile
+			if num_variations[0] > 1:
+				random_index = randi() % num_variations[0]
+				
+				#Special tile
+				if randf() < num_variations[2]:
+					random_index = (randi() % num_variations[1]) + num_variations[0]
+			
+			$Tiles.set_cell(x,y,tile,false,false,false, Vector2(random_index, 0))
+			
 	for object in objects:
 		var object_node = load("res://Scenes/SupportScenes/Objects/Obstacles/" + object["N"] + ".tscn")
 		var object_instance = object_node.instance()

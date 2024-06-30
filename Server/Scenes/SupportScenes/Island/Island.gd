@@ -16,8 +16,8 @@ var enemy_spawn_points = {}
 
 #Enemy variety
 var beach_enemies = ["crab"]
-var forest_enemies = ["snake"]
-var plains_enemies = ["tribesman"]
+var forest_enemies = ["goblin_warrior", "goblin_cannon"]
+var plains_enemies = ["troll_warrior", "troll_brute"]
 var mountain_enemies = ["rock_golem"]
 
 #Chunks
@@ -116,6 +116,7 @@ func GetIslandChunk(chunk):
 			if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk:
 				var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
 				instance_tree.append(name)
+				
 				get_node("/root/Server").SpawnNPC(enemy_spawn_points[Vector2(x,y)]["Enemy"], instance_tree, Vector2(x*8, y*8)-self.position)
 	return {
 		"Tiles" : result,
@@ -254,18 +255,39 @@ func PopulateObstacles():
 	for x in range(map_size.x):
 		for y in range(map_size.y):
 			var map_tile = map_as_array[x][y]
-			var obstacle_seed = rand_range(0, 30)
+			var obstacle_seed = rand_range(0, 100)
 			
-			if map_tile <= 2:
-				pass
-			elif map_tile == 3 and obstacle_seed > 29.9:
-				CreateObstacle("tree", get_parent().object_list[name]["instance_tree"], Vector2(x*8, y*8), "Small", name)
-			elif map_tile == 4 and obstacle_seed > 29.8:
-				CreateObstacle("twig", get_parent().object_list[name]["instance_tree"], Vector2(x*8, y*8), "Small", name)
-			elif map_tile == 5 and obstacle_seed > 29.9:
-				CreateObstacle("rock1", get_parent().object_list[name]["instance_tree"], Vector2(x*8, y*8), "Small", name)
-			elif map_tile == 5 and obstacle_seed > 29.8:
-				CreateObstacle("rock2", get_parent().object_list[name]["instance_tree"], Vector2(x*8, y*8), "Small", name)
+			var obstacles = {
+				3 : [
+					"tree",
+					"shrub1",
+					"shrub2",
+				],
+				4 : [
+					"shrub3",
+					"shrub4",
+					"pink_shroom1",
+					"pink_shroom2",
+				],
+				5 : [
+					"rock1",
+					"rock2",
+					"twig",
+				]
+			}
+			var chance = 0.66
+			
+			if obstacles.has(map_tile):
+				var obstacle_list = obstacles[map_tile]
+				chance = chance/obstacle_list.size()
+				
+				var i = 0
+				for obstacle in obstacle_list:
+					i += 1
+					if obstacle_seed < chance*i:
+						CreateObstacle(obstacle, get_parent().object_list[name]["instance_tree"], Vector2(x*8, y*8), "Small", name)
+						break
+	
 func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size, island_id):
 	var obstacle_id = get_node("/root/Server").generate_unique_id()
 	var instance_tree_str = get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/"+str(island_id)

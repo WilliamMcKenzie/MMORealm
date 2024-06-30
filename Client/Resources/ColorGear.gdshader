@@ -3,7 +3,7 @@ shader_type canvas_item;
 uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
 uniform float line_thickness : hint_range(0, 10) = 0.4;
 uniform float glow_thickness : hint_range(0, 20) = 1.3;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
+uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.07);
 
 uniform sampler2D helmetTexture;
 uniform sampler2D bodyTexture;

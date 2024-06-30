@@ -1,35 +1,90 @@
 extends Node
 
-var enemies = {
-	"snake" : {
-		"health" : 40,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : 1
+var basic_loot_pools = {
+	"lowlands_1" : {
+		"soulbound_loot" : [
+			{
+				"item" : 4,
+				"chance" : 0.01,
+				"threshold" : 0.15,
+			}
+		],
+		"loot" : [
+			{
+				"item" : 1,
+				"chance" : 0.25,
+			}
+		]
 	},
+	"lowlands_2" : {
+		"soulbound_loot" : [
+				{
+				"item" : 4,
+				"chance" : 0.2,
+				"threshold" : 0.15,
+				},
+				{
+					"item" : 2,
+					"chance" : 0.5,
+					"threshold" : 0.15,
+				},
+				{
+					"item" : 3,
+					"chance" : 0.5,
+					"threshold" : 0.15,
+				}
+		],
+		"loot" : [
+			{
+				"item" : 1,
+				"chance" : 0.25,
+			}
+		]
+	}
+}
+
+var enemies = {
 	"crab" : {
 		"health" : 60,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"]
 	},
-	"tribesman" : {
-		"health" : 100,
+	"goblin_warrior" : {
+		"health" : 60,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"]
 	},
-	"shaman" : {
+	"goblin_cannon" : {
+		"health" : 600,
+		"defense" : 1,
+		"exp" : 20,
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"]
+	},
+	"troll_warrior" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"]
+	},
+	"troll_brute" : {
+		"health" : 400,
+		"defense" : 1,
+		"exp" : 20,
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"]
 	},
 	"rock_golem" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20,
-		"behavior" : 1
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_2"]
 	}
 }
 
@@ -64,7 +119,7 @@ var items = {
 		"tier" : "5",
 		
 		"stats" : {
-					
+			"speed" : 100
 		},
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,5)],
@@ -104,11 +159,11 @@ var items = {
 	4 : {
 		"name": "Flamespitter",
 		"description" : "The remnants of the great calamity bahamut.",
-		"type" : "Sword",
+		"type" : "Staff",
 		"slot" : "weapon",
 		
-		"damage" : [40,70],
-		"rof" : 300,
+		"damage" : [200,300],
+		"rof" : 500,
 		"stats" : {
 					
 		},
@@ -118,12 +173,10 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,1)],
 		"colors" : {
-			"staffGemNew" : RgbToColor(251.0, 255.0, 145.0)
+			"weaponSecondaryNew" : RgbToColor(251.0, 255.0, 145.0)
 		},
 		"textures" : {
 			"weaponTexture" : "flame",
-			"bodyTexture" : "flame",
-			"helmetTexture" : "flame",
 		}
 	},
 }
@@ -144,10 +197,10 @@ var projectiles = {
 		"formula" : "0"
 	},
 	"FlameBlast" : {
-		"damage" : 50,
-		"speed" : 150,
+		"damage" : 200,
+		"speed" : 100,
 		"tile_range" : 8,
-		"piercing" : false,
+		"piercing" : true,
 		"formula" : "sin(x)"
 	}
 }

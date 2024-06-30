@@ -62,7 +62,7 @@ func ShootProjectile():
 			var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_data["Projectile"]) + ".tscn"
 			var projectile = load(projectile_path)
 			var projectile_instance = projectile.instance()
-			projectile_instance.position = $Axis.global_position
+			projectile_instance.position = $Axis.global_position + projectile_data["Direction"]*3
 			
 			#Set projectile data
 			projectile_instance.projectile = projectile_data["Projectile"]

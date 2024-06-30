@@ -25,7 +25,7 @@ func SetData(data):
 	velocity *= speed
 	formula = data.formula
 func WallCollision(area):
-	if area.name == "TileMap":
+	if area.name == "TileMap" or "object_id" in area.get_parent():
 		queue_free()
 func _process(delta):
 	time += delta
@@ -37,8 +37,8 @@ func _process(delta):
 	if (position - initial_position).length()/8 > tile_range:
 		queue_free()
 func set_direction(direction: Vector2):
-	velocity = direction.normalized()
-	direction = direction
+	self.velocity = direction.normalized()
+	self.direction = direction
 func interaction(body):
 	if (piercing == false) and (body.has_method("MoveEnemy")) :
 		queue_free()

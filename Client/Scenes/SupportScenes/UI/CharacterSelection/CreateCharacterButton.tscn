@@ -1,45 +1,15 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/CharacterSelection/CreateCharacterButton.gd" type="Script" id=1]
 [ext_resource path="res://Assets/ui/rectangle_background.png" type="Texture" id=2]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=4]
+[ext_resource path="res://Resources/Renderer.tres" type="Material" id=4]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 3 )
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = ExtResource( 4 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.4
-shader_param/glow_thickness = 1.2
-shader_param/glow_color = Color( 0, 0, 0, 0.254902 )
-shader_param/helmetTextureActive = false
-shader_param/bodyTextureActive = false
-shader_param/weaponTextureActive = false
-shader_param/helmetDarkOrigin = null
-shader_param/helmetDarkNew = null
-shader_param/helmetMediumOrigin = null
-shader_param/helmetMediumNew = null
-shader_param/helmetLightOrigin = null
-shader_param/helmetLightNew = null
-shader_param/bodyDarkOrigin = null
-shader_param/bodyDarkNew = null
-shader_param/bodyMediumOrigin = null
-shader_param/bodyMediumNew = null
-shader_param/bodyLightOrigin = null
-shader_param/bodyLightNew = null
-shader_param/bandOrigin = null
-shader_param/bandNew = null
-shader_param/buckleOrigin = null
-shader_param/buckleNew = null
-shader_param/weaponOrigin = null
-shader_param/weaponNew = null
-shader_param/weaponSecondaryOrigin = null
-shader_param/weaponSecondaryNew = null
 
 [node name="CreateCharacterButton" type="Node2D"]
 script = ExtResource( 1 )
@@ -71,7 +41,7 @@ custom_fonts/font = SubResource( 1 )
 text = "Create Character"
 
 [node name="Character" type="Sprite" parent="."]
-material = SubResource( 2 )
+material = ExtResource( 4 )
 position = Vector2( 67.5, 31 )
 texture = ExtResource( 5 )
 hframes = 26

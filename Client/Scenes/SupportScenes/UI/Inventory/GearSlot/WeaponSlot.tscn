@@ -13,7 +13,7 @@ shader = ExtResource( 1 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.3
 shader_param/glow_thickness = 1.3
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
+shader_param/glow_color = Color( 0, 0, 0, 0.101961 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
 shader_param/weaponTextureActive = false
@@ -60,7 +60,6 @@ expand = true
 stretch_mode = 5
 
 [node name="ItemIcon" type="TextureRect" parent="."]
-visible = false
 material = SubResource( 9 )
 margin_right = 40.0
 margin_bottom = 40.0

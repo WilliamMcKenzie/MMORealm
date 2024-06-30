@@ -120,11 +120,15 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -3.0
+margin_top = 19.0
+margin_right = -3.0
+margin_bottom = 19.0
 
 [node name="HelmetButton" parent="GameButtons" instance=ExtResource( 12 )]
-position = Vector2( -154, -141 )
-scale = Vector2( 0.6, 0.6 )
+position = Vector2( -123, -126 )
+scale = Vector2( 0.5, 0.5 )
 
 [node name="HomeButton" parent="GameButtons" instance=ExtResource( 11 )]
-position = Vector2( -90, -215 )
-scale = Vector2( 0.4, 0.4 )
+position = Vector2( -73, -198 )
+scale = Vector2( 0.35, 0.35 )

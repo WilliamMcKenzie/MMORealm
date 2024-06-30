@@ -150,6 +150,7 @@ expand = true
 script = ExtResource( 9 )
 
 [node name="InspectItem" type="PanelContainer" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

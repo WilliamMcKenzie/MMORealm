@@ -47,6 +47,8 @@ func SetCharacter(_character):
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
 			gear[slot] = ClientData.GetItem(int(character.gear[slot].item))
+			for stat in gear[slot].stats.keys():
+				stats[stat] += gear[slot].stats[stat]
 	
 	if gear.has("weapon"):
 		var projectile_type = gear.weapon.projectile
@@ -185,8 +187,10 @@ func ShootProjectile():
 	var damage = round(CalculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
 	
 	if right_joystick_output != Vector2.ZERO:
-		mouse_position = right_joystick_output + position
+		mouse_position = right_joystick_output*100 + position
 		direction = right_joystick_output
+	else:
+		mouse_position = direction*100 + position
 	
 	#Send projectile to server
 	var projectile_data = {
@@ -199,7 +203,7 @@ func ShootProjectile():
 	}
 	Server.SendProjectile(projectile_data)
 	
-	projectile_instance.position = $Axis.global_position
+	projectile_instance.position = $Axis.global_position + direction*3
 	
 	#Set projectile data
 	projectile_instance.projectile = gear.weapon.projectile

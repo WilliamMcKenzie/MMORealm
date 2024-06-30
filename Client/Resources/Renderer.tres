@@ -1,15 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
-[ext_resource path="res://Scenes/SupportScenes/Npcs/BasicEnemy.gd" type="Script" id=1]
-[ext_resource path="res://Assets/npcs/enemies_8x8.png" type="Texture" id=2]
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=3]
+[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 
-[sub_resource type="ShaderMaterial" id=7]
-shader = ExtResource( 3 )
+[resource]
+shader = ExtResource( 1 )
 shader_param/line_color = Color( 0, 0, 0, 1 )
 shader_param/line_thickness = 0.4
 shader_param/glow_thickness = 1.3
-shader_param/glow_color = Color( 0, 0, 0, 0.2 )
+shader_param/glow_color = Color( 0, 0, 0, 0.07 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
 shader_param/weaponTextureActive = false
@@ -33,27 +31,3 @@ shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
 shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
 shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
 shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
-
-[sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 5, 5 )
-
-[node name="Shaman" type="Node2D"]
-script = ExtResource( 1 )
-
-[node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 7 )
-scale = Vector2( 1.00334, 1 )
-texture = ExtResource( 2 )
-hframes = 26
-vframes = 26
-frame = 28
-
-[node name="Area2D" type="Area2D" parent="."]
-visible = false
-position = Vector2( -5, -4 )
-collision_layer = 2
-collision_mask = 4
-
-[node name="Hitbox" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 5, 5 )
-shape = SubResource( 6 )
