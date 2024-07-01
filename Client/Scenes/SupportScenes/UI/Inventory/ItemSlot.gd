@@ -12,6 +12,8 @@ func _ready():
 	connect("mouse_exited", self, "DeInspectItem")
 	connect("focus_exited", self, "DeInspectItem")
 
+
+
 func _input(event):
 	# Check if the event is a mouse button release
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed() == false:

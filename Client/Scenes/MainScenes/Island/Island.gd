@@ -21,8 +21,9 @@ func GenerateChunk(chunk_data, chunk):
 		1 : [1,0,0],
 		2 : [2,3,0.01],
 		3 : [3,4,0.08],
-		4 : [3,2,0.05],
-		5 : [2,4,0.25],
+		4 : [3,4,0.1],
+		5 : [3,6,0.1],
+		6 : [2,4,0.25],
 	}
 	
 	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):

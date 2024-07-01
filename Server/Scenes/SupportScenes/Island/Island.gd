@@ -18,6 +18,7 @@ var enemy_spawn_points = {}
 var beach_enemies = ["crab"]
 var forest_enemies = ["goblin_warrior", "goblin_cannon"]
 var plains_enemies = ["troll_warrior", "troll_brute"]
+var badlands_enemies = ["troll_warrior", "troll_brute"]
 var mountain_enemies = ["rock_golem"]
 
 #Chunks
@@ -143,11 +144,12 @@ func GenerateIslandMap():
 	PopulateTiles()
 func PopulateTiles():
 	var center = map_size / 2
-	var ocean_distance = center.length() * 1.3
-	var beach_distance = center.length() * 1
-	var forest_distance = center.length() * 0.9
-	var plains_distance = center.length() * 0.6
-	var mountains_distance = center.length() * 0.4
+	var ocean_distance = center.length() * 1.5
+	var beach_distance = center.length() * 1.3
+	var forest_distance = center.length() * 1.2
+	var plains_distance = center.length() * 1
+	var badlands_distance = center.length() * 0.8
+	var mountains_distance = center.length() * 0.5
 	for x in range(map_size.x):
 		map_as_array.append([])
 		for y in range(map_size.y):
@@ -163,12 +165,17 @@ func PopulateTiles():
 			
 			var noise_value = noise.get_noise_2d(x * noise_scale, y * noise_scale) * noise_intensity
 			
-			var beach_value = (1.0 - (distance / beach_distance)) + noise_value
-			var forest_value = (1.0 - (distance / forest_distance)) + noise_value
-			var plains_value = (1.0 - (distance / plains_distance)) + noise_value
-			var mountains_value = (1.0 - (distance / mountains_distance)) + noise_value
+			var river_value = (1.0 - (distance / 1.5)) + noise_value/3
+			
+			var beach_value = (1.0 - (distance / beach_distance)) + noise_value/3
+			var forest_value = (1.0 - (distance / forest_distance)) + noise_value/3
+			var plains_value = (1.0 - (distance / plains_distance)) + noise_value/3 + rand_range(0,0.01)
+			var badlands_value = (1.0 - (distance / badlands_distance)) + noise_value + rand_range(0,0.01)
+			var mountains_value = (1.0 - (distance / mountains_distance)) + noise_value*2 + rand_range(0,0.01)
 
 			if mountains_value > tile_cap:
+				map_as_array[x][y] = 6
+			elif badlands_value > tile_cap:
 				map_as_array[x][y] = 5
 			elif plains_value > tile_cap:
 				map_as_array[x][y] = 4
@@ -247,6 +254,10 @@ func ArrayToTiles():
 				spawn_point_index += 1
 			if map_tile == 5 and enemy_seed > 29.8:
 				var enemy_index = round(rand_range(0, mountain_enemies.size()-1))
+				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": badlands_enemies[enemy_index]}
+				spawn_point_index += 1
+			if map_tile == 6 and enemy_seed > 29.8:
+				var enemy_index = round(rand_range(0, mountain_enemies.size()-1))
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": mountain_enemies[enemy_index]}
 				spawn_point_index += 1
 			#For visualizing realms
@@ -259,20 +270,22 @@ func PopulateObstacles():
 			
 			var obstacles = {
 				3 : [
-					"tree",
+					"tree1",
 					"shrub1",
 					"shrub2",
 				],
 				4 : [
-					"shrub3",
-					"shrub4",
-					"pink_shroom1",
-					"pink_shroom2",
+					"rock4",
+					"rock3",
 				],
 				5 : [
+					"shroom1",
+					"shroom2",
+				],
+				6 : [
 					"rock1",
 					"rock2",
-					"twig",
+					"twig1",
 				]
 			}
 			var chance = 0.66

@@ -25,10 +25,5 @@ autostart = true
 [node name="nexus" parent="Instances" instance=ExtResource( 3 )]
 script = ExtResource( 2 )
 
-[node name="DebugCamera" type="Camera2D" parent="."]
-position = Vector2( -21, -16 )
-current = true
-zoom = Vector2( 0.5, 0.5 )
-
 [connection signal="timeout" from="TokenExpiration" to="." method="_on_TokenExpiration_timeout"]
 [connection signal="timeout" from="VerificationExpiration" to="." method="_on_VerificationExpiration_timeout"]

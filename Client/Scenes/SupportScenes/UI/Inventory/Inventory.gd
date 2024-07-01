@@ -99,6 +99,14 @@ func OpenInventory():
 	backpack_tween.start()
 	loot_tween.interpolate_property(loot_element, "rect_position", loot_element.rect_position, Vector2(100, 0)+loot_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	loot_tween.start()
+	
+	var timer = Timer.new()
+	timer.wait_time = 0.4
+	timer.one_shot = true
+	add_child(timer)
+	timer.start()
+	yield(timer, "timeout")
+	
 	$InventoryBackground.visible = true
 
 func CloseInventory():
