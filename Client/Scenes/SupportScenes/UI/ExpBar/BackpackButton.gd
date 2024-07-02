@@ -1,11 +1,10 @@
 extends PanelContainer
 
 func _ready():
-	$MarginContainer/TouchScreenButton.connect("pressed", self, "OpenLootBag")
+	$MarginContainer/TextureButton.connect("pressed", self, "OpenLootBag")
 
 func OpenLootBag():
-	GameUI.get_node("Inventory").ToggleInventory()
-
+	GameUI.ToggleInventory()
 
 func _on_TouchScreenButton_pressed():
-	GameUI.get_node("Inventory").ToggleInventory()
+	GameUI.ToggleInventory()

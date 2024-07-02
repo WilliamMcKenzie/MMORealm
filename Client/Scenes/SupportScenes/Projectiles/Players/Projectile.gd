@@ -1,5 +1,7 @@
 extends Node2D
 
+var original = true
+
 var projectile
 var damage
 var speed = 0

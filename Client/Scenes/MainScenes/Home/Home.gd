@@ -16,6 +16,7 @@ func UpdateGold():
 func SelectionScreen(account_data):
 	get_node("LoginPopup").visible = false
 	get_node("UI").visible = true
+	GameUI.SetAccountData(account_data)
 	
 	var selection_screen = get_node("CharacterSelection")
 	selection_screen.characters = account_data.characters

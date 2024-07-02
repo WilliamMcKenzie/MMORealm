@@ -199,7 +199,7 @@ remote func NPCHit(enemy_id, damage):
 		var damage_tracker = get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["damage_tracker"]
 		
 		if damage_tracker.has(str(player_id)):
-			damage_tracker[str(player_id)] += damage
+			damage_tracker[str(player_id)] = damage + damage_tracker[str(player_id)]
 		else:
 			damage_tracker[str(player_id)] = damage
 		

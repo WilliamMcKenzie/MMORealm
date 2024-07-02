@@ -1,0 +1,444 @@
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/SupportScenes/UI/Stats/Stats.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/SupportScenes/UI/Stats/StatsBackground.gd" type="Script" id=3]
+[ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/SupportScenes/UI/Inventory/GearSlot/ArmorSlot.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/SupportScenes/UI/Inventory/GearSlot/HelmetSlot.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/SupportScenes/UI/Inventory/GearSlot/WeaponSlot.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Resources/main_theme.tres" type="Theme" id=9]
+[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=10]
+[ext_resource path="res://Assets/ui/square_background.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/SupportScenes/UI/Stats/ItemSlotStats.gd" type="Script" id=12]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=13]
+
+[sub_resource type="StyleBoxTexture" id=20]
+texture = ExtResource( 11 )
+region_rect = Rect2( 0, 0, 128, 128 )
+modulate_color = Color( 1, 1, 1, 0.313726 )
+
+[sub_resource type="ShaderMaterial" id=21]
+shader = ExtResource( 10 )
+shader_param/line_color = Color( 0, 0, 0, 1 )
+shader_param/line_thickness = 0.4
+shader_param/glow_thickness = 1.3
+shader_param/glow_color = Color( 0, 0, 0, 0.1 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
+
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 1111, 10, 10 )
+
+[sub_resource type="DynamicFont" id=23]
+size = 14
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="Theme" id=24]
+Label/fonts/font = SubResource( 23 )
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.313726 )
+
+[sub_resource type="DynamicFont" id=25]
+size = 25
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=26]
+size = 21
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=18]
+size = 18
+font_data = ExtResource( 8 )
+
+[sub_resource type="Theme" id=19]
+Label/colors/font_color = Color( 0.772549, 0.772549, 0.772549, 1 )
+Label/fonts/font = SubResource( 18 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 1 )
+region = Rect2( 190, 230, 10, 10 )
+
+[sub_resource type="Animation" id=13]
+resource_name = "DeInspectItem"
+length = 0.2
+
+[sub_resource type="Animation" id=10]
+resource_name = "InspectItem"
+length = 0.2
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+
+[node name="Stats" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="StatsTween" type="Tween" parent="."]
+
+[node name="StatsBackground" type="TextureButton" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 400, 180 )
+expand = true
+script = ExtResource( 3 )
+
+[node name="InspectItem" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -102.0
+margin_top = -145.0
+margin_right = 102.0
+margin_bottom = 101.0
+custom_styles/panel = SubResource( 20 )
+
+[node name="MarginContainer" type="MarginContainer" parent="InspectItem"]
+margin_right = 204.0
+margin_bottom = 246.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InspectItem/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 196.0
+margin_bottom = 238.0
+
+[node name="ItemName" type="Label" parent="InspectItem/MarginContainer/VBoxContainer"]
+margin_right = 188.0
+margin_bottom = 19.0
+text = "Item Name"
+align = 1
+
+[node name="ItemSpriteContainer" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer"]
+margin_top = 23.0
+margin_right = 188.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 30, 30 )
+alignment = 1
+
+[node name="ItemSprite" type="TextureRect" parent="InspectItem/MarginContainer/VBoxContainer/ItemSpriteContainer"]
+material = SubResource( 21 )
+margin_left = 79.0
+margin_right = 109.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 30, 30 )
+texture = SubResource( 22 )
+expand = true
+stretch_mode = 5
+
+[node name="ItemDescription" type="Label" parent="InspectItem/MarginContainer/VBoxContainer"]
+margin_top = 57.0
+margin_right = 188.0
+margin_bottom = 98.0
+text = "Item Description
+"
+align = 1
+autowrap = true
+
+[node name="ItemStats" type="VBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer"]
+margin_top = 102.0
+margin_right = 188.0
+margin_bottom = 230.0
+
+[node name="Tier" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
+margin_right = 188.0
+margin_bottom = 19.0
+text = "Tier: 0"
+align = 1
+
+[node name="Damage" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
+margin_top = 23.0
+margin_right = 188.0
+margin_bottom = 42.0
+text = "Damage: 0-1"
+align = 1
+
+[node name="Rof" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
+margin_top = 46.0
+margin_right = 188.0
+margin_bottom = 65.0
+text = "Rate of Fire: 100%"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
+margin_top = 69.0
+margin_right = 188.0
+margin_bottom = 128.0
+alignment = 1
+
+[node name="Stats1" type="VBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/HBoxContainer"]
+margin_left = 17.0
+margin_right = 98.0
+margin_bottom = 59.0
+theme = SubResource( 24 )
+
+[node name="Health" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/HBoxContainer/Stats1"]
+margin_right = 81.0
+margin_bottom = 17.0
+text = "Health: +1"
+align = 1
+
+[node name="Defense" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/HBoxContainer/Stats1"]
+margin_top = 21.0
+margin_right = 81.0
+margin_bottom = 38.0
+text = "Defense: +1"
+align = 1
+
+[node name="Dexterity" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/HBoxContainer/Stats1"]
+margin_top = 42.0
+margin_right = 81.0
+margin_bottom = 59.0
+text = "Dexterity: +1"
+align = 1
+
+[node name="Stats2" type="VBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/HBoxContainer"]
+margin_left = 102.0
+margin_right = 171.0
+margin_bottom = 59.0
+theme = SubResource( 24 )
+
+[node name="Attack" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/HBoxContainer/Stats2"]
+margin_right = 69.0
+margin_bottom = 17.0
+text = "Attack: +1"
+align = 1
+
+[node name="Speed" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/HBoxContainer/Stats2"]
+margin_top = 21.0
+margin_right = 69.0
+margin_bottom = 38.0
+text = "Speed: +1"
+align = 1
+
+[node name="Vitality" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/HBoxContainer/Stats2"]
+margin_top = 42.0
+margin_right = 69.0
+margin_bottom = 59.0
+text = "Vitality: +1"
+align = 1
+
+[node name="StatsContainer" type="HBoxContainer" parent="."]
+anchor_bottom = 1.0
+margin_left = -260.0
+margin_right = -44.0
+margin_bottom = 4.0
+alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="StatsContainer"]
+margin_right = 216.0
+margin_bottom = 364.0
+theme = ExtResource( 9 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsContainer/PanelContainer2"]
+margin_right = 216.0
+margin_bottom = 364.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="ResizeContainer" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 208.0
+margin_bottom = 356.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="CharacterInfo" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer"]
+margin_right = 200.0
+margin_bottom = 219.0
+alignment = 1
+
+[node name="Name" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo"]
+margin_right = 200.0
+margin_bottom = 31.0
+custom_constants/line_spacing = 0
+custom_fonts/font = SubResource( 25 )
+text = "WilliamQM"
+align = 1
+
+[node name="Gear" type="HBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo"]
+margin_left = 40.0
+margin_top = 35.0
+margin_right = 160.0
+margin_bottom = 155.0
+rect_min_size = Vector2( 0, 120 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_constants/separation = 0
+alignment = 1
+
+[node name="weapon" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Gear" instance=ExtResource( 7 )]
+margin_bottom = 120.0
+rect_scale = Vector2( 1, 1 )
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 12 )
+
+[node name="helmet" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Gear" instance=ExtResource( 6 )]
+margin_left = 40.0
+margin_right = 80.0
+margin_bottom = 120.0
+rect_scale = Vector2( 1, 1 )
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 12 )
+
+[node name="armor" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Gear" instance=ExtResource( 5 )]
+margin_left = 80.0
+margin_right = 120.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 40, 40 )
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 12 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo"]
+margin_top = 159.0
+margin_right = 200.0
+margin_bottom = 189.0
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/HBoxContainer"]
+margin_left = 100.0
+margin_right = 100.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Sprite" type="Sprite" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/HBoxContainer/MarginContainer"]
+scale = Vector2( 6, 6 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+region_enabled = true
+region_rect = Rect2( 0, 0, 80, 40 )
+script = ExtResource( 13 )
+
+[node name="Info" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo"]
+margin_top = 193.0
+margin_right = 200.0
+margin_bottom = 219.0
+custom_fonts/font = SubResource( 26 )
+text = "Level 20 Apprentice"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer"]
+margin_top = 223.0
+margin_right = 200.0
+margin_bottom = 348.0
+size_flags_vertical = 3
+theme = SubResource( 19 )
+alignment = 1
+
+[node name="Stats1" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/HBoxContainer"]
+margin_right = 98.0
+margin_bottom = 125.0
+size_flags_horizontal = 3
+
+[node name="Health" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/HBoxContainer/Stats1"]
+margin_right = 98.0
+margin_bottom = 39.0
+size_flags_vertical = 3
+text = "Hp: 1"
+align = 1
+valign = 1
+
+[node name="Defense" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/HBoxContainer/Stats1"]
+margin_top = 43.0
+margin_right = 98.0
+margin_bottom = 82.0
+size_flags_vertical = 3
+text = "Def: 1"
+align = 1
+valign = 1
+
+[node name="Dexterity" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/HBoxContainer/Stats1"]
+margin_top = 86.0
+margin_right = 98.0
+margin_bottom = 125.0
+size_flags_vertical = 3
+text = "Dex: 1"
+align = 1
+valign = 1
+
+[node name="Stats2" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/HBoxContainer"]
+margin_left = 102.0
+margin_right = 200.0
+margin_bottom = 125.0
+size_flags_horizontal = 3
+
+[node name="Attack" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/HBoxContainer/Stats2"]
+margin_right = 98.0
+margin_bottom = 39.0
+size_flags_vertical = 3
+text = "Atk: 1"
+align = 1
+valign = 1
+
+[node name="Speed" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/HBoxContainer/Stats2"]
+margin_top = 43.0
+margin_right = 98.0
+margin_bottom = 82.0
+size_flags_vertical = 3
+text = "Spd: 1"
+align = 1
+valign = 1
+
+[node name="Vitality" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/HBoxContainer/Stats2"]
+margin_top = 86.0
+margin_right = 98.0
+margin_bottom = 125.0
+size_flags_vertical = 3
+text = "Vit: 1"
+align = 1
+valign = 1
+
+[node name="CloseButton" type="TouchScreenButton" parent="StatsContainer"]
+position = Vector2( 217, 1 )
+scale = Vector2( 4, 4 )
+normal = SubResource( 14 )
+
+[node name="InventoryAnimations" type="AnimationPlayer" parent="."]
+anims/DeInspectItem = SubResource( 13 )
+anims/InspectItem = SubResource( 10 )
+anims/RESET = SubResource( 4 )

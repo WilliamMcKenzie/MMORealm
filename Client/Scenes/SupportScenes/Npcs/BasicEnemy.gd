@@ -44,7 +44,7 @@ func ShootProjectile():
 
 #Damage Taken section
 func OnHit(body):
-	if ("damage" in body.get_parent()):
+	if ("damage" in body.get_parent() and body.get_parent().original == true):
 		ShowDamageIndicator(-1*body.get_parent().damage)
 		body.get_parent().interaction(self)
 		Server.NPCHit(name,body.get_parent().damage)

@@ -7,7 +7,8 @@ var stats
 var gear
 var health
 
-var expIndicatorScene = preload("res://Scenes/SupportScenes/UI/ExpIndicator/ExpIndicator.tscn")
+var exp_indicator_scene = preload("res://Scenes/SupportScenes/UI/ExpIndicator/ExpIndicator.tscn")
+var level_indicator_scene = preload("res://Scenes/SupportScenes/UI/LevelIndicator/LevelIndicator.tscn")
 
 #Sub variables (Will set these based on key variables onready)
 var projectile
@@ -218,20 +219,38 @@ func CalculateDamageWithMultiplier(damage):
 	return (damage*(0.5 + (float(stats.attack)/float(50))))
 
 func ShowExpIndicator(exp_amount):
-	var exp_indicator = expIndicatorScene.instance()
-	exp_indicator.get_node("ExpLabel").text = str(exp_amount)
-	exp_indicator.position = exp_indicator.position + Vector2(100,100)
+	var exp_indicator = exp_indicator_scene.instance()
+	var id = str(OS.get_system_time_msecs())
+	exp_indicator.get_node("ExpLabel").text = "+"+str(exp_amount)
+	exp_indicator.position = Vector2(-4,-8)
+	exp_indicator.name = id
 	
 	add_child(exp_indicator)
 
 	var timer = Timer.new()
-	timer.wait_time = 1.0 # Adjust this as needed
+	timer.wait_time = 1
 	timer.one_shot = true
 	add_child(timer)
 	timer.start()
+	yield(timer, "timeout")
+	
+	if is_instance_valid(get_node(id)): 
+		get_node(id).queue_free()
 
-	timer.connect("timeout", self, "ExpIndicatorTimeout")
+func ShowLevelIndicator(level):
+	var level_indicator = level_indicator_scene.instance()
+	var id = str(OS.get_system_time_msecs())
+	level_indicator.position = Vector2(-4,-8)
+	level_indicator.name = id
+	
+	add_child(level_indicator)
 
-func ExpIndicatorTimeout():
-	if is_instance_valid(get_node("ExpIndicator")): 
-		get_node("ExpIndicator").queue_free()
+	var timer = Timer.new()
+	timer.wait_time = 1
+	timer.one_shot = true
+	add_child(timer)
+	timer.start()
+	yield(timer, "timeout")
+	
+	if is_instance_valid(get_node(id)): 
+		get_node(id).queue_free()

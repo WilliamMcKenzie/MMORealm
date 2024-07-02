@@ -10,6 +10,8 @@ var health = 100
 var stats
 var gear = {}
 
+#Items
+
 func EquipItem(index):
 	var selected_item_raw = character.inventory[index]
 	if selected_item_raw == null:
@@ -153,6 +155,8 @@ func LootItem(to_data, from_data):
 
 	get_node("/root/Server").SendCharacterData(name, character)
 
+#Set Data
+
 func SetCharacter(characters):
 	character = characters[character_index]
 	health = character.stats.health
@@ -161,6 +165,31 @@ func SetCharacter(characters):
 		if character.gear[slot] != null:
 			gear[slot] = ServerData.GetItem(character.gear[slot].item)
 			
+	get_node("/root/Server").SendCharacterData(name, character)
+
+func AddExp(exp_amount):
+	character.exp += exp_amount
+	var exp_to_level = 100*pow(1.1538,character.level)
+	
+	if character.level >= 20 and character.exp >= 3600:
+		character.level += 1
+		character.exp = 0
+	elif character.level < 20 and character.exp >= exp_to_level:
+		character.level += 1
+		character.exp = 0
+		
+		var stat_rolls = {
+			"health" : 10+(randi()%3)*5,
+			"attack" : (randi()%3),
+			"defense" : 1,
+			"speed" : (randi()%3),
+			"dexterity" : (randi()%3),
+			"vitality" : (randi()%3),
+		}
+		
+		for stat in character.stats:
+			character.stats[stat] += stat_rolls[stat]
+		
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func DealDamage(damage, enemy_id):

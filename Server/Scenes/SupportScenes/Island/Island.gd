@@ -35,6 +35,7 @@ func _physics_process(delta):
 		for enemy_id in enemy_list.keys():
 			var enemy = enemy_list[enemy_id]
 			if(enemy["health"] < 1):
+				CalculateLootPool(enemy_list[enemy_id])
 				var chunk = CalculateChunk(enemy["position"])
 				
 				if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):

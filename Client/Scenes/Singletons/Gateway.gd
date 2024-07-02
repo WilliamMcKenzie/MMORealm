@@ -78,6 +78,8 @@ remote func ReturnCreateCharacterRequest(result, new_character):
 	
 func RequestCreateAccount():
 	print("Requesting create account from gateway")
+	print(email)
+	print(password)
 	rpc_id(1, "CreateAccountRequest", email, password)
 	email = ""
 	password = ""

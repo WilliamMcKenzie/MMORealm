@@ -35,9 +35,8 @@ func _physics_process(delta):
 	
 	sync_clock_counter += 1
 	if sync_clock_counter > 60:
-		#print(client_clock)
-		#print(OS.get_system_time_msecs())
-		rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
+		if get_tree().network_peer:
+			rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 		sync_clock_counter = 0
 
 func UpdateRightJoystick(output):
@@ -120,7 +119,7 @@ func SendProjectile(projectile_data):
 	rpc_id(1, "SendPlayerProjectile", projectile_data)
 
 remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
-	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree:
+	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree or not get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)):
 		pass
 	else:
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data

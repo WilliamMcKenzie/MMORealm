@@ -52,14 +52,14 @@ shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 atlas = ExtResource( 5 )
 region = Rect2( 0, 1111, 10, 10 )
 
-[sub_resource type="DynamicFont" id=15]
+[sub_resource type="DynamicFont" id=23]
 size = 14
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 8 )
 
 [sub_resource type="Theme" id=16]
-Label/fonts/font = SubResource( 15 )
+Label/fonts/font = SubResource( 23 )
 
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 5 )

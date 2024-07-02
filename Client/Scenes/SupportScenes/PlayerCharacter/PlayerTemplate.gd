@@ -63,6 +63,7 @@ func ShootProjectile():
 			var projectile = load(projectile_path)
 			var projectile_instance = projectile.instance()
 			projectile_instance.position = $Axis.global_position + projectile_data["Direction"]*3
+			projectile_instance.original = false
 			
 			#Set projectile data
 			projectile_instance.projectile = projectile_data["Projectile"]

@@ -60,6 +60,7 @@ expand = true
 stretch_mode = 5
 
 [node name="ItemIcon" type="TextureRect" parent="."]
+visible = false
 material = SubResource( 9 )
 margin_right = 40.0
 margin_bottom = 40.0

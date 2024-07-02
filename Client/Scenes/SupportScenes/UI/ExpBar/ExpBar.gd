@@ -1,15 +1,12 @@
 extends Control
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-func ChangeHealth(maxhealth, health):
-	get_node("Control/HealthBar").max_value = maxhealth
-	get_node("Control/HealthBar").value = health
+func ChangeExp(max_exp, exp_value):
+	get_node("Exp").max_value = max_exp
+	get_node("Exp").value = exp_value
+	
+	if max_exp > 3600:
+		var orange_stylebox = StyleBoxFlat.new()
+		orange_stylebox.bg_color = Color(255.0/255, 136.0/255, 40.0/255, 1)
+		$Exp.add_stylebox_override("fg", orange_stylebox)
+		$Exp.add_stylebox_override("bg", orange_stylebox)
+		

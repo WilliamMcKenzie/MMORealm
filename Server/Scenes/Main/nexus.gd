@@ -32,12 +32,8 @@ func _physics_process(delta):
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
 			
-			#For everything including island
-			if(enemy_list[enemy_id]["health"] < 1):
-				CalculateLootPool(enemy_list[enemy_id])
-			
-			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
+				CalculateLootPool(enemy_list[enemy_id])
 				enemy_list.erase(enemy_id)
 				continue
 				
@@ -193,9 +189,16 @@ func CalculateLootPool(enemy):
 	var player_pool = enemy["damage_tracker"]
 	var loot_pool = ServerData.GetEnemy(enemy["name"]).loot_pool
 	
+	#Handle EXP
+	var exp_amount = ServerData.GetEnemy(enemy["name"]).exp
+	for player_id in player_pool.keys():
+		var player_container = get_node("YSort/Players/"+str(player_id))
+		player_container.AddExp(exp_amount)
+	
+	#Handle loot drops
 	var ordered_pairs = []
-	for player in player_pool.keys():
-		ordered_pairs.append([player, player_pool[player]])
+	for player_id in player_pool.keys():
+		ordered_pairs.append([player_id, player_pool[player_id]])
 	
 	ordered_pairs.sort_custom(SortByValue, "sort_ascending")
 	

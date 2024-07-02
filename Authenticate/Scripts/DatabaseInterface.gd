@@ -10,6 +10,7 @@ var host = "mmorealm-database-do-user-16835911-0.c.db.ondigitalocean.com"
 var port = 25060
 
 var default_account_data = {
+	"username" : "[unset]",
 	"character_slots": 1,
 	"gold": 5000,
 	"achievements": {
