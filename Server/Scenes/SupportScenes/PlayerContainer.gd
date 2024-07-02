@@ -195,9 +195,10 @@ func AddExp(exp_amount):
 func DealDamage(damage, enemy_id):
 	health -= damage
 	
-	get_node("/root/Server").SetHealth(int(name), 100, health)
+	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	if health < 1:
-		Death(enemy_id)
+		print("dead")
+		#Death(enemy_id)
 
 func Death(enemy_id):
 	get_parent().get_parent().get_parent().player_list.erase(name)

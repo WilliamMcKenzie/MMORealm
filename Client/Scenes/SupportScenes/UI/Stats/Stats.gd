@@ -128,6 +128,8 @@ func SetStats(character):
 			gear[slot] = ClientData.GetItem(int(character.gear[slot].item))
 			for stat in gear[slot].stats.keys():
 				total_stats[stat] += gear[slot].stats[stat]
+		else:
+			$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Gear.get_node(slot).SetItem(null, 1)
 	
 	SetCharacterSprite(character, gear)
 	

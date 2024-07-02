@@ -27,13 +27,7 @@ func _ready():
 	#	PlayerVerification.CreateFakePlayerContainer()
 		
 	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
-	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
-	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
-	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
-	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
-	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
-	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("test_dungeon", ["nexus"], Vector2.ZERO)
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
 			{
@@ -331,7 +325,6 @@ func NotifyDeath(player_id, enemy_name):
 	
 func SetHealth(player_id, max_health, health):
 	rpc_id(player_id,"SetHealth",max_health, health)
-
 
 #Utility functions 
 

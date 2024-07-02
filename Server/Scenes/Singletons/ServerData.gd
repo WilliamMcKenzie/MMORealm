@@ -67,35 +67,90 @@ var enemies = {
 		"defense" : 1,
 		"exp" : 40,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"goblin_cannon" : {
 		"health" : 600,
 		"defense" : 1,
 		"exp" : 250,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"troll_warrior" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 200,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"troll_brute" : {
 		"health" : 400,
 		"defense" : 1,
 		"exp" : 2000,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"rock_golem" : {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 20000,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_2"]
+		"loot_pool" :  basic_loot_pools["lowlands_2"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 1,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	}
 }
 

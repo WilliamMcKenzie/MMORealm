@@ -10,7 +10,7 @@ var projectile_list = {}
 
 var projectile_id_counter = "0"
 
-var tick_rate = 1
+var tick_rate = 0.1
 var running_time = 0
 var last_tick = 0
 var use_chunks = false
@@ -35,19 +35,24 @@ func _physics_process(delta):
 	running_time += delta
 	for projectile_id in projectile_list.keys():
 		var projectile = projectile_list[projectile_id]
+		var alive_time = OS.get_system_time_msecs()/1000-projectile["start_time"]
 		expression.parse(projectile["formula"],["x"])
+		
 		var vertical_move_vector = projectile["speed"] * projectile["direction"] * delta
-		var perpendicular_vector = Vector2(-projectile["position"].y,projectile["position"].x)
-		var horizontal_move_vector = perpendicular_vector * expression.execute([OS.get_system_time_msecs()]) #change delta to synced time!!!
+		var perpendicular_vector = Vector2(-projectile["position"].y, projectile["position"].x)
+		var horizontal_move_vector = perpendicular_vector * expression.execute([alive_time * 50]) * 0.05
+		
 		projectile_list[projectile_id]["path"] += vertical_move_vector
-		projectile_list[projectile_id]["postiion"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
+		projectile_list[projectile_id]["position"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
 		projectile_list[projectile_id]["lifespan"] -= delta
+		
+		for player_id in player_list.keys():
+			print(player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]))
+			if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= 20:
+				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
 		if projectile_list[projectile_id]["lifespan"] <= 0:
 			projectile_list.erase(projectile_id)
-		for player_id in player_list.keys():
-			if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) >= 10:
-				player_list[player_id]["health"] -= projectile_list[projectile_id]["damage"]
-
+			
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
 			
@@ -58,11 +63,12 @@ func _physics_process(delta):
 					"position" : enemy_list[enemy_id]["position"],
 					"direction" : current_attack["direction"],
 					"lifespan" : current_attack["lifespan"],
+					"start_time" : OS.get_system_time_msecs()/1000,
 					"damage" : current_attack["damage"],
 					"speed" : current_attack["speed"],
 					"formula" : current_attack["formula"],
-					"path" : enemy_list[enemy_id]["position"]
-					}
+					"path" : enemy_list[enemy_id]["position"],
+				}
 				SpawnEnemyProjectile(projectile_data, enemy_id)
 				enemy_list[enemy_id]["timer"] = current_attack["wait"]
 				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
@@ -156,7 +162,6 @@ func SpawnEnemyProjectile(projectile_data, enemy_id):
 		projectile_id_counter = str(int(projectile_id_counter)+1)
 	else:
 		projectile_id_counter = "0"
-	print("there are currently " + str(len(projectile_list)) + " enemy projectiles")
 	
 	
 #	var projectile_instance = enemy_projectiles["small"].instance()

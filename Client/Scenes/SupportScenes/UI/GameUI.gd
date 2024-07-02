@@ -35,6 +35,9 @@ func InUI():
 func ExitUI():
 	is_in_ui = false
 
+func ChangeHealth(max_health, health):
+	$LeftContainer/BarContainer/Health.ChangeHealth(max_health, health)
+	
 func SetCharacterData(character):
 	#Exp
 	$LeftContainer/BarContainer/ExpContainer/ExpBar.ChangeExp(100*pow(1.1538,character.level), character.exp)

@@ -222,7 +222,7 @@ remote func CharacterDied(enemy_name):
 	print("Dead")
 
 remote func SetHealth(max_health, current_health):
-	GameUI.get_node("Health").ChangeHealth(max_health, current_health)
+	GameUI.ChangeHealth(max_health, current_health)
 
 func NPCHit(enemy_id, damage):
 	rpc_id(1, "NPCHit", enemy_id, damage)
