@@ -27,6 +27,11 @@ func _ready():
 	#	PlayerVerification.CreateFakePlayerContainer()
 		
 	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
+	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
+	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
+	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
+	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
+	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("test_dungeon", ["nexus"], Vector2.ZERO)
 	
@@ -169,6 +174,8 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"damage_tracker": {},
 			"target": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"anchor_position": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			"pattern_index" : 0,
+			"timer" : 0
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 
