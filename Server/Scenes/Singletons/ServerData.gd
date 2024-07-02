@@ -49,7 +49,18 @@ var enemies = {
 		"defense" : 1,
 		"exp" : 20,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"goblin_warrior" : {
 		"health" : 60,

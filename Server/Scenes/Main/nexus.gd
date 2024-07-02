@@ -6,12 +6,14 @@ var instance_tree = []
 var player_list = {}
 var enemy_list = {}
 var object_list = {}
+var projectile_list = {}
 
-var tick_rate = 0.1
+var projectile_id_counter = "0"
+
+var tick_rate = 1
 var running_time = 0
 var last_tick = 0
 var use_chunks = false
-
 var player_projectiles = {
 	"small" : preload("res://Scenes/SupportScenes/Projectiles/Players/Small.tscn")
 }
@@ -19,6 +21,8 @@ var enemy_projectiles = {
 	"small" : preload("res://Scenes/SupportScenes/Projectiles/Enemies/Small.tscn")
 }
 var enemy_8x8 = preload("res://Scenes/SupportScenes/Enemies/Enemy_8x8.tscn")
+
+var expression = Expression.new()
 
 func _ready():
 	if name != "nexus":
@@ -29,9 +33,48 @@ func _ready():
 
 func _physics_process(delta):
 	running_time += delta
+	for projectile_id in projectile_list.keys():
+		var projectile = projectile_list[projectile_id]
+		expression.parse(projectile["formula"],["x"])
+		var vertical_move_vector = projectile["speed"] * projectile["direction"] * delta
+		var perpendicular_vector = Vector2(-projectile["position"].y,projectile["position"].x)
+		var horizontal_move_vector = perpendicular_vector * expression.execute([OS.get_system_time_msecs()]) #change delta to synced time!!!
+		projectile_list[projectile_id]["path"] += vertical_move_vector
+		projectile_list[projectile_id]["postiion"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
+		projectile_list[projectile_id]["lifespan"] -= delta
+		if projectile_list[projectile_id]["lifespan"] <= 0:
+			projectile_list.erase(projectile_id)
+		for player_id in player_list.keys():
+			if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) >= 10:
+				player_list[player_id]["health"] -= projectile_list[projectile_id]["damage"]
+
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
 			
+			if enemy_list[enemy_id]["timer"] <= 0:
+				var attack_pattern = ServerData.GetEnemy(enemy_list[enemy_id]["name"])["attack_pattern"]
+				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
+				var projectile_data = {
+					"position" : enemy_list[enemy_id]["position"],
+					"direction" : current_attack["direction"],
+					"lifespan" : current_attack["lifespan"],
+					"damage" : current_attack["damage"],
+					"speed" : current_attack["speed"],
+					"formula" : current_attack["formula"],
+					"path" : enemy_list[enemy_id]["position"]
+					}
+				SpawnEnemyProjectile(projectile_data, enemy_id)
+				enemy_list[enemy_id]["timer"] = current_attack["wait"]
+				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
+					enemy_list[enemy_id]["pattern_index"] = 0
+				else:
+					enemy_list[enemy_id]["pattern_index"] += 1
+				enemy_list[enemy_id]["timer"] -= tick_rate
+			#For everything including island
+			if(enemy_list[enemy_id]["health"] < 1):
+				CalculateLootPool(enemy_list[enemy_id])
+			
+			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
 				CalculateLootPool(enemy_list[enemy_id])
 				enemy_list.erase(enemy_id)
@@ -52,6 +95,7 @@ func _physics_process(delta):
 						enemy_list[enemy_id]["target"] = enemy_list[enemy_id]["anchor_position"]
 					else:
 						enemy_list[enemy_id]["target"] = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+				
 		if use_chunks == false:
 			last_tick = running_time
 
@@ -106,21 +150,30 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	add_child(projectile_instance)
 
 func SpawnEnemyProjectile(projectile_data, enemy_id):
-	var projectile_instance = enemy_projectiles["small"].instance()
-	projectile_instance.enemy_id = enemy_id
-	projectile_instance.projectile_name = projectile_data["Projectile"]
-	projectile_instance.position = projectile_data["Position"]
-	projectile_instance.initial_position = projectile_data["Position"]
-	projectile_instance.tile_range = projectile_data["TileRange"]
-	projectile_instance.SetDirection(projectile_data["Direction"])
-	projectile_instance.look_at(projectile_data["TargetPosition"])
+	projectile_data["enemy_id"] = enemy_id
+	projectile_list[projectile_id_counter] = projectile_data
+	if int(projectile_id_counter) <= 2174000:
+		projectile_id_counter = str(int(projectile_id_counter)+1)
+	else:
+		projectile_id_counter = "0"
+	print("there are currently " + str(len(projectile_list)) + " enemy projectiles")
 	
-	var data = ServerData.GetProjectile(projectile_data["Projectile"])
-	projectile_instance.SetData(data)
 	
-	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
-	add_child(projectile_instance)
+#	var projectile_instance = enemy_projectiles["small"].instance()
+#	projectile_instance.enemy_id = enemy_id
+#	projectile_instance.projectile_name = projectile_data["Projectile"]
+#	projectile_instance.position = projectile_data["Position"]
+#	projectile_instance.initial_position = projectile_data["Position"]
+#	projectile_instance.tile_range = projectile_data["TileRange"]
+#	projectile_instance.SetDirection(projectile_data["Direction"])
+#	projectile_instance.look_at(projectile_data["TargetPosition"])
+	
+#	var data = ServerData.GetProjectile(projectile_data["Projectile"])
+#	projectile_instance.SetData(data)
+	
 
+#	add_child(projectile_instance)
+#	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
 func SpawnLootBag(_loot, player_id, instance_tree, position):
 	var loot_id = "loot "+get_node("/root/Server").generate_unique_id()
 	var soulbound = false
