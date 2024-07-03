@@ -47,7 +47,6 @@ func _physics_process(delta):
 		projectile_list[projectile_id]["lifespan"] -= delta
 		
 		for player_id in player_list.keys():
-			print(player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]))
 			if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= 20:
 				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
 		if projectile_list[projectile_id]["lifespan"] <= 0:
@@ -251,12 +250,14 @@ func CalculateLootPool(enemy):
 	var exp_amount = ServerData.GetEnemy(enemy["name"]).exp
 	for player_id in player_pool.keys():
 		var player_container = get_node("YSort/Players/"+str(player_id))
-		player_container.AddExp(exp_amount)
+		if player_container:
+			player_container.AddExp(exp_amount)
 	
 	#Handle loot drops
 	var ordered_pairs = []
 	for player_id in player_pool.keys():
-		ordered_pairs.append([player_id, player_pool[player_id]])
+		if get_node("YSort/Players/"+str(player_id)):
+			ordered_pairs.append([player_id, player_pool[player_id]])
 	
 	ordered_pairs.sort_custom(SortByValue, "sort_ascending")
 	

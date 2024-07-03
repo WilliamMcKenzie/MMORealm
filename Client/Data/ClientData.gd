@@ -1,5 +1,7 @@
 extends Node
 
+var current_class = "Apprentice"
+
 var basic_loot_pools = {
 	"lowlands_1" : {
 		"soulbound_loot" : [
@@ -49,42 +51,108 @@ var enemies = {
 		"defense" : 1,
 		"exp" : 20,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"goblin_warrior" : {
 		"health" : 60,
 		"defense" : 1,
-		"exp" : 20,
+		"exp" : 40,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"goblin_cannon" : {
 		"health" : 600,
 		"defense" : 1,
-		"exp" : 20,
+		"exp" : 250,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"troll_warrior" : {
 		"health" : 200,
 		"defense" : 1,
-		"exp" : 20,
+		"exp" : 200,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"troll_brute" : {
 		"health" : 400,
 		"defense" : 1,
-		"exp" : 20,
+		"exp" : 2000,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"]
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	},
 	"rock_golem" : {
 		"health" : 200,
 		"defense" : 1,
-		"exp" : 20,
+		"exp" : 20000,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_2"]
+		"loot_pool" :  basic_loot_pools["lowlands_2"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 1,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1)
+			}
+		]
 	}
 }
 
@@ -98,7 +166,7 @@ var items = {
 		"damage" : [15,25],
 		"rof" : 100,
 		"stats" : {
-			"vitality" : 1
+			"vitality" : 12
 		},
 		"range" : 3,
 		"tier" : "0",
@@ -114,7 +182,7 @@ var items = {
 	2 : {
 		"name": "Void Armor",
 		"description" : "A soldiers first line of defense.",
-		"type" : "Armor",
+		"type" : "Robe",
 		"slot" : "armor",
 		"tier" : "5",
 		
@@ -206,9 +274,21 @@ var projectiles = {
 }
 
 var achievements = {
+	"Bow Projectiles I" : {
+		"which" : "bow_projectiles",
+		"amount" : 10
+	},
+	"Sword Projectiles I" : {
+		"which" : "sword_projectiles",
+		"amount" : 10
+	},
+	"Staff Projectiles I" : {
+		"which" : "staff_projectiles",
+		"amount" : 10
+	},
 	"Trial By Fire" : {
 		"which" : "bow_projectiles",
-		"amount" : 100
+		"amount" : 20
 	}
 }
 
@@ -220,15 +300,124 @@ var characters = {
 			"Sword Projectiles I" : "Noble",
 			"Staff Projectiles I" : "Scholar",
 		},
-		"rect" : Rect2(0,0,80,40)
-	}
+		"rect" : Rect2(0,0,80,40),
+		"icon" : Vector2(0,210),
+		"color" : Color(78.0/255, 166.0/255, 63.0/255),
+		"bonus_stats" : {
+			"health" : 0,
+			"attack" : 0,
+			"defense" : 0,
+			"speed" : 0,
+			"dexterity" : 0,
+			"vitality" : 0
+		},
+		"multipliers" : {
+		},
+		"ascension_stones" : 0,
+	},
+	"Noble" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,40,80,40),
+		"icon" : Vector2(20,210),
+		"color" : Color(252.0/255, 139.0/255, 14.0/255),
+		"bonus_stats" : {
+			"health" : 200,
+			"attack" : 10,
+			"defense" : 20,
+			"speed" : 10,
+			"dexterity" : 10,
+			"vitality" : 20
+		},
+		"multipliers" : {
+			"Sword" : {"damage" : 1.2, "stats" : 1.2},
+			"Armor" : {"stats" : 1.2},
+			"Helmet" : {"stats" : 1.2},
+		},
+		"ascension_stones" : 1,
+	},
+	"Nomad" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(80,80,80,40),
+		"icon" : Vector2(10,210),
+		"color" : Color(78.0/255, 166.0/255, 63.0/255),
+		"bonus_stats" : {
+			"health" : 100,
+			"attack" : 20,
+			"defense" : 10,
+			"speed" : 20,
+			"dexterity" : 20,
+			"vitality" : 10
+		},
+		"multipliers" : {
+			"Bow" : {"rof" : 3, "stats" : 1.2},
+			"Leather" : {"stats" : 1.2},
+			"Cap" : {"stats" : 1.2},
+		},
+		"ascension_stones" : 1,
+	},
+	"Scholar" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(160,120,80,40),
+		"icon" : Vector2(30,210),
+		"color" : Color(62.0/255, 118.0/255, 255.0/255),
+		"bonus_stats" : {
+			"health" : 100,
+			"attack" : 30,
+			"defense" :0,
+			"speed" : 10,
+			"dexterity" : 30,
+			"vitality" : 10
+		},
+		"multipliers" : {
+			"Staff" : {"damage" : 1.2, "stats" : 1.2},
+			"Robe" : {"stats" : 1.2},
+			"Hat" : {"stats" : 1.2},
+		},
+		"ascension_stones" : 1,
+	},
 }
 
 func RgbToColor(r, g, b):
 	return Color(r/255, g/255, b/255)
 
-func GetItem(item):
-	if items.has(int(item)):
+func GetMultiplier(item):
+	var _item = items[int(item)].duplicate(true)
+	var result = {}
+	
+	for type in characters[current_class].multipliers.keys():
+		var multipliers = characters[current_class].multipliers[type]
+		if _item.type == type:
+			for subject in multipliers.keys():
+				result[subject] = multipliers[subject]
+		
+	return result
+
+func GetItem(item, include_class_boost = false):
+	if items.has(int(item)) and include_class_boost:
+		var _item = items[int(item)].duplicate(true)
+		for type in characters[current_class].multipliers.keys():
+			var multipliers = characters[current_class].multipliers[type]
+			if _item.type == type:
+				for subject in multipliers.keys():
+					if subject == "damage":
+						_item[subject][0] = floor(_item[subject][0]*multipliers[subject])
+						_item[subject][1] = floor(_item[subject][1]*multipliers[subject])
+					elif subject == "stats":
+						print(_item[subject])
+						for stat in _item[subject]:
+							_item[subject][stat] = floor(_item[subject][stat]*multipliers[subject])
+						print(_item[subject])
+					else:
+						_item[subject] = floor(_item[subject]*multipliers[subject])
+		
+		return _item
+	elif items.has(int(item)):
 		return items[int(item)]
 	else:
 		return null
