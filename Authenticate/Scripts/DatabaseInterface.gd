@@ -14,7 +14,7 @@ var default_account_data = {
 	"character_slots": 1,
 	"gold": 5000,
 	"achievements": {
-		"Trial By Fire" : false
+		"Trial By Fire" : false,
 	},
 	"statistics": {
 		"tiles_covered" : 0,
@@ -23,6 +23,12 @@ var default_account_data = {
 		"staff_projectiles" : 0,
 		"sword_projectiles" : 0,
 		"projectiles_landed" : 0,
+	},
+	"classes": {
+		"Apprentice": true,
+		"Noble": false,
+		"Nomad": false,
+		"Scholar": false
 	},
 	"characters":[]
 }
@@ -38,6 +44,7 @@ var new_character = {
 		"level" : 1,
 		"exp" : 0,
 		
+		"ascension_stones" : 0,
 		"class" : "Apprentice",
 		"statistics": {
 			"tiles_covered" : 0,

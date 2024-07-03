@@ -1,0 +1,235 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Resources/Roboto-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
+[ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=3]
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=4]
+[ext_resource path="res://Resources/Renderer.tres" type="Material" id=5]
+[ext_resource path="res://Scenes/SupportScenes/Animations/DiscoverClass/DiscoverClass.gd" type="Script" id=6]
+[ext_resource path="res://Assets/ui/halo.png" type="Texture" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 210, 10, 10 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "Discovery"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Container/Character:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 5, 5 ), Vector2( 5, 5 ), Vector2( 7, 7 ), Vector2( 6, 6 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Container/Character:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Container:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3, 0.5, 2.4, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Container/HBoxContainer:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Container/Halo:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 2.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 360.0, -180.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Container/Halo:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 1.8, 2.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0.313726 ), Color( 0, 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Container/Character:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Container/Character:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Container:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Container/HBoxContainer:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Container/Halo:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 360.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Container/Halo:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0.313726 ) ]
+}
+
+[node name="DiscoverClass" type="CanvasLayer"]
+script = ExtResource( 6 )
+
+[node name="Container" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -76.0
+margin_top = -123.0
+margin_right = 82.0
+margin_bottom = -99.0
+custom_fonts/font = SubResource( 1 )
+text = "Discovered Class!"
+
+[node name="Halo" type="Sprite" parent="Container"]
+modulate = Color( 0, 0, 0, 0.313726 )
+position = Vector2( 78, 78 )
+rotation = 6.28319
+scale = Vector2( 0.07, 0.07 )
+z_index = -1
+texture = ExtResource( 7 )
+
+[node name="Character" type="Sprite" parent="Container"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 78, 74 )
+scale = Vector2( 1e-05, 1e-05 )
+texture = ExtResource( 3 )
+hframes = 4
+vframes = 4
+region_enabled = true
+region_rect = Rect2( 0, 120, 80, 40 )
+script = ExtResource( 2 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container"]
+margin_left = 53.0
+margin_top = 102.0
+margin_right = 97.0
+margin_bottom = 142.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Class" type="Label" parent="Container/HBoxContainer"]
+margin_top = 8.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 1 )
+align = 1
+
+[node name="TextureRect" type="TextureRect" parent="Container/HBoxContainer"]
+material = ExtResource( 5 )
+margin_left = 4.0
+margin_right = 44.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource( 2 )
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Discovery"
+anims/Discovery = SubResource( 3 )
+anims/RESET = SubResource( 4 )

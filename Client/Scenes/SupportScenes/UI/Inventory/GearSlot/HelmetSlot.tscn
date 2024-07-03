@@ -52,7 +52,7 @@ size_flags_vertical = 3
 script = ExtResource( 5 )
 
 [node name="ItemBackground" type="TextureRect" parent="."]
-modulate = Color( 0.517647, 0.517647, 0.517647, 0.803922 )
+modulate = Color( 0, 0, 0, 0.313726 )
 margin_right = 40.0
 margin_bottom = 40.0
 texture = SubResource( 8 )

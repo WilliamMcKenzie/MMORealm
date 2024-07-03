@@ -40,6 +40,8 @@ func _ready():
 
 #Dealing with the characters sprite
 func SetCharacter(_character):
+	if character and character.hash() == _character.hash():
+		return
 	character = _character
 	
 	stats = character.stats
@@ -47,7 +49,7 @@ func SetCharacter(_character):
 	
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
-			gear[slot] = ClientData.GetItem(int(character.gear[slot].item))
+			gear[slot] = ClientData.GetItem(int(character.gear[slot].item), true)
 			for stat in gear[slot].stats.keys():
 				stats[stat] += gear[slot].stats[stat]
 	
@@ -65,15 +67,11 @@ func UpdateCharacter(_character):
 	stats = character.stats
 	gear = character.gear
 	health = character.health
-	
-	#We recieve new data from server
-	#Ex. player is hit, leveled up, or switched gear
-	#Update the ui here
 
 func SetCharacterSprite():
 	CharacterSpriteEle.SetCharacterClass(character.class)
 	if character.gear["weapon"] != null:
-		var weapon = ClientData.GetItem(character.gear.weapon.item)
+		var weapon = ClientData.GetItem(character.gear.weapon.item, true)
 		if weapon != null:
 			CharacterSpriteEle.SetCharacterWeapon(weapon.type)
 	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)

@@ -10,36 +10,61 @@ func InspectItem(_item):
 		DeInspectItem(_item)
 		return
 	
-	var item = ClientData.GetItem(_item.item)
+	var bonus_color = ClientData.GetCharacter(ClientData.current_class).color
+	var item = ClientData.GetItem(_item.item, true)
+	var multipliers = ClientData.GetMultiplier(_item.item)
 	
 	var animator = $InventoryAnimations
 	animator.play("InspectItem")
 	inspecting_item = _item
 	$InspectItem.visible = true
+	
+	var item_name = $InspectItem/MarginContainer/VBoxContainer/ItemName
+	var item_sprite = $InspectItem/MarginContainer/VBoxContainer/ItemSpriteContainer/ItemSprite
+	var item_description = $InspectItem/MarginContainer/VBoxContainer/ItemDescription
+	var item_tier = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Tier
 		
-	$InspectItem/MarginContainer/VBoxContainer/ItemName.text = item.name
-	$InspectItem/MarginContainer/VBoxContainer/ItemSpriteContainer/ItemSprite.texture.region = Rect2(item.path[3]*10, Vector2(10, 10))
-	$InspectItem/MarginContainer/VBoxContainer/ItemDescription.text = item.description + "\n"
-
-	$InspectItem/MarginContainer/VBoxContainer/ItemStats/Tier.text = "Tier: " + item.tier
+	item_name.text = item.name
+	item_sprite.texture.region = Rect2(item.path[3]*10, Vector2(10, 10))
+	item_description.text = item.description + "\n"
+	item_tier.text = "Tier: " + item.tier
+	
 	if item.has("damage"):
-		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.text = "Damage: " + str(item.damage[0]) + "-" + str(item.damage[1])
-		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.visible = true
-		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.text = "Rate of Fire: " + str(item.rof) + "%"
-		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.visible = true
+		var item_damage = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage
+		var item_rof = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof
+		
+		item_damage.get_node("Amount").text = "Damage: " + str(item.damage[0]) + "-" + str(item.damage[1])
+		item_damage.visible = true
+		
+		if multipliers.has("damage"):
+			var item_bonus = item_damage.get_node("Bonus")
+			item_bonus.text = "("+str((multipliers.damage-1)*100)+"%)"
+			item_bonus.add_color_override("font_color", bonus_color)
+		else:
+			item_damage.get_node("Bonus").visible = false
+			
+		item_rof.get_node("Amount").text = "Rate of Fire: " + str(item.rof) + "%"
+		item_rof.visible = true
+		
+		if multipliers.has("rof"):
+			var item_bonus = item_rof.get_node("Bonus")
+			item_bonus.text = "(+"+str((multipliers.rof-1)*100)+"%)"
+			item_bonus.add_color_override("font_color", bonus_color)
+		else:
+			item_rof.get_node("Bonus").visible = false
 	else:
 		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.visible = false
 		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.visible = false
 	
-	var stats_node = $InspectItem/MarginContainer/VBoxContainer/ItemStats
+	var stats_node = $InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer
 	var item_stats = item.stats
 	
-	var health_node = stats_node.get_node("HBoxContainer/Stats1/Health")
-	var attack_node = stats_node.get_node("HBoxContainer/Stats2/Attack")
-	var defense_node = stats_node.get_node("HBoxContainer/Stats1/Defense")
-	var speed_node = stats_node.get_node("HBoxContainer/Stats2/Speed")
-	var dexterity_node = stats_node.get_node("HBoxContainer/Stats1/Dexterity")
-	var vitality_node = stats_node.get_node("HBoxContainer/Stats2/Vitality")
+	var health_node = stats_node.get_node("Stats1/Health")
+	var attack_node = stats_node.get_node("Stats2/Attack")
+	var defense_node = stats_node.get_node("Stats1/Defense")
+	var speed_node = stats_node.get_node("Stats2/Speed")
+	var dexterity_node = stats_node.get_node("Stats1/Dexterity")
+	var vitality_node = stats_node.get_node("Stats2/Vitality")
 	
 	var stats = {
 		"health" : health_node,
@@ -52,14 +77,24 @@ func InspectItem(_item):
 	
 	for stat in stats.keys():
 		var node = stats[stat]
-		var capitalized_stat = stat.substr(0, 1).to_upper() + stat.substr(1).to_lower()
+		var amount = node.get_node("Amount")
+		var bonus = node.get_node("Bonus")
 		
 		if item_stats.has(stat):
-			if item_stats[stat] > 0:
-				node.text = capitalized_stat + ": +" + str(item_stats[stat])
-			else:
-				node.text = capitalized_stat + ": " + str(item_stats[stat])
 			node.visible = true
+			if not multipliers.has("stats"):
+				bonus.visible = false
+			else:
+				bonus.visible = true
+				
+			if item_stats[stat] > 0:
+				amount.text = "+" + str(item_stats[stat])
+				if multipliers.has("stats"):
+					bonus.text = "(+" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
+			else:
+				amount.text = str(item_stats[stat])
+				if multipliers.has("stats"):
+					bonus.text = "(" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
 		else:
 			node.visible = false
 func DeInspectItem(item):
@@ -89,7 +124,7 @@ func OpenStats(character):
 	
 	SetStats(character)
 	
-	stats_tween.interpolate_property(stats_element, "rect_position", stats_element.rect_position, Vector2(260, 0)+stats_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	stats_tween.interpolate_property(stats_element, "rect_position", stats_element.rect_position, Vector2(280, 0)+stats_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	stats_tween.start()
 	
 	var timer = Timer.new()
@@ -105,7 +140,7 @@ func CloseStats():
 	var stats_tween = $StatsTween
 	var stats_element = $StatsContainer
 	
-	stats_tween.interpolate_property(stats_element, "rect_position", stats_element.rect_position, Vector2(-260, 0)+stats_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	stats_tween.interpolate_property(stats_element, "rect_position", stats_element.rect_position, Vector2(-280, 0)+stats_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	stats_tween.start()
 	$StatsBackground.visible = false
 
@@ -113,68 +148,67 @@ func SetName(name):
 	$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Name.text = name
 
 func SetStats(character):
-	var stats_node = $StatsContainer/PanelContainer2/MarginContainer/ResizeContainer
+	var stats_node = $StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterStats
 	
 	var base_stats = character.stats
 	var total_stats = character.stats.duplicate(true)
 	var gear = {}
 	
-	var info = "Level " + str(character.level) + " " + character.class
-	$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Info.text = info
-	
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
-			$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Gear.get_node(slot).SetItem(character.gear[slot], 1)
-			gear[slot] = ClientData.GetItem(int(character.gear[slot].item))
+			gear[slot] = ClientData.GetItem(int(character.gear[slot].item), true)
 			for stat in gear[slot].stats.keys():
 				total_stats[stat] += gear[slot].stats[stat]
-		else:
-			$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Gear.get_node(slot).SetItem(null, 1)
+	
+	var info = "Level " + str(character.level) + " " + character.class
+	$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/Info.text = info
 	
 	SetCharacterSprite(character, gear)
 	
-	var health_node = stats_node.get_node("HBoxContainer/Stats1/Health")
-	var attack_node = stats_node.get_node("HBoxContainer/Stats2/Attack")
-	var defense_node = stats_node.get_node("HBoxContainer/Stats1/Defense")
-	var speed_node = stats_node.get_node("HBoxContainer/Stats2/Speed")
-	var dexterity_node = stats_node.get_node("HBoxContainer/Stats1/Dexterity")
-	var vitality_node = stats_node.get_node("HBoxContainer/Stats2/Vitality")
+	var health_node = stats_node.get_node("Health/ProgressBar")
+	var attack_node = stats_node.get_node("Attack/ProgressBar")
+	var defense_node = stats_node.get_node("Defense/ProgressBar")
+	var speed_node = stats_node.get_node("Speed/ProgressBar")
+	var dexterity_node = stats_node.get_node("Dexterity/ProgressBar")
+	var vitality_node = stats_node.get_node("Vitality/ProgressBar")
 	
 	var stats = {
-		"health" : { "node" : health_node, "abbreviation" : "Hp: ", "high" : 900, "step" : 100},
-		"attack" : { "node" : attack_node, "abbreviation" : "Atk: ", "high" : 75, "step" : 5},
-		"defense" : { "node" : defense_node, "abbreviation" : "Def: ", "high" : 50, "step" : 5},
-		"speed" : { "node" : speed_node, "abbreviation" : "Spd: ", "high" : 75, "step" : 5},
-		"dexterity" : { "node" : dexterity_node, "abbreviation" : "Dex: ", "high" : 75, "step" : 5},
-		"vitality" : { "node" : vitality_node, "abbreviation" : "Vit: ", "high" : 75, "step" : 5},
+		"health" : { "node" : health_node, "abbreviation" : "Hp: ", "threshold" : 500},
+		"attack" : { "node" : attack_node, "abbreviation" : "Atk: ", "threshold" : 50},
+		"defense" : { "node" : defense_node, "abbreviation" : "Def: ", "threshold" : 50},
+		"speed" : { "node" : speed_node, "abbreviation" : "Spd: ", "threshold" : 50},
+		"dexterity" : { "node" : dexterity_node, "abbreviation" : "Dex: ", "threshold" : 50},
+		"vitality" : { "node" : vitality_node, "abbreviation" : "Vit: ", "threshold" : 50},
 	}
-	var colors = [
-		
-	]
+	
+	var blue = StyleBoxFlat.new()
+	var orange = StyleBoxFlat.new()
+	var transparent = StyleBoxFlat.new()
+	
+	blue.bg_color = Color(28.0/255, 255.0/255, 250.0/255)
+	orange.bg_color = Color(0, 159.0/255, 1)
+	transparent.bg_color = Color(0, 0, 0, 80.0/255)
 	
 	for stat in stats.keys():
 		var node = stats[stat].node
-		node.text = stats[stat].abbreviation + str(total_stats[stat])
-		var difference = total_stats[stat] - base_stats[stat]
 		
-		if difference > 0:
-			node.text += " (+" + str(difference) + ")"
-		elif difference < 0:
-			node.text += " (-" + str(difference) + ")"
-		
-		var interpolation_factor = total_stats[stat]/stats[stat].high
-		var low_color = Color(197.0/255, 197.0/255, 197.0/255)
-		var high_color = Color(81.0/255, 255.0/255, 156.0/255)
-		node.add_color_override("font_color", low_color.linear_interpolate(high_color, interpolation_factor))
+		if stats[stat].threshold >= base_stats[stat]:
+			node.value = base_stats[stat]
+			node.max_value = stats[stat].threshold
+			node.add_stylebox_override("fg", orange)
+			node.add_stylebox_override("bg", transparent)
+		else:
+			node.value = base_stats[stat]-stats[stat].threshold
+			node.max_value = stats[stat].threshold
+			node.add_stylebox_override("fg", blue)
+			node.add_stylebox_override("bg", orange)
 
 func SetCharacterSprite(character, gear):
-	var CharacterSpriteEle = $StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/HBoxContainer/MarginContainer/Sprite
+	var CharacterSpriteEle = $StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/MarginContainer/Sprite
 	
-	print(CharacterSpriteEle.region_rect)
 	CharacterSpriteEle.SetCharacterClass(character.class)
 	if character.gear.has("weapon") and character.gear.weapon != null: 
 		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
-	print(CharacterSpriteEle.region_rect)
 	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
 	CharacterSpriteEle.ColorGear(gear)
 

@@ -14,36 +14,62 @@ func InspectItem(_item):
 		DeInspectItem(_item)
 		return
 	
+	var bonus_color = ClientData.GetCharacter(ClientData.current_class).color
 	var item = ClientData.GetItem(_item.item)
+	var multipliers = ClientData.GetMultiplier(_item.item)
 	
 	var animator = $InventoryAnimations
 	animator.play("InspectItem")
 	inspecting_item = _item
 	$InspectItem.visible = true
+	
+	var item_name = $InspectItem/MarginContainer/VBoxContainer/ItemName
+	var item_sprite = $InspectItem/MarginContainer/VBoxContainer/ItemSpriteContainer/ItemSprite
+	var item_description = $InspectItem/MarginContainer/VBoxContainer/ItemDescription
+	var item_tier = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Tier
 		
-	$InspectItem/MarginContainer/VBoxContainer/ItemName.text = item.name
-	$InspectItem/MarginContainer/VBoxContainer/ItemSpriteContainer/ItemSprite.texture.region = Rect2(item.path[3]*10, Vector2(10, 10))
-	$InspectItem/MarginContainer/VBoxContainer/ItemDescription.text = item.description + "\n"
-
-	$InspectItem/MarginContainer/VBoxContainer/ItemStats/Tier.text = "Tier: " + item.tier
+	item_name.text = item.name
+	item_sprite.texture.region = Rect2(item.path[3]*10, Vector2(10, 10))
+	item_description.text = item.description + "\n"
+	item_tier.text = "Tier: " + item.tier
+	
 	if item.has("damage"):
-		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.text = "Damage: " + str(item.damage[0]) + "-" + str(item.damage[1])
-		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.visible = true
-		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.text = "Rate of Fire: " + str(item.rof) + "%"
-		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.visible = true
+		var item_damage = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage
+		var item_rof = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof
+		
+		item_damage.get_node("Amount").text = "Damage: " + str(item.damage[0]) + "-" + str(item.damage[1])
+		item_damage.visible = true
+		
+		if multipliers.has("damage"):
+			var item_bonus = item_damage.get_node("Bonus")
+			item_bonus.text = "(+"+str((multipliers.damage-1)*100)+"%)"
+			item_bonus.add_color_override("font_color", bonus_color)
+			item_damage.get_node("Bonus").visible = true
+		else:
+			item_damage.get_node("Bonus").visible = false
+			
+		item_rof.get_node("Amount").text = "Rate of Fire: " + str(item.rof) + "%"
+		item_rof.visible = true
+		
+		if multipliers.has("rof"):
+			var item_bonus = item_rof.get_node("Bonus")
+			item_bonus.text = "(+"+str((multipliers.rof-1)*100)+"%)"
+			item_bonus.add_color_override("font_color", bonus_color)
+		else:
+			item_rof.get_node("Bonus").visible = false
 	else:
 		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage.visible = false
 		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.visible = false
 	
-	var stats_node = $InspectItem/MarginContainer/VBoxContainer/ItemStats
+	var stats_node = $InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer
 	var item_stats = item.stats
 	
-	var health_node = stats_node.get_node("HBoxContainer/Stats1/Health")
-	var attack_node = stats_node.get_node("HBoxContainer/Stats2/Attack")
-	var defense_node = stats_node.get_node("HBoxContainer/Stats1/Defense")
-	var speed_node = stats_node.get_node("HBoxContainer/Stats2/Speed")
-	var dexterity_node = stats_node.get_node("HBoxContainer/Stats1/Dexterity")
-	var vitality_node = stats_node.get_node("HBoxContainer/Stats2/Vitality")
+	var health_node = stats_node.get_node("Stats1/Health")
+	var attack_node = stats_node.get_node("Stats2/Attack")
+	var defense_node = stats_node.get_node("Stats1/Defense")
+	var speed_node = stats_node.get_node("Stats2/Speed")
+	var dexterity_node = stats_node.get_node("Stats1/Dexterity")
+	var vitality_node = stats_node.get_node("Stats2/Vitality")
 	
 	var stats = {
 		"health" : health_node,
@@ -56,14 +82,30 @@ func InspectItem(_item):
 	
 	for stat in stats.keys():
 		var node = stats[stat]
-		var capitalized_stat = stat.substr(0, 1).to_upper() + stat.substr(1).to_lower()
+		var amount = node.get_node("Amount")
+		var bonus = node.get_node("Bonus")
 		
 		if item_stats.has(stat):
-			if item_stats[stat] > 0:
-				node.text = capitalized_stat + ": +" + str(item_stats[stat])
-			else:
-				node.text = capitalized_stat + ": " + str(item_stats[stat])
 			node.visible = true
+			if not multipliers.has("stats"):
+				bonus.visible = false
+			else:
+				bonus.visible = true
+				
+			if item_stats[stat] > 0:
+				amount.text = "+" + str(item_stats[stat])
+				if multipliers.has("stats") and floor(item_stats[stat]*multipliers.stats)-item_stats[stat] != 0:
+					bonus.text = "(+" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
+					bonus.add_color_override("font_color", bonus_color)
+				elif multipliers.has("stats"):
+					node.visible = false
+			else:
+				amount.text = str(item_stats[stat])
+				if multipliers.has("stats") and floor(item_stats[stat]*multipliers.stats)-item_stats[stat] != 0:
+					bonus.text = "(" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
+					bonus.add_color_override("font_color", bonus_color)
+				elif multipliers.has("stats"):
+					node.visible = false
 		else:
 			node.visible = false
 func DeInspectItem(item):

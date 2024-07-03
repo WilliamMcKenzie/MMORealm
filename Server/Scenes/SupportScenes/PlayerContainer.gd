@@ -179,12 +179,12 @@ func AddExp(exp_amount):
 		character.exp = 0
 		
 		var stat_rolls = {
-			"health" : 10+(randi()%3)*5,
-			"attack" : (randi()%3),
+			"health" : 20,
+			"attack" : 1,
 			"defense" : 1,
-			"speed" : (randi()%3),
-			"dexterity" : (randi()%3),
-			"vitality" : (randi()%3),
+			"speed" : 1,
+			"dexterity" : 1,
+			"vitality" : 1,
 		}
 		
 		for stat in character.stats:
@@ -206,7 +206,13 @@ func Death(enemy_id):
 	queue_free()
 
 func UpdateStatistics(which, amount_increase):
-	account_data.statistics[which] += amount_increase
+	character.statistics[which] += amount_increase
+	
+	for _achievement in ServerData.GetCharacter(character.class).quests:
+			
+		var achievement = ServerData.GetAchievement(_achievement)
+		if (achievement.which == which and character.statistics[which] >= achievement.amount):
+			GetAchievement(_achievement)
 	
 	for _achievement in account_data.achievements:
 		if account_data.achievements[_achievement] == true:
@@ -218,7 +224,13 @@ func UpdateStatistics(which, amount_increase):
 			GetAchievement(_achievement)
 
 func GetAchievement(achievement_name):
-	print("User has unlocked achievement: " + achievement_name)
+	var character_data = ServerData.GetCharacter(character.class)
+	
+	if character_data.quests.has(achievement_name):
+		character.class = character_data.quests[achievement_name]
+		account_data.classes[character_data.quests[achievement_name]] = true
+		
+	get_node("/root/Server").SendCharacterData(name, character)
 
 func _on_PlayerHitbox_area_entered(area):
 	if "enemy_id" in area.get_parent():
