@@ -70,7 +70,8 @@ var enemies = {
 			"wait" : 1,
 			"speed" : 10,
 			"lifespan": 1,
-			"direction" : Vector2(0,1)
+			"direction" : Vector2(0,1),
+			"size" : 20
 			}
 		]
 	},
@@ -88,7 +89,8 @@ var enemies = {
 			"wait" : 1,
 			"speed" : 10,
 			"lifespan": 1,
-			"direction" : Vector2(0,1)
+			"direction" : Vector2(0,1),
+			"size" : 20
 			}
 		]
 	},
@@ -106,7 +108,8 @@ var enemies = {
 			"wait" : 1,
 			"speed" : 10,
 			"lifespan": 1,
-			"direction" : Vector2(0,1)
+			"direction" : Vector2(0,1),
+			"size" : 20
 			}
 		]
 	},
@@ -124,7 +127,8 @@ var enemies = {
 			"wait" : 1,
 			"speed" : 10,
 			"lifespan": 1,
-			"direction" : Vector2(0,1)
+			"direction" : Vector2(0,1),
+			"size" : 20
 			}
 		]
 	},
@@ -142,7 +146,8 @@ var enemies = {
 			"wait" : 1,
 			"speed" : 10,
 			"lifespan": 1,
-			"direction" : Vector2(0,1)
+			"direction" : Vector2(0,1),
+			"size" : 20
 			}
 		]
 	},
@@ -160,7 +165,8 @@ var enemies = {
 			"wait" : 1,
 			"speed" : 10,
 			"lifespan": 1,
-			"direction" : Vector2(0,1)
+			"direction" : Vector2(0,1),
+			"size" : 20
 			}
 		]
 	}
