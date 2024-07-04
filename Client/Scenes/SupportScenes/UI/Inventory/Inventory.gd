@@ -10,6 +10,8 @@ func _ready():
 	$InventoryBackground.connect("button_down", self, "ToggleInventory")
 
 func InspectItem(_item):
+	if not _item:
+		return
 	if inspecting_item == _item:
 		DeInspectItem(_item)
 		return
@@ -27,11 +29,19 @@ func InspectItem(_item):
 	var item_sprite = $InspectItem/MarginContainer/VBoxContainer/ItemSpriteContainer/ItemSprite
 	var item_description = $InspectItem/MarginContainer/VBoxContainer/ItemDescription
 	var item_tier = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Tier
+	var item_use = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Use
 		
 	item_name.text = item.name
 	item_sprite.texture.region = Rect2(item.path[3]*10, Vector2(10, 10))
 	item_description.text = item.description + "\n"
 	item_tier.text = "Tier: " + item.tier
+	
+	if item.type == "Consumable":
+		item_use.visible = true
+		item_tier.visible = false
+	else:
+		item_use.visible = false
+		item_tier.visible = true
 	
 	if item.has("damage"):
 		var item_damage = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage
@@ -62,52 +72,56 @@ func InspectItem(_item):
 		$InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof.visible = false
 	
 	var stats_node = $InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer
-	var item_stats = item.stats
-	
-	var health_node = stats_node.get_node("Stats1/Health")
-	var attack_node = stats_node.get_node("Stats2/Attack")
-	var defense_node = stats_node.get_node("Stats1/Defense")
-	var speed_node = stats_node.get_node("Stats2/Speed")
-	var dexterity_node = stats_node.get_node("Stats1/Dexterity")
-	var vitality_node = stats_node.get_node("Stats2/Vitality")
-	
-	var stats = {
-		"health" : health_node,
-		"attack" : attack_node,
-		"defense" : defense_node,
-		"speed" : speed_node,
-		"dexterity" : dexterity_node,
-		"vitality" : vitality_node
-	}
-	
-	for stat in stats.keys():
-		var node = stats[stat]
-		var amount = node.get_node("Amount")
-		var bonus = node.get_node("Bonus")
+	if item.has("stats"):
+		var item_stats = item.stats
 		
-		if item_stats.has(stat):
-			node.visible = true
-			if not multipliers.has("stats"):
-				bonus.visible = false
+		var health_node = stats_node.get_node("Stats1/Health")
+		var attack_node = stats_node.get_node("Stats2/Attack")
+		var defense_node = stats_node.get_node("Stats1/Defense")
+		var speed_node = stats_node.get_node("Stats2/Speed")
+		var dexterity_node = stats_node.get_node("Stats1/Dexterity")
+		var vitality_node = stats_node.get_node("Stats2/Vitality")
+		
+		var stats = {
+			"health" : health_node,
+			"attack" : attack_node,
+			"defense" : defense_node,
+			"speed" : speed_node,
+			"dexterity" : dexterity_node,
+			"vitality" : vitality_node
+		}
+		
+		stats_node.visible = true
+		for stat in stats.keys():
+			var node = stats[stat]
+			var amount = node.get_node("Amount")
+			var bonus = node.get_node("Bonus")
+			
+			if item_stats.has(stat):
+				node.visible = true
+				if not multipliers.has("stats"):
+					bonus.visible = false
+				else:
+					bonus.visible = true
+					
+				if item_stats[stat] > 0:
+					amount.text = "+" + str(item_stats[stat])
+					if multipliers.has("stats") and floor(item_stats[stat]*multipliers.stats)-item_stats[stat] != 0:
+						bonus.text = "(+" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
+						bonus.add_color_override("font_color", bonus_color)
+					elif multipliers.has("stats"):
+						node.visible = false
+				else:
+					amount.text = str(item_stats[stat])
+					if multipliers.has("stats") and floor(item_stats[stat]*multipliers.stats)-item_stats[stat] != 0:
+						bonus.text = "(" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
+						bonus.add_color_override("font_color", bonus_color)
+					elif multipliers.has("stats"):
+						node.visible = false
 			else:
-				bonus.visible = true
-				
-			if item_stats[stat] > 0:
-				amount.text = "+" + str(item_stats[stat])
-				if multipliers.has("stats") and floor(item_stats[stat]*multipliers.stats)-item_stats[stat] != 0:
-					bonus.text = "(+" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
-					bonus.add_color_override("font_color", bonus_color)
-				elif multipliers.has("stats"):
-					node.visible = false
-			else:
-				amount.text = str(item_stats[stat])
-				if multipliers.has("stats") and floor(item_stats[stat]*multipliers.stats)-item_stats[stat] != 0:
-					bonus.text = "(" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
-					bonus.add_color_override("font_color", bonus_color)
-				elif multipliers.has("stats"):
-					node.visible = false
-		else:
-			node.visible = false
+				node.visible = false
+	else:
+		stats_node.visible = false
 func DeInspectItem(item):
 	if inspecting_item == item:
 		var animator = $InventoryAnimations
@@ -215,6 +229,8 @@ func SetLoot(_loot_container_id, _loot):
 		slot.parent = loot_container_id
 		i += 1
 
+func UseItem(i):
+	Server.UseItem(i)
 func EquipItem(i):
 	Server.EquipItem(i)
 func ChangeItem(to_data, from_data):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/Inventory.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=2]
@@ -16,6 +16,8 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/Stats/StatsButton.gd" type="Script" id=14]
 [ext_resource path="res://Assets/ui/square_background.png" type="Texture" id=15]
 [ext_resource path="res://Scenes/SupportScenes/UI/MiniMap/MiniMap.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scenes/SupportScenes/UI/Classes/Classes.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Scenes/SupportScenes/UI/ClassButton.gd" type="Script" id=18]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 6 )
@@ -29,21 +31,38 @@ modulate_color = Color( 1, 1, 1, 0.313726 )
 
 [sub_resource type="ShaderMaterial" id=3]
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 13 )
 region = Rect2( 180, 220.5, 10, 10 )
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 13 )
 region = Rect2( 180, 230.5, 10, 10 )
 
 [sub_resource type="ShaderMaterial" id=6]
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 13 )
 region = Rect2( 180, 220, 10, 10 )
 
+[sub_resource type="StyleBoxTexture" id=8]
+texture = ExtResource( 15 )
+region_rect = Rect2( 0, 0, 128, 128 )
+modulate_color = Color( 1, 1, 1, 0.313726 )
+
+[sub_resource type="ShaderMaterial" id=9]
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 13 )
+region = Rect2( 180, 220.5, 10, 10 )
+
 [sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 13 )
+region = Rect2( 180, 230.5, 10, 10 )
+
+[sub_resource type="ShaderMaterial" id=12]
+
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 13 )
 region = Rect2( 190, 220, 10, 10 )
 
@@ -95,27 +114,54 @@ text = "Enter"
 [node name="UtilityButtons" parent="." instance=ExtResource( 9 )]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -48.0
-margin_top = 9.0
-margin_right = -10.0
-margin_bottom = 133.0
+margin_left = -86.0
+margin_right = -5.0
+margin_bottom = 43.0
 
-[node name="LeftContainer" type="HBoxContainer" parent="."]
+[node name="LeftContainer" type="VBoxContainer" parent="."]
 margin_left = 12.0
 margin_top = 11.0
 margin_right = 350.0
 margin_bottom = 53.0
+custom_constants/separation = 8
+
+[node name="BarContainer" type="VBoxContainer" parent="LeftContainer"]
+margin_right = 338.0
+margin_bottom = 42.0
+
+[node name="Health" parent="LeftContainer/BarContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 338.0
+margin_bottom = 19.0
+
+[node name="ExpContainer" type="HBoxContainer" parent="LeftContainer/BarContainer"]
+margin_top = 23.0
+margin_right = 338.0
+margin_bottom = 42.0
+
+[node name="ExpBar" parent="LeftContainer/BarContainer/ExpContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 104.0
+margin_bottom = 19.0
+
+[node name="CurrencyTracker" parent="LeftContainer/BarContainer/ExpContainer" instance=ExtResource( 7 )]
+visible = false
+margin_left = 58.0
+margin_right = 90.0
+margin_bottom = 54.0
 
 [node name="MiniMap" parent="LeftContainer" instance=ExtResource( 16 )]
 visible = false
-margin_left = 42.0
-margin_right = 112.0
-margin_bottom = 80.0
+margin_bottom = 42.0
 size_flags_horizontal = 0
 
-[node name="Buttons" type="VBoxContainer" parent="LeftContainer"]
-margin_right = 38.0
-margin_bottom = 80.0
+[node name="Buttons" type="HBoxContainer" parent="LeftContainer"]
+margin_top = 50.0
+margin_right = 80.0
+margin_bottom = 88.0
+size_flags_horizontal = 0
 custom_constants/separation = 4
 
 [node name="ClassButton" type="PanelContainer" parent="LeftContainer/Buttons"]
@@ -124,6 +170,7 @@ margin_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 2 )
+script = ExtResource( 18 )
 
 [node name="MarginContainer" type="MarginContainer" parent="LeftContainer/Buttons/ClassButton"]
 margin_right = 38.0
@@ -141,8 +188,8 @@ margin_top = 4.0
 margin_right = 34.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 30, 30 )
-texture_normal = SubResource( 8 )
-texture_hover = SubResource( 9 )
+texture_normal = SubResource( 4 )
+texture_hover = SubResource( 5 )
 expand = true
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="LeftContainer/Buttons/ClassButton/MarginContainer"]
@@ -150,15 +197,15 @@ material = SubResource( 6 )
 position = Vector2( 5, 4 )
 scale = Vector2( 3, 3 )
 z_index = 22
-normal = SubResource( 10 )
+normal = SubResource( 7 )
 
 [node name="StatsButton" type="PanelContainer" parent="LeftContainer/Buttons"]
-margin_top = 42.0
-margin_right = 38.0
-margin_bottom = 80.0
+margin_left = 42.0
+margin_right = 80.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 8 )
 script = ExtResource( 14 )
 
 [node name="MarginContainer" type="MarginContainer" parent="LeftContainer/Buttons/StatsButton"]
@@ -171,56 +218,32 @@ custom_constants/margin_bottom = 4
 
 [node name="TextureButton" type="TextureButton" parent="LeftContainer/Buttons/StatsButton/MarginContainer"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 3 )
+material = SubResource( 9 )
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 34.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 30, 30 )
-texture_normal = SubResource( 8 )
-texture_hover = SubResource( 9 )
+texture_normal = SubResource( 10 )
+texture_hover = SubResource( 11 )
 expand = true
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="LeftContainer/Buttons/StatsButton/MarginContainer"]
-material = SubResource( 6 )
+material = SubResource( 12 )
 position = Vector2( 5, 4 )
 scale = Vector2( 3, 3 )
 z_index = 22
-normal = SubResource( 11 )
-
-[node name="BarContainer" type="VBoxContainer" parent="LeftContainer"]
-margin_left = 42.0
-margin_right = 296.0
-margin_bottom = 80.0
-
-[node name="Health" parent="LeftContainer/BarContainer" instance=ExtResource( 4 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 254.0
-margin_bottom = 19.0
-
-[node name="ExpContainer" type="HBoxContainer" parent="LeftContainer/BarContainer"]
-margin_top = 23.0
-margin_right = 254.0
-margin_bottom = 42.0
-
-[node name="ExpBar" parent="LeftContainer/BarContainer/ExpContainer" instance=ExtResource( 5 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 104.0
-margin_bottom = 19.0
-
-[node name="CurrencyTracker" parent="LeftContainer/BarContainer/ExpContainer" instance=ExtResource( 7 )]
-visible = false
-margin_left = 58.0
-margin_right = 90.0
-margin_bottom = 54.0
+normal = SubResource( 13 )
 
 [node name="Inventory" parent="." instance=ExtResource( 1 )]
 
 [node name="Stats" parent="." instance=ExtResource( 8 )]
 
+[node name="Classes" parent="." instance=ExtResource( 17 )]
+visible = false
+
 [node name="GameButtons" type="Control" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -231,11 +254,11 @@ margin_right = -3.0
 margin_bottom = 19.0
 
 [node name="HelmetButton" parent="GameButtons" instance=ExtResource( 12 )]
-position = Vector2( -123, -126 )
-scale = Vector2( 0.5, 0.5 )
+position = Vector2( -84, -107 )
+scale = Vector2( 0.4, 0.4 )
 
 [node name="HomeButton" parent="GameButtons" instance=ExtResource( 11 )]
-position = Vector2( -73, -198 )
-scale = Vector2( 0.35, 0.35 )
+position = Vector2( -153, -88 )
+scale = Vector2( 0.3, 0.3 )
 
 [connection signal="pressed" from="LeftContainer/Buttons/StatsButton/MarginContainer/TouchScreenButton" to="LeftContainer/Buttons/StatsButton" method="_on_TouchScreenButton_pressed"]

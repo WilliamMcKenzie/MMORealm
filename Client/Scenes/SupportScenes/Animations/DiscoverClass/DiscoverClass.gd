@@ -12,7 +12,7 @@ func _ready():
 func SetClass(classname):
 	var class_data = ClientData.GetCharacter(classname)
 	$Container/Character.SetCharacterClass(classname)
-	$Container/HBoxContainer/TextureRect.texture.region = Rect2(Vector2(class_data.icon), Vector2(10,10))
+	$Container/HBoxContainer/TextureRect.texture.region = Rect2(class_data.icon, Vector2(10,10))
 	$Container/HBoxContainer/Class.text = classname
 	$Container/HBoxContainer/Class.add_color_override("font_color", class_data.color)
 	

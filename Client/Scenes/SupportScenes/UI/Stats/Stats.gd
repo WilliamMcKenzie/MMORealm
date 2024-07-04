@@ -165,12 +165,12 @@ func SetStats(character):
 	
 	SetCharacterSprite(character, gear)
 	
-	var health_node = stats_node.get_node("Health/ProgressBar")
-	var attack_node = stats_node.get_node("Attack/ProgressBar")
-	var defense_node = stats_node.get_node("Defense/ProgressBar")
-	var speed_node = stats_node.get_node("Speed/ProgressBar")
-	var dexterity_node = stats_node.get_node("Dexterity/ProgressBar")
-	var vitality_node = stats_node.get_node("Vitality/ProgressBar")
+	var health_node = stats_node.get_node("Health/VBoxContainer/ProgressBar")
+	var attack_node = stats_node.get_node("Attack/VBoxContainer/ProgressBar")
+	var defense_node = stats_node.get_node("Defense/VBoxContainer/ProgressBar")
+	var speed_node = stats_node.get_node("Speed/VBoxContainer/ProgressBar")
+	var dexterity_node = stats_node.get_node("Dexterity/VBoxContainer/ProgressBar")
+	var vitality_node = stats_node.get_node("Vitality/VBoxContainer/ProgressBar")
 	
 	var stats = {
 		"health" : { "node" : health_node, "abbreviation" : "Hp: ", "threshold" : 500},
@@ -184,10 +184,9 @@ func SetStats(character):
 	var blue = StyleBoxFlat.new()
 	var orange = StyleBoxFlat.new()
 	var transparent = StyleBoxFlat.new()
-	
-	blue.bg_color = Color(28.0/255, 255.0/255, 250.0/255)
-	orange.bg_color = Color(0, 159.0/255, 1)
-	transparent.bg_color = Color(0, 0, 0, 80.0/255)
+	blue.bg_color = Color(187.0/255, 162.0/255, 244.0/255)
+	orange.bg_color = Color(66.0/255, 191.0/255, 221.0/255)
+	transparent.bg_color = Color(25.0/255, 25.0/255, 35.0/255, 100.0/255)
 	
 	for stat in stats.keys():
 		var node = stats[stat].node
@@ -195,13 +194,13 @@ func SetStats(character):
 		if stats[stat].threshold >= base_stats[stat]:
 			node.value = base_stats[stat]
 			node.max_value = stats[stat].threshold
-			node.add_stylebox_override("fg", orange)
+			#node.add_stylebox_override("fg", orange)
 			node.add_stylebox_override("bg", transparent)
 		else:
 			node.value = base_stats[stat]-stats[stat].threshold
 			node.max_value = stats[stat].threshold
-			node.add_stylebox_override("fg", blue)
-			node.add_stylebox_override("bg", orange)
+			#node.add_stylebox_override("fg", blue)
+			#node.add_stylebox_override("bg", orange)
 
 func SetCharacterSprite(character, gear):
 	var CharacterSpriteEle = $StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/MarginContainer/Sprite

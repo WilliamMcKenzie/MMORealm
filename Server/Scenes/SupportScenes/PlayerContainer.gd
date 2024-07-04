@@ -12,6 +12,21 @@ var gear = {}
 
 #Items
 
+func UseItem(index):
+	var selected_item_raw = character.inventory[index]
+	if selected_item_raw == null:
+		return
+	
+	var selected_item = ServerData.GetItem(selected_item_raw.item)
+	if selected_item.type != "Consumable":
+		return
+	
+	character.inventory[index] = null
+	if selected_item.use == "ascend":
+		character.ascension_stones += 1
+	
+	get_node("/root/Server").SendCharacterData(name, character)
+
 func EquipItem(index):
 	var selected_item_raw = character.inventory[index]
 	if selected_item_raw == null:
@@ -206,7 +221,8 @@ func Death(enemy_id):
 	queue_free()
 
 func UpdateStatistics(which, amount_increase):
-	character.statistics[which] += amount_increase
+	if character.ascension_stones >= ServerData.GetCharacter(character.class).ascension_stones:
+		character.statistics[which] += amount_increase
 	
 	for _achievement in ServerData.GetCharacter(character.class).quests:
 			

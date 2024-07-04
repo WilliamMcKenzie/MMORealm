@@ -10,21 +10,21 @@ texture = ExtResource( 3 )
 region_rect = Rect2( 0, 0, 128, 128 )
 modulate_color = Color( 1, 1, 1, 0.313726 )
 
+[sub_resource type="ShaderMaterial" id=4]
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 1 )
+region = Rect2( 80, 220, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 1 )
+region = Rect2( 80, 230, 10, 10 )
+
 [sub_resource type="ShaderMaterial" id=3]
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 1 )
-region = Rect2( 69, 219.5, 12, 12 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 1 )
-region = Rect2( 69, 229.5, 12, 12 )
-
-[sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 1 )
-region = Rect2( 70, 220, 10, 10 )
-
-[sub_resource type="ShaderMaterial" id=4]
+region = Rect2( 80, 220, 10, 10 )
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -38,65 +38,70 @@ region = Rect2( 60, 230.5, 10, 10 )
 atlas = ExtResource( 1 )
 region = Rect2( 60, 220, 10, 10 )
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
-region = Rect2( 80, 220, 10, 10 )
+region = Rect2( 69, 219.5, 12, 12 )
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 1 )
-region = Rect2( 80, 230, 10, 10 )
+region = Rect2( 69, 229.5, 12, 12 )
 
-[sub_resource type="AtlasTexture" id=13]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 1 )
-region = Rect2( 80, 220, 10, 10 )
+region = Rect2( 70, 220, 10, 10 )
 
-[node name="UtilityButtons" type="VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="UtilityButtons" type="HBoxContainer"]
+margin_left = 7.0
+margin_top = 5.0
+margin_right = 88.0
+margin_bottom = 45.0
+grow_horizontal = 0
+grow_vertical = 0
 custom_constants/separation = 5
 
-[node name="NearbyButton" type="PanelContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 38.0
+[node name="LootButton" type="PanelContainer" parent="."]
+visible = false
+margin_right = 38.0
+margin_bottom = 40.0
 custom_styles/panel = SubResource( 9 )
+script = ExtResource( 2 )
 
-[node name="MarginContainer" type="MarginContainer" parent="NearbyButton"]
-margin_right = 40.0
-margin_bottom = 38.0
+[node name="MarginContainer" type="MarginContainer" parent="LootButton"]
+margin_right = 38.0
+margin_bottom = 40.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
-[node name="TextureButton" type="TextureButton" parent="NearbyButton/MarginContainer"]
+[node name="TextureButton" type="TextureButton" parent="LootButton/MarginContainer"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 3 )
+material = SubResource( 4 )
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 36.0
-margin_bottom = 34.0
+margin_right = 34.0
+margin_bottom = 36.0
 rect_min_size = Vector2( 30, 30 )
-texture_normal = SubResource( 2 )
-texture_hover = SubResource( 6 )
+texture_normal = SubResource( 7 )
+texture_hover = SubResource( 8 )
 expand = true
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="NearbyButton/MarginContainer"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="LootButton/MarginContainer"]
 material = SubResource( 3 )
 position = Vector2( 5, 4 )
 scale = Vector2( 3, 3 )
 z_index = 22
-normal = SubResource( 11 )
+normal = SubResource( 13 )
 
 [node name="BackpackButton" type="PanelContainer" parent="."]
-margin_top = 43.0
-margin_right = 40.0
-margin_bottom = 81.0
+margin_right = 38.0
+margin_bottom = 40.0
 custom_styles/panel = SubResource( 9 )
 script = ExtResource( 4 )
 
 [node name="MarginContainer" type="MarginContainer" parent="BackpackButton"]
-margin_right = 40.0
-margin_bottom = 38.0
+margin_right = 38.0
+margin_bottom = 40.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
@@ -107,8 +112,8 @@ modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 4 )
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 36.0
-margin_bottom = 34.0
+margin_right = 34.0
+margin_bottom = 36.0
 rect_min_size = Vector2( 30, 30 )
 texture_normal = SubResource( 1 )
 texture_hover = SubResource( 5 )
@@ -121,39 +126,37 @@ scale = Vector2( 3, 3 )
 z_index = 22
 normal = SubResource( 12 )
 
-[node name="LootButton" type="PanelContainer" parent="."]
-visible = false
-margin_top = 86.0
-margin_right = 40.0
-margin_bottom = 124.0
+[node name="NearbyButton" type="PanelContainer" parent="."]
+margin_left = 43.0
+margin_right = 81.0
+margin_bottom = 40.0
 custom_styles/panel = SubResource( 9 )
-script = ExtResource( 2 )
 
-[node name="MarginContainer" type="MarginContainer" parent="LootButton"]
-margin_right = 40.0
-margin_bottom = 38.0
+[node name="MarginContainer" type="MarginContainer" parent="NearbyButton"]
+margin_right = 38.0
+margin_bottom = 40.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
-[node name="TextureButton" type="TextureButton" parent="LootButton/MarginContainer"]
+[node name="TextureButton" type="TextureButton" parent="NearbyButton/MarginContainer"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 4 )
+material = SubResource( 3 )
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 36.0
-margin_bottom = 34.0
+margin_right = 34.0
+margin_bottom = 36.0
 rect_min_size = Vector2( 30, 30 )
-texture_normal = SubResource( 7 )
-texture_hover = SubResource( 8 )
+texture_normal = SubResource( 2 )
+texture_hover = SubResource( 6 )
 expand = true
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="LootButton/MarginContainer"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="NearbyButton/MarginContainer"]
 material = SubResource( 3 )
 position = Vector2( 5, 4 )
 scale = Vector2( 3, 3 )
 z_index = 22
-normal = SubResource( 13 )
+normal = SubResource( 11 )
 
 [connection signal="pressed" from="BackpackButton/MarginContainer/TouchScreenButton" to="BackpackButton" method="_on_TouchScreenButton_pressed"]

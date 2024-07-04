@@ -23,19 +23,19 @@ var unique_color_params = {
 var default_color_params = {
 	
 	"helmetDarkOrigin" : RgbToColor(0, 0, 255.0),
-	"helmetDarkNew" : RgbToColor(121.0, 66.0, 29.0),
+	"helmetDarkNew" : RgbToColor(124.0, 69.0, 46.0),
 	
 	"helmetLightOrigin" : RgbToColor(0, 255.0, 255.0),
 	"helmetLightNew" : RgbToColor(170.0, 100.0, 47.0),
 	
 	"helmetMediumOrigin" : RgbToColor(255.0, 0, 255.0),
-	"helmetMediumNew" : RgbToColor(144.0, 81.0, 38.0),
+	"helmetMediumNew" : RgbToColor(144.0, 84.0, 58.0),
 	
 	"bodyLightOrigin" : RgbToColor(255.0, 255.0, 255.0),
-	"bodyLightNew" : RgbToColor(216.0, 216.0, 216.0),
+	"bodyLightNew" : RgbToColor(216.0, 202.0, 202.0),
 	
 	"bodyMediumOrigin" : RgbToColor(255.0, 255.0, 0),
-	"bodyMediumNew" : RgbToColor(190.0, 190.0, 190.0),
+	"bodyMediumNew" : RgbToColor(193.0, 168.0, 168.0),
 	
 	"bandOrigin" : RgbToColor(0, 0, 0),
 	"bandNew" : RgbToColor(144.0, 81.0, 38.0),

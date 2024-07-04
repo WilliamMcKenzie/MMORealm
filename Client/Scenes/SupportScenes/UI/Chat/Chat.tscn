@@ -105,6 +105,7 @@ margin_left = 14.0
 margin_top = 2.0
 margin_right = 304.0
 margin_bottom = 302.0
+mouse_filter = 2
 alignment = 2
 
 [connection signal="text_entered" from="HBoxContainer/PanelContainer/MarginContainer/ChatInput" to="HBoxContainer/PanelContainer/MarginContainer/ChatInput" method="_on_ChatInput_text_entered"]

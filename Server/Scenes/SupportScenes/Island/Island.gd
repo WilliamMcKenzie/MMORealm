@@ -110,16 +110,22 @@ func GetIslandChunk(chunk):
 	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
 		result.append([])
 		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
-			result[result.size()-1].append(map_as_array[x][y])
-			if map_objects.has(Vector2(x*8, y*8)):
-				objects.append(map_objects[Vector2(x*8, y*8)])
-			
-			var full_chunk = chunks.has(chunk) and chunks[chunk]["E"].size() > 10
-			if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk:
-				var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
-				instance_tree.append(name)
+			if map_as_array.size() >= x and map_as_array[x].size() >= y:
+				result[result.size()-1].append(map_as_array[x][y])
+				if map_objects.has(Vector2(x*8, y*8)):
+					objects.append(map_objects[Vector2(x*8, y*8)])
 				
-				get_node("/root/Server").SpawnNPC(enemy_spawn_points[Vector2(x,y)]["Enemy"], instance_tree, Vector2(x*8, y*8)-self.position)
+				var full_chunk = chunks.has(chunk) and chunks[chunk]["E"].size() > 10
+				if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk:
+					var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
+					instance_tree.append(name)
+					
+					get_node("/root/Server").SpawnNPC(enemy_spawn_points[Vector2(x,y)]["Enemy"], instance_tree, Vector2(x*8, y*8)-self.position)
+			else:
+				print("x,y: " + str(Vector2(x,y)))
+				print("Map as array size:" + str(map_as_array.size()))
+				print("Map as array y size:" + str(map_as_array[x].size()))
+				print("Map as array value: " + str(map_as_array[x][y]))
 	return {
 		"Tiles" : result,
 		"Objects" : objects

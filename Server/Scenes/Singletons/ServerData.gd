@@ -9,6 +9,11 @@ var basic_loot_pools = {
 				"item" : 4,
 				"chance" : 0.01,
 				"threshold" : 0.15,
+			},
+			{
+				"item" : 0,
+				"chance" : 0.5,
+				"threshold" : 0.15,
 			}
 		],
 		"loot" : [
@@ -34,7 +39,12 @@ var basic_loot_pools = {
 					"item" : 3,
 					"chance" : 0.5,
 					"threshold" : 0.15,
-				}
+				},
+			{
+				"item" : 0,
+				"chance" : 0.5,
+				"threshold" : 0.15,
+			}
 		],
 		"loot" : [
 			{
@@ -157,6 +167,16 @@ var enemies = {
 }
 
 var items = {
+	0 : {
+		"name": "Ascension Stone",
+		"description" : "A precious gemstone, what will it awaken in you?",
+		"tier" : "4",
+		"type" : "Consumable",
+		"use" : "ascend",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,13)],
+	},
 	1 : {
 		"name": "Short Sword",
 		"description" : "A simple yet effective weapon.",
@@ -166,7 +186,7 @@ var items = {
 		"damage" : [15,25],
 		"rof" : 100,
 		"stats" : {
-			"vitality" : 1
+			"vitality" : 12
 		},
 		"range" : 3,
 		"tier" : "0",
@@ -302,7 +322,7 @@ var characters = {
 		},
 		"rect" : Rect2(0,0,80,40),
 		"icon" : Vector2(0,210),
-		"color" : Color(78.0/255, 166.0/255, 63.0/255),
+		"color" : Color(196.0/255, 184.0/255, 146.0/255),
 		"bonus_stats" : {
 			"health" : 0,
 			"attack" : 0,
@@ -313,7 +333,8 @@ var characters = {
 		},
 		"multipliers" : {
 		},
-		"ascension_stones" : 0,
+		"description" : "The ultimate jack of all trades, the apprentice is a quick learner who can wield any weapon.",
+		"ascension_stones" : 5,
 	},
 	"Noble" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -331,17 +352,19 @@ var characters = {
 			"vitality" : 20
 		},
 		"multipliers" : {
-			"Sword" : {"damage" : 1.2},
+			"Sword" : {"damage" : 1.2, "stats" : 1.2},
 			"Armor" : {"stats" : 1.2},
 			"Helmet" : {"stats" : 1.2},
 		},
-		"ascension_stones" : 1,
+		"description" : "The Noble's strength and bravery dominate the battlefield.",
+		"teaser" : "Discover by becoming one with the blade.",
+		"ascension_stones" : 50,
 	},
 	"Nomad" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
 		"quests" : {
 		},
-		"rect" : Rect2(0,80,80,40),
+		"rect" : Rect2(80,80,80,40),
 		"icon" : Vector2(10,210),
 		"color" : Color(78.0/255, 166.0/255, 63.0/255),
 		"bonus_stats" : {
@@ -353,17 +376,19 @@ var characters = {
 			"vitality" : 10
 		},
 		"multipliers" : {
-			"Bow" : {"rof" : 3},
+			"Bow" : {"rof" : 3, "stats" : 1.2},
 			"Leather" : {"stats" : 1.2},
 			"Cap" : {"stats" : 1.2},
 		},
-		"ascension_stones" : 1,
+		"description" : "Swift and precise, the Nomad's arrows strike fear into distant foes.",
+		"teaser" : "Discover by becoming one with the arrow.",
+		"ascension_stones" : 50,
 	},
 	"Scholar" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
 		"quests" : {
 		},
-		"rect" : Rect2(0,120,80,40),
+		"rect" : Rect2(160,120,80,40),
 		"icon" : Vector2(30,210),
 		"color" : Color(62.0/255, 118.0/255, 255.0/255),
 		"bonus_stats" : {
@@ -375,11 +400,13 @@ var characters = {
 			"vitality" : 10
 		},
 		"multipliers" : {
-			"Staff" : {"damage" : 1.2},
+			"Staff" : {"damage" : 1.2, "stats" : 1.2},
 			"Robe" : {"stats" : 1.2},
 			"Hat" : {"stats" : 1.2},
 		},
-		"ascension_stones" : 1,
+		"description" : "With powerful spells and vast intellect, the Scholar excels at long range.",
+		"teaser" : "Discover by becoming one with magic.",
+		"ascension_stones" : 50,
 	},
 }
 

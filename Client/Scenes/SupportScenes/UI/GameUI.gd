@@ -4,6 +4,7 @@ var in_chat = false
 var is_in_ui = false
 var is_inventory_open = false
 var is_stats_open = false
+var is_classes_open = false
 var last_opened = 0
 
 var last_character
@@ -119,3 +120,22 @@ func ToggleStats():
 		$UtilityButtons.visible = false
 		$ChatControl.visible = false
 		is_stats_open = true
+		
+func ToggleClasses():
+	if last_opened+100 > OS.get_system_time_msecs():
+		return
+	last_opened = OS.get_system_time_msecs()
+	if is_classes_open:
+		$Classes.CloseClasses()
+		$LeftContainer.visible = true
+		$GameButtons.visible = true
+		$UtilityButtons.visible = true
+		$ChatControl.visible = true
+		is_classes_open = false
+	else:
+		$Classes.OpenClasses()
+		$LeftContainer.visible = false
+		$GameButtons.visible = false
+		$UtilityButtons.visible = false
+		$ChatControl.visible = false
+		is_classes_open = true

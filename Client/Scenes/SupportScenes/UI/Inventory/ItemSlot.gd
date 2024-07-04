@@ -7,12 +7,15 @@ var dragging = false
 var item = null
 var quantity = 1
 
+var last_click = 10000
+func _physics_process(delta):
+	last_click += delta
+
 func _ready():
+	$TouchScreenButton.connect("pressed", self, "InspectItem")
 	connect("pressed", self, "InspectItem")
 	connect("mouse_exited", self, "DeInspectItem")
 	connect("focus_exited", self, "DeInspectItem")
-
-
 
 func _input(event):
 	# Check if the event is a mouse button release
@@ -76,8 +79,12 @@ func drop_data(position, data):
 		"index" : index
 	}
 	GameUI.get_node("Inventory").ChangeItem(current_data, data)
-
+	
 func InspectItem():
+	if last_click < 1 and parent == "inventory":
+		GameUI.get_node("Inventory").UseItem(index)
+	else:
+		last_click = 0
 	GameUI.get_node("Inventory").InspectItem(item)
 func DeInspectItem():
 	GameUI.get_node("Inventory").DeInspectItem(item)

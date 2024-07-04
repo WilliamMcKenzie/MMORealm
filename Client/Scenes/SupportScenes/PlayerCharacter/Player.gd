@@ -40,8 +40,10 @@ func _ready():
 
 #Dealing with the characters sprite
 func SetCharacter(_character):
-	if character and character.hash() == _character.hash():
+	var same = character and character.hash() == _character.hash()
+	if character and same:
 		return
+	
 	character = _character
 	
 	stats = character.stats
@@ -83,13 +85,17 @@ func SetSpriteData(sprite, path):
 	sprite.texture = spriteTexture
 	sprite.hframes = path[1]
 	sprite.vframes = path[2]
-	sprite.frame_coords = path[3]
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
 	MovePlayer(delta)
 	DefinePlayerState()
 
+func _unhandled_input(event):
+	if event is InputEventMouseButton:
+		shoot = true
+		holding_shoot = true
+		
 func MovePlayer(delta):
 	if GameUI.in_chat == true:
 		return
@@ -112,13 +118,13 @@ func MovePlayer(delta):
 	if (Input.is_action_just_released("shoot")):
 		shoot = false
 		holding_shoot = false
-	if(Input.is_action_just_pressed("shoot")):
-		shoot = true
-		holding_shoot = true
 	if right_joystick_output != Vector2.ZERO:
 		shoot = true
 	if right_joystick_output == Vector2.ZERO and holding_shoot == false:
 		shoot = false
+	if holding_shoot == true and (left_joystick_output != Vector2.ZERO or right_joystick_output != Vector2.ZERO):
+		shoot = false
+		holding_shoot = false
 	
 	if (Input.is_action_just_pressed("nexus")):
 		Server.Nexus()
@@ -138,7 +144,7 @@ func MovePlayer(delta):
 	var shoot_direction = (get_global_mouse_position() - position).normalized()
 	motion = motion.normalized()
 	
-	if Input.is_action_pressed("shoot") and not GameUI.is_inventory_open:
+	if holding_shoot == true and not GameUI.is_inventory_open and left_joystick_output == Vector2.ZERO and right_joystick_output == Vector2.ZERO:
 		animation_tree.get("parameters/playback").travel("Attack")
 		animation_tree.set("parameters/Idle/blend_position", shoot_direction)
 		animation_tree.set("parameters/Walk/blend_position", shoot_direction)

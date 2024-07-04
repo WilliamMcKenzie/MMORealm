@@ -101,6 +101,8 @@ remote func RecieveCharacterData(character):
 	player_node.SetCharacter(character)
 	GameUI.SetCharacterData(character)
 
+func UseItem(index):
+	rpc_id(1, "UseItem", index)
 func EquipItem(index):
 	rpc_id(1, "EquipItem", index)
 func ChangeItem(to_data, from_data):
