@@ -212,7 +212,8 @@ func DealDamage(damage, enemy_id):
 	
 	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	if health < 1:
-		print("dead")
+		pass
+		#print("dead")
 		#Death(enemy_id)
 
 func Death(enemy_id):

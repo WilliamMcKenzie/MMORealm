@@ -1,8 +1,8 @@
 shader_type canvas_item;
 
-uniform vec4 color : hint_color = vec4(0,0,0,1);
-uniform float width : hint_range(0, 10) = 0.4;
-uniform int pattern : hint_range(0, 2) = 2; // diamond, circle, square
+uniform vec4 color : hint_color = vec4(1.0);
+uniform float width : hint_range(0, 10) = 1.0;
+uniform int pattern : hint_range(0, 2) = 0; // diamond, circle, square
 uniform bool inside = false;
 uniform bool add_margins = false; // only useful when inside is false
 

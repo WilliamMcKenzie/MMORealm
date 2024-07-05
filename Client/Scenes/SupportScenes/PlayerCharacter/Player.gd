@@ -92,7 +92,7 @@ func _physics_process(delta):
 	DefinePlayerState()
 
 func _unhandled_input(event):
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and event.device == 0:
 		shoot = true
 		holding_shoot = true
 		
@@ -169,7 +169,7 @@ func MovePlayer(delta):
 	motion = move_and_slide(motion * stats.speed)
 	if get_parent().get_parent().has_method("LoadChunk"):
 		#Loading all possible chunks you might see around you
-		var chunk_size = 32
+		var chunk_size = 16
 		get_parent().get_parent().LoadChunk(position, Vector2(0, 0))
 		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, 0))
 		get_parent().get_parent().LoadChunk(position, Vector2(chunk_size, chunk_size))

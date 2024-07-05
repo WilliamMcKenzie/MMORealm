@@ -190,17 +190,28 @@ func SetStats(character):
 	
 	for stat in stats.keys():
 		var node = stats[stat].node
+		var stat_node = node.get_parent().get_node("HBoxContainer/Label")
+		var max_stat_node = node.get_parent().get_node("HBoxContainer/Label2")
 		
-		if stats[stat].threshold >= base_stats[stat]:
-			node.value = base_stats[stat]
+		
+		if stats[stat].threshold >= total_stats[stat]:
+			stat_node.text = str(total_stats[stat])
+			stat_node.add_color_override("font_color", Color(1, 1, 1))
+			max_stat_node.text = "/"+str(base_stats[stat])
+			
+			node.value = total_stats[stat]
 			node.max_value = stats[stat].threshold
-			#node.add_stylebox_override("fg", orange)
+			node.add_stylebox_override("fg", orange)
 			node.add_stylebox_override("bg", transparent)
 		else:
-			node.value = base_stats[stat]-stats[stat].threshold
+			stat_node.text = str(total_stats[stat])
+			stat_node.add_color_override("font_color", Color(221.0/255, 207.0/255, 1))
+			max_stat_node.text = "/"+str(base_stats[stat])
+			
+			node.value = total_stats[stat]-stats[stat].threshold
 			node.max_value = stats[stat].threshold
-			#node.add_stylebox_override("fg", blue)
-			#node.add_stylebox_override("bg", orange)
+			node.add_stylebox_override("fg", blue)
+			node.add_stylebox_override("bg", orange)
 
 func SetCharacterSprite(character, gear):
 	var CharacterSpriteEle = $StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/MarginContainer/Sprite

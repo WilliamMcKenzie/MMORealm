@@ -33,11 +33,11 @@ func _physics_process(delta):
 		client_clock += 1
 		decimal_collector -= 1
 	
-	sync_clock_counter += 1
-	if sync_clock_counter > 60:
-		if get_tree().network_peer:
-			rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
-		sync_clock_counter = 0
+	#sync_clock_counter += 1
+	#if sync_clock_counter > 60:
+		#if get_tree().network_peer:
+			#rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
+		#sync_clock_counter = 0
 
 func UpdateRightJoystick(output):
 	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):

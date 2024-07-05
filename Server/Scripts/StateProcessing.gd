@@ -28,7 +28,7 @@ func SendIslandData(instance_tree):
 	var node = get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree))
 	node.object_list = CleanObjects(node.object_list).duplicate(true)
 	
-	var chunk_size = 32
+	var chunk_size = 16
 	for chunk in node.chunks.keys():
 		if node.chunks[chunk]["P"].keys().size() > 0:
 			var result = { "E" : {}, "P" : {}, "O" : {} }

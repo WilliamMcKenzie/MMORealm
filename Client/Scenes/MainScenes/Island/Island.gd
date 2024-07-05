@@ -1,7 +1,7 @@
 extends "../Map.gd"
 
 var generating = false
-var chunk_size = 32
+var chunk_size = 16
 var loaded_chunks = {}
 
 func GenerateChunk(chunk_data, chunk):

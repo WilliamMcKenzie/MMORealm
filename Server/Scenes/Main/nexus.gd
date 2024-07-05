@@ -46,10 +46,9 @@ func _physics_process(delta):
 		projectile_list[projectile_id]["position"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
 		projectile_list[projectile_id]["lifespan"] -= delta
 		
-		for player_id in player_list.keys():
-			print(player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]))
-			if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
-				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
+		#for player_id in player_list.keys():
+			#if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
+			#	get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
 		if projectile_list[projectile_id]["lifespan"] <= 0:
 			projectile_list.erase(projectile_id)
 			
