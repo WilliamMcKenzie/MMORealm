@@ -118,7 +118,6 @@ func GetIslandChunk(chunk):
 				if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk:
 					var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
 					instance_tree.append(name)
-					
 					get_node("/root/Server").SpawnNPC(enemy_spawn_points[Vector2(x,y)]["Enemy"], instance_tree, Vector2(x*8, y*8)-self.position)
 			else:
 				print("x,y: " + str(Vector2(x,y)))
