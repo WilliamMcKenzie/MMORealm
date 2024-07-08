@@ -1,11 +1,10 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/ItemSlot.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Resources/main_theme.tres" type="Theme" id=2]
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/Inventory.gd" type="Script" id=3]
 [ext_resource path="res://Assets/ui/square_background.png" type="Texture" id=4]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=5]
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=6]
 [ext_resource path="res://Assets/ui/rectangle_background.png" type="Texture" id=7]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/InventoryBackground.gd" type="Script" id=9]
@@ -19,42 +18,11 @@ texture = ExtResource( 4 )
 region_rect = Rect2( 0, 0, 128, 128 )
 modulate_color = Color( 1, 1, 1, 0.313726 )
 
-[sub_resource type="ShaderMaterial" id=22]
-shader = ExtResource( 6 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.4
-shader_param/glow_thickness = 1.3
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
-shader_param/helmetTextureActive = false
-shader_param/bodyTextureActive = false
-shader_param/weaponTextureActive = false
-shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
-shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
-shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
-shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bandNew = Color( 33, 53, 23, 0.2 )
-shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
-shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
-shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
-
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 5 )
-region = Rect2( 0, 1111, 10, 10 )
+region = Rect2( 0, 0, 10, 10 )
 
 [sub_resource type="DynamicFont" id=33]
-size = 14
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 8 )
@@ -64,7 +32,6 @@ default_font = SubResource( 33 )
 Label/fonts/font = SubResource( 33 )
 
 [sub_resource type="DynamicFont" id=34]
-size = 14
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 8 )
@@ -210,7 +177,7 @@ custom_styles/panel = SubResource( 2 )
 
 [node name="MarginContainer" type="MarginContainer" parent="InspectItem"]
 margin_right = 204.0
-margin_bottom = 301.0
+margin_bottom = 277.0
 custom_constants/margin_right = 16
 custom_constants/margin_top = 16
 custom_constants/margin_left = 16
@@ -220,23 +187,23 @@ custom_constants/margin_bottom = 16
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 188.0
-margin_bottom = 285.0
+margin_bottom = 261.0
 
 [node name="ItemName" type="Label" parent="InspectItem/MarginContainer/VBoxContainer"]
 margin_right = 172.0
-margin_bottom = 19.0
+margin_bottom = 14.0
 text = "Item Name"
 align = 1
 
 [node name="ItemSpriteContainer" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer"]
-margin_top = 23.0
+margin_top = 18.0
 margin_right = 172.0
-margin_bottom = 53.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 30, 30 )
 alignment = 1
 
 [node name="ItemSprite" type="TextureRect" parent="InspectItem/MarginContainer/VBoxContainer/ItemSpriteContainer"]
-material = SubResource( 22 )
+material = ExtResource( 13 )
 margin_left = 71.0
 margin_right = 101.0
 margin_bottom = 30.0
@@ -246,92 +213,92 @@ expand = true
 stretch_mode = 5
 
 [node name="ItemDescription" type="Label" parent="InspectItem/MarginContainer/VBoxContainer"]
-margin_top = 57.0
+margin_top = 52.0
 margin_right = 172.0
-margin_bottom = 98.0
+margin_bottom = 83.0
 text = "Item Description
 "
 align = 1
 autowrap = true
 
 [node name="ItemStats" type="VBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer"]
-margin_top = 102.0
+margin_top = 87.0
 margin_right = 172.0
-margin_bottom = 269.0
+margin_bottom = 245.0
 theme = SubResource( 32 )
 
 [node name="Tier" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
 margin_right = 172.0
-margin_bottom = 17.0
+margin_bottom = 14.0
 text = "Tier: 0"
 align = 1
 
 [node name="Use" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
-margin_top = 21.0
+margin_top = 18.0
 margin_right = 172.0
-margin_bottom = 38.0
+margin_bottom = 32.0
 text = "[Double click to use]"
 align = 1
 
 [node name="Damage" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
-margin_top = 42.0
+margin_top = 36.0
 margin_right = 172.0
-margin_bottom = 59.0
+margin_bottom = 50.0
 alignment = 1
 
 [node name="Amount" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage"]
-margin_left = 21.0
-margin_right = 102.0
-margin_bottom = 17.0
+margin_left = 28.0
+margin_right = 101.0
+margin_bottom = 14.0
 text = "Damage: 0-1"
 align = 1
 
 [node name="Bonus" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage"]
-margin_left = 106.0
-margin_right = 150.0
-margin_bottom = 17.0
+margin_left = 105.0
+margin_right = 143.0
+margin_bottom = 14.0
 custom_colors/font_color = Color( 0, 0.439216, 1, 1 )
 text = "(+20%)"
 align = 1
 
 [node name="Rof" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
-margin_top = 63.0
+margin_top = 54.0
 margin_right = 172.0
-margin_bottom = 83.0
+margin_bottom = 74.0
 rect_min_size = Vector2( 0, 20 )
 alignment = 1
 
 [node name="Amount" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof"]
-margin_left = 4.0
-margin_top = 1.0
-margin_right = 119.0
-margin_bottom = 18.0
+margin_left = 9.0
+margin_top = 3.0
+margin_right = 121.0
+margin_bottom = 17.0
 text = "Rate of Fire: 100%"
 align = 1
 
 [node name="Bonus" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof"]
-margin_left = 123.0
-margin_top = 1.0
-margin_right = 167.0
-margin_bottom = 18.0
+margin_left = 125.0
+margin_top = 3.0
+margin_right = 163.0
+margin_bottom = 17.0
 custom_colors/font_color = Color( 0, 0.439216, 1, 1 )
 text = "(+10%)"
 align = 1
 
 [node name="StatsContainer" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats"]
-margin_top = 87.0
+margin_top = 78.0
 margin_right = 172.0
-margin_bottom = 167.0
+margin_bottom = 158.0
 alignment = 1
 
 [node name="Stats1" type="VBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer"]
-margin_left = 2.0
+margin_left = 7.0
 margin_right = 84.0
 margin_bottom = 80.0
 theme = SubResource( 16 )
 
 [node name="Health" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1"]
-margin_right = 82.0
+margin_right = 77.0
 margin_bottom = 24.0
 
 [node name="PanelContainer" type="PanelContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Health"]
@@ -364,22 +331,22 @@ stretch_mode = 5
 
 [node name="Amount" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Health"]
 margin_left = 28.0
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 20.0
+margin_top = 5.0
+margin_right = 49.0
+margin_bottom = 19.0
 text = "+10"
 
 [node name="Bonus" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Health"]
-margin_left = 56.0
-margin_top = 3.0
-margin_right = 82.0
-margin_bottom = 20.0
+margin_left = 53.0
+margin_top = 5.0
+margin_right = 77.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0, 0.576471, 1, 1 )
 text = "(+5)"
 
 [node name="Defense" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1"]
 margin_top = 28.0
-margin_right = 82.0
+margin_right = 77.0
 margin_bottom = 52.0
 
 [node name="PanelContainer" type="PanelContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Defense"]
@@ -412,22 +379,22 @@ stretch_mode = 5
 
 [node name="Amount" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Defense"]
 margin_left = 28.0
-margin_top = 3.0
-margin_right = 44.0
-margin_bottom = 20.0
+margin_top = 5.0
+margin_right = 42.0
+margin_bottom = 19.0
 text = "+1"
 
 [node name="Bonus" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Defense"]
-margin_left = 48.0
-margin_top = 3.0
-margin_right = 74.0
-margin_bottom = 20.0
+margin_left = 46.0
+margin_top = 5.0
+margin_right = 70.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0, 0.576471, 1, 1 )
 text = "(+1)"
 
 [node name="Dexterity" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1"]
 margin_top = 56.0
-margin_right = 82.0
+margin_right = 77.0
 margin_bottom = 80.0
 
 [node name="PanelContainer" type="PanelContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Dexterity"]
@@ -460,27 +427,27 @@ stretch_mode = 5
 
 [node name="Amount" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Dexterity"]
 margin_left = 28.0
-margin_top = 3.0
-margin_right = 44.0
-margin_bottom = 20.0
+margin_top = 5.0
+margin_right = 42.0
+margin_bottom = 19.0
 text = "+1"
 
 [node name="Bonus" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats1/Dexterity"]
-margin_left = 48.0
-margin_top = 3.0
-margin_right = 74.0
-margin_bottom = 20.0
+margin_left = 46.0
+margin_top = 5.0
+margin_right = 70.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0, 0.576471, 1, 1 )
 text = "(+1)"
 
 [node name="Stats2" type="VBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer"]
 margin_left = 88.0
-margin_right = 170.0
+margin_right = 165.0
 margin_bottom = 80.0
 theme = SubResource( 16 )
 
 [node name="Attack" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2"]
-margin_right = 82.0
+margin_right = 77.0
 margin_bottom = 24.0
 
 [node name="PanelContainer" type="PanelContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Attack"]
@@ -513,22 +480,22 @@ stretch_mode = 5
 
 [node name="Amount" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Attack"]
 margin_left = 28.0
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 20.0
+margin_top = 5.0
+margin_right = 49.0
+margin_bottom = 19.0
 text = "+10"
 
 [node name="Bonus" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Attack"]
-margin_left = 56.0
-margin_top = 3.0
-margin_right = 82.0
-margin_bottom = 20.0
+margin_left = 53.0
+margin_top = 5.0
+margin_right = 77.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0, 0.576471, 1, 1 )
 text = "(+5)"
 
 [node name="Speed" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2"]
 margin_top = 28.0
-margin_right = 82.0
+margin_right = 77.0
 margin_bottom = 52.0
 
 [node name="PanelContainer" type="PanelContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Speed"]
@@ -561,22 +528,22 @@ stretch_mode = 5
 
 [node name="Amount" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Speed"]
 margin_left = 28.0
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 20.0
+margin_top = 5.0
+margin_right = 49.0
+margin_bottom = 19.0
 text = "+10"
 
 [node name="Bonus" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Speed"]
-margin_left = 56.0
-margin_top = 3.0
-margin_right = 82.0
-margin_bottom = 20.0
+margin_left = 53.0
+margin_top = 5.0
+margin_right = 77.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0, 0.576471, 1, 1 )
 text = "(+5)"
 
 [node name="Vitality" type="HBoxContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2"]
 margin_top = 56.0
-margin_right = 82.0
+margin_right = 77.0
 margin_bottom = 80.0
 
 [node name="PanelContainer" type="PanelContainer" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Vitality"]
@@ -609,16 +576,16 @@ stretch_mode = 5
 
 [node name="Amount" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Vitality"]
 margin_left = 28.0
-margin_top = 3.0
-margin_right = 52.0
-margin_bottom = 20.0
+margin_top = 5.0
+margin_right = 49.0
+margin_bottom = 19.0
 text = "+10"
 
 [node name="Bonus" type="Label" parent="InspectItem/MarginContainer/VBoxContainer/ItemStats/StatsContainer/Stats2/Vitality"]
-margin_left = 56.0
-margin_top = 3.0
-margin_right = 82.0
-margin_bottom = 20.0
+margin_left = 53.0
+margin_top = 5.0
+margin_right = 77.0
+margin_bottom = 19.0
 custom_colors/font_color = Color( 0, 0.576471, 1, 1 )
 text = "(+5)"
 

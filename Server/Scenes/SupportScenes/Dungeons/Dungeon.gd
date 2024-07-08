@@ -1,8 +1,9 @@
 extends "res://Scenes/Main/Nexus.gd"
 
 #Room size accounts for hallways in between
-var room_size = 15
+var room_size = 20
 var map = {}
+var enemy_translation = {}
 
 var sync_clock_counter = 1
 

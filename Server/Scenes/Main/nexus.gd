@@ -75,9 +75,6 @@ func _physics_process(delta):
 				else:
 					enemy_list[enemy_id]["pattern_index"] += 1
 				enemy_list[enemy_id]["timer"] -= tick_rate
-			#For everything including island
-			if(enemy_list[enemy_id]["health"] < 1):
-				CalculateLootPool(enemy_list[enemy_id])
 			
 			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
@@ -321,9 +318,11 @@ func OpenPortal(portal_name, instance_tree, position):
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 	else:
 		var instance_map = Dungeons.GenerateDungeon(portal_name)
+		var enemy_translation = Dungeons.GetEnemyTranslation(portal_name)
 		var dungeon_instance = load("res://Scenes/SupportScenes/Dungeons/Dungeon.tscn").instance()
 		dungeon_instance.name = instance_id
 		dungeon_instance.map = instance_map
+		dungeon_instance.enemy_translation = enemy_translation
 		dungeon_instance.position = Instances.GetFreeInstancePosition()
 		
 		object_list[instance_id] = {

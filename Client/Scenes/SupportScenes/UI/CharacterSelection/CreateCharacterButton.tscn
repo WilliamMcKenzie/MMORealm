@@ -31,14 +31,19 @@ margin_right = 259.0
 margin_bottom = 193.0
 
 [node name="Label" type="Label" parent="ButtonResizer/Create"]
-margin_left = 3.06628
-margin_top = 3.08374
-margin_right = 126.066
-margin_bottom = 22.0837
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -57.932
+margin_top = -7.41455
+margin_right = 65.0677
+margin_bottom = 11.5854
 grow_horizontal = 2
 grow_vertical = 0
 custom_fonts/font = SubResource( 1 )
 text = "Create Character"
+align = 1
 
 [node name="Character" type="Sprite" parent="."]
 material = ExtResource( 4 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Resources/Roboto-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
@@ -6,21 +6,22 @@
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=4]
 [ext_resource path="res://Scenes/SupportScenes/UI/Classes/CharacterPreview.gd" type="Script" id=5]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=6]
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=7]
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 6 )
+region = Rect2( 10, 210, 10, 10 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 30
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 1 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 210, 10, 10 )
+font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=2]
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 1 )
+font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=3]
 size = 14
@@ -36,27 +37,18 @@ alignment = 1
 script = ExtResource( 5 )
 
 [node name="ClassName" type="HBoxContainer" parent="."]
-margin_top = 16.0
+margin_top = 26.0
 margin_right = 200.0
-margin_bottom = 52.0
+margin_bottom = 53.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Class" type="Label" parent="ClassName"]
-margin_left = 77.0
-margin_right = 122.0
-margin_bottom = 36.0
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = SubResource( 1 )
-text = "???"
-align = 1
-
 [node name="TextureRect" type="TextureRect" parent="ClassName"]
 visible = false
 material = ExtResource( 4 )
-margin_left = 106.0
-margin_right = 146.0
+margin_left = 58.0
+margin_right = 98.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 40, 40 )
 size_flags_horizontal = 0
@@ -65,11 +57,21 @@ texture = SubResource( 4 )
 expand = true
 stretch_mode = 5
 
+[node name="Class" type="Label" parent="ClassName"]
+margin_left = 80.0
+margin_right = 119.0
+margin_bottom = 27.0
+size_flags_vertical = 8
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "???"
+align = 1
+
 [node name="TextureRect" type="TextureRect" parent="."]
 material = ExtResource( 4 )
-margin_top = 56.0
+margin_top = 57.0
 margin_right = 200.0
-margin_bottom = 156.0
+margin_bottom = 157.0
 rect_min_size = Vector2( 200, 100 )
 size_flags_horizontal = 4
 size_flags_vertical = 5
@@ -90,9 +92,9 @@ region_rect = Rect2( 0, 0, 80, 40 )
 script = ExtResource( 2 )
 
 [node name="Description" type="Label" parent="."]
-margin_top = 160.0
+margin_top = 161.0
 margin_right = 200.0
-margin_bottom = 201.0
+margin_bottom = 192.0
 rect_min_size = Vector2( 0, 30 )
 custom_fonts/font = SubResource( 2 )
 text = "Discover by becoming one with magic."
@@ -100,9 +102,9 @@ align = 1
 autowrap = true
 
 [node name="Multipliers" type="Label" parent="."]
-margin_top = 205.0
+margin_top = 196.0
 margin_right = 200.0
-margin_bottom = 222.0
+margin_bottom = 213.0
 custom_colors/font_color = Color( 0.741176, 0.741176, 0.741176, 1 )
 custom_fonts/font = SubResource( 3 )
 align = 1

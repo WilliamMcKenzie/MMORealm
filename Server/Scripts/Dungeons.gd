@@ -1,12 +1,20 @@
 extends Node
 
-var valid_names = ["island","test_dungeon"]
+var valid_names = ["island","overgrown_temple"]
 
+func GetEnemyTranslation(instance_name):
+	if instance_name == "overgrown_temple":
+		return {
+			5 : "shadow_mage"
+		}
+	
+	return {}
+	
 func GenerateDungeon(instance_name):
-	if instance_name == "test_dungeon":
-		return GenerateTestDungeon()
+	if instance_name == "overgrown_temple":
+		return GenerateOvergrownTemple()
 
-func GenerateTestDungeon():
+func GenerateOvergrownTemple():
 	randomize()
 	var layout = {
 		Vector2.ZERO : { "room_type" : "Spawn" }
@@ -17,7 +25,9 @@ func GenerateTestDungeon():
 	var twist_chance = 0.5
 	
 	var basic_rooms = [
-		"Room"
+		"Mage",
+		"Melee",
+		"Mixed",
 	]
 	
 	var direction_clock = {
@@ -30,7 +40,6 @@ func GenerateTestDungeon():
 	var direction = initial_direction
 	
 	for rotation in range(4):
-		print(direction)
 		var path = direction
 		coordinates += direction
 		

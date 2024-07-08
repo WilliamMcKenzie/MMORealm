@@ -19,6 +19,10 @@ var player_instance_tracker = {["nexus"] : []}
 #-in this format: { "T" : {time}, "I" : {index_tree}, "P" : {position}, "A" : {animationstate}}
 var player_state_collection = {}
 
+#Keep trak of usernames for easy access
+var player_name_by_id = {}
+var player_id_by_name = {}
+
 func _ready():
 	StartServer()
 	
@@ -28,6 +32,7 @@ func _ready():
 		
 	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
+	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("overgrown_temple", ["nexus"], Vector2(20,20))
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
 			{
@@ -271,19 +276,25 @@ remote func FetchIslandChunk(chunk):
 remote func RecieveChatMessage(message):
 	var message_words = message.split(" ")
 	var player_id = get_tree().get_rpc_sender_id()
-	var instance_tree = player_state_collection[player_id]["I"]
+	var player_name = player_name_by_id[player_id]
 	var player_position = player_state_collection[player_id]["P"]
+	var instance_tree = player_state_collection[player_id]["I"]
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
 	
 	if len(message) >= 1:
 		if message[0] == "/":
 			if message_words[0] == "/tp":
-				var selected_player_id = int(message.substr(4,-1))
-				if player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
-					player_state_collection[player_id]["P"] = player_state_collection[selected_player_id]["P"]
-					rpc_id(player_id, "MovePlayer", player_state_collection[player_id]["P"])
-					rpc_id(player_id, "RecieveChat", "You have teleported to " + message.substr(4,-1), "System")
+				var selected_player_name = message.substr(4,-1)
+				if player_id_by_name.has(selected_player_name):
+					var selected_player_id =  player_id_by_name[message.substr(4,-1)]
+					if player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
+						player_state_collection[player_id]["P"] = player_state_collection[selected_player_id]["P"]
+						rpc_id(player_id, "MovePlayer", player_state_collection[player_id]["P"])
+						rpc_id(player_id, "RecieveChat", "You have teleported to " + selected_player_name, "System")
+					else:
+						rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "System")
 				else:
-					rpc_id(player_id, "RecieveChat", "Invalid player ID: " + message.substr(4,-1), "System")
+					rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "System")
 			if message_words[0] == "/d":
 				if message.substr(3,-1) in Dungeons.valid_names:
 					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal(message.substr(3,-1), instance_tree, player_position)
@@ -318,9 +329,10 @@ remote func RecieveChatMessage(message):
 						"item" : int(message_words[1]),
 						"id" : generate_unique_id()
 					}], null, instance_tree, player_position)
+			if message_words[0] == "/max" and message_words.size() == 1:
+				player_container.Max()
 		else:
-			print("server has recieved message : " + message)
-			rpc("RecieveChat", message,str(get_tree().get_rpc_sender_id()))
+			rpc("RecieveChat", message, player_name, player_container.character.class)
 
 #PLAYER INTERACTION
 

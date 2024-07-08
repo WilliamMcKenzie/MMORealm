@@ -7,8 +7,11 @@ var stats
 var gear
 var health
 
-var exp_indicator_scene = preload("res://Scenes/SupportScenes/UI/ExpIndicator/ExpIndicator.tscn")
-var level_indicator_scene = preload("res://Scenes/SupportScenes/UI/LevelIndicator/LevelIndicator.tscn")
+var indicators = {
+	"exp" : preload("res://Scenes/SupportScenes/UI/Indicators/ExpIndicator.tscn"),
+	"level" : preload("res://Scenes/SupportScenes/UI/Indicators/LevelIndicator.tscn"),
+	"ascension" : preload("res://Scenes/SupportScenes/UI/Indicators/AscensionIndicator.tscn")
+}
 
 #Sub variables (Will set these based on key variables onready)
 var projectile
@@ -222,32 +225,13 @@ func ShootProjectile():
 func CalculateDamageWithMultiplier(damage):
 	return (damage*(0.5 + (float(stats.attack)/float(50))))
 
-func ShowExpIndicator(exp_amount):
-	var exp_indicator = exp_indicator_scene.instance()
+func ShowIndicator(type, amount):
+	var indicator = indicators[type].instance()
 	var id = str(OS.get_system_time_msecs())
-	exp_indicator.get_node("ExpLabel").text = "+"+str(exp_amount)
-	exp_indicator.position = Vector2(-4,-8)
-	exp_indicator.name = id
 	
-	add_child(exp_indicator)
-
-	var timer = Timer.new()
-	timer.wait_time = 1
-	timer.one_shot = true
-	add_child(timer)
-	timer.start()
-	yield(timer, "timeout")
-	
-	if is_instance_valid(get_node(id)): 
-		get_node(id).queue_free()
-
-func ShowLevelIndicator(level):
-	var level_indicator = level_indicator_scene.instance()
-	var id = str(OS.get_system_time_msecs())
-	level_indicator.position = Vector2(-4,-8)
-	level_indicator.name = id
-	
-	add_child(level_indicator)
+	indicator.name = id
+	indicator.get_node("Label").text = "+"+str(amount)
+	$IndicatorPlaceholder.add_child(indicator)
 
 	var timer = Timer.new()
 	timer.wait_time = 1

@@ -26,12 +26,7 @@ var dungeon_container = preload("res://Scenes/MainScenes/Dungeon/Dungeon.tscn")
 var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 
 func _physics_process(delta):
-	client_clock += (int(delta*1000) + delta_latency)
-	delta_latency = 0
-	decimal_collector += (delta * 1000) - int(delta * 1000)
-	if decimal_collector >= 1.00:
-		client_clock += 1
-		decimal_collector -= 1
+	client_clock = OS.get_system_time_msecs()+latency
 	
 	#sync_clock_counter += 1
 	#if sync_clock_counter > 60:
@@ -98,8 +93,8 @@ func SetCharacterIndex(_character_index):
 	character_index = _character_index
 remote func RecieveCharacterData(character):
 	var player_node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player")
-	player_node.SetCharacter(character)
 	GameUI.SetCharacterData(character)
+	player_node.SetCharacter(character)
 
 func UseItem(index):
 	rpc_id(1, "UseItem", index)
@@ -143,8 +138,8 @@ func GetCurrentInstance():
 
 func SendChatMessage(message):
 	rpc_id(1,"RecieveChatMessage", message)
-remote func RecieveChat(message,plr):
-	GameUI.get_node("ChatControl").AddChat(message,plr)
+remote func RecieveChat(message,username,classname=null):
+	GameUI.get_node("ChatControl").AddChat(message,username,classname)
 remote func MovePlayer(new_position):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position = new_position
 

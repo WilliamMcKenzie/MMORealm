@@ -55,9 +55,8 @@ func get_drag_data(position):
 	drag_texture.texture = AtlasTexture.new()
 	drag_texture.texture.atlas = get_node("ItemIcon").texture.atlas.duplicate(true)
 	drag_texture.texture.region = get_node("ItemIcon").texture.region
-	drag_texture.material = ShaderMaterial.new()
-	drag_texture.material.shader = load("res://Resources/ColorGear.gdshader")
-	drag_texture.material.set_shader_param("line_thickness", 0.3)
+	drag_texture.material = load("res://Resources/Renderer.tres").duplicate()
+	drag_texture.material.set_shader_param("width", 0.3)
 	drag_texture.rect_size = Vector2(40,40)
 	
 	var preview = Control.new()

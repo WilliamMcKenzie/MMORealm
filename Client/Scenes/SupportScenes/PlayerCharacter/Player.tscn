@@ -335,18 +335,19 @@ tracks/0/keys = {
 [sub_resource type="ShaderMaterial" id=52]
 render_priority = 1
 shader = ExtResource( 1 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.0
-shader_param/glow_thickness = 0.0
-shader_param/glow_color = Color( 0, 0, 0, 0 )
+shader_param/color = Color( 0, 0, 0, 1 )
+shader_param/width = 0.4
+shader_param/pattern = 2
+shader_param/inside = false
+shader_param/add_margins = false
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
 shader_param/weaponTextureActive = false
-shader_param/helmetDarkOrigin = Color( 0.788235, 0.415686, 0, 1 )
+shader_param/helmetDarkOrigin = Color( 0, 0, 1, 1 )
 shader_param/helmetDarkNew = Color( 0.372549, 0.32549, 0.32549, 1 )
-shader_param/helmetMediumOrigin = Color( 0.894118, 0.470588, 0, 1 )
+shader_param/helmetMediumOrigin = Color( 1, 0, 1, 1 )
 shader_param/helmetMediumNew = Color( 0.423529, 0.388235, 0.388235, 1 )
-shader_param/helmetLightOrigin = Color( 1, 0.52549, 0, 1 )
+shader_param/helmetLightOrigin = Color( 0, 1, 1, 1 )
 shader_param/helmetLightNew = Color( 0.529412, 0.458824, 0.458824, 1 )
 shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
 shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
@@ -565,7 +566,7 @@ hframes = 4
 vframes = 4
 frame = 12
 region_enabled = true
-region_rect = Rect2( 0, 0, 80, 40 )
+region_rect = Rect2( 0, 160, 80, 40 )
 script = ExtResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -608,6 +609,7 @@ hframes = 26
 vframes = 26
 
 [node name="Axis" type="Area2D" parent="."]
+visible = false
 position = Vector2( 0, -4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Axis"]
@@ -615,9 +617,13 @@ scale = Vector2( 0.9, 1.1 )
 shape = SubResource( 61 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, -4 )
 scale = Vector2( 0.9, 1.1 )
 shape = SubResource( 61 )
+
+[node name="IndicatorPlaceholder" type="Node2D" parent="."]
+position = Vector2( -0.5, -10 )
 
 [node name="Joysticks" type="CanvasLayer" parent="."]
 

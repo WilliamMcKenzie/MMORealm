@@ -88,6 +88,10 @@ func SetCharacterWeapon(weapon_type):
 	self.region_rect = rect
 
 func ColorGear(gear):
+	if GameUI.last_character:
+		var classname = GameUI.last_character.class
+		gear.merge(ClientData.GetCharacter(classname).example_colors)
+	
 	var shader_material = ShaderMaterial.new()
 	shader_material.shader = load("res://Resources/ColorGear.gdshader")
 	

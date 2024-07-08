@@ -26,9 +26,22 @@ var default_account_data = {
 	},
 	"classes": {
 		"Apprentice": true,
+		
 		"Noble": false,
 		"Nomad": false,
-		"Scholar": false
+		"Scholar": false,
+		
+		"Knight": false,
+		"Paladin": false,
+		"Marauder": false,
+		
+		"Ranger": false,
+		"Sentinel": false,
+		"Scout": false,
+		
+		"Magician": false,
+		"Druid": false,
+		"Warlock": false,
 	},
 	"characters":[]
 }
@@ -106,6 +119,10 @@ func FindUser(email):
 	return null
 
 func AddUser(email, password):
+	randomize()
+	var tester_names = ["WilliamQM", "dogdogman", "Zoro", "booga", "SChronos", "Juix"]
+	default_account_data.username = tester_names[randi() % tester_names.size()]
+	
 	var user = null
 	var command = """
 		BEGIN;

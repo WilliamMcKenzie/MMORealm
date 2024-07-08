@@ -12,7 +12,7 @@ var basic_loot_pools = {
 			},
 			{
 				"item" : 0,
-				"chance" : 0.5,
+				"chance" : 0.1,
 				"threshold" : 0.15,
 			}
 		],
@@ -42,7 +42,7 @@ var basic_loot_pools = {
 				},
 			{
 				"item" : 0,
-				"chance" : 0.5,
+				"chance" : 0.1,
 				"threshold" : 0.15,
 			}
 		],
@@ -55,7 +55,7 @@ var basic_loot_pools = {
 	}
 }
 
-var enemies = {
+var realm_enemies = {
 	"crab" : {
 		"health" : 60,
 		"defense" : 1,
@@ -171,6 +171,33 @@ var enemies = {
 		]
 	}
 }
+var overgrown_temple_enemies = {
+	"shadow_mage" : {
+		"health" : 200,
+		"defense" : 1,
+		"exp" : 20,
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_2"],
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "x",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"lifespan": 1,
+			"direction" : Vector2(0,1),
+			"size" : 20
+			}
+		]
+	},
+}
+var enemies = CompileEnemies()
+func CompileEnemies():
+	var res = {}
+	res.merge(realm_enemies)
+	res.merge(overgrown_temple_enemies)
+	return res
 
 var items = {
 	0 : {
@@ -308,6 +335,10 @@ var achievements = {
 		"which" : "sword_projectiles",
 		"amount" : 10
 	},
+	"Sword Projectiles II" : {
+		"which" : "sword_projectiles",
+		"amount" : 100
+	},
 	"Staff Projectiles I" : {
 		"which" : "staff_projectiles",
 		"amount" : 10
@@ -329,6 +360,14 @@ var characters = {
 		"rect" : Rect2(0,0,80,40),
 		"icon" : Vector2(0,210),
 		"color" : Color(196.0/255, 184.0/255, 146.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+				},
+				"textures" : {
+				},
+			}
+		},
 		"bonus_stats" : {
 			"health" : 0,
 			"attack" : 0,
@@ -345,10 +384,22 @@ var characters = {
 	"Noble" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
 		"quests" : {
+			"Sword Projectiles II" : "Knight",
 		},
 		"rect" : Rect2(0,40,80,40),
 		"icon" : Vector2(20,210),
 		"color" : Color(252.0/255, 139.0/255, 14.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					"helmetDarkNew" : RgbToColor(95.0, 83.0, 83.0),
+					"helmetLightNew" : RgbToColor(135.0, 117.0, 117.0),
+					"helmetMediumNew" : RgbToColor(108.0, 99.0, 99.0),
+				},
+				"textures" : {
+				},
+			}
+		},
 		"bonus_stats" : {
 			"health" : 200,
 			"attack" : 10,
@@ -373,6 +424,14 @@ var characters = {
 		"rect" : Rect2(80,80,80,40),
 		"icon" : Vector2(10,210),
 		"color" : Color(78.0/255, 166.0/255, 63.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+				},
+				"textures" : {
+				},
+			}
+		},
 		"bonus_stats" : {
 			"health" : 100,
 			"attack" : 20,
@@ -397,6 +456,14 @@ var characters = {
 		"rect" : Rect2(160,120,80,40),
 		"icon" : Vector2(30,210),
 		"color" : Color(62.0/255, 118.0/255, 255.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+				},
+				"textures" : {
+				},
+			}
+		},
 		"bonus_stats" : {
 			"health" : 100,
 			"attack" : 30,
@@ -412,6 +479,42 @@ var characters = {
 		},
 		"description" : "With powerful spells and vast intellect, the Scholar excels at long range.",
 		"teaser" : "Discover by becoming one with magic.",
+		"ascension_stones" : 50,
+	},
+	"Knight" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,160,80,40),
+		"icon" : Vector2(110,210),
+		"color" : Color(232.0/255, 105.0/255, 0.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					"helmetDarkNew" : RgbToColor(95.0, 83.0, 83.0),
+					"helmetLightNew" : RgbToColor(135.0, 117.0, 117.0),
+					"helmetMediumNew" : RgbToColor(108.0, 99.0, 99.0),
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 100,
+			"attack" : 0,
+			"defense" : 20,
+			"speed" : 0,
+			"dexterity" : 0,
+			"vitality" : 10,
+		},
+		"multipliers" : {
+			"Sword" : {"damage" : 1.4, "stats" : 1.4},
+			"Armor" : {"stats" : 1.4},
+			"Helmet" : {"stats" : 1.4},
+		},
+		"description" : "The Knight's high health and mighty armor make them an unstoppable force.",
+		"teaser" : "Discover by enduring the trials of the battlefield.",
 		"ascension_stones" : 50,
 	},
 }

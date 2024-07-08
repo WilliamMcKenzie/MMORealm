@@ -55,6 +55,7 @@ current = true
 zoom = Vector2( 0.15, 0.15 )
 
 [node name="UI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Sprite" type="TextureRect" parent="UI"]
 modulate = Color( 1, 1, 1, 0.313726 )

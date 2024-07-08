@@ -61,21 +61,27 @@ func DiscoverClass(classname):
 	add_child(animation_node)
 
 func SetCharacterData(character):
+	
 	#Classes
 	if not last_character or last_character.class == character.class:
 		pass
 	else:
 		ClientData.current_class = character.class
 		animation_tracker.append({ "name" : "discover", "data" : {"class" : character.class}})
+	
 	#Exp
 	$LeftContainer/BarContainer/ExpContainer/ExpBar.ChangeExp(100*pow(1.1538,character.level), character.exp)
 	if not last_character:
 		pass
 	elif character.exp > last_character.exp:
 		var difference = character.exp - last_character.exp
-		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowExpIndicator(difference)
+		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("exp", difference)
 	elif character.level > last_character.level:
-		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowLevelIndicator(character.level)
+		var difference = character.level - last_character.level
+		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("level", difference)
+	elif character.ascension_stones > last_character.ascension_stones:
+		var difference = character.ascension_stones - last_character.ascension_stones
+		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("ascension", difference)
 	#Items
 	last_character = character
 	$Inventory.SetInventory(character.inventory)

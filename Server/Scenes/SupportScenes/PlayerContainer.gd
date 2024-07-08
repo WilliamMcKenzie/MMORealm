@@ -12,6 +12,11 @@ var gear = {}
 
 #Items
 
+func Max():
+	character.ascension_stones += ServerData.GetCharacter(character.class).ascension_stones - character.ascension_stones
+	
+	get_node("/root/Server").SendCharacterData(name, character)
+
 func UseItem(index):
 	var selected_item_raw = character.inventory[index]
 	if selected_item_raw == null:
@@ -73,7 +78,6 @@ func ChangeItem(to_data, from_data):
 	
 	character[from_data.parent][from_data.index] = replaced_item_raw
 	character[to_data.parent][to_data.index] = selected_item_raw
-	
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func DropItem(data):
@@ -246,6 +250,10 @@ func GetAchievement(achievement_name):
 	if character_data.quests.has(achievement_name):
 		character.class = character_data.quests[achievement_name]
 		account_data.classes[character_data.quests[achievement_name]] = true
+		
+		var class_bonus_stats = ServerData.GetCharacter(character.class).bonus_stats
+		for stat in character.stats.keys():
+			character.stats[stat] += class_bonus_stats[stat]
 		
 	get_node("/root/Server").SendCharacterData(name, character)
 

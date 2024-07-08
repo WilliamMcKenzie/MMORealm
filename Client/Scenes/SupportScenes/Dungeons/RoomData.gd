@@ -5,6 +5,25 @@ var room_data = {}
 func _ready():
 	if room_data.has("start_room") and room_data.has("target_room"):
 		HallwaySetup()
+		
+	#We dont actually use this nodes tilemap, we just use the parents tilemap and put all of our data onto it.
+	SetParentTilemap()
+
+func SetParentTilemap():
+	var parent_tilemap = get_parent().get_node("TileMap")
+	var offset = position/8
+	var room_size = get_parent().room_size
+	
+	for x in range(-room_size, room_size*2):
+		for y in range(-room_size, room_size*2):
+			var autotile_coord = $TileMap.get_cell_autotile_coord(x,y)
+			var current_tile = $TileMap.get_cell(x,y)
+			
+			if current_tile > -1:
+				parent_tilemap.set_cell(x + offset.x, y + offset.y, current_tile, false, false, false, autotile_coord)
+				
+	queue_free()
+
 
 func HallwaySetup():
 	var start_room = get_parent().get_node(str(room_data.start_room))

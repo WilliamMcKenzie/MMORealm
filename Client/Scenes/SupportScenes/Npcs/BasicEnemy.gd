@@ -3,7 +3,7 @@ extends Node2D
 var distanceTraveled
 var velocity = Vector2.ZERO
 
-var damageIndicatorScene = preload("res://Scenes/SupportScenes/UI/DamageIndicator/DamageIndicator.tscn")
+var damage_indicator_scene = preload("res://Scenes/SupportScenes/UI/Indicators/DamageIndicator.tscn")
 var projectile_dict = {}
 
 func _physics_process(delta):
@@ -54,11 +54,9 @@ func ShowDamageIndicator(damage_amount):
 	var shape = get_node("Area2D/Hitbox").shape as RectangleShape2D
 	var _x = shape.extents.x
 	
-	var damage_indicator = damageIndicatorScene.instance()
-	damage_indicator.get_node("DamageLabel").text = str(damage_amount)
-	damage_indicator.position = sprite.position + Vector2(-_x, -5)
-	
-	add_child(damage_indicator)
+	var damage_indicator = damage_indicator_scene.instance()
+	damage_indicator.get_node("Label").text = str(damage_amount)
+	$IndicatorPlaceholder.add_child(damage_indicator)
 
 	var timer = Timer.new()
 	timer.wait_time = 1.0 # Adjust this as needed

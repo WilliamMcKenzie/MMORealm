@@ -8,6 +8,9 @@ var loot_containers = {}
 
 func _ready():
 	$InventoryBackground.connect("button_down", self, "ToggleInventory")
+	$BackpackContainer/CloseButton.connect("button_down", self, "ToggleInventory")
+	$BackpackContainer/CloseButton2.connect("button_down", self, "ToggleInventory")
+	$LootContainer/CloseButton.connect("button_down", self, "ToggleInventory")
 
 func InspectItem(_item):
 	if not _item:

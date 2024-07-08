@@ -1,10 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Resources/Roboto-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=4]
-[ext_resource path="res://Resources/Renderer.tres" type="Material" id=5]
+[ext_resource path="res://Resources/ColorGearPixelPerfect.gdshader" type="Shader" id=5]
 [ext_resource path="res://Scenes/SupportScenes/Animations/DiscoverClass/DiscoverClass.gd" type="Script" id=6]
 [ext_resource path="res://Assets/ui/halo.png" type="Texture" id=7]
 
@@ -13,6 +13,37 @@ size = 20
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = ExtResource( 5 )
+shader_param/color = Color( 0, 0, 0, 1 )
+shader_param/width = 0.6
+shader_param/pattern = 2
+shader_param/inside = false
+shader_param/add_margins = false
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 4 )
@@ -213,19 +244,22 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Class" type="Label" parent="Container/HBoxContainer"]
+margin_left = 5.0
 margin_top = 8.0
+margin_right = 5.0
 margin_bottom = 32.0
 custom_fonts/font = SubResource( 1 )
 align = 1
 
 [node name="TextureRect" type="TextureRect" parent="Container/HBoxContainer"]
-material = ExtResource( 5 )
-margin_left = 4.0
-margin_right = 44.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
+material = SubResource( 5 )
+margin_left = 9.0
+margin_top = 5.0
+margin_right = 39.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 30, 30 )
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 4
 texture = SubResource( 2 )
 stretch_mode = 5
 

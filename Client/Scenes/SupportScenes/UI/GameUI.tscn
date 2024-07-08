@@ -71,6 +71,7 @@ region = Rect2( 190, 220, 10, 10 )
 script = ExtResource( 3 )
 
 [node name="FPS" type="Label" parent="."]
+visible = false
 margin_left = 635.0
 margin_top = 11.0
 margin_right = 677.0
@@ -141,8 +142,9 @@ margin_bottom = 42.0
 [node name="Health" parent="LeftContainer/BarContainer" instance=ExtResource( 4 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 338.0
+margin_right = 154.0
 margin_bottom = 19.0
+size_flags_horizontal = 0
 
 [node name="ExpContainer" type="HBoxContainer" parent="LeftContainer/BarContainer"]
 margin_top = 23.0
@@ -270,4 +272,5 @@ scale = Vector2( 0.4, 0.4 )
 position = Vector2( -153, -88 )
 scale = Vector2( 0.3, 0.3 )
 
+[connection signal="pressed" from="LeftContainer/Buttons/ClassButton/MarginContainer/TouchScreenButton" to="LeftContainer/Buttons/ClassButton" method="_on_TouchScreenButton_pressed"]
 [connection signal="pressed" from="LeftContainer/Buttons/StatsButton/MarginContainer/TouchScreenButton" to="LeftContainer/Buttons/StatsButton" method="_on_TouchScreenButton_pressed"]

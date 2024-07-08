@@ -18,7 +18,7 @@ modulate_color = Color( 1, 1, 1, 0.313726 )
 [sub_resource type="StyleBoxEmpty" id=6]
 
 [sub_resource type="DynamicFont" id=2]
-outline_size = 1
+outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 

@@ -83,4 +83,7 @@ collision_mask = 4
 position = Vector2( 5, 5 )
 shape = SubResource( 1 )
 
+[node name="IndicatorPlaceholder" type="Node2D" parent="."]
+position = Vector2( 0, -13 )
+
 [connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

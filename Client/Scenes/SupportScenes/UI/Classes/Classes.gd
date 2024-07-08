@@ -2,12 +2,31 @@ extends CanvasLayer
 
 var class_button = preload("res://Scenes/SupportScenes/UI/Classes/ClassButton.tscn")
 var class_evolution_button = preload("res://Scenes/SupportScenes/UI/Classes/ClassEvolutionButton.tscn")
+var character_map = {
+	"Apprentice" : [0],
+		
+	"Noble" : [0,0],
+	"Nomad" : [0,1],
+	"Scholar" : [0,2],
+	
+	"Knight": [0,0,0],
+	"Paladin": [0,0,1],
+	"Marauder": [0,0,2],
+		
+	"Ranger": [0,1,0],
+	"Sentinel": [0,1,1],
+	"Scout": [0,1,2],
+		
+	"Magician": [0,2,0],
+	"Druid": [0,2,1],
+	"Warlock": [0,2,2],
+}
 
 var character_preview = preload("res://Scenes/SupportScenes/UI/Classes/CharacterPreview.tscn")
 
 func _ready():
 	$ExitButton.connect("pressed", self, "ToggleClasses")
-
+	$ExitButton/TouchScreenButton.connect("pressed", self, "ToggleClasses")
 func OpenEvolution():
 	$ClassEvolution.visible = false
 	$NotEnoughStones.visible = false
@@ -92,12 +111,52 @@ func SetCharacter(classname):
 	for child in strengths_node.get_children():
 		child.visible = false
 	
+	var strength_tracker = {}
+	var inverse_character_map = {}
+	var stat_totals = {
+		"health" : 0,
+		"attack" : 0,
+		"defense" : 0,
+		"speed" : 0,
+		"dexterity" : 0,
+		"vitality" : 0
+	}
+	
+	for classname in character_map.keys():
+		var value = character_map[classname]
+		inverse_character_map[value] = classname
+	
+	var class_key = character_map[classname].duplicate()
+	for new_character_num in character_map[classname]:
+		for stat in stat_totals.keys():
+			var new_character_name = inverse_character_map[class_key]
+			var new_character_stats = ClientData.GetCharacter(new_character_name).bonus_stats
+			stat_totals[stat] += new_character_stats[stat]
+		class_key.pop_back()
+		
 	for stat in character.bonus_stats:
-		var value = character.bonus_stats[stat]
-		if (value > 10 and stat != "health") or (value > 100):
+		var value = stat_totals[stat]
+		if (value > 30 and stat != "health") or (value > 300):
+			
 			strengths_node.visible = true
 			strengths_node.get_node("Label").visible = true
-			strengths_node.get_node(stat.capitalize()).visible = true
+			
+			var stat_node = strengths_node.get_node(stat.capitalize())
+			stat_node.visible = true
+			var stylebox = stat_node.get_stylebox("panel", "PanelContainer").duplicate()
+			stylebox.modulate_color = Color(56.0/255,79.0/255,132.0/255,230.0/255)
+			#stylebox.modulate_color = Color(122.0/255,78.0/255,185.0/255,230.0/255)
+			stat_node.add_stylebox_override("panel", stylebox)
+		elif (value > 10 and stat != "health") or (value > 100):
+			strengths_node.visible = true
+			strengths_node.get_node("Label").visible = true
+			
+			var stat_node = strengths_node.get_node(stat.capitalize())
+			stat_node.visible = true
+			var stylebox = stat_node.get_stylebox("panel", "PanelContainer").duplicate()
+			stylebox.modulate_color = Color(0.0/255,0.0/255,0.0/255,80.0/255)
+			#stylebox.modulate_color = Color(56.0/255,79.0/255,132.0/255,230.0/255)
+			stat_node.add_stylebox_override("panel", stylebox)
 	
 func SetCharacterSprite(character, classname, gear, ele):
 	var CharacterSpriteEle = ele
@@ -119,12 +178,6 @@ func ToggleClasses():
 func OpenClasses():
 	var current_character = GameUI.last_character.class
 	var previous_characters = []
-	var character_map = {
-		"Apprentice" : [0],
-		"Noble" : [0,0],
-		"Nomad" : [0,1],
-		"Scholar" : [0,2],
-	}
 	
 	for character in character_map.keys():
 		previous_characters.append(character)

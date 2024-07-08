@@ -12,9 +12,23 @@ func EnterChat():
 func ExitChat():
 	GameUI.in_chat = false
 
-func AddChat(message, player):
+func AddChat(message,username,classname):
 	var chat_message = chat.instance()
-	chat_message.text = ("[" + player + "]" + " : " + message)
+	
+	chat_message.get_node("From").text = "[" + username + "]:"
+	chat_message.get_node("Message").text = message
+	
+	if classname:
+		chat_message.get_node("Icon").visible = true
+		chat_message.get_node("Icon").texture = chat_message.get_node("Icon").texture.duplicate()
+		chat_message.get_node("Icon").texture.region = Rect2(ClientData.GetCharacter(classname).icon, Vector2(10,10))
+		chat_message.get_node("From").add_color_override("font_color", Color(1,1,1).linear_interpolate(ClientData.GetCharacter(classname).color, 0.2))
+	elif username == "System":
+		chat_message.get_node("Icon").visible = false
+		chat_message.get_node("From").text = ""
+		chat_message.get_node("Message").add_color_override("font_color", Color(178.0/255, 223.0/255, 230.0/255))
+		chat_message.get_node("Message").text = "[" + chat_message.get_node("Message").text + "]"
+	
 	get_node("ChatVerticalContainer").add_child(chat_message,1)
 
 func _physics_process(delta):
@@ -24,3 +38,7 @@ func _physics_process(delta):
 		chat_input.caret_position = chat_input.text.length()
 		if GameUI.is_inventory_open == true:
 			GameUI.ToggleInventory()
+		if GameUI.is_stats_open == true:
+			GameUI.ToggleStats()
+		if GameUI.is_classes_open == true:
+			GameUI.ToggleClasses()

@@ -6,6 +6,7 @@ func GetFreeInstancePosition():
 	while(get_node("/root/Server").instance_positions.has(free_position)):
 		free_position += Vector2(2000, 0)
 	get_node("/root/Server").instance_positions[free_position] = true
+	print(free_position)
 	return free_position
 
 func AddInstanceToTracker(instance_tree, instance_id):
