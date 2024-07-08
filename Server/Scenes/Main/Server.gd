@@ -189,6 +189,7 @@ remote func SendPlayerProjectile(projectile_data):
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
+	print("sending enemy projectile")
 	rpc("RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
 
 remote func NPCHit(enemy_id, damage):

@@ -54,8 +54,10 @@ func _physics_process(delta):
 			
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
-			
+			print(str(enemy_list[enemy_id]["timer"]))
 			if enemy_list[enemy_id]["timer"] <= 0:
+				print("c")
+				
 				var attack_pattern = ServerData.GetEnemy(enemy_list[enemy_id]["name"])["attack_pattern"]
 				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
 				var projectile_data = {
@@ -64,11 +66,11 @@ func _physics_process(delta):
 					"lifespan" : current_attack["lifespan"],
 					"start_time" : OS.get_system_time_msecs()/1000,
 					"damage" : current_attack["damage"],
-					"speed" : current_attack["speed"],
+					"speed" : current_attack["speed"],	
 					"formula" : current_attack["formula"],
 					"path" : enemy_list[enemy_id]["position"],
 				}
-				SpawnEnemyProjectile(projectile_data, enemy_id)
+				SpawnEnemyProjectile(projectile_data,instance_tree, enemy_id)
 				enemy_list[enemy_id]["timer"] = current_attack["wait"]
 				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
 					enemy_list[enemy_id]["pattern_index"] = 0
@@ -151,15 +153,16 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	
 	add_child(projectile_instance)
 
-func SpawnEnemyProjectile(projectile_data, enemy_id):
+func SpawnEnemyProjectile(projectile_data,instance, enemy_id):
+	print("spawn enemy projectile called")
 	projectile_data["enemy_id"] = enemy_id
 	projectile_list[projectile_id_counter] = projectile_data
 	if int(projectile_id_counter) <= 2174000:
 		projectile_id_counter = str(int(projectile_id_counter)+1)
 	else:
 		projectile_id_counter = "0"
-	
-	
+		
+	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
 #	var projectile_instance = enemy_projectiles["small"].instance()
 #	projectile_instance.enemy_id = enemy_id
 #	projectile_instance.projectile_name = projectile_data["Projectile"]

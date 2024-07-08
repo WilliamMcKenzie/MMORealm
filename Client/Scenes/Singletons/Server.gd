@@ -8,6 +8,7 @@ var network = NetworkedMultiplayerENet.new()
 var character_index
 var token
 
+var projectile_pool_amount = 500
 #Clock sync
 var latency = 0
 var latency_array = []
@@ -22,9 +23,15 @@ var nexus = preload("res://Scenes/MainScenes/Nexus/Nexus.tscn")
 var island_container = preload("res://Scenes/MainScenes/Island/Island.tscn")
 var dungeon_container = preload("res://Scenes/MainScenes/Dungeon/Dungeon.tscn")
 
+#Projectile preload
+var projectile = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Projectile.tscn")
+var projectile_pool = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Pool.tscn")
+
 #For player hierarchy
 var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 
+func _ready():
+	pass
 func _physics_process(delta):
 	client_clock = OS.get_system_time_msecs()+latency
 	
@@ -47,6 +54,8 @@ func ConnectToServer():
 	
 	get_tree().connect("connection_failed", self, "_onConnectionFailed")
 	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
+
+
 
 func _onConnectionFailed():
 	print("Connection failed.")
@@ -122,11 +131,21 @@ remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
 
 remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
+	print("receieve enemy projectile")
 	if instance_tree != current_instance_tree:
 		pass
+		print("not relevant instance tree")
 	elif get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
-		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
-
+		print("enemy does exist")
+		if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").has_node("Pool"):
+			for i in range(get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child_count()):
+				if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).is_active == false:
+					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).projectile_data = projectile_data
+					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).is_active = true
+					print("spawned projectile")
+					break
+		else:
+			CreatePool(projectile_pool_amount)
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 remote func RecieveWorldState(world_state):
@@ -147,7 +166,6 @@ func Nexus():
 	if "nexus" == GetCurrentInstance():
 		return
 	rpc_id(1, "Nexus")
-	
 remote func ConfirmNexus():
 	var nexus_instance = nexus.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
@@ -160,7 +178,6 @@ remote func ConfirmNexus():
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(nexus_instance)
 	current_instance_tree = ["nexus"]
-	
 func EnterInstance(instance_id):
 	if instance_id == GetCurrentInstance():
 		return
@@ -222,3 +239,9 @@ remote func SetHealth(max_health, current_health):
 
 func NPCHit(enemy_id, damage):
 	rpc_id(1, "NPCHit", enemy_id, damage)
+	
+func CreatePool(amount):
+	var new_pool = projectile_pool.instance()
+	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").add_child(new_pool)
+	for i in range(amount):
+		new_pool.add_child(projectile.instance())

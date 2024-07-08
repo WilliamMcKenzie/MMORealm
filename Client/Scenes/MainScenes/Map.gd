@@ -6,6 +6,10 @@ var last_world_state = 0
 var world_state_buffer = []
 const interpolation_offset = 100
 
+var active_projectiles = []
+
+var expression = Expression.new()
+
 func _physics_process(delta):
 	var render_time = Server.client_clock - interpolation_offset
 	if world_state_buffer.size() > 1:
@@ -91,12 +95,24 @@ func _physics_process(delta):
 					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
 				else:
 					SpawnNewEnemy(enemy, enemies1[enemy]["position"], enemies1[enemy]["name"])
-
+	for i in active_projectiles:
+		if get_node("YSort/Pool")[i].visible == true:
+			if Server.client_clock - get_node("YSort/Pool")[i].projectile_data["start_time"] < get_node("YSort/Pool")[i].projectile_data["lifespan"]:
+				var time_difference =  Server.client_clock - get_node("YSort/Pool")[i].projectile_data["start_time"]
+				get_node("YSort/Pool")[i].projectile_data["path"] = get_node("YSort/Pool")[i].projectile_data["speed"] * get_node("YSort/Pool")[i].projectile_data["direction"] * time_difference
+				var perpendicular_vector = Vector2(-get_node("YSort/Pool")[i].projectile_data["position"].y, get_node("YSort/Pool")[i].projectile_data["position"].x)
+				var perpendicular_move = get_node("YSort/Pool")[i].projectile_data["direction"] * expression.parse(get_node("YSort/Pool")[i],["x"])
+				var move = perpendicular_move + get_node("YSort/Pool")[i].projectile_data["path"]
+				get_node("YSort/Pool")[i].position = move
+				get_node("YSort/Pool")[i].projectile_data["position"] = move
+			else:
+				get_node("YSort/Pool")[i].visible = false
+			
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:
 		last_world_state = world_state["T"]
 		world_state_buffer.append(world_state)
-
+		
 #Enemy nodes
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
