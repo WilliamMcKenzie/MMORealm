@@ -95,8 +95,8 @@ var realm_enemies = {
 		]
 	},
 	"goblin_cannon" : {
-		"health" : 600,
-		"defense" : 1,
+		"health" : 60,
+		"defense" : 1000,
 		"exp" : 250,
 		"behavior" : 1,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
@@ -117,7 +117,7 @@ var realm_enemies = {
 		"health" : 200,
 		"defense" : 1,
 		"exp" : 200,
-		"behavior" : 1,
+		"behavior" : 10,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"attack_pattern" : [
 			{
@@ -134,7 +134,7 @@ var realm_enemies = {
 	},
 	"troll_brute" : {
 		"health" : 400,
-		"defense" : 1,
+		"defense" : 20,
 		"exp" : 2000,
 		"behavior" : 1,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
@@ -153,7 +153,7 @@ var realm_enemies = {
 	},
 	"rock_golem" : {
 		"health" : 200,
-		"defense" : 1,
+		"defense" : 60,
 		"exp" : 20000,
 		"behavior" : 1,
 		"loot_pool" :  basic_loot_pools["lowlands_2"],
@@ -298,6 +298,34 @@ var items = {
 		},
 		"textures" : {
 			"weaponTexture" : "flame",
+		}
+	},
+	5 : {
+		"name": "Royal Helmet",
+		"description" : "The helmet of the royal guard, adorned with golden trims.",
+		"type" : "Helmet",
+		"slot" : "helmet",
+		
+		"cooldown" : 6,
+		"buffs" : {
+			"healing" : { "duration" : 4, "range" : 5},
+			"damaging" : { "duration" : 4, "range" : 5},
+			"berserk" : { "duration" : 4, "range" : 5},
+		},
+		"stats" : {
+			"defense" : 5,
+			"vitality" : 5,
+		},
+		"tier" : "2",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,8)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(213.0, 190.0, 65.0),
+			"helmetMediumNew" : RgbToColor(139.0, 129.0, 125.0),
+			"helmetDarkNew" : RgbToColor(126.0, 118.0, 115.0),
+		},
+		"textures" : {
+			
 		}
 	},
 }

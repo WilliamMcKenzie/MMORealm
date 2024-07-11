@@ -6,6 +6,9 @@ var email
 var password
 var gold
 
+func _ready():
+	$UI/Leaderboard.connect("button_down", self, "OpenLeaderboard")
+
 func AuthenticatedUser():
 	Gateway.ConnectToServer(email, password, 4)
 
@@ -13,10 +16,20 @@ func UpdateGold():
 	var ui = get_node("UI")
 	ui.get_node("Gold/Gold").text = str(gold)
 
+func OpenLeaderboard():
+	get_node("UI").visible = false
+	get_node("CharacterSelection").visible = false
+	get_node("Leaderboard").visible = true
+func CloseLeaderboard():
+	get_node("UI").visible = true
+	get_node("CharacterSelection").visible = true
+	get_node("Leaderboard").visible = false
+
 func SelectionScreen(account_data):
 	get_node("LoginPopup").visible = false
 	get_node("UI").visible = true
 	GameUI.SetAccountData(account_data)
+	Gateway.ConnectToServer(email, password, 5)
 	
 	var selection_screen = get_node("CharacterSelection")
 	selection_screen.characters = account_data.characters

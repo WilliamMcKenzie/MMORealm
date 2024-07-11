@@ -9,6 +9,10 @@ var db_password = "AVNS_4aWPimeaFiU2cmEoVlm"
 var host = "mmorealm-database-do-user-16835911-0.c.db.ondigitalocean.com"
 var port = 25060
 
+var weekly_leaderboard = []
+var monthly_leaderboard = []
+var all_time_leaderboard = []
+
 var default_account_data = {
 	"username" : "[unset]",
 	"character_slots": 1,
@@ -58,6 +62,11 @@ var new_character = {
 		"exp" : 0,
 		
 		"ascension_stones" : 0,
+		"used_ascension_stones" : 0,
+		
+		"status_effects" : [],
+		"ability_cooldown" : 0,
+		
 		"class" : "Apprentice",
 		"statistics": {
 			"tiles_covered" : 0,
@@ -92,7 +101,18 @@ func _ready():
 		db_username, db_password, host, port, database_name
 	]
 	database.connect_to_host(connection_string, true)
-
+	
+	var timer = Timer.new()
+	timer.wait_time = 1
+	timer.one_shot = true
+	add_child(timer)
+	timer.start()
+	yield(timer, "timeout")
+	
+	weekly_leaderboard = GetLeaderboard(7)
+	monthly_leaderboard = GetLeaderboard(30)
+	all_time_leaderboard = GetLeaderboard(OS.get_system_time_secs())
+	
 func _physics_process(delta):
 	database.poll()
 	
@@ -182,6 +202,44 @@ func UpdateCharacter(email, character_data, character_index):
 		account_data.characters[character_index] = character_data
 		
 		UpdateUser(email, account_data)
+
+func GetLeaderboard(days_ago):
+	var seconds_ago = OS.get_system_time_secs()-days_ago*24*60*60
+	var command = """
+		BEGIN;
+		SELECT * FROM leaderboard WHERE timestamp >= %s ORDER BY reputation DESC LIMIT 20;
+	""" % [seconds_ago]
+	
+	var data_arr = database.execute(command)
+	
+	var leaderboard = []
+	for _data in data_arr:
+		var data = _data.data_row
+		if data != []:
+			for result in data:
+				var character = {
+					"data" : JSON.parse(result[0]).result,
+					"reputation" : result[1],
+					"name" : result[2],
+					"timestamp" : result[3],
+				}
+				leaderboard.append(character)
+	
+	return leaderboard
+
+func AddToLeaderboard(_character, _name):
+	randomize()
+	
+	var character = { "gear" : _character.gear, "class" : _character.class}
+	var reputation = randi() % 1000
+	var timestamp = OS.get_system_time_secs()
+
+	var command = """
+		BEGIN;
+		INSERT INTO leaderboard VALUES ('%s', '%s', '%s', '%s');
+		COMMIT;
+	""" % [JSON.print(character), reputation, _name, timestamp]
+	database.execute(command)
 
 #Utility functions
 

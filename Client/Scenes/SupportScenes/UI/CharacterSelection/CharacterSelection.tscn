@@ -1,70 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/CharacterSelection/CharacterSelection.gd" type="Script" id=1]
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=3]
+[ext_resource path="res://Resources/Renderer.tres" type="Material" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=5]
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = ExtResource( 3 )
-shader_param/color = Color( 0, 0, 0, 1 )
-shader_param/width = 0.4
-shader_param/pattern = 2
-shader_param/inside = false
-shader_param/add_margins = false
-shader_param/helmetTextureActive = false
-shader_param/bodyTextureActive = false
-shader_param/weaponTextureActive = false
-shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
-shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
-shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
-shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bandNew = Color( 33, 53, 23, 0.2 )
-shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
-shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
-shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
-
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 3 )
-shader_param/color = Color( 0, 0, 0, 1 )
-shader_param/width = 0.4
-shader_param/pattern = 2
-shader_param/inside = false
-shader_param/add_margins = false
-shader_param/helmetTextureActive = false
-shader_param/bodyTextureActive = false
-shader_param/weaponTextureActive = false
-shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
-shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
-shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
-shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/bandNew = Color( 33, 53, 23, 0.2 )
-shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
-shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
-shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 
 [node name="CharacterSelection" type="Node2D"]
 script = ExtResource( 1 )
@@ -82,7 +20,7 @@ margin_bottom = 148.0
 rect_rotation = -360.0
 
 [node name="Sprite" type="Sprite" parent="UI/ScrollLeft"]
-material = SubResource( 2 )
+material = ExtResource( 2 )
 position = Vector2( 20, 12 )
 rotation = 0.785398
 scale = Vector2( 2.5, 2.5 )
@@ -99,7 +37,7 @@ margin_right = 224.0
 margin_bottom = 148.0
 
 [node name="Sprite" type="Sprite" parent="UI/ScrollRight"]
-material = SubResource( 1 )
+material = ExtResource( 2 )
 position = Vector2( 4, 12 )
 rotation = -0.785398
 scale = Vector2( 2.5, 2.5 )

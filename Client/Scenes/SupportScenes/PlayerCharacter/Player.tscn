@@ -1,15 +1,16 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=57 format=2]
 
-[ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
+[ext_resource path="res://Resources/Outline.gdshader" type="Shader" id=6]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/move_Joystick.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/attack_joystick.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd" type="Script" id=9]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=10]
 [ext_resource path="res://Assets/ui/button.png" type="Texture" id=11]
+[ext_resource path="res://Resources/Renderer.tres" type="Material" id=12]
 
 [sub_resource type="AnimationNodeAnimation" id=40]
 animation = "attack_down"
@@ -332,193 +333,66 @@ tracks/0/keys = {
 "values": [ 13, 12 ]
 }
 
-[sub_resource type="ShaderMaterial" id=52]
-render_priority = 1
-shader = ExtResource( 1 )
-shader_param/color = Color( 0, 0, 0, 1 )
-shader_param/width = 0.4
-shader_param/pattern = 2
-shader_param/inside = false
-shader_param/add_margins = false
+[sub_resource type="RectangleShape2D" id=61]
+extents = Vector2( 4, 4 )
+
+[sub_resource type="ShaderMaterial" id=67]
+shader = ExtResource( 6 )
+shader_param/max_line_width = 1.0
+shader_param/min_line_width = 1.0
+shader_param/freq = 0.0
+shader_param/block_size = 11111.0
+shader_param/starting_colour = Plane( 0, 0, 0, 30 )
+shader_param/ending_colour = Plane( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
 shader_param/weaponTextureActive = false
-shader_param/helmetDarkOrigin = Color( 0, 0, 1, 1 )
-shader_param/helmetDarkNew = Color( 0.372549, 0.32549, 0.32549, 1 )
-shader_param/helmetMediumOrigin = Color( 1, 0, 1, 1 )
-shader_param/helmetMediumNew = Color( 0.423529, 0.388235, 0.388235, 1 )
-shader_param/helmetLightOrigin = Color( 0, 1, 1, 1 )
-shader_param/helmetLightNew = Color( 0.529412, 0.458824, 0.458824, 1 )
+shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
 shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
 shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
-shader_param/bodyMediumOrigin = Color( 0.894118, 0, 0.752941, 1 )
-shader_param/bodyMediumNew = Color( 0.745098, 0.745098, 0.745098, 1 )
-shader_param/bodyLightOrigin = Color( 1, 0, 0.843137, 1 )
-shader_param/bodyLightNew = Color( 0.847059, 0.847059, 0.847059, 1 )
-shader_param/bandOrigin = Color( 1, 0, 0.419608, 1 )
-shader_param/bandNew = Color( 0.564706, 0.317647, 0.14902, 1 )
-shader_param/buckleOrigin = Color( 0, 0, 0, 1 )
-shader_param/buckleNew = Color( 0.509804, 0.509804, 0.509804, 1 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
 shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
 shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
 shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
 shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 
-[sub_resource type="Shader" id=53]
-code = "shader_type canvas_item;
+[sub_resource type="StreamTexture" id=73]
+load_path = "res://.import/items_8x8.png-61ae49e9e1e9e3bd1375362c8ac88e1b.stex"
 
-uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
-uniform float line_thickness : hint_range(0, 10) = 0.25;
-uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
+[sub_resource type="AtlasTexture" id=62]
+atlas = SubResource( 73 )
+region = Rect2( 0, 190, 10, 10 )
 
-void fragment() {
-    vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-    vec2 glow_size = TEXTURE_PIXEL_SIZE * glow_thickness;
-    
-    float outline = 0.0;
-    outline += texture(TEXTURE, UV + vec2(-size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(0, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(0, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
-    outline = min(outline, 1.0);
+[sub_resource type="AtlasTexture" id=68]
+atlas = ExtResource( 3 )
+region = Rect2( 10, 190, 10, 10 )
 
-    float glow = 0.0;
-    for (float i = 1.0; i <= glow_thickness; i++) {
-        vec2 offset = TEXTURE_PIXEL_SIZE * i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, offset.y)).a / i;
-    }
-    glow = min(glow / glow_thickness, 1.0) - outline;
+[sub_resource type="AtlasTexture" id=70]
+atlas = ExtResource( 3 )
+region = Rect2( 20, 190, 10, 10 )
 
-    vec4 color = texture(TEXTURE, UV);
-    vec4 outline_color = mix(color, line_color, outline - color.a);
-    vec4 glow_color_mixed = mix(outline_color, glow_color, glow * (1.0 - color.a));
-    
-    COLOR = glow_color_mixed;
-}"
+[sub_resource type="StreamTexture" id=69]
+load_path = "res://.import/items_8x8.png-61ae49e9e1e9e3bd1375362c8ac88e1b.stex"
 
-[sub_resource type="ShaderMaterial" id=54]
-shader = SubResource( 53 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.25
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
+[sub_resource type="AtlasTexture" id=71]
+atlas = SubResource( 69 )
+region = Rect2( 30, 190, 10, 10 )
 
-[sub_resource type="Shader" id=55]
-code = "shader_type canvas_item;
-
-uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
-uniform float line_thickness : hint_range(0, 10) = 0.25;
-uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
-
-void fragment() {
-    vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-    vec2 glow_size = TEXTURE_PIXEL_SIZE * glow_thickness;
-    
-    float outline = 0.0;
-    outline += texture(TEXTURE, UV + vec2(-size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(0, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(0, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
-    outline = min(outline, 1.0);
-
-    float glow = 0.0;
-    for (float i = 1.0; i <= glow_thickness; i++) {
-        vec2 offset = TEXTURE_PIXEL_SIZE * i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, offset.y)).a / i;
-    }
-    glow = min(glow / glow_thickness, 1.0) - outline;
-
-    vec4 color = texture(TEXTURE, UV);
-    vec4 outline_color = mix(color, line_color, outline - color.a);
-    vec4 glow_color_mixed = mix(outline_color, glow_color, glow * (1.0 - color.a));
-    
-    COLOR = glow_color_mixed;
-}"
-
-[sub_resource type="ShaderMaterial" id=56]
-shader = SubResource( 55 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.25
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
-
-[sub_resource type="Shader" id=57]
-code = "shader_type canvas_item;
-
-uniform vec4 line_color : hint_color = vec4(0, 0, 0, 1);
-uniform float line_thickness : hint_range(0, 10) = 0.25;
-uniform float glow_thickness : hint_range(0, 20) = 4;
-uniform vec4 glow_color : hint_color = vec4(0, 0, 0, 0.1);
-
-void fragment() {
-    vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-    vec2 glow_size = TEXTURE_PIXEL_SIZE * glow_thickness;
-    
-    float outline = 0.0;
-    outline += texture(TEXTURE, UV + vec2(-size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, 0)).a;
-    outline += texture(TEXTURE, UV + vec2(0, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(0, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
-    outline += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
-    outline = min(outline, 1.0);
-
-    float glow = 0.0;
-    for (float i = 1.0; i <= glow_thickness; i++) {
-        vec2 offset = TEXTURE_PIXEL_SIZE * i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, 0)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(0, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, -offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(-offset.x, offset.y)).a / i;
-        glow += texture(TEXTURE, UV + vec2(offset.x, offset.y)).a / i;
-    }
-    glow = min(glow / glow_thickness, 1.0) - outline;
-
-    vec4 color = texture(TEXTURE, UV);
-    vec4 outline_color = mix(color, line_color, outline - color.a);
-    vec4 glow_color_mixed = mix(outline_color, glow_color, glow * (1.0 - color.a));
-    
-    COLOR = glow_color_mixed;
-}"
-
-[sub_resource type="ShaderMaterial" id=58]
-shader = SubResource( 57 )
-shader_param/line_color = Color( 0, 0, 0, 1 )
-shader_param/line_thickness = 0.25
-shader_param/glow_thickness = 4.0
-shader_param/glow_color = Color( 0, 0, 0, 0.1 )
-
-[sub_resource type="RectangleShape2D" id=61]
-extents = Vector2( 4, 4 )
+[sub_resource type="AtlasTexture" id=72]
+atlas = ExtResource( 3 )
+region = Rect2( 40, 190, 10, 10 )
 
 [node name="player" type="KinematicBody2D"]
 position = Vector2( 343, 265 )
@@ -551,6 +425,7 @@ anims/walk_right = SubResource( 9 )
 anims/walk_up = SubResource( 10 )
 
 [node name="BlackBackground" type="Sprite" parent="."]
+visible = false
 modulate = Color( 0, 0, 0, 1 )
 position = Vector2( 1, -9 )
 scale = Vector2( 2.29178, 5.24 )
@@ -559,7 +434,7 @@ z_as_relative = false
 texture = ExtResource( 11 )
 
 [node name="CharacterSprite" type="Sprite" parent="."]
-material = SubResource( 52 )
+material = ExtResource( 12 )
 position = Vector2( 0, -4 )
 texture = ExtResource( 4 )
 hframes = 4
@@ -570,43 +445,10 @@ region_rect = Rect2( 0, 160, 80, 40 )
 script = ExtResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 0, 7 )
 offset = Vector2( 0, -12.396 )
 current = true
-zoom = Vector2( 0.2, 0.2 )
-
-[node name="PlayerUI" type="Node2D" parent="."]
-
-[node name="Gear" type="Node2D" parent="PlayerUI"]
-visible = false
-position = Vector2( 0, -14 )
-
-[node name="Ring" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 52 )
-position = Vector2( 14, 49 )
-texture = ExtResource( 3 )
-hframes = 26
-vframes = 26
-
-[node name="Weapon" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 54 )
-position = Vector2( -16, 49 )
-texture = ExtResource( 3 )
-hframes = 26
-vframes = 26
-
-[node name="Ability" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 56 )
-position = Vector2( -5.99998, 49 )
-texture = ExtResource( 3 )
-hframes = 26
-vframes = 26
-
-[node name="Armor" type="Sprite" parent="PlayerUI/Gear"]
-material = SubResource( 58 )
-position = Vector2( 4.00002, 49 )
-texture = ExtResource( 3 )
-hframes = 26
-vframes = 26
+zoom = Vector2( 0.18, 0.18 )
 
 [node name="Axis" type="Area2D" parent="."]
 visible = false
@@ -623,7 +465,66 @@ scale = Vector2( 0.9, 1.1 )
 shape = SubResource( 61 )
 
 [node name="IndicatorPlaceholder" type="Node2D" parent="."]
+visible = false
 position = Vector2( -0.5, -10 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = -10.0
+margin_top = -13.0
+margin_right = 40.0
+margin_bottom = 27.0
+rect_scale = Vector2( 0.4, 0.4 )
+mouse_filter = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+margin_right = 50.0
+margin_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 0
+
+[node name="damaging" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+material = SubResource( 67 )
+margin_right = 10.0
+margin_bottom = 10.0
+texture = SubResource( 62 )
+stretch_mode = 5
+
+[node name="berserk" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+material = SubResource( 67 )
+margin_left = 10.0
+margin_right = 20.0
+margin_bottom = 10.0
+texture = SubResource( 68 )
+stretch_mode = 5
+
+[node name="armored" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+material = SubResource( 67 )
+margin_left = 20.0
+margin_right = 30.0
+margin_bottom = 10.0
+texture = SubResource( 70 )
+stretch_mode = 5
+
+[node name="invincible" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+material = SubResource( 67 )
+margin_left = 30.0
+margin_right = 40.0
+margin_bottom = 10.0
+texture = SubResource( 71 )
+stretch_mode = 5
+
+[node name="healing" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+material = SubResource( 67 )
+margin_left = 40.0
+margin_right = 50.0
+margin_bottom = 10.0
+texture = SubResource( 72 )
+stretch_mode = 5
 
 [node name="Joysticks" type="CanvasLayer" parent="."]
 

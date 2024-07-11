@@ -45,6 +45,8 @@ func _onConnectionFailed():
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
+	if(task == 5):
+		GetLeaderboards()
 	if(task == 4):
 		FetchAccountData()
 	if(task == 3):
@@ -106,3 +108,8 @@ remote func ReturnLogin(result, token):
 	if(result):
 		Server.token = token
 	get_node("../SceneHandler/Home/LoginPopup").LoginResult(result)
+	
+func GetLeaderboards():
+	rpc_id(1, "GetLeaderboards")
+remote func ReturnLeaderboards(weekly, monthly, all_time):
+	get_node("../SceneHandler/Home/Leaderboard").SetLeaderboard(weekly, monthly, all_time)

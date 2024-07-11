@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Login/Login.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
@@ -18,7 +18,8 @@ modulate_color = Color( 1, 1, 1, 0.313726 )
 [sub_resource type="StyleBoxEmpty" id=6]
 
 [sub_resource type="DynamicFont" id=2]
-outline_size = 2
+size = 18
+outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
@@ -26,6 +27,11 @@ font_data = ExtResource( 2 )
 texture = ExtResource( 4 )
 region_rect = Rect2( 0, 0, 384, 128 )
 modulate_color = Color( 1, 1, 1, 0.470588 )
+
+[sub_resource type="DynamicFont" id=9]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
 
 [node name="LoginPopup" type="Node2D"]
 script = ExtResource( 1 )
@@ -86,7 +92,7 @@ custom_styles/normal = SubResource( 6 )
 margin_left = 370.0
 margin_top = 281.0
 margin_right = 647.0
-margin_bottom = 300.0
+margin_bottom = 298.0
 custom_fonts/font = SubResource( 2 )
 text = "Password"
 
@@ -109,12 +115,12 @@ custom_styles/focus = ExtResource( 3 )
 custom_styles/disabled = ExtResource( 3 )
 custom_styles/normal = ExtResource( 3 )
 
-[node name="Label" type="Label" parent="ResizeContainer/Login"]
-margin_left = 42.0
+[node name="Label2" type="Label" parent="ResizeContainer/Login"]
+margin_left = 30.0
 margin_top = 4.0
-margin_right = 82.0
+margin_right = 97.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 9 )
 text = "Login"
 align = 1
 valign = 1
@@ -131,11 +137,11 @@ custom_styles/disabled = ExtResource( 3 )
 custom_styles/normal = ExtResource( 3 )
 
 [node name="Label" type="Label" parent="ResizeContainer/Signup"]
-margin_left = 39.0
+margin_left = 31.0
 margin_top = 4.0
-margin_right = 89.0
+margin_right = 98.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 9 )
 text = "Signup"
 align = 1
 valign = 1

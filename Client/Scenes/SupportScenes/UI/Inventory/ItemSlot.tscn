@@ -28,7 +28,7 @@ script = ExtResource( 5 )
 normal = SubResource( 10 )
 
 [node name="ItemBackground" type="TextureRect" parent="."]
-modulate = Color( 1, 1, 1, 0.313726 )
+modulate = Color( 0.337255, 0.337255, 0.337255, 0.866667 )
 margin_right = 40.0
 margin_bottom = 40.0
 texture = SubResource( 8 )
@@ -36,6 +36,7 @@ expand = true
 stretch_mode = 5
 
 [node name="ItemIcon" type="TextureRect" parent="."]
+visible = false
 material = ExtResource( 1 )
 margin_right = 40.0
 margin_bottom = 40.0

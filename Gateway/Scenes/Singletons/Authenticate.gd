@@ -42,3 +42,8 @@ func AuthenticatePlayer(email, password, id):
 remote func AuthenticateResults(result, player_id, token):
 	Gateway.ReturnLoginRequest(player_id, result, token)
 
+func GetLeaderboards(player_id):
+	rpc_id(1, "GetLeaderboards", player_id) 
+remote func ReturnLeaderboardsResult(weekly, monthly, all_time, player_id):
+	Gateway.ReturnLeaderboardsResult(weekly, monthly, all_time, player_id)
+

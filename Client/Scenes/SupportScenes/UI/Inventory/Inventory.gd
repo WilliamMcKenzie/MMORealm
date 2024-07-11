@@ -8,9 +8,9 @@ var loot_containers = {}
 
 func _ready():
 	$InventoryBackground.connect("button_down", self, "ToggleInventory")
-	$BackpackContainer/CloseButton.connect("button_down", self, "ToggleInventory")
-	$BackpackContainer/CloseButton2.connect("button_down", self, "ToggleInventory")
-	$LootContainer/CloseButton.connect("button_down", self, "ToggleInventory")
+	$BackpackContainer/CloseButton.connect("pressed", self, "ToggleInventory")
+	$BackpackContainer/CloseButton2.connect("pressed", self, "ToggleInventory")
+	$LootContainer/CloseButton.connect("pressed", self, "ToggleInventory")
 
 func InspectItem(_item):
 	if not _item:
@@ -33,6 +33,7 @@ func InspectItem(_item):
 	var item_description = $InspectItem/MarginContainer/VBoxContainer/ItemDescription
 	var item_tier = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Tier
 	var item_use = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Use
+	var item_on_use = $InspectItem/MarginContainer/VBoxContainer/ItemStats/OnUse
 		
 	item_name.text = item.name
 	item_sprite.texture.region = Rect2(item.path[3]*10, Vector2(10, 10))
@@ -45,6 +46,17 @@ func InspectItem(_item):
 	else:
 		item_use.visible = false
 		item_tier.visible = true
+	
+	for buff in item_on_use.get_children():
+		buff.visible = false
+	if item.type == "Helmet":
+		item_on_use.visible = true
+		item_on_use.get_node("Label").visible = true
+		for buff in item.buffs.keys():
+			item_on_use.get_node(buff).visible = true
+			item_on_use.get_node(buff+"/Duration").text = "for "+str(item.buffs[buff].duration)+"s within "+str(item.buffs[buff].range)+"tiles"
+	else:
+		item_on_use.visible = false
 	
 	if item.has("damage"):
 		var item_damage = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage

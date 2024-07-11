@@ -1,5 +1,6 @@
 extends Node2D
 
+export var enemy_type = "crab"
 var distanceTraveled
 var velocity = Vector2.ZERO
 
@@ -50,12 +51,16 @@ func OnHit(body):
 		Server.NPCHit(name,body.get_parent().damage)
 
 func ShowDamageIndicator(damage_amount):
+	var total_damage = floor(-damage_amount - ClientData.GetEnemy(enemy_type).defense)
+	if total_damage < damage_amount - damage_amount*0.9:
+		total_damage = floor(damage_amount - damage_amount*0.9)
+	
 	var sprite = get_node("Sprite")
 	var shape = get_node("Area2D/Hitbox").shape as RectangleShape2D
 	var _x = shape.extents.x
 	
 	var damage_indicator = damage_indicator_scene.instance()
-	damage_indicator.get_node("Label").text = str(damage_amount)
+	damage_indicator.get_node("Label").text = str(-total_damage)
 	$IndicatorPlaceholder.add_child(damage_indicator)
 
 	var timer = Timer.new()

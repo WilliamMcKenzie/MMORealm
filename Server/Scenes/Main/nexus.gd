@@ -54,9 +54,7 @@ func _physics_process(delta):
 			
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
-			print(str(enemy_list[enemy_id]["timer"]))
 			if enemy_list[enemy_id]["timer"] <= 0:
-				print("c")
 				
 				var attack_pattern = ServerData.GetEnemy(enemy_list[enemy_id]["name"])["attack_pattern"]
 				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
@@ -154,7 +152,6 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	add_child(projectile_instance)
 
 func SpawnEnemyProjectile(projectile_data,instance, enemy_id):
-	print("spawn enemy projectile called")
 	projectile_data["enemy_id"] = enemy_id
 	projectile_list[projectile_id_counter] = projectile_data
 	if int(projectile_id_counter) <= 2174000:

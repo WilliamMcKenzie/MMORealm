@@ -7,15 +7,86 @@ var character = null
 var character_index = null
 
 var health = 100
-var stats
 var gear = {}
+
+#Ability Stuff
+var status_effects = {
+	"damaging" : 0,
+	"berserk" : 0,
+	"armored" : 0,
+	"healing" : 0,
+	"invincible" : 0,
+}
+
+#Status Effects
+
+var heal_rate = 1
+var running_time = 0
+var last_tick = 0
+
+func _physics_process(delta):
+	if not character:
+		return
+	
+	character.ability_cooldown -= delta
+	running_time += delta
+	heal_rate = 10/character.stats.vitality
+	
+	if status_effects.has("healing"):
+		heal_rate = 10/(character.stats.vitality + 100)
+	
+	#Tick
+	for i in range(floor((running_time-last_tick)/heal_rate)):
+		last_tick = running_time
+		if health < character.stats.health:
+			health += 1
+			get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
+		
+	for effect in status_effects.keys():
+		status_effects[effect] -= delta
+		if status_effects[effect] <= 0:
+			if character.status_effects.has(effect):
+				character.status_effects.erase(effect)
+				get_node("/root/Server").SendCharacterData(name, character)
+			status_effects.erase(effect)
+
+func UseAbility():
+	if character.ability_cooldown > 0 or not gear.has("helmet"):
+		return
+	
+	character.ability_cooldown = gear.helmet.cooldown
+	var buffs = gear.helmet.buffs
+	for buff in buffs.keys():
+		GiveEffect(buff, buffs[buff].duration)
+	
+	get_node("/root/Server").SendCharacterData(name, character)
+		
+func GiveEffect(effect, duration):
+	if status_effects.has(effect) and status_effects[effect] > duration:
+		return
+	
+	status_effects[effect] = duration
+	print("nada")
+	if not character.status_effects.has(effect):
+		print("effect given")
+		character.status_effects.append(effect)
 
 #Items
 
+func IncreaseStat(stat):
+	if character.ascension_stones > character.used_ascension_stones:
+		character.used_ascension_stones += 1
+		if stat == "health":
+			character.stats[stat] += 5
+		else:
+			character.stats[stat] += 1
+		get_node("/root/Server").SendCharacterData(name, character)
+	
 func Max():
 	character.ascension_stones += ServerData.GetCharacter(character.class).ascension_stones - character.ascension_stones
 	
 	get_node("/root/Server").SendCharacterData(name, character)
+	get_node("/root/Server").SendMessage(int(name), "success", "You feel your strength grow...")
 
 func UseItem(index):
 	var selected_item_raw = character.inventory[index]
@@ -26,9 +97,12 @@ func UseItem(index):
 	if selected_item.type != "Consumable":
 		return
 	
-	character.inventory[index] = null
-	if selected_item.use == "ascend":
+	if selected_item.use == "ascend" and character.ascension_stones < ServerData.GetCharacter(character.class).ascension_stones:
 		character.ascension_stones += 1
+		character.inventory[index] = null
+		get_node("/root/Server").SendMessage(int(name), "success", "You feel your strength grow...")
+	elif selected_item.use == "ascend":
+		get_node("/root/Server").SendMessage(int(name), "warning", "Class is fully ascended, evolve to ascend further")
 	
 	get_node("/root/Server").SendCharacterData(name, character)
 
@@ -178,7 +252,8 @@ func LootItem(to_data, from_data):
 
 func SetCharacter(characters):
 	character = characters[character_index]
-	health = character.stats.health
+	#health = character.stats.health
+	health = 1
 	
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
@@ -212,10 +287,21 @@ func AddExp(exp_amount):
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func DealDamage(damage, enemy_id):
-	health -= damage
+	var total_damage = floor(damage - character.stats.defense)
+	if status_effects.has("armored"):
+		total_damage = floor(damage - (character.stats.defense*2))
+	
+	if total_damage < damage - damage*0.9:
+		total_damage = floor(damage - damage*0.9)
+	
+	if status_effects.has("invincible"):
+		total_damage = 0
+	
+	health -= total_damage
 	
 	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	if health < 1:
+		health = 0
 		pass
 		#print("dead")
 		#Death(enemy_id)
@@ -254,7 +340,7 @@ func GetAchievement(achievement_name):
 		var class_bonus_stats = ServerData.GetCharacter(character.class).bonus_stats
 		for stat in character.stats.keys():
 			character.stats[stat] += class_bonus_stats[stat]
-		
+	
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func _on_PlayerHitbox_area_entered(area):

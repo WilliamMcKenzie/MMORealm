@@ -83,13 +83,26 @@ func SetCharacterData(character):
 		var difference = character.ascension_stones - last_character.ascension_stones
 		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("ascension", difference)
 	#Items
-	last_character = character
+	last_character = character.duplicate()
 	$Inventory.SetInventory(character.inventory)
 	$Inventory.SetGear(character.gear)
 	if $Inventory.inspecting_item != null:
 		$Inventory.DeInspectItem($Inventory.inspecting_item)
+	
+	var timer = Timer.new()
+	timer.wait_time = 0.01
+	timer.one_shot = true
+	add_child(timer)
+	timer.start()
+	yield(timer, "timeout")
+	
+	if is_stats_open:
+		$Stats.SetStats(last_character)
 
 func ToggleInventory():
+	if not last_character:
+		ErrorPopup.OpenPopup("Server Disconnected")
+		return
 	if last_opened+100 > OS.get_system_time_msecs():
 		return
 	last_opened = OS.get_system_time_msecs()
@@ -109,6 +122,9 @@ func ToggleInventory():
 		is_inventory_open = true
 	
 func ToggleStats():
+	if not last_character:
+		ErrorPopup.OpenPopup("Server Disconnected")
+		return
 	if last_opened+100 > OS.get_system_time_msecs():
 		return
 	last_opened = OS.get_system_time_msecs()
@@ -128,6 +144,9 @@ func ToggleStats():
 		is_stats_open = true
 		
 func ToggleClasses():
+	if not last_character:
+		ErrorPopup.OpenPopup("Server Disconnected")
+		return
 	if last_opened+100 > OS.get_system_time_msecs():
 		return
 	last_opened = OS.get_system_time_msecs()

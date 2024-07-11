@@ -63,7 +63,7 @@ func SetCharacter(classname):
 	for button in $MarginContainer/TreeRoot.get_children():
 		button.Disable()
 	get_node("MarginContainer/TreeRoot/"+classname).Activate()
-	SetCharacterSprite(ClientData.GetCharacter(classname), classname, {}, $ClassInfo/MarginContainer/ResizeContainer/TextureRect/Character)
+	SetCharacterSprite(character, classname, character.example_colors, $ClassInfo/MarginContainer/ResizeContainer/TextureRect/Character)
 	
 	var root = $ClassInfo/MarginContainer/ResizeContainer
 	var class_name_node = root.get_node("ClassName/Class")

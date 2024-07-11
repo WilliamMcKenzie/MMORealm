@@ -30,6 +30,8 @@ var lastSprite = { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice"
 
 var shoot = false
 var last_shot_time = 0
+var time_between_shots = INF
+
 onready var CharacterSpriteEle = $CharacterSprite
 onready var animation_tree = $AnimationTree
 
@@ -63,6 +65,13 @@ func SetCharacter(_character):
 		var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
 		projectile = load(projectile_path)
 	
+	if gear.has("weapon"):
+		time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100)
+		if character.status_effects.has("berserk"):
+			time_between_shots /= (125.0/100.0)
+	else:
+		time_between_shots = INF
+	
 	if is_inside_tree():
 		SetCharacterSprite()
 
@@ -91,6 +100,7 @@ func SetSpriteData(sprite, path):
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
+	UpdateStatusEffects()
 	MovePlayer(delta)
 	DefinePlayerState()
 
@@ -98,7 +108,14 @@ func _unhandled_input(event):
 	if event is InputEventMouseButton and event.device == 0:
 		shoot = true
 		holding_shoot = true
-		
+
+func UpdateStatusEffects():
+	for status_node in $HBoxContainer/HBoxContainer.get_children():
+		if character.status_effects.has(status_node.name):
+			status_node.visible = true
+		else:
+			status_node.visible = false
+
 func MovePlayer(delta):
 	if GameUI.in_chat == true:
 		return
@@ -138,7 +155,6 @@ func MovePlayer(delta):
 	var current_time = OS.get_ticks_msec() / 1000.0
 	
 	if gear.has("weapon"):
-		var time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100)
 		if current_time - last_shot_time >= time_between_shots and shoot == true and not GameUI.is_inventory_open:
 			ShootProjectile()
 			last_shot_time = current_time
@@ -223,7 +239,12 @@ func ShootProjectile():
 	get_parent().get_node(projectile_instance.name).look_at(mouse_position)
 
 func CalculateDamageWithMultiplier(damage):
-	return (damage*(0.5 + (float(stats.attack)/float(50))))
+	var base_damage = (damage*(0.5 + (float(stats.attack)/float(50))))
+	
+	if character.status_effects.has("damaging"):
+		base_damage = floor(base_damage*1.25)
+		
+	return base_damage
 
 func ShowIndicator(type, amount):
 	var indicator = indicators[type].instance()

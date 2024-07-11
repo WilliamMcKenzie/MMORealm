@@ -5,16 +5,15 @@ var port = 20201
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	startServer()
+	StartServer()
 
 func _process(delta):
 	if not custom_multiplayer.has_network_peer():
 		return
 	custom_multiplayer.poll()
 
-func startServer():
+func StartServer():
 	network.create_server(port, max_players)
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
@@ -87,7 +86,6 @@ remote func CreateAccountRequest(email, password):
 func ReturnCreateAccountRequest(result, player_id, message):
 	rpc_id(player_id, "ReturnCreateAccountRequest", result, message)
 	network.disconnect_peer(player_id)
-	print("Disconnected Player: " + str(player_id))
 
 remote func LoginRequest(email, password):
 	var player_id = custom_multiplayer.get_rpc_sender_id()
@@ -95,3 +93,8 @@ remote func LoginRequest(email, password):
 func ReturnLoginRequest(player_id, result, token):
 	rpc_id(player_id, "ReturnLogin", result, token)
 
+remote func GetLeaderboards():
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	Authenticate.GetLeaderboards(player_id)
+func ReturnLeaderboardsResult(weekly, monthly, all_time, player_id):
+	rpc_id(player_id, "ReturnLeaderboards", weekly, monthly, all_time)

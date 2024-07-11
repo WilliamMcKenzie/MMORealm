@@ -305,9 +305,9 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Class" type="Label" parent="ClassInfo/MarginContainer/ResizeContainer/ClassName"]
-margin_left = 44.0
-margin_top = 8.0
-margin_right = 167.0
+margin_left = 27.0
+margin_top = 4.0
+margin_right = 184.0
 margin_bottom = 35.0
 size_flags_vertical = 8
 custom_colors/font_color = Color( 0.14902, 0.737255, 0.180392, 1 )
@@ -317,8 +317,8 @@ align = 1
 
 [node name="TextureRect" type="TextureRect" parent="ClassInfo/MarginContainer/ResizeContainer/ClassName"]
 material = SubResource( 23 )
-margin_left = 171.0
-margin_right = 206.0
+margin_left = 188.0
+margin_right = 223.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 35, 35 )
 size_flags_horizontal = 0
@@ -363,7 +363,7 @@ autowrap = true
 [node name="Multipliers" type="Label" parent="ClassInfo/MarginContainer/ResizeContainer"]
 margin_top = 217.0
 margin_right = 250.0
-margin_bottom = 248.0
+margin_bottom = 254.0
 custom_colors/font_color = Color( 0.741176, 0.741176, 0.741176, 1 )
 custom_fonts/font = SubResource( 13 )
 text = "+20% Sword Damage
@@ -371,7 +371,7 @@ text = "+20% Sword Damage
 align = 1
 
 [node name="Strengths" type="HBoxContainer" parent="ClassInfo/MarginContainer/ResizeContainer"]
-margin_top = 252.0
+margin_top = 258.0
 margin_right = 250.0
 margin_bottom = 297.0
 grow_horizontal = 2
@@ -381,19 +381,19 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="ClassInfo/MarginContainer/ResizeContainer/Strengths"]
-margin_left = 42.0
-margin_top = 15.0
-margin_right = 108.0
-margin_bottom = 29.0
+margin_left = 35.0
+margin_top = 11.0
+margin_right = 115.0
+margin_bottom = 28.0
 custom_fonts/font = SubResource( 10 )
 text = "Strengths:"
 align = 1
 
 [node name="Health" type="PanelContainer" parent="ClassInfo/MarginContainer/ResizeContainer/Strengths"]
-margin_left = 112.0
-margin_top = 8.0
-margin_right = 141.0
-margin_bottom = 37.0
+margin_left = 119.0
+margin_top = 5.0
+margin_right = 148.0
+margin_bottom = 34.0
 size_flags_vertical = 4
 custom_styles/panel = SubResource( 11 )
 
@@ -420,10 +420,10 @@ expand = true
 stretch_mode = 5
 
 [node name="Defense" type="PanelContainer" parent="ClassInfo/MarginContainer/ResizeContainer/Strengths"]
-margin_left = 145.0
-margin_top = 8.0
-margin_right = 174.0
-margin_bottom = 37.0
+margin_left = 152.0
+margin_top = 5.0
+margin_right = 181.0
+margin_bottom = 34.0
 size_flags_vertical = 4
 custom_styles/panel = SubResource( 11 )
 
@@ -450,10 +450,10 @@ expand = true
 stretch_mode = 5
 
 [node name="Vitality" type="PanelContainer" parent="ClassInfo/MarginContainer/ResizeContainer/Strengths"]
-margin_left = 178.0
-margin_top = 8.0
-margin_right = 207.0
-margin_bottom = 37.0
+margin_left = 185.0
+margin_top = 5.0
+margin_right = 214.0
+margin_bottom = 34.0
 size_flags_vertical = 4
 custom_styles/panel = SubResource( 24 )
 
@@ -644,14 +644,14 @@ margin_bottom = 305.0
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="NotEnoughStones/MarginContainer/VBoxContainer"]
-margin_top = 95.0
+margin_top = 91.0
 margin_right = 232.0
-margin_bottom = 149.0
+margin_bottom = 145.0
 alignment = 1
 
 [node name="AscensionStone" type="PanelContainer" parent="NotEnoughStones/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 63.0
-margin_right = 117.0
+margin_left = 61.0
+margin_right = 115.0
 margin_bottom = 54.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -680,19 +680,19 @@ expand = true
 stretch_mode = 5
 
 [node name="StoneCount" type="Label" parent="NotEnoughStones/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 121.0
-margin_top = 10.0
-margin_right = 169.0
-margin_bottom = 43.0
+margin_left = 119.0
+margin_top = 8.0
+margin_right = 171.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.266667, 0.843137, 0.407843, 1 )
 custom_fonts/font = SubResource( 21 )
 text = "0/5"
 align = 1
 
 [node name="Label" type="Label" parent="NotEnoughStones/MarginContainer/VBoxContainer"]
-margin_top = 153.0
+margin_top = 149.0
 margin_right = 232.0
-margin_bottom = 201.0
+margin_bottom = 206.0
 text = "You need to consume 5 more ascension stones to be able to unlock a new class."
 align = 1
 autowrap = true

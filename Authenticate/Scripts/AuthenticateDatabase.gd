@@ -108,3 +108,14 @@ remote func AuthenticatePlayer(email, password, player_id):
 		GameServers.DistributeLogToken(token, email, gameserver)
 			
 	rpc_id(gateway_id, "AuthenticateResults", result, player_id, token)
+
+remote func GetLeaderboards(player_id):
+	print("Wow")
+	var gateway_id = get_tree().get_rpc_sender_id()
+	var weekly = DatabaseInterface.weekly_leaderboard
+	var monthly = DatabaseInterface.monthly_leaderboard
+	var all_time = DatabaseInterface.all_time_leaderboard
+	
+	rpc_id(gateway_id, "ReturnLeaderboardsResult", weekly, monthly, all_time, player_id)
+	
+	

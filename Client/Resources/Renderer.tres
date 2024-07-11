@@ -1,19 +1,20 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
-[ext_resource path="res://Resources/ColorGearPixelPerfect.gdshader" type="Shader" id=1]
+[ext_resource path="res://Resources/Outline.gdshader" type="Shader" id=1]
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/color = Color( 0, 0, 0, 1 )
-shader_param/width = 0.4
-shader_param/pattern = 2
-shader_param/inside = false
-shader_param/add_margins = false
+shader_param/max_line_width = 0.8
+shader_param/min_line_width = -0.983
+shader_param/freq = 0.0
+shader_param/block_size = 22220.2
+shader_param/starting_colour = Plane( 0, 0, 0, 3 )
+shader_param/ending_colour = Plane( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
 shader_param/weaponTextureActive = false
-shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
-shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkOrigin = Color( 1, 0, 1, 1 )
+shader_param/helmetDarkNew = Color( 0.431373, 1, 0.145098, 0.2 )
 shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
 shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
 shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )

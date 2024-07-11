@@ -34,12 +34,6 @@ func _ready():
 	pass
 func _physics_process(delta):
 	client_clock = OS.get_system_time_msecs()+latency
-	
-	#sync_clock_counter += 1
-	#if sync_clock_counter > 60:
-		#if get_tree().network_peer:
-			#rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
-		#sync_clock_counter = 0
 
 func UpdateRightJoystick(output):
 	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
@@ -54,13 +48,13 @@ func ConnectToServer():
 	
 	get_tree().connect("connection_failed", self, "_onConnectionFailed")
 	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
+	get_tree().connect("network_peer_disconnected", self, "_Disconnected")
 
-
-
+func _Disconnected():
+	ErrorPopup.OpenPopup("Disconnected")
 func _onConnectionFailed():
-	print("Connection failed.")
+	ErrorPopup.OpenPopup("Connection failed")
 func _onConnectionSucceeded():
-	print("Connection succeeded!")
 	rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 	var timer = Timer.new()
 	timer.wait_time = 0.5
@@ -95,7 +89,7 @@ remote func ReturnTokenVerificationResults(results):
 	if(results == true):
 		print("Successful token verification")
 	else:
-		print("Login failed")
+		ErrorPopup.OpenPopup("Login failed")
 
 #INVENTORY/ITEMS
 func SetCharacterIndex(_character_index):
@@ -113,6 +107,8 @@ func ChangeItem(to_data, from_data):
 	rpc_id(1, "ChangeItem", to_data, from_data)
 func DropItem(data):
 	rpc_id(1, "DropItem", data)
+func IncreaseStat(stat):
+	rpc_id(1, "IncreaseStat", stat)
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
@@ -146,11 +142,16 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 					break
 		else:
 			CreatePool(projectile_pool_amount)
+
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
+
 remote func RecieveWorldState(world_state):
 	get_node("../SceneHandler/"+GetCurrentInstance()).UpdateWorldState(world_state)
 	
+func UseAbility():
+	rpc_id(1, "UseAbility")
+
 #INSTANCES
 func GetCurrentInstance():
 	return current_instance_tree[current_instance_tree.size()-1]

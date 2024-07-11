@@ -104,6 +104,16 @@ remote func DropItem(data):
 	var instance_tree = player_state_collection[player_id]["I"]
 	get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).DropItem(data)
 
+remote func IncreaseStat(stat):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).IncreaseStat(stat)
+
+remote func UseAbility():
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"]
+	get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).UseAbility()
+	
 #PLAYER SYNCING
 remote func FetchServerTime(client_time):
 	var player_id =  get_tree().get_rpc_sender_id()
@@ -189,7 +199,6 @@ remote func SendPlayerProjectile(projectile_data):
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
-	print("sending enemy projectile")
 	rpc("RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
 
 remote func NPCHit(enemy_id, damage):
@@ -207,13 +216,18 @@ remote func NPCHit(enemy_id, damage):
 			which_achievement = "sword_projectiles"
 
 	if get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list.has(str(enemy_id)):
-		get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["health"] -= damage
+		var enemy_container = get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]
+		var total_damage = floor(damage - ServerData.GetEnemy(enemy_container.name).defense)
+		if total_damage < damage - damage*0.9:
+			total_damage = floor(damage - damage*0.9)
+		
+		enemy_container["health"] -= total_damage
 		var damage_tracker = get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["damage_tracker"]
 		
 		if damage_tracker.has(str(player_id)):
-			damage_tracker[str(player_id)] = damage + damage_tracker[str(player_id)]
+			damage_tracker[str(player_id)] = total_damage + damage_tracker[str(player_id)]
 		else:
-			damage_tracker[str(player_id)] = damage
+			damage_tracker[str(player_id)] = total_damage
 		
 		player_container.UpdateStatistics("projectiles_landed", 1)
 		player_container.UpdateStatistics(which_achievement, 1)
@@ -265,7 +279,8 @@ remote func EnterInstance(instance_id):
 			
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
 			player_instance_tracker[instance_tree].append(player_id)
-			
+		SendCharacterData(player_id, player_container.character)
+		
 remote func FetchIslandChunk(chunk):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -274,6 +289,14 @@ remote func FetchIslandChunk(chunk):
 		rpc_id(player_id, "ReturnIslandChunk", island_node.GetIslandChunk(chunk), chunk)
 
 #COMMANDS
+func SendMessage(player_id, type, message):
+	if type == "warning":
+		rpc_id(player_id, "RecieveChat", message, "SystemWARN")
+	if type == "error":
+		rpc_id(player_id, "RecieveChat", message, "SystemERROR")
+	if type == "success":
+		rpc_id(player_id, "RecieveChat", message, "SystemSUCCESS")
+
 remote func RecieveChatMessage(message):
 	var message_words = message.split(" ")
 	var player_id = get_tree().get_rpc_sender_id()
@@ -295,13 +318,13 @@ remote func RecieveChatMessage(message):
 					else:
 						rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "System")
 				else:
-					rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "System")
+					rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "SystemERROR")
 			if message_words[0] == "/d":
 				if message.substr(3,-1) in Dungeons.valid_names:
 					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal(message.substr(3,-1), instance_tree, player_position)
 					rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
 				else:
-					rpc_id(player_id, "RecieveChat", "Error spawning dungeon", "System")
+					rpc_id(player_id, "RecieveChat", "Error spawning dungeon", "SystemERROR")
 			if message_words[0] == "/spawn" and message_words.size() > 1:
 				var valid_enemy = message_words[1] in ServerData.enemies
 				var multiple_enemies = message_words.size() > 2 and int(message_words[2])
@@ -309,11 +332,12 @@ remote func RecieveChatMessage(message):
 				if valid_enemy and multiple_enemies:
 					for _i in range(int(message_words[2])):
 						SpawnNPC(message_words[1], instance_tree, player_position - (get_node("Instances/"+StringifyInstanceTree(instance_tree)).position))
+					rpc_id(player_id, "RecieveChat", "You have spawned " + message_words[2] + message.substr(7,-1) + "s", "System")
 				elif valid_enemy:
 					SpawnNPC(message_words[1], instance_tree, player_position - (get_node("Instances/"+StringifyInstanceTree(instance_tree)).position))
 					rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
 				else:
-					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "System")
+					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "SystemERROR")
 			if message_words[0] == "/loot" and message_words.size() == 2:
 				var valid = int(message_words[1]) in ServerData.items
 				var item = ServerData.GetItem(int(message_words[1]))
@@ -324,12 +348,16 @@ remote func RecieveChatMessage(message):
 						"item" : int(message_words[1]),
 						"id" : generate_unique_id()
 					}], player_id, instance_tree, player_position)
+					rpc_id(player_id, "RecieveChat", "You have looted a " + message_words[1], "System")
 				elif valid:
 					get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnLootBag([ 
 					{
 						"item" : int(message_words[1]),
 						"id" : generate_unique_id()
 					}], null, instance_tree, player_position)
+					rpc_id(player_id, "RecieveChat", "You have looted a " + message_words[1], "System")
+				else:
+					rpc_id(player_id, "RecieveChat", "Invalid loot id", "SystemERROR")
 			if message_words[0] == "/max" and message_words.size() == 1:
 				player_container.Max()
 		else:

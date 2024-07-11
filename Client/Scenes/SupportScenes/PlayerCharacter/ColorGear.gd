@@ -92,11 +92,9 @@ func ColorGear(gear):
 		var classname = GameUI.last_character.class
 		gear.merge(ClientData.GetCharacter(classname).example_colors)
 	
-	var shader_material = ShaderMaterial.new()
-	shader_material.shader = load("res://Resources/ColorGear.gdshader")
+	var shader_material = load("res://Resources/Renderer.tres").duplicate()
 	
 	self.material = shader_material
-	
 	
 	#Get color params
 	color_params = default_color_params.duplicate(true)
