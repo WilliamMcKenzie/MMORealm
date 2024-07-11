@@ -207,9 +207,8 @@ z_index = 22
 normal = SubResource( 18 )
 
 [node name="SettingsButton" type="PanelContainer" parent="."]
-visible = false
-margin_left = 86.0
-margin_right = 124.0
+margin_left = 129.0
+margin_right = 167.0
 margin_bottom = 40.0
 custom_styles/panel = SubResource( 15 )
 

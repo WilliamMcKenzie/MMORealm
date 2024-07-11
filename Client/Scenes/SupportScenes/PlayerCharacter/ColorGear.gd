@@ -90,7 +90,9 @@ func SetCharacterWeapon(weapon_type):
 func ColorGear(gear):
 	if GameUI.last_character:
 		var classname = GameUI.last_character.class
-		gear.merge(ClientData.GetCharacter(classname).example_colors)
+		var temp = ClientData.GetCharacter(classname).example_colors
+		temp.merge(gear, true)
+		gear = temp
 	
 	var shader_material = load("res://Resources/Renderer.tres").duplicate()
 	

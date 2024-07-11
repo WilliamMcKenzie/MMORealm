@@ -127,17 +127,15 @@ remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
 
 remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
-	print("receieve enemy projectile")
 	if instance_tree != current_instance_tree:
 		pass
-		print("not relevant instance tree")
 	elif get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
-		print("enemy does exist")
 		if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").has_node("Pool"):
 			for i in range(get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child_count()):
 				if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).is_active == false:
 					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).projectile_data = projectile_data
 					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).is_active = true
+					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).Activate()
 					print("spawned projectile")
 					break
 		else:

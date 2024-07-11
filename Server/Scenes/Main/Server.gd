@@ -28,7 +28,7 @@ func _ready():
 	
 	#Open realm
 	#for i in range(100):
-	#	PlayerVerification.CreateFakePlayerContainer()
+		#PlayerVerification.CreateFakePlayerContainer()
 		
 	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)

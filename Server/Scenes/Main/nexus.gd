@@ -46,14 +46,15 @@ func _physics_process(delta):
 		projectile_list[projectile_id]["position"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
 		projectile_list[projectile_id]["lifespan"] -= delta
 		
-		#for player_id in player_list.keys():
-			#if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
-			#	get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
+		for player_id in player_list.keys():
+			if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
+				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
 		if projectile_list[projectile_id]["lifespan"] <= 0:
 			projectile_list.erase(projectile_id)
 			
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
+			enemy_list[enemy_id]["timer"] -= tick_rate
 			if enemy_list[enemy_id]["timer"] <= 0:
 				
 				var attack_pattern = ServerData.GetEnemy(enemy_list[enemy_id]["name"])["attack_pattern"]
@@ -67,6 +68,7 @@ func _physics_process(delta):
 					"speed" : current_attack["speed"],	
 					"formula" : current_attack["formula"],
 					"path" : enemy_list[enemy_id]["position"],
+					"size" : 4,
 				}
 				SpawnEnemyProjectile(projectile_data,instance_tree, enemy_id)
 				enemy_list[enemy_id]["timer"] = current_attack["wait"]
@@ -74,7 +76,6 @@ func _physics_process(delta):
 					enemy_list[enemy_id]["pattern_index"] = 0
 				else:
 					enemy_list[enemy_id]["pattern_index"] += 1
-				enemy_list[enemy_id]["timer"] -= tick_rate
 			
 			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:

@@ -24,7 +24,7 @@ modulate_color = Color( 1, 1, 1, 0.313726 )
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
-region = Rect2( 50, 220.4, 10, 10 )
+region = Rect2( 50, 230.4, 10, 10 )
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 3 )

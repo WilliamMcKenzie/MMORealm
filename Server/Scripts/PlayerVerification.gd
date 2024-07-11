@@ -12,7 +12,7 @@ func Start(player_id):
 
 func Verify(player_id, token, character_index):
 	var token_verification = false
-	while OS.get_unix_time() - int(token.right(64)) <= 30:
+	while OS.get_unix_time() - int(token.right(64)) <= 120:
 		if main_interface.expected_tokens.has(token):
 			
 			#Check if same account is already in the game
@@ -47,11 +47,58 @@ func CreateFakePlayerContainer():
 	var instance_tree = ["nexus"]
 	var new_player_container = player_container_scene.instance()
 	var default_account_data = {
-		"character_slots": 1,
-		"gold": 5000,
-		"achievements": {
-			"Trial By Fire" : false
+	"username" : "[unset]",
+	"character_slots": 1,
+	"gold": 5000,
+	"achievements": {
+		"Trial By Fire" : false,
+	},
+	"statistics": {
+		"tiles_covered" : 0,
+		"damage_taken" : 0,
+		"bow_projectiles" : 0,
+		"staff_projectiles" : 0,
+		"sword_projectiles" : 0,
+		"projectiles_landed" : 0,
+	},
+	"classes": {
+		"Apprentice": true,
+		
+		"Noble": false,
+		"Nomad": false,
+		"Scholar": false,
+		
+		"Knight": false,
+		"Paladin": false,
+		"Marauder": false,
+		
+		"Ranger": false,
+		"Sentinel": false,
+		"Scout": false,
+		
+		"Magician": false,
+		"Druid": false,
+		"Warlock": false,
+	},
+	"characters":[{
+		"stats" : {
+			"health" : 100,
+			"attack" : 30,
+			"defense" : 0,
+			"speed" : 30,
+			"dexterity" : 30,
+			"vitality" : 30
 		},
+		"level" : 1,
+		"exp" : 0,
+		
+		"ascension_stones" : 0,
+		"used_ascension_stones" : 0,
+		
+		"status_effects" : [],
+		"ability_cooldown" : 0,
+		
+		"class" : "Apprentice",
 		"statistics": {
 			"tiles_covered" : 0,
 			"damage_taken" : 0,
@@ -60,47 +107,26 @@ func CreateFakePlayerContainer():
 			"sword_projectiles" : 0,
 			"projectiles_landed" : 0,
 		},
-		"characters":[{
-			"stats" : {
-				"health" : 100,
-				"attack" : 30,
-				"defense" : 0,
-				"speed" : 30,
-				"dexterity" : 30,
-				"vitality" : 30
+		"gear" : {
+			"weapon" : {
+				"item" : 1,
+				"id" : 323232
 			},
-			"level" : 1,
-			"exp" : 0,
-			
-			"class" : "Apprentice",
-			"statistics": {
-				"tiles_covered" : 0,
-				"damage_taken" : 0,
-				"bow_projectiles" : 0,
-				"staff_projectiles" : 0,
-				"sword_projectiles" : 0,
-				"projectiles_landed" : 0,
-			},
-			"gear" : {
-				"weapon" : {
-					"item" : 1,
-					"id" : get_node("/root/Server").generate_unique_id()
-				},
-				"helmet" : null,
-				"armor" : null
-			},
-			"inventory" : [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			]
-		}]
-	}
+			"helmet" : null,
+			"armor" : null
+		},
+		"inventory" : [
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+		]
+	}]
+}
 	new_player_container.position = Vector2(rand_range(-25,25), rand_range(-25,25))
 	new_player_container.email = str(rand_range(0,5)).sha256_text()
 	new_player_container.name =  str(rand_range(0,5)).sha256_text()

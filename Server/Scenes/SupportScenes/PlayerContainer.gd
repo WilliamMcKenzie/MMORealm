@@ -30,10 +30,10 @@ func _physics_process(delta):
 	
 	character.ability_cooldown -= delta
 	running_time += delta
-	heal_rate = 10/character.stats.vitality
+	heal_rate = 10.0/character.stats.vitality
 	
 	if status_effects.has("healing"):
-		heal_rate = 10/(character.stats.vitality + 100)
+		heal_rate = 10.0/(character.stats.vitality + 100)
 	
 	#Tick
 	for i in range(floor((running_time-last_tick)/heal_rate)):
@@ -263,7 +263,7 @@ func SetCharacter(characters):
 
 func AddExp(exp_amount):
 	character.exp += exp_amount
-	var exp_to_level = 100*pow(1.1538,character.level)
+	var exp_to_level = 100*pow(1.1962,character.level)
 	
 	if character.level >= 20 and character.exp >= 3600:
 		character.level += 1

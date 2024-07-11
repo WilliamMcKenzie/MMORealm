@@ -849,7 +849,6 @@ expand = true
 stretch_mode = 4
 
 [node name="CloseButton" type="TouchScreenButton" parent="BackpackContainer"]
-material = ExtResource( 13 )
 position = Vector2( 1, 0 )
 scale = Vector2( 4, 4 )
 normal = SubResource( 20 )
@@ -961,7 +960,6 @@ margin_top = 308.0
 margin_bottom = 348.0
 
 [node name="CloseButton" type="TouchScreenButton" parent="LootContainer"]
-material = ExtResource( 13 )
 position = Vector2( 56, 0 )
 scale = Vector2( 4, 4 )
 normal = SubResource( 21 )

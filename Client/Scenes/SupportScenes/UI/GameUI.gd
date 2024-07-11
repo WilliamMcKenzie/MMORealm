@@ -8,7 +8,42 @@ var is_classes_open = false
 var last_opened = 0
 
 var last_character
-var account_data
+var account_data = {
+	"username" : "[unset]",
+	"character_slots": 1,
+	"gold": 5000,
+	"achievements": {
+		"Trial By Fire" : true,
+	},
+	"statistics": {
+		"tiles_covered" : 0,
+		"damage_taken" : 0,
+		"bow_projectiles" : 0,
+		"staff_projectiles" : 0,
+		"sword_projectiles" : 0,
+		"projectiles_landed" : 0,
+	},
+	"classes": {
+		"Apprentice": true,
+		
+		"Noble": false,
+		"Nomad": false,
+		"Scholar": false,
+		
+		"Knight": false,
+		"Paladin": false,
+		"Marauder": false,
+		
+		"Ranger": false,
+		"Sentinel": false,
+		"Scout": false,
+		
+		"Magician": false,
+		"Druid": false,
+		"Warlock": false,
+	},
+	"characters":[]
+}
 
 var animation_timer = 0
 var animation_tracker = []
@@ -70,7 +105,7 @@ func SetCharacterData(character):
 		animation_tracker.append({ "name" : "discover", "data" : {"class" : character.class}})
 	
 	#Exp
-	$LeftContainer/BarContainer/ExpContainer/ExpBar.ChangeExp(100*pow(1.1538,character.level), character.exp)
+	$LeftContainer/BarContainer/ExpContainer/ExpBar.ChangeExp(100*pow(1.1962,character.level), character.exp)
 	if not last_character:
 		pass
 	elif character.exp > last_character.exp:
