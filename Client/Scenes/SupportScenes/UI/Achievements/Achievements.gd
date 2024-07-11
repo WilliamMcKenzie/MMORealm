@@ -4,11 +4,13 @@ var category_button = preload("res://Scenes/SupportScenes/UI/Achievements/Catego
 var achievement_button = preload("res://Scenes/SupportScenes/UI/Achievements/Achievement.tscn")
 
 func _ready():
-	OpenAchievements()
-	$ExitButton.connect("pressed", self, "ToggleClasses")
-	$ExitButton/TouchScreenButton.connect("pressed", self, "ToggleClasses")
+	$ExitButton.connect("pressed", self, "ToggleAchievements")
+	$ExitButton/TouchScreenButton.connect("pressed", self, "ToggleAchievements")
 
-func OpenAchievements():
+func ToggleAchievements():
+	get_parent().Toggle("achievements")
+
+func Open():
 	self.visible = true
 	var account_data = GameUI.account_data
 	var categories = ClientData.achievement_catagories
@@ -25,6 +27,9 @@ func OpenAchievements():
 		categories_node.add_child(category_instance)
 		
 	SetCategory("Classes")
+
+func Close():
+	self.visible = false
 
 func SetCategory(category_name):
 	var categories_node = $MarginContainer/Container/Categories
@@ -49,6 +54,4 @@ func SetCategory(category_name):
 			achievement_instance.Activate()
 		
 		achievements_node.add_child(achievement_instance)
-	
-func CloseAchievements():
-	self.visible = false
+

@@ -9,7 +9,7 @@ func _ready():
 	yield(timer, "timeout")
 	queue_free()
 
-func SetClass(classname):
+func SetData(classname):
 	var class_data = ClientData.GetCharacter(classname)
 	$Container/Character.SetCharacterClass(classname)
 	$Container/HBoxContainer/TextureRect.texture.region = Rect2(class_data.icon, Vector2(10,10))

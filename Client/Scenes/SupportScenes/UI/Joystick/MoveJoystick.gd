@@ -64,7 +64,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed:
-			if _is_point_inside_joystick_area(event.position) and _touch_index == -1 and GameUI.is_inventory_open == false:
+			if _is_point_inside_joystick_area(event.position) and _touch_index == -1 and GameUI.is_in_menu == false:
 				visible = true
 				if joystick_mode == JoystickMode.DYNAMIC or (joystick_mode == JoystickMode.FIXED and _is_point_inside_base(event.position)):
 					if joystick_mode == JoystickMode.DYNAMIC:

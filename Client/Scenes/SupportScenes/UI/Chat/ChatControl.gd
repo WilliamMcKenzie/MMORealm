@@ -53,19 +53,11 @@ func _physics_process(delta):
 	if(Input.is_action_just_pressed ("chat")) and chat_input.has_focus():
 		chat_input.grab_focus()
 		chat_input.caret_position = chat_input.text.length()
-		if GameUI.is_inventory_open == true:
-			GameUI.ToggleInventory()
-		if GameUI.is_stats_open == true:
-			GameUI.ToggleStats()
-		if GameUI.is_classes_open == true:
-			GameUI.ToggleClasses()
+		if GameUI.is_in_menu:
+			GameUI.Toggle("all")
 	if(Input.is_action_just_pressed ("command")):
 		chat_input.grab_focus()
 		chat_input.text = "/"
 		chat_input.caret_position = chat_input.text.length()
-		if GameUI.is_inventory_open == true:
-			GameUI.ToggleInventory()
-		if GameUI.is_stats_open == true:
-			GameUI.ToggleStats()
-		if GameUI.is_classes_open == true:
-			GameUI.ToggleClasses()
+		if GameUI.is_in_menu:
+			GameUI.Toggle("all")

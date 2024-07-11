@@ -299,11 +299,10 @@ func DealDamage(damage, enemy_id):
 	
 	health -= total_damage
 	
+	UpdateStatistics("damage_taken", total_damage)
 	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	if health < 1:
 		health = 0
-		pass
-		#print("dead")
 		#Death(enemy_id)
 
 func Death(enemy_id):
@@ -312,35 +311,43 @@ func Death(enemy_id):
 	queue_free()
 
 func UpdateStatistics(which, amount_increase):
-	if character.ascension_stones >= ServerData.GetCharacter(character.class).ascension_stones:
+	if character.statistics.has(which) and character.ascension_stones >= ServerData.GetCharacter(character.class).ascension_stones:
 		character.statistics[which] += amount_increase
+	account_data.statistics[which] += amount_increase
 	
 	for _achievement in ServerData.GetCharacter(character.class).quests:
-			
 		var achievement = ServerData.GetAchievement(_achievement)
 		if (achievement.which == which and character.statistics[which] >= achievement.amount):
 			GetAchievement(_achievement)
 	
 	for _achievement in account_data.achievements:
 		if account_data.achievements[_achievement] == true:
-			return
+			continue
 			
 		var achievement = ServerData.GetAchievement(_achievement)
 		if (achievement.which == which and account_data.statistics[which] >= achievement.amount):
 			account_data.achievements[_achievement] = true
 			GetAchievement(_achievement)
+	
+	get_node("/root/Server").SendAccountData(name, account_data)
 
 func GetAchievement(achievement_name):
 	var character_data = ServerData.GetCharacter(character.class)
+	var achievement_data = ServerData.GetAchievement(achievement_name)
+	
+	account_data.gold += achievement_data.gold
+	account_data.achievements[achievement_name] = true
+	get_node("/root/Server").SendMessage(int(name), "success", "You recieved " + str(achievement_data.gold) + " gold!")
 	
 	if character_data.quests.has(achievement_name):
 		character.class = character_data.quests[achievement_name]
 		account_data.classes[character_data.quests[achievement_name]] = true
 		
-		var class_bonus_stats = ServerData.GetCharacter(character.class).bonus_stats
+		var class_bonus_stats = character_data.bonus_stats
 		for stat in character.stats.keys():
 			character.stats[stat] += class_bonus_stats[stat]
 	
+	get_node("/root/Server").SendAccountData(name, account_data)
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func _on_PlayerHitbox_area_entered(area):

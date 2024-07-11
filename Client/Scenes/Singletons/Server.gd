@@ -92,6 +92,8 @@ remote func ReturnTokenVerificationResults(results):
 		ErrorPopup.OpenPopup("Login failed")
 
 #INVENTORY/ITEMS
+remote func RecieveAccountData(account_data):
+	GameUI.SetAccountData(account_data)
 func SetCharacterIndex(_character_index):
 	character_index = _character_index
 remote func RecieveCharacterData(character):

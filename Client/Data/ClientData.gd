@@ -360,11 +360,11 @@ var achievement_catagories = {
 		"icon" : Vector2(0,0)
 	},
 	"Combat" : { 
-		"achievements" : ["Sword Projectiles I", "Sword Projectiles II", "Bow Projectiles I", "Staff Projectiles I"], 
+		"achievements" : ["Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire",], 
 		"icon" : Vector2(10,0)
 	},
 	"Dungeons" : { 
-		"achievements" : ["Trial By Fire"], 
+		"achievements" : ["Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire",], 
 		"icon" : Vector2(20,0)
 	},
 }
@@ -375,34 +375,39 @@ var achievements = {
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the arrow.",
 		"gold" : 0,
+		"difficulty" : "easy",
 	},
 	"Sword Projectiles I" : {
 		"which" : "sword_projectiles",
 		"amount" : 10,
 		"icon" : Vector2(0,0),
-		"description" : "Become one with the arrow.",
+		"description" : "Become one with the blaede.",
 		"gold" : 0,
+		"difficulty" : "easy",
 	},
 	"Sword Projectiles II" : {
 		"which" : "sword_projectiles",
 		"amount" : 100,
 		"icon" : Vector2(0,0),
-		"description" : "Become one with the arrow.",
+		"description" : "Become one with the blade.",
 		"gold" : 0,
+		"difficulty" : "medium",
 	},
 	"Staff Projectiles I" : {
 		"which" : "staff_projectiles",
 		"amount" : 10,
 		"icon" : Vector2(0,10),
-		"description" : "Become one with the arrow.",
+		"description" : "Become one with the magic.",
 		"gold" : 0,
+		"difficulty" : "easy",
 	},
 	"Trial By Fire" : {
-		"which" : "bow_projectiles",
+		"which" : "damage_taken",
 		"amount" : 20,
 		"icon" : Vector2(0,0),
-		"description" : "Take 1999 points of damage.",
+		"description" : "Take 20 points of damage.",
 		"gold" : 400,
+		"difficulty" : "hard",
 	}
 }
 

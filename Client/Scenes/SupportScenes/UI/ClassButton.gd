@@ -4,7 +4,7 @@ func _ready():
 	$MarginContainer/TextureButton.connect("pressed", self, "OpenClasses")
 
 func OpenClasses():
-	GameUI.ToggleClasses()
+	GameUI.Toggle("classes")
 
 func _on_TouchScreenButton_pressed():
-	GameUI.ToggleClasses()
+	GameUI.Toggle("classes")

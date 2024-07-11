@@ -90,7 +90,7 @@ func SetCharacterWeapon(weapon_type):
 func ColorGear(gear):
 	if GameUI.last_character:
 		var classname = GameUI.last_character.class
-		var temp = ClientData.GetCharacter(classname).example_colors
+		var temp = ClientData.GetCharacter(classname).example_colors.duplicate()
 		temp.merge(gear, true)
 		gear = temp
 	

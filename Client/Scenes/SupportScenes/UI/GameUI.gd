@@ -2,54 +2,19 @@ extends CanvasLayer
 
 var in_chat = false
 var is_in_ui = false
-var is_inventory_open = false
-var is_stats_open = false
-var is_classes_open = false
+var is_in_menu = false
 var last_opened = 0
+var last_menu = "inventory"
 
 var last_character
-var account_data = {
-	"username" : "[unset]",
-	"character_slots": 1,
-	"gold": 5000,
-	"achievements": {
-		"Trial By Fire" : true,
-	},
-	"statistics": {
-		"tiles_covered" : 0,
-		"damage_taken" : 0,
-		"bow_projectiles" : 0,
-		"staff_projectiles" : 0,
-		"sword_projectiles" : 0,
-		"projectiles_landed" : 0,
-	},
-	"classes": {
-		"Apprentice": true,
-		
-		"Noble": false,
-		"Nomad": false,
-		"Scholar": false,
-		
-		"Knight": false,
-		"Paladin": false,
-		"Marauder": false,
-		
-		"Ranger": false,
-		"Sentinel": false,
-		"Scout": false,
-		
-		"Magician": false,
-		"Druid": false,
-		"Warlock": false,
-	},
-	"characters":[]
-}
+var account_data
 
 var animation_timer = 0
 var animation_tracker = []
 
 func _ready():
-	$UtilityButtons/BackpackButton/MarginContainer/TextureButton.connect("pressed", self, "ToggleInventory")
+	$UtilityButtons/BackpackButton/MarginContainer/TextureButton.connect("pressed", self, "Toggle", ["inventory"])
+	$UtilityButtons/AchievementsButton/MarginContainer/TextureButton.connect("pressed", self, "Toggle", ["achievements"])
 	$Inventory/BackpackContainer/CloseButton.connect("pressed", self, "ToggleInventory")
 	$Inventory/LootContainer/CloseButton.connect("pressed", self, "ToggleInventory")
 	$GameButtons/HomeButton.connect("pressed", Server, "Nexus")
@@ -62,15 +27,10 @@ func _physics_process(delta):
 	if animation_timer <= 0 and animation_tracker.size() > 0:
 		var animation = animation_tracker[0]
 		
-		if animation.name == "discover":
-			DiscoverClass(animation.data.class)
+		PlayAnimation(animation.name, animation.data)
 			
 		animation_tracker.pop_front()
 		animation_timer = 3
-
-func SetAccountData(_account_data):
-	account_data = _account_data
-	$Stats.SetName(account_data.username)
 
 func InUI():
 	is_in_ui = true
@@ -90,10 +50,22 @@ func ExitUI():
 func ChangeHealth(max_health, health):
 	$LeftContainer/BarContainer/Health.ChangeHealth(max_health, health)
 
-func DiscoverClass(classname):
-	var animation_node = load("res://Scenes/SupportScenes/Animations/DiscoverClass/DiscoverClass.tscn").instance()
-	animation_node.SetClass(classname)
+#Animations
+func PlayAnimation(animation_name, data):
+	var animation_node = load("res://Scenes/SupportScenes/Animations/%s/%s.tscn" % [animation_name, animation_name]).instance()
+	animation_node.SetData(data)
 	add_child(animation_node)
+
+func SetAccountData(_account_data):
+	if account_data:
+		for achievement in account_data.achievements.keys():
+			if account_data.achievements[achievement] != _account_data.achievements[achievement]:
+				animation_tracker.append({ "name" : "UnlockAchievement", "data" : achievement})
+	
+	account_data = _account_data
+	$Stats.SetName(account_data.username)
+	if is_in_menu and last_menu == "achievements":
+		$Achievements.Open()
 
 func SetCharacterData(character):
 	
@@ -102,7 +74,7 @@ func SetCharacterData(character):
 		pass
 	else:
 		ClientData.current_class = character.class
-		animation_tracker.append({ "name" : "discover", "data" : {"class" : character.class}})
+		animation_tracker.append({ "name" : "DiscoverClass", "data" : character.class})
 	
 	#Exp
 	$LeftContainer/BarContainer/ExpContainer/ExpBar.ChangeExp(100*pow(1.1962,character.level), character.exp)
@@ -131,71 +103,43 @@ func SetCharacterData(character):
 	timer.start()
 	yield(timer, "timeout")
 	
-	if is_stats_open:
+	if is_in_menu and last_menu == "stats":
 		$Stats.SetStats(last_character)
 
-func ToggleInventory():
-	if not last_character:
-		ErrorPopup.OpenPopup("Server Disconnected")
-		return
-	if last_opened+100 > OS.get_system_time_msecs():
-		return
-	last_opened = OS.get_system_time_msecs()
-	if is_inventory_open:
-		$Inventory.CloseInventory()
-		$LeftContainer.visible = true
-		$GameButtons.visible = true
-		$UtilityButtons.visible = true
-		$ChatControl.visible = true
-		is_inventory_open = false
-	else:
-		$Inventory.OpenInventory()
-		$LeftContainer.visible = false
-		$GameButtons.visible = false
-		$UtilityButtons.visible = false
-		$ChatControl.visible = false
-		is_inventory_open = true
+func Toggle(which):
+	last_menu = which
+	var node_map = {
+		"classes" : get_node("Classes"),
+		"stats" : get_node("Stats"),
+		"inventory" : get_node("Inventory"),
+		"achievements" : get_node("Achievements"),
+	}
 	
-func ToggleStats():
+	var node
+	if which != "all":
+		node = node_map[which]
+	else:
+		for key in node_map.keys():
+			node = node_map[key]
+			node.Close()
+	
 	if not last_character:
 		ErrorPopup.OpenPopup("Server Disconnected")
 		return
 	if last_opened+100 > OS.get_system_time_msecs():
 		return
 	last_opened = OS.get_system_time_msecs()
-	if is_stats_open:
-		$Stats.CloseStats()
+	if is_in_menu:
+		node.Close()
 		$LeftContainer.visible = true
 		$GameButtons.visible = true
 		$UtilityButtons.visible = true
 		$ChatControl.visible = true
-		is_stats_open = false
+		is_in_menu = false
 	else:
-		$Stats.OpenStats(last_character)
+		node.Open()
 		$LeftContainer.visible = false
 		$GameButtons.visible = false
 		$UtilityButtons.visible = false
 		$ChatControl.visible = false
-		is_stats_open = true
-		
-func ToggleClasses():
-	if not last_character:
-		ErrorPopup.OpenPopup("Server Disconnected")
-		return
-	if last_opened+100 > OS.get_system_time_msecs():
-		return
-	last_opened = OS.get_system_time_msecs()
-	if is_classes_open:
-		$Classes.CloseClasses()
-		$LeftContainer.visible = true
-		$GameButtons.visible = true
-		$UtilityButtons.visible = true
-		$ChatControl.visible = true
-		is_classes_open = false
-	else:
-		$Classes.OpenClasses()
-		$LeftContainer.visible = false
-		$GameButtons.visible = false
-		$UtilityButtons.visible = false
-		$ChatControl.visible = false
-		is_classes_open = true
+		is_in_menu = true

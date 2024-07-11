@@ -11,6 +11,7 @@ func _ready():
 	$BackpackContainer/CloseButton.connect("pressed", self, "ToggleInventory")
 	$BackpackContainer/CloseButton2.connect("pressed", self, "ToggleInventory")
 	$LootContainer/CloseButton.connect("pressed", self, "ToggleInventory")
+	$LootContainer/CloseButton2.connect("pressed", self, "ToggleInventory")
 
 func InspectItem(_item):
 	if not _item:
@@ -153,9 +154,9 @@ func DeInspectItem(item):
 		$InspectItem.visible = false
 
 func ToggleInventory():
-	get_parent().ToggleInventory()
+	get_parent().Toggle("inventory")
 
-func OpenInventory():
+func Open():
 	var gear_tween = $GearTween
 	var backpack_tween = $BackpackTween
 	var loot_tween = $LootTween
@@ -180,7 +181,7 @@ func OpenInventory():
 	
 	$InventoryBackground.visible = true
 
-func CloseInventory():
+func Close():
 	var gear_tween = $GearTween
 	var backpack_tween = $BackpackTween
 	var loot_tween = $LootTween

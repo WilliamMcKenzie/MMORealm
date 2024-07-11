@@ -959,6 +959,17 @@ margin_bottom = 304.0
 margin_top = 308.0
 margin_bottom = 348.0
 
+[node name="CloseButton2" type="TextureButton" parent="LootContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 60.0
+margin_right = 100.0
+margin_bottom = 364.0
+rect_min_size = Vector2( 40, 40 )
+texture_normal = SubResource( 6 )
+texture_hover = SubResource( 7 )
+expand = true
+stretch_mode = 4
+
 [node name="CloseButton" type="TouchScreenButton" parent="LootContainer"]
 position = Vector2( 56, 0 )
 scale = Vector2( 4, 4 )

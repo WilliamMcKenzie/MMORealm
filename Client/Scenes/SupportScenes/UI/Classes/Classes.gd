@@ -173,9 +173,9 @@ func SetSpriteData(sprite, path):
 	sprite.frame_coords = path[3]
 
 func ToggleClasses():
-	get_parent().ToggleClasses()
+	get_parent().Toggle("classes")
 
-func OpenClasses():
+func Open():
 	var current_character = GameUI.last_character.class
 	var previous_characters = []
 	
@@ -207,5 +207,5 @@ func OpenClasses():
 	self.visible = true
 	SetCharacter(current_character)
 
-func CloseClasses():
+func Close():
 	self.visible = false

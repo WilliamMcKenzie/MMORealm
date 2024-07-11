@@ -4,7 +4,7 @@ func _ready():
 	$MarginContainer/TextureButton.connect("pressed", self, "OpenLootBag")
 
 func OpenLootBag():
-	GameUI.ToggleInventory()
+	GameUI.Toggle("inventory")
 
 func _on_TouchScreenButton_pressed():
-	GameUI.ToggleInventory()
+	GameUI.Toggle("inventory")

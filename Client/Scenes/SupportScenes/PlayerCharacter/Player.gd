@@ -155,7 +155,7 @@ func MovePlayer(delta):
 	var current_time = OS.get_ticks_msec() / 1000.0
 	
 	if gear.has("weapon"):
-		if current_time - last_shot_time >= time_between_shots and shoot == true and not GameUI.is_inventory_open:
+		if current_time - last_shot_time >= time_between_shots and shoot == true and not GameUI.is_in_menu:
 			ShootProjectile()
 			last_shot_time = current_time
 		
@@ -163,13 +163,13 @@ func MovePlayer(delta):
 	var shoot_direction = (get_global_mouse_position() - position).normalized()
 	motion = motion.normalized()
 	
-	if holding_shoot == true and not GameUI.is_inventory_open and left_joystick_output == Vector2.ZERO and right_joystick_output == Vector2.ZERO:
+	if holding_shoot == true and not GameUI.is_in_menu and left_joystick_output == Vector2.ZERO and right_joystick_output == Vector2.ZERO:
 		animation_tree.get("parameters/playback").travel("Attack")
 		animation_tree.set("parameters/Idle/blend_position", shoot_direction)
 		animation_tree.set("parameters/Walk/blend_position", shoot_direction)
 		animation_tree.set("parameters/Attack/blend_position", shoot_direction)
 		lastAnimation = { "A" : "Attack", "C" : shoot_direction }
-	elif right_joystick_output != Vector2.ZERO and not GameUI.is_inventory_open:
+	elif right_joystick_output != Vector2.ZERO and not GameUI.is_in_menu:
 		animation_tree.get("parameters/playback").travel("Attack")
 		animation_tree.set("parameters/Idle/blend_position", right_joystick_output)
 		animation_tree.set("parameters/Walk/blend_position", right_joystick_output)

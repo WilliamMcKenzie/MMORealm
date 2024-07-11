@@ -54,4 +54,4 @@ func DisableLootButton(_id):
 	loot_bags.erase(_id)
 	
 func OpenLootBag():
-	GameUI.ToggleInventory()
+	GameUI.Toggle("inventory")

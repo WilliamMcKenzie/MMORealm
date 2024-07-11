@@ -169,6 +169,8 @@ func ReturnTokenVerificationResults(player_id, result):
 #CHARACTERS
 func SendCharacterData(player_id, character):
 	rpc_id(int(player_id), "RecieveCharacterData", character)
+func SendAccountData(player_id, account_data):
+	rpc_id(int(player_id), "RecieveAccountData", account_data)
 
 #NPCS/ENEMIES
 func SpawnNPC(enemy_name, instance_tree, spawn_position):

@@ -15,9 +15,10 @@ func _ready():
 		$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterStats.add_child(stat_bar_instance)
 
 func ToggleStats():
-	get_parent().ToggleStats()
+	get_parent().Toggle("stats")
 
-func OpenStats(character):
+func Open():
+	var character = GameUI.last_character
 	if not character:
 		return
 	
@@ -38,7 +39,7 @@ func OpenStats(character):
 	
 	$StatsBackground.visible = true
 
-func CloseStats():
+func Close():
 	var stats_tween = $StatsTween
 	var stats_element = $StatsContainer
 	
