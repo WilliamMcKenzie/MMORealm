@@ -44,29 +44,32 @@ func _physics_process(delta):
 		
 		projectile_list[projectile_id]["path"] += vertical_move_vector
 		projectile_list[projectile_id]["position"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
-		projectile_list[projectile_id]["lifespan"] -= delta
 		
 		for player_id in player_list.keys():
-			if player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
+			if not projectile_list[projectile_id]["hit_players"].has(player_id) and player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
+				projectile_list[projectile_id]["hit_players"][player_id] = true
 				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
-		if projectile_list[projectile_id]["lifespan"] <= 0:
+		if projectile_list[projectile_id]["start_position"].distance_to(projectile_list[projectile_id]["path"]) >= projectile_list[projectile_id]["tile_range"]*8:
+			print(projectile_list[projectile_id]["path"])
 			projectile_list.erase(projectile_id)
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
 			enemy_list[enemy_id]["timer"] -= tick_rate
 			if enemy_list[enemy_id]["timer"] <= 0:
-				
+				print("Spawning projectile")
 				var attack_pattern = ServerData.GetEnemy(enemy_list[enemy_id]["name"])["attack_pattern"]
 				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
 				var projectile_data = {
 					"position" : enemy_list[enemy_id]["position"],
 					"direction" : current_attack["direction"],
-					"lifespan" : current_attack["lifespan"],
+					"tile_range" : current_attack["tile_range"],
+					"start_position" : enemy_list[enemy_id]["position"],
 					"start_time" : OS.get_system_time_msecs()/1000,
 					"damage" : current_attack["damage"],
 					"speed" : current_attack["speed"],	
 					"formula" : current_attack["formula"],
 					"path" : enemy_list[enemy_id]["position"],
+					"hit_players" : {},
 					"size" : 4,
 				}
 				SpawnEnemyProjectile(projectile_data,instance_tree, enemy_id)

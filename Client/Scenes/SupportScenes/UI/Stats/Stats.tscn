@@ -46,22 +46,23 @@ expand = true
 script = ExtResource( 3 )
 
 [node name="StatsContainer" type="HBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 849.0
-margin_right = 1081.0
-margin_bottom = 4.0
+margin_left = 50.0
+margin_right = 282.0
 custom_constants/separation = 0
 alignment = 1
 
 [node name="PanelContainer2" type="PanelContainer" parent="StatsContainer"]
 margin_right = 232.0
-margin_bottom = 364.0
+margin_bottom = 360.0
 theme = ExtResource( 9 )
 custom_styles/panel = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="StatsContainer/PanelContainer2"]
 margin_right = 232.0
-margin_bottom = 364.0
+margin_bottom = 360.0
 custom_constants/margin_right = 16
 custom_constants/margin_top = 0
 custom_constants/margin_left = 16
@@ -70,7 +71,7 @@ custom_constants/margin_bottom = 4
 [node name="ResizeContainer" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer"]
 margin_left = 16.0
 margin_right = 216.0
-margin_bottom = 360.0
+margin_bottom = 356.0
 rect_min_size = Vector2( 200, 0 )
 
 [node name="CharacterInfo" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer"]
@@ -125,7 +126,7 @@ script = ExtResource( 13 )
 [node name="CharacterStats" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer"]
 margin_top = 134.0
 margin_right = 200.0
-margin_bottom = 360.0
+margin_bottom = 356.0
 size_flags_vertical = 3
 theme = SubResource( 38 )
 custom_constants/separation = 0

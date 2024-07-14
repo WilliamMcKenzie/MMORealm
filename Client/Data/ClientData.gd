@@ -7,22 +7,22 @@ var basic_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 2,
-				"chance" : 0.01,
+				"chance" : 0.15,
 				"threshold" : 0.15,
 			},
 			{
 				"item" : 5,
-				"chance" : 0.01,
+				"chance" : 0.23,
 				"threshold" : 0.23,
 			},
 			{
 				"item" : 4,
-				"chance" : 0.01,
+				"chance" : 0.15,
 				"threshold" : 0.15,
 			},
 			{
 				"item" : 0,
-				"chance" : 0.1,
+				"chance" : 0.3,
 				"threshold" : 0.3,
 			}
 		],
@@ -37,7 +37,7 @@ var basic_loot_pools = {
 		"soulbound_loot" : [
 				{
 					"item" : 5,
-					"chance" : 0.01,
+					"chance" : 0.23,
 					"threshold" : 0.23,
 				},
 				{
@@ -80,11 +80,11 @@ var realm_enemies = {
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
-			"formula" : "x",
+			"formula" : "0",
 			"damage" : 10,
 			"wait" : 1,
 			"speed" : 10,
-			"lifespan": 1,
+			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}
@@ -99,11 +99,11 @@ var realm_enemies = {
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
-			"formula" : "x",
+			"formula" : "0",
 			"damage" : 10,
 			"wait" : 1,
 			"speed" : 10,
-			"lifespan": 1,
+			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}
@@ -118,11 +118,11 @@ var realm_enemies = {
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
-			"formula" : "x",
+			"formula" : "0",
 			"damage" : 10,
 			"wait" : 1,
 			"speed" : 10,
-			"lifespan": 1,
+			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}
@@ -137,11 +137,11 @@ var realm_enemies = {
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
-			"formula" : "x",
+			"formula" : "0",
 			"damage" : 10,
 			"wait" : 1,
 			"speed" : 10,
-			"lifespan": 1,
+			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}
@@ -156,11 +156,11 @@ var realm_enemies = {
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
-			"formula" : "x",
+			"formula" : "0",
 			"damage" : 10,
 			"wait" : 1,
 			"speed" : 10,
-			"lifespan": 1,
+			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}
@@ -175,11 +175,11 @@ var realm_enemies = {
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
-			"formula" : "x",
+			"formula" : "0",
 			"damage" : 1,
 			"wait" : 1,
 			"speed" : 10,
-			"lifespan": 1,
+			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}
@@ -200,7 +200,7 @@ var overgrown_temple_enemies = {
 			"damage" : 10,
 			"wait" : 1,
 			"speed" : 10,
-			"lifespan": 1,
+			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}

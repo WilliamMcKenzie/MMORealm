@@ -92,7 +92,7 @@ func SetCharacterData(character):
 		pass
 	elif character.exp > last_character.exp:
 		var difference = character.exp - last_character.exp
-		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("exp", difference)
+		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("ascension", difference)
 	elif character.level > last_character.level:
 		var difference = character.level - last_character.level
 		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("level", difference)

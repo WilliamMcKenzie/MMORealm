@@ -29,10 +29,9 @@ func _ready():
 	#Open realm
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
-		
-	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
-	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("island", ["nexus"], Vector2.ZERO)
-	get_node("Instances/"+StringifyInstanceTree(["nexus"])).OpenPortal("overgrown_temple", ["nexus"], Vector2(20,20))
+	
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
+	get_node("Instances/nexus").OpenPortal("overgrown_temple", ["nexus"], Vector2.ZERO)
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
 			{
@@ -63,7 +62,7 @@ func _Peer_Connected(id):
 	PlayerVerification.Start(id)
 func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
-	if player_instance_tracker[player_state_collection[id]["I"]].has(id) and get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])+"/YSort/Players/"+str(id)):
+	if player_state_collection.has(id) and player_instance_tracker[player_state_collection[id]["I"]].has(id) and get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])+"/YSort/Players/"+str(id)):
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
 		

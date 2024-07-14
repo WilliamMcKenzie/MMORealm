@@ -10,6 +10,7 @@ var health
 var indicators = {
 	"exp" : preload("res://Scenes/SupportScenes/UI/Indicators/ExpIndicator.tscn"),
 	"level" : preload("res://Scenes/SupportScenes/UI/Indicators/LevelIndicator.tscn"),
+	"damage" : preload("res://Scenes/SupportScenes/UI/Indicators/DamageIndicator.tscn"),
 	"ascension" : preload("res://Scenes/SupportScenes/UI/Indicators/AscensionIndicator.tscn")
 }
 
@@ -254,7 +255,10 @@ func ShowIndicator(type, amount):
 	var id = str(OS.get_system_time_msecs())
 	
 	indicator.name = id
-	indicator.get_node("Label").text = "+"+str(amount)
+	if type == "damage":
+		indicator.get_node("Label").text = str(amount)
+	else:
+		indicator.get_node("Label").text = "+"+str(amount)
 	$IndicatorPlaceholder.add_child(indicator)
 
 	var timer = Timer.new()

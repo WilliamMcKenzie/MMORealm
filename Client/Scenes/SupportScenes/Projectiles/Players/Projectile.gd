@@ -35,6 +35,8 @@ func _process(delta):
 	var initial_offset = velocity * delta
 	path = path + initial_offset
 	var pattern_offset = Vector2(-velocity.y, velocity.x) * expression.execute([time * 50]) * 0.05
+	print(expression.execute([time * 50]))
+	print(time*50)
 	position = path + pattern_offset
 	if (position - initial_position).length()/8 > tile_range:
 		queue_free()

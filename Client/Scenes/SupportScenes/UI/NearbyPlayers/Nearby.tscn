@@ -1,0 +1,117 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Resources/main_theme.tres" type="Theme" id=2]
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/SupportScenes/UI/Stats/StatsBackground.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/SupportScenes/UI/NearbyPlayers/Nearby.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/SupportScenes/UI/NearbyPlayers/Player.tscn" type="PackedScene" id=6]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.431373 )
+
+[sub_resource type="DynamicFont" id=54]
+size = 20
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxEmpty" id=53]
+
+[sub_resource type="Theme" id=38]
+PanelContainer/styles/panel = SubResource( 53 )
+
+[sub_resource type="AtlasTexture" id=55]
+atlas = ExtResource( 3 )
+region = Rect2( 70, 240, 10, 10 )
+
+[node name="Nearby" type="CanvasLayer"]
+script = ExtResource( 5 )
+
+[node name="NearbyTween" type="Tween" parent="."]
+
+[node name="NearbyBackground" type="TextureButton" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 400, 180 )
+expand = true
+script = ExtResource( 4 )
+
+[node name="NearbyContainer" type="HBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 50.0
+margin_right = 282.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="NearbyContainer"]
+margin_right = 232.0
+margin_bottom = 360.0
+theme = ExtResource( 2 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="NearbyContainer/PanelContainer2"]
+margin_right = 232.0
+margin_bottom = 360.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 0
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 4
+
+[node name="ResizeContainer" type="VBoxContainer" parent="NearbyContainer/PanelContainer2/MarginContainer"]
+margin_left = 16.0
+margin_right = 216.0
+margin_bottom = 356.0
+rect_min_size = Vector2( 200, 0 )
+custom_constants/separation = 12
+
+[node name="Label" type="Label" parent="NearbyContainer/PanelContainer2/MarginContainer/ResizeContainer"]
+margin_right = 200.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 0, 35 )
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 54 )
+text = "Nearby Players"
+align = 1
+valign = 1
+
+[node name="NearbyPlayers" type="VBoxContainer" parent="NearbyContainer/PanelContainer2/MarginContainer/ResizeContainer"]
+margin_top = 47.0
+margin_right = 200.0
+margin_bottom = 356.0
+size_flags_vertical = 3
+theme = SubResource( 38 )
+custom_constants/separation = 12
+
+[node name="Player" parent="NearbyContainer/PanelContainer2/MarginContainer/ResizeContainer/NearbyPlayers" instance=ExtResource( 6 )]
+margin_right = 200.0
+margin_bottom = 52.0
+
+[node name="Player2" parent="NearbyContainer/PanelContainer2/MarginContainer/ResizeContainer/NearbyPlayers" instance=ExtResource( 6 )]
+margin_top = 64.0
+margin_right = 200.0
+margin_bottom = 116.0
+
+[node name="Player3" parent="NearbyContainer/PanelContainer2/MarginContainer/ResizeContainer/NearbyPlayers" instance=ExtResource( 6 )]
+margin_top = 128.0
+margin_right = 200.0
+margin_bottom = 180.0
+
+[node name="Player4" parent="NearbyContainer/PanelContainer2/MarginContainer/ResizeContainer/NearbyPlayers" instance=ExtResource( 6 )]
+margin_top = 192.0
+margin_right = 200.0
+margin_bottom = 244.0
+
+[node name="Player5" parent="NearbyContainer/PanelContainer2/MarginContainer/ResizeContainer/NearbyPlayers" instance=ExtResource( 6 )]
+margin_top = 256.0
+margin_right = 200.0
+margin_bottom = 308.0
+
+[node name="CloseButton" type="TouchScreenButton" parent="NearbyContainer"]
+position = Vector2( -47, 4 )
+scale = Vector2( 4, 4 )
+normal = SubResource( 55 )
