@@ -5,6 +5,7 @@ var email
 var account_data = null
 var character = null
 var character_index = null
+var is_dead = false
 
 var health = 100
 var gear = {}
@@ -252,8 +253,7 @@ func LootItem(to_data, from_data):
 
 func SetCharacter(characters):
 	character = characters[character_index]
-	#health = character.stats.health
-	health = 1
+	health = character.stats.health
 	
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
@@ -301,14 +301,18 @@ func DealDamage(damage, enemy_id):
 	
 	UpdateStatistics("damage_taken", total_damage)
 	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
-	if health < 1:
-		health = 0
-		#Death(enemy_id)
+	if health < 1 and not is_dead:
+		Death(enemy_id)
 
 func Death(enemy_id):
-	get_parent().get_parent().get_parent().player_list.erase(name)
+	var username = get_node("/root/Server").player_name_by_id[int(name)]
+	
+	account_data.characters.remove(character_index)
+	account_data.graveyard.append(character)
+	HubConnection.UpdateLeaderboard(username, character)
 	get_node("/root/Server").NotifyDeath(int(name), enemy_id)
-	queue_free()
+	
+	is_dead = true
 
 func UpdateStatistics(which, amount_increase):
 	if character.statistics.has(which) and character.ascension_stones >= ServerData.GetCharacter(character.class).ascension_stones:

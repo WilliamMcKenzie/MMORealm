@@ -1,9 +1,8 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=2]
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=3]
-[ext_resource path="res://Assets/ui/rectangle_background.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/UI/Leaderboard/Character.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/SupportScenes/UI/Leaderboard/ScrollContainer.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/SupportScenes/UI/Leaderboard/Leaderboard.gd" type="Script" id=7]
@@ -36,6 +35,7 @@ atlas = ExtResource( 2 )
 region = Rect2( 20, 230, 10, 10 )
 
 [sub_resource type="DynamicFont" id=2]
+size = 24
 outline_size = 1
 font_data = ExtResource( 1 )
 
@@ -93,12 +93,10 @@ theme = SubResource( 20 )
 alignment = 1
 
 [node name="weekly" type="TextureButton" parent="HBoxContainer"]
-self_modulate = Color( 1, 1, 1, 0.627451 )
 margin_right = 111.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture_normal = ExtResource( 4 )
 expand = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/weekly"]
@@ -135,13 +133,12 @@ margin_bottom = 29.0
 text = "Weekly"
 
 [node name="monthly" type="TextureButton" parent="HBoxContainer"]
-self_modulate = Color( 1, 1, 1, 0.313726 )
+modulate = Color( 0.780392, 0.780392, 0.780392, 1 )
 margin_left = 115.0
 margin_right = 227.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture_normal = ExtResource( 4 )
 expand = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/monthly"]
@@ -176,13 +173,12 @@ margin_bottom = 29.0
 text = "Monthly"
 
 [node name="all_time" type="TextureButton" parent="HBoxContainer"]
-self_modulate = Color( 1, 1, 1, 0.313726 )
+modulate = Color( 0.780392, 0.780392, 0.780392, 1 )
 margin_left = 231.0
 margin_right = 343.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture_normal = ExtResource( 4 )
 expand = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/all_time"]
@@ -219,12 +215,11 @@ text = "All Time"
 [node name="Label" type="Label" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -140.0
-margin_top = 17.0
-margin_right = -56.0
-margin_bottom = 36.0
+margin_left = -150.0
+margin_top = 18.0
+margin_right = -18.0
+margin_bottom = 40.0
 grow_horizontal = 0
-rect_scale = Vector2( 1.5, 1.5 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Leaderboards"
@@ -236,14 +231,14 @@ anchor_bottom = 1.0
 margin_top = 82.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-custom_constants/margin_right = 8
+custom_constants/margin_right = 32
 custom_constants/margin_top = 8
-custom_constants/margin_left = 8
+custom_constants/margin_left = 32
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
-margin_left = 8.0
+margin_left = 32.0
 margin_top = 8.0
-margin_right = 792.0
+margin_right = 768.0
 margin_bottom = 278.0
 theme = SubResource( 15 )
 custom_styles/bg = SubResource( 9 )
@@ -251,46 +246,46 @@ scroll_horizontal_enabled = false
 script = ExtResource( 6 )
 
 [node name="Top" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 476.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="Character" parent="MarginContainer/ScrollContainer/Top" instance=ExtResource( 5 )]
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 56.0
 
 [node name="Character2" parent="MarginContainer/ScrollContainer/Top" instance=ExtResource( 5 )]
 margin_top = 60.0
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 116.0
 
 [node name="Character3" parent="MarginContainer/ScrollContainer/Top" instance=ExtResource( 5 )]
 margin_top = 120.0
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 176.0
 
 [node name="Character4" parent="MarginContainer/ScrollContainer/Top" instance=ExtResource( 5 )]
 margin_top = 180.0
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 236.0
 
 [node name="Character5" parent="MarginContainer/ScrollContainer/Top" instance=ExtResource( 5 )]
 margin_top = 240.0
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 296.0
 
 [node name="Character6" parent="MarginContainer/ScrollContainer/Top" instance=ExtResource( 5 )]
 margin_top = 300.0
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 356.0
 
 [node name="Character7" parent="MarginContainer/ScrollContainer/Top" instance=ExtResource( 5 )]
 margin_top = 360.0
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 416.0
 
 [node name="Character8" parent="MarginContainer/ScrollContainer/Top" instance=ExtResource( 5 )]
 margin_top = 420.0
-margin_right = 784.0
+margin_right = 736.0
 margin_bottom = 476.0

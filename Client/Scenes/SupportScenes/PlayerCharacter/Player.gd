@@ -100,6 +100,9 @@ func SetSpriteData(sprite, path):
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
+	if GameUI.is_dead:
+		return
+	
 	UpdateStatusEffects()
 	MovePlayer(delta)
 	DefinePlayerState()

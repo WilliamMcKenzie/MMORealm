@@ -1,6 +1,6 @@
-extends Node2D
+extends Control
 
-onready var ContainerButton = $ButtonResizer/Create
+onready var ContainerButton = $Create
 	
 func _ready():
 	ContainerButton.connect("pressed", self, "CreateCharacter")

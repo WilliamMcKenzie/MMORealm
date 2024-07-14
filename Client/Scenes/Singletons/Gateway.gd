@@ -113,3 +113,4 @@ func GetLeaderboards():
 	rpc_id(1, "GetLeaderboards")
 remote func ReturnLeaderboards(weekly, monthly, all_time):
 	get_node("../SceneHandler/Home/Leaderboard").SetLeaderboard(weekly, monthly, all_time)
+	GameUI.SetLeaderboard(weekly, monthly, all_time)

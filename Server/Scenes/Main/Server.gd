@@ -367,9 +367,13 @@ remote func RecieveChatMessage(message):
 
 #PLAYER INTERACTION
 
-func NotifyDeath(player_id, enemy_name):
+func NotifyDeath(player_id, enemy_id):
+	var instance_tree = player_state_collection[int(player_id)]["I"]
+	var enemy_name = get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id].name
+	
 	rpc_id(player_id, "CharacterDied", enemy_name)
-	rpc("RecieveChat", str(player_id) + " has been killed by a "+enemy_name, "System")
+	rpc("RecieveChat", str(player_name_by_id[player_id]) + " has been killed by a "+enemy_name, "System")
+	network.disconnect_peer(player_id)
 	
 func SetHealth(player_id, max_health, health):
 	rpc_id(player_id,"SetHealth",max_health, health)

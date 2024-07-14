@@ -110,7 +110,6 @@ remote func AuthenticatePlayer(email, password, player_id):
 	rpc_id(gateway_id, "AuthenticateResults", result, player_id, token)
 
 remote func GetLeaderboards(player_id):
-	print("Wow")
 	var gateway_id = get_tree().get_rpc_sender_id()
 	var weekly = DatabaseInterface.weekly_leaderboard
 	var monthly = DatabaseInterface.monthly_leaderboard

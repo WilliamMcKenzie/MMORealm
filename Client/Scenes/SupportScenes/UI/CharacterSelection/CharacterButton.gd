@@ -1,8 +1,8 @@
-extends Node2D
+extends Control
 
-onready var CharacterSpriteEle = $Character
-onready var LevelEle = $LevelResizeContainer/Level
-onready var PlayButton = $PlayResizer/Play
+onready var CharacterSpriteEle = $PanelContainer/MarginContainer/VBoxContainer/CharacterContainer/Character
+onready var InfoEle = $PanelContainer/MarginContainer/VBoxContainer/Info
+onready var PlayButton = $Play
 
 var gear = {}
 var character
@@ -24,7 +24,7 @@ func AssignParameters(_character):
 			gear[slot] = ClientData.GetItem(int(character.gear[slot].item))
 
 func _ready():
-	LevelEle.text = character_class + " - Level " + str(level)
+	InfoEle.text = character_class + " - Level " + str(level)
 	CharacterSpriteEle.SetCharacterClass(character_class)
 	if character.gear.has("weapon") and character.gear.weapon != null: 
 		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)

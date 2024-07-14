@@ -1,7 +1,7 @@
-extends Node2D
+extends CanvasLayer
 
-onready var loginButton = $ResizeContainer/Login
-onready var signupButton = $ResizeContainer/Signup
+onready var loginButton = $VBoxContainer/HBoxContainer/Login
+onready var signupButton = $VBoxContainer/HBoxContainer/Signup
 
 var email = ""
 var password = ""

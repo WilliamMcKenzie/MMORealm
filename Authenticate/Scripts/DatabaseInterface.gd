@@ -47,7 +47,8 @@ var default_account_data = {
 		"Druid": false,
 		"Warlock": false,
 	},
-	"characters":[]
+	"characters":[],
+	"graveyard":[],
 }
 var new_character = {
 		"stats" : {
@@ -227,19 +228,49 @@ func GetLeaderboard(days_ago):
 	
 	return leaderboard
 
-func AddToLeaderboard(_character, _name):
+func UpdateLeaderboard(_username, _character):
 	randomize()
 	
 	var character = { "gear" : _character.gear, "class" : _character.class}
-	var reputation = randi() % 1000
+	var reputation = _character.level
 	var timestamp = OS.get_system_time_secs()
 
 	var command = """
 		BEGIN;
 		INSERT INTO leaderboard VALUES ('%s', '%s', '%s', '%s');
 		COMMIT;
-	""" % [JSON.print(character), reputation, _name, timestamp]
+	""" % [JSON.print(character), reputation, _username, timestamp]
 	database.execute(command)
+	
+	var leaderboard_data = {
+		"data" : character,
+		"reputation" : reputation,
+		"name" : _username,
+		"timestamp" : timestamp,
+	}
+	
+	weekly_leaderboard = AddToLeaderboard(weekly_leaderboard, leaderboard_data)
+	monthly_leaderboard = AddToLeaderboard(monthly_leaderboard, leaderboard_data)
+	all_time_leaderboard = AddToLeaderboard(all_time_leaderboard, leaderboard_data)
+
+func AddToLeaderboard(leaderboard, new_value):
+	var size = leaderboard.size()
+	
+	if size == 0:
+		leaderboard[0] = new_value
+		return leaderboard
+	
+	if new_value.reputation <= leaderboard[size - 1].reputation:
+		return leaderboard
+	
+	for i in range(size):
+		if new_value.reputation > leaderboard[i].reputation:
+			for j in range(size - 1, i, -1):
+				leaderboard[j] = leaderboard[j - 1]
+			leaderboard[i] = new_value
+			break
+	
+	return leaderboard
 
 #Utility functions
 

@@ -1,12 +1,12 @@
-extends Node2D
+extends Control
 
-onready var ContainerButton = $ButtonResizer/Create
+onready var ContainerButton = $Create
 onready var price = 500 + (get_parent().character_slots*200)
 
 func _ready():
-	$CostResizeContainer/Cost.text = str(price) + " Gold"
+	$PanelContainer/MarginContainer/VBoxContainer/Cost.text = str(price) + " Gold"
 	if price > get_parent().get_parent().gold:
-		$ButtonResizer/Create/Label.modulate.a = 0.4
+		$Create.modulate.a = 0.4
 	ContainerButton.connect("pressed", self, "BuyCharacterSlot")
 
 func BuyCharacterSlot():

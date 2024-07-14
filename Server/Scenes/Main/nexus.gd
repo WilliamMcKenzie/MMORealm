@@ -51,7 +51,6 @@ func _physics_process(delta):
 				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
 		if projectile_list[projectile_id]["lifespan"] <= 0:
 			projectile_list.erase(projectile_id)
-			
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
 			enemy_list[enemy_id]["timer"] -= tick_rate
@@ -161,21 +160,7 @@ func SpawnEnemyProjectile(projectile_data,instance, enemy_id):
 		projectile_id_counter = "0"
 		
 	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
-#	var projectile_instance = enemy_projectiles["small"].instance()
-#	projectile_instance.enemy_id = enemy_id
-#	projectile_instance.projectile_name = projectile_data["Projectile"]
-#	projectile_instance.position = projectile_data["Position"]
-#	projectile_instance.initial_position = projectile_data["Position"]
-#	projectile_instance.tile_range = projectile_data["TileRange"]
-#	projectile_instance.SetDirection(projectile_data["Direction"])
-#	projectile_instance.look_at(projectile_data["TargetPosition"])
-	
-#	var data = ServerData.GetProjectile(projectile_data["Projectile"])
-#	projectile_instance.SetData(data)
-	
 
-#	add_child(projectile_instance)
-#	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
 func SpawnLootBag(_loot, player_id, instance_tree, position):
 	var loot_id = "loot "+get_node("/root/Server").generate_unique_id()
 	var soulbound = false

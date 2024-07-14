@@ -11,6 +11,9 @@ var active_projectiles = []
 var expression = Expression.new()
 
 func _physics_process(delta):
+	if GameUI.is_dead:
+		return
+	
 	var render_time = Server.client_clock - interpolation_offset
 	if world_state_buffer.size() > 1:
 		

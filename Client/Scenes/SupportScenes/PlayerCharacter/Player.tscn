@@ -465,7 +465,6 @@ scale = Vector2( 0.9, 1.1 )
 shape = SubResource( 61 )
 
 [node name="IndicatorPlaceholder" type="Node2D" parent="."]
-visible = false
 position = Vector2( -0.5, -10 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]

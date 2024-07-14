@@ -1,11 +1,19 @@
 extends Control
 
-onready var chat_input = $HBoxContainer/PanelContainer2/HBoxContainer/PanelContainer/MarginContainer/ChatInput
+onready var chat_input = $PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput
 var chat = load("res://Scenes/SupportScenes/UI/Chat/ChatMsg.tscn")
+
+var interacted = false
+onready var scroll_container = $PanelContainer/VBoxContainer/ScrollContainer
 
 func _ready():
 	chat_input.connect("focus_entered", self, "EnterChat")
 	chat_input.connect("focus_exited", self, "ExitChat")
+
+func Open():
+	$AnimationPlayer.play("Show")
+func Close():
+	$AnimationPlayer.play("Hide")
 
 func EnterChat():
 	GameUI.in_chat = true
@@ -44,18 +52,36 @@ func AddChat(message,username,classname):
 		chat_message.get_node("Message").add_color_override("font_color", Color(122.0/255, 219.0/255, 130.0/255))
 		chat_message.get_node("Message").text = "" + chat_message.get_node("Message").text + ""
 	
-	get_node("PanelContainer/ChatVerticalContainer").add_child(chat_message,1)
-
+	get_node("PanelContainer/VBoxContainer/ScrollContainer/ChatVerticalContainer").add_child(chat_message,1)
+	
 func _unhandled_input(event):
-	chat_input.focus_mode
+	if event is InputEventMouseButton:
+		chat_input.visible = false
+		chat_input.visible = true
 
 func _physics_process(delta):
+	if not interacted:
+		scroll_container.scroll_vertical = scroll_container.get_v_scrollbar().max_value
+	if scroll_container.scroll_vertical == scroll_container.get_v_scrollbar().max_value:
+		interacted = false
+	
 	if(Input.is_action_just_pressed ("chat")) and chat_input.has_focus():
 		chat_input.grab_focus()
 		chat_input.caret_position = chat_input.text.length()
 		if GameUI.is_in_menu:
 			GameUI.Toggle("all")
 	if(Input.is_action_just_pressed ("command")):
+		if not GameUI.is_in_chat:
+			GameUI.OpenChat()
+		chat_input.grab_focus()
+		
+		var timer = Timer.new()
+		timer.wait_time = 0.1
+		timer.one_shot = true
+		add_child(timer)
+		timer.start()
+		yield(timer, "timeout")
+		
 		chat_input.grab_focus()
 		chat_input.text = "/"
 		chat_input.caret_position = chat_input.text.length()

@@ -49,3 +49,6 @@ remote func UpdateCharacterData(email, character_data, character_index):
 
 remote func UpdateAccountData(email, account_data):
 	DatabaseInterface.UpdateUser(email, account_data)
+	
+remote func UpdateLeaderboard(username, character_data):
+	DatabaseInterface.UpdateLeaderboard(username, character_data)

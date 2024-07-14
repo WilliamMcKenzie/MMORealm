@@ -9,6 +9,13 @@ func _ready():
 	$MarginContainer/TextureButton.connect("pressed", self, "OpenLootBag")
 
 func _physics_process(delta):
+	var loot_tier_icons = {
+		0 : Vector2(80.5, 220),
+		1 : Vector2(89.5, 220),
+		2 : Vector2(100, 220),
+		3 : Vector2(110, 220),
+	}
+	
 	if loot_bags.empty():
 		loot = null
 		id = null
@@ -37,6 +44,8 @@ func _physics_process(delta):
 				min_tier = tier
 				_loot = loot_bags[object_id]["Loot"]
 				_id = object_id
+		
+		$MarginContainer/TouchScreenButton.normal.region = Rect2(loot_tier_icons[min_tier], Vector2(10,10))
 		
 		if _loot and loot != _loot:
 			loot = _loot

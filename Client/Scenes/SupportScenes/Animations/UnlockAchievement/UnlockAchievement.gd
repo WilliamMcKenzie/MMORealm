@@ -11,10 +11,7 @@ func _ready():
 
 func SetData(achievement_name):
 	var achievement_data = ClientData.GetAchievement(achievement_name)
-	get_node("Container/Difficulty/easy").visible = false
-	get_node("Container/Difficulty/medium").visible = false
-	get_node("Container/Difficulty/hard").visible = false
-	get_node("Container/Difficulty/"+achievement_data.difficulty).visible = true
 	
+	$Container/TextureRect.texture.region = Rect2(achievement_data.icon, Vector2(10,10))
 	$Container/HBoxContainer/TextureRect.texture.region = Rect2(achievement_data.icon, Vector2(10,10))
 	$Container/HBoxContainer/Achievement.text = achievement_name

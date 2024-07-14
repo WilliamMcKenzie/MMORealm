@@ -6,14 +6,24 @@ var basic_loot_pools = {
 	"lowlands_1" : {
 		"soulbound_loot" : [
 			{
+				"item" : 2,
+				"chance" : 0.15,
+				"threshold" : 0.15,
+			},
+			{
+				"item" : 5,
+				"chance" : 0.23,
+				"threshold" : 0.23,
+			},
+			{
 				"item" : 4,
-				"chance" : 0.01,
+				"chance" : 0.15,
 				"threshold" : 0.15,
 			},
 			{
 				"item" : 0,
-				"chance" : 0.1,
-				"threshold" : 0.15,
+				"chance" : 0.3,
+				"threshold" : 0.3,
 			}
 		],
 		"loot" : [
@@ -25,6 +35,11 @@ var basic_loot_pools = {
 	},
 	"lowlands_2" : {
 		"soulbound_loot" : [
+				{
+					"item" : 5,
+					"chance" : 0.23,
+					"threshold" : 0.23,
+				},
 				{
 				"item" : 4,
 				"chance" : 0.2,
@@ -43,7 +58,7 @@ var basic_loot_pools = {
 			{
 				"item" : 0,
 				"chance" : 0.1,
-				"threshold" : 0.15,
+				"threshold" : 0.5,
 			}
 		],
 		"loot" : [
@@ -360,11 +375,11 @@ var achievement_catagories = {
 		"icon" : Vector2(0,0)
 	},
 	"Combat" : { 
-		"achievements" : ["Sword Projectiles I", "Sword Projectiles II", "Bow Projectiles I", "Staff Projectiles I"], 
+		"achievements" : ["Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire",], 
 		"icon" : Vector2(10,0)
 	},
 	"Dungeons" : { 
-		"achievements" : ["Trial By Fire"], 
+		"achievements" : ["Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire",], 
 		"icon" : Vector2(20,0)
 	},
 }
@@ -385,11 +400,11 @@ var achievements = {
 		"gold" : 0,
 		"difficulty" : "easy",
 	},
-	"Sword Projectiles II" : {
-		"which" : "sword_projectiles",
+	"Tank I" : {
+		"which" : "damage_taken",
 		"amount" : 100,
 		"icon" : Vector2(0,0),
-		"description" : "Become one with the blade.",
+		"description" : "Take some serious damage.",
 		"gold" : 0,
 		"difficulty" : "medium",
 	},
@@ -446,7 +461,7 @@ var characters = {
 	"Noble" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
 		"quests" : {
-			"Sword Projectiles II" : "Knight",
+			"Tank I" : "Knight",
 		},
 		"rect" : Rect2(0,40,80,40),
 		"icon" : Vector2(20,210),
@@ -489,6 +504,12 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
+					"bodyMediumNew" : RgbToColor(14.0, 157.0, 43.0),
+					"bodyLightNew" : RgbToColor(25.0, 177.0, 55.0),
+					"helmetDarkNew" : RgbToColor(13.0, 128.0, 36.0),
+					"helmetMediumNew" : RgbToColor(14.0, 157.0, 43.0),
+					"helmetLightNew" : RgbToColor(25.0, 177.0, 55.0),
+					"bandNew" : RgbToColor(47.0, 75.0, 29.0),
 				},
 				"textures" : {
 				},
@@ -521,6 +542,12 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
+					"bodyMediumNew" : RgbToColor(75.0, 13.0, 124.0),
+					"bodyLightNew" : RgbToColor(94.0, 23.0, 150.0),
+					"helmetDarkNew" : RgbToColor(36.0, 17.0, 131.0),
+					"helmetMediumNew" : RgbToColor(94.0, 23.0, 150.0),
+					"helmetLightNew" : RgbToColor(122.0, 39.0, 170.0),
+					"bandNew" : RgbToColor(33.0, 33.0, 33.0),
 				},
 				"textures" : {
 				},

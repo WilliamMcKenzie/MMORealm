@@ -76,6 +76,7 @@ remote func ReturnLatency(client_time):
 			else:
 				total_latency += latency_array[i]
 		delta_latency = (total_latency / latency_array.size()) - latency
+		delta_latency = (total_latency / latency_array.size()) - latency
 		latency = total_latency / latency_array.size()
 		latency_array.clear()
 
@@ -233,7 +234,8 @@ remote func ShowExpIndicator(xp):
 
 #ENEMIES
 remote func CharacterDied(enemy_name):
-	print("Dead")
+	GameUI.is_dead = true
+	GameUI.Toggle("death")
 
 remote func SetHealth(max_health, current_health):
 	GameUI.ChangeHealth(max_health, current_health)

@@ -4,31 +4,40 @@ func SetData(character, index):
 	var data = character.data
 	var reputation = character.reputation
 	var username = character.name
-	
-	SetCharacterSprite(character.data)
+	var gear = data.gear.duplicate()
 	
 	$MarginContainer/Container/Data/Name.text = str(index) + ". " + username
 	$MarginContainer/Container/Data/HBoxContainer/Reputation.text = str(reputation)
 	
-	for slot in character.data.gear.keys():
-		if character.data.gear[slot]:
+	for slot in gear.keys():
+		get_node("MarginContainer/Container/Visuals/Gear/"+slot).texture = get_node("MarginContainer/Container/Visuals/Gear/"+slot).texture.duplicate()
+		var texture = get_node("MarginContainer/Container/Visuals/Gear/"+slot).texture
+		
+		if gear[slot]:
 			var rect_coords = ClientData.GetItem(character.data.gear[slot].item).path[3]*10
 			var rect_dimensions = Vector2(10,10)
-			get_node("MarginContainer/Container/Visuals/Gear/"+slot).texture.region = Rect2(rect_coords, rect_dimensions)
+			texture.region = Rect2(rect_coords, rect_dimensions)
 		else:
-			get_node("MarginContainer/Container/Visuals/Gear/"+slot).texture.region = Rect2(Vector2(200,200), Vector2(0,0))
-func SetCharacterSprite(character):
+			texture.region = Rect2(Vector2(200,200), Vector2(0,0))
+	SetCharacterSprite(character.data, gear)
+
+func SetCharacterSprite(character, gear):
 	var CharacterSpriteEle = $MarginContainer/Container/Visuals/CharacterContainer/Sprite
-	var gear = {}
-	for slot in character.gear.keys():
-		if character.gear[slot]:
-			gear[slot] = ClientData.GetItem(character.gear[slot].item)
+	CharacterSpriteEle.material = CharacterSpriteEle.material.duplicate()
+	var weapon_type = "Sword"
+	
+	var temp = gear.duplicate()
+	for slot in temp:
+		if gear[slot] == null:
+			gear.erase(slot)
+		else:
+			gear[slot] = ClientData.GetItem(gear[slot].item)
 	
 	CharacterSpriteEle.SetCharacterClass(character.class)
-	if character.gear.has("weapon") and character.gear.weapon != null: 
-		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
 	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
-	CharacterSpriteEle.ColorGear(gear)
+	CharacterSpriteEle.ColorGear(gear, character.class)
+	if gear.has("weapon"):
+		CharacterSpriteEle.SetCharacterWeapon(gear["weapon"].type)
 
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 

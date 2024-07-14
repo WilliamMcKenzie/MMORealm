@@ -47,8 +47,8 @@ script = ExtResource( 3 )
 
 [node name="StatsContainer" type="HBoxContainer" parent="."]
 anchor_bottom = 1.0
-margin_left = -280.0
-margin_right = -48.0
+margin_left = 849.0
+margin_right = 1081.0
 margin_bottom = 4.0
 custom_constants/separation = 0
 alignment = 1
@@ -132,6 +132,6 @@ custom_constants/separation = 0
 alignment = 1
 
 [node name="CloseButton" type="TouchScreenButton" parent="StatsContainer"]
-position = Vector2( 234, 1 )
+position = Vector2( -45, 4 )
 scale = Vector2( 4, 4 )
 normal = SubResource( 14 )

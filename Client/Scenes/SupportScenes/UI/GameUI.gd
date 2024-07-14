@@ -3,9 +3,11 @@ extends CanvasLayer
 var in_chat = false
 var is_in_ui = false
 var is_in_menu = false
+var is_in_chat = false
 var last_opened = 0
 var last_menu = "inventory"
 
+var is_dead = false
 var last_character
 var account_data
 
@@ -13,10 +15,8 @@ var animation_timer = 0
 var animation_tracker = []
 
 func _ready():
-	$UtilityButtons/BackpackButton/MarginContainer/TextureButton.connect("pressed", self, "Toggle", ["inventory"])
-	$UtilityButtons/AchievementsButton/MarginContainer/TextureButton.connect("pressed", self, "Toggle", ["achievements"])
-	$Inventory/BackpackContainer/CloseButton.connect("pressed", self, "ToggleInventory")
-	$Inventory/LootContainer/CloseButton.connect("pressed", self, "ToggleInventory")
+	$Inventory/BackpackContainer/CloseButton.connect("pressed", self, "Toggle", ["inventory"])
+	$Inventory/LootContainer/CloseButton.connect("pressed", self, "Toggle", ["inventory"])
 	$GameButtons/HomeButton.connect("pressed", Server, "Nexus")
 	
 	$GameButtons/HelmetButton.connect("pressed", self, "InUI")
@@ -24,13 +24,23 @@ func _ready():
 
 func _physics_process(delta):
 	animation_timer -= delta
-	if animation_timer <= 0 and animation_tracker.size() > 0:
+	if animation_timer <= 0 and animation_tracker.size() > 0 and is_dead == false:
 		var animation = animation_tracker[0]
 		
 		PlayAnimation(animation.name, animation.data)
 			
 		animation_tracker.pop_front()
 		animation_timer = 3
+
+func GoHome():
+	Server.network.disconnect_peer(1, true)
+	var scene_handler = get_node("/root/SceneHandler")
+	var home_instance = load("res://Scenes/MainScenes/Home/Home.tscn").instance()
+	
+	for child in scene_handler.get_children():
+		scene_handler.remove_child(child)
+	scene_handler.add_child(home_instance)
+	self.visible = false
 
 func InUI():
 	is_in_ui = true
@@ -106,6 +116,14 @@ func SetCharacterData(character):
 	if is_in_menu and last_menu == "stats":
 		$Stats.SetStats(last_character)
 
+func OpenChat():
+	is_in_chat = true
+	get_node("ChatControl").Open()
+
+func CloseChat():
+	is_in_chat = false
+	get_node("ChatControl").Close()
+
 func Toggle(which):
 	last_menu = which
 	var node_map = {
@@ -113,6 +131,7 @@ func Toggle(which):
 		"stats" : get_node("Stats"),
 		"inventory" : get_node("Inventory"),
 		"achievements" : get_node("Achievements"),
+		"death" : get_node("DeathScreen")
 	}
 	
 	var node
@@ -138,8 +157,23 @@ func Toggle(which):
 		is_in_menu = false
 	else:
 		node.Open()
-		$LeftContainer.visible = false
+		if which != "stats":
+			$LeftContainer.visible = false
 		$GameButtons.visible = false
 		$UtilityButtons.visible = false
 		$ChatControl.visible = false
 		is_in_menu = true
+
+var leaderboards = {
+	"weekly" : [],
+	"monthly" : [],
+	"all_time" : [],
+}
+
+func SetLeaderboard(_weekly, _monthly, _all_time):
+	leaderboards["weekly"] = _weekly
+	leaderboards["monthly"] = _monthly
+	leaderboards["all_time"] = _all_time
+
+func GetLeaderboard():
+	return leaderboards

@@ -52,3 +52,7 @@ func UpdateCharacterData(email, character_data, character_index):
 	rpc_id(1, "UpdateCharacterData", email, character_data, character_index)
 func UpdateAccountData(email, account_data):
 	rpc_id(1, "UpdateAccountData", email, account_data)
+	
+func UpdateLeaderboard(username, character_data):
+	var character = { "gear" : character_data.gear, "class" : character_data.class, "level" : character_data.level}
+	rpc_id(1, "UpdateLeaderboard", username, character)

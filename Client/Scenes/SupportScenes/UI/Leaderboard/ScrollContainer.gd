@@ -1,8 +1,5 @@
 extends ScrollContainer
 
-# Allows you to scroll a scroll container by dragging.
-# Includes momentum.
-
 var swiping = false
 var swipe_start
 var swipe_mouse_start

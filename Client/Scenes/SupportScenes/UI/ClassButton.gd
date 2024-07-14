@@ -1,10 +1,10 @@
 extends PanelContainer
 
 func _ready():
-	$MarginContainer/TextureButton.connect("pressed", self, "OpenClasses")
+	$MarginContainer/TextureButton.connect("pressed", self, "OpenAchievements")
 
-func OpenClasses():
-	GameUI.Toggle("classes")
+func OpenAchievements():
+	GameUI.Toggle("achievements")
 
 func _on_TouchScreenButton_pressed():
-	GameUI.Toggle("classes")
+	GameUI.Toggle("achievements")

@@ -1,7 +1,10 @@
 extends PanelContainer
 
 func _ready():
-	$MarginContainer/TextureButton.connect("pressed", self, "FocusChat")
+	$MarginContainer/TextureButton.connect("pressed", self, "ToggleChat")
 	
-func FocusChat():
-	get_parent().get_node("PanelContainer/MarginContainer/ChatInput").grab_focus()
+func ToggleChat():
+	if name == "Open":
+		GameUI.OpenChat()
+	else:
+		GameUI.CloseChat()
