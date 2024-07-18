@@ -88,14 +88,12 @@ func SetCharacterWeapon(weapon_type):
 	self.region_rect = rect
 
 func ColorGear(gear, _classname = null):
-	
-	if GameUI.last_character:
-		var classname = GameUI.last_character.class
-		var temp = ClientData.GetCharacter(classname).example_colors.duplicate()
+	if _classname != null:
+		var temp = ClientData.GetCharacter(_classname).example_colors.duplicate()
 		temp.merge(gear, true)
 		gear = temp
-	elif _classname:
-		var temp = ClientData.GetCharacter(_classname).example_colors.duplicate()
+	elif GameUI.last_character:
+		var temp = ClientData.GetCharacter(GameUI.last_character.class).example_colors.duplicate()
 		temp.merge(gear, true)
 		gear = temp
 	

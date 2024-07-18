@@ -18,7 +18,6 @@ func _process(delta):
 	if not custom_multiplayer.has_network_peer():
 		return
 	custom_multiplayer.poll()
-	
 
 func ConnectToServer():
 	network.create_client(ip, port)

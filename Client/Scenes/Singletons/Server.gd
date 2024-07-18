@@ -43,7 +43,21 @@ func UpdateLeftJoystick(output):
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").left_joystick_output = output.normalized()
 
 func ConnectToServer():
+	if not token:
+		var start = OS.get_system_time_secs()
+		var current = OS.get_system_time_secs()
+		
+		while current - start < 10:
+			yield(get_tree().create_timer(1), "timeout")
+			current = OS.get_system_time_secs()
+			if token:
+				break
+	
+	if not token:
+		ErrorPopup.OpenPopup("Connection failed")
+	
 	network.create_client(ip_address, port)
+	get_tree().set_network_peer(null)
 	get_tree().network_peer = network
 	
 	get_tree().connect("connection_failed", self, "_onConnectionFailed")
@@ -63,7 +77,8 @@ func _onConnectionSucceeded():
 	self.add_child(timer)
 
 func DetermineLatency():
-	rpc_id(1, "DetermineLatency", OS.get_system_time_msecs())
+	pass
+	#rpc_id(1, "DetermineLatency", OS.get_system_time_msecs())
 remote func ReturnLatency(client_time):
 	latency_array.append((OS.get_system_time_msecs() - client_time)/2)
 	if latency_array.size() == 9:
@@ -91,6 +106,28 @@ remote func ReturnTokenVerificationResults(results):
 		print("Successful token verification")
 	else:
 		ErrorPopup.OpenPopup("Login failed")
+
+#OTHER PLAYERS
+func FetchBatchCharacterData(other_players_ids):
+	rpc_id(1, "FetchBatchCharacterData", other_players_ids)
+remote func ReturnBatchCharacterData(characters_data):
+	GameUI.SetNearbyCharacters(characters_data)
+
+#TRADE
+remote func RequestTrade(player_name):
+	GameUI.TradeRequest(player_name)
+
+func AcceptTrade(player_name):
+	rpc_id(1, "AcceptTrade", player_name)
+
+remote func StartTrade(player_name):
+	if GameUI.is_in_menu:
+		GameUI.Toggle(GameUI.last_menu)
+	GameUI.get_node("TradingMenu").other_player_name = player_name
+	GameUI.Toggle("trade")
+
+func RecieveTradeData(other_player_inventory, other_player_selection):
+	GameUI.get_node("TradingMenu").SetTradeData(other_player_inventory, other_player_selection)
 
 #INVENTORY/ITEMS
 remote func RecieveAccountData(account_data):
@@ -139,7 +176,6 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).projectile_data = projectile_data
 					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).is_active = true
 					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).Activate()
-					print("spawned projectile")
 					break
 		else:
 			CreatePool(projectile_pool_amount)

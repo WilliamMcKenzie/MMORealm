@@ -45,10 +45,11 @@ func ShootProjectile():
 
 #Damage Taken section
 func OnHit(body):
-	if ("damage" in body.get_parent() and body.get_parent().original == true):
+	if "damage" in body.get_parent() and body.get_parent().original == true:
+		Server.NPCHit(name,body.get_parent().damage)
+	if "damage" in body.get_parent():
 		ShowDamageIndicator(-1*body.get_parent().damage)
 		body.get_parent().interaction(self)
-		Server.NPCHit(name,body.get_parent().damage)
 
 func ShowDamageIndicator(damage_amount):
 	var total_damage = floor(-damage_amount - ClientData.GetEnemy(enemy_type).defense)

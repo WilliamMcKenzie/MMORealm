@@ -383,11 +383,11 @@ region = Rect2( 10, 190, 10, 10 )
 atlas = ExtResource( 3 )
 region = Rect2( 20, 190, 10, 10 )
 
-[sub_resource type="StreamTexture" id=69]
+[sub_resource type="StreamTexture" id=74]
 load_path = "res://.import/items_8x8.png-61ae49e9e1e9e3bd1375362c8ac88e1b.stex"
 
 [sub_resource type="AtlasTexture" id=71]
-atlas = SubResource( 69 )
+atlas = SubResource( 74 )
 region = Rect2( 30, 190, 10, 10 )
 
 [sub_resource type="AtlasTexture" id=72]
@@ -406,7 +406,7 @@ active = true
 parameters/playback = SubResource( 17 )
 parameters/Attack/blend_position = Vector2( 0.00158477, 0.982759 )
 parameters/Idle/blend_position = Vector2( -0.274168, 0.413793 )
-parameters/Walk/blend_position = Vector2( 0.99683, -0.543103 )
+parameters/Walk/blend_position = Vector2( -0.00239044, -0.474138 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../CharacterSprite")
@@ -468,25 +468,27 @@ shape = SubResource( 61 )
 position = Vector2( -0.5, -10 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_left = -10.0
-margin_top = -13.0
-margin_right = 40.0
-margin_bottom = 27.0
+margin_left = -12.0
+margin_top = -14.0
+margin_right = 50.0
+margin_bottom = 26.0
 rect_scale = Vector2( 0.4, 0.4 )
 mouse_filter = 2
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
-margin_right = 50.0
+margin_left = 19.0
+margin_right = 42.0
 margin_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-custom_constants/separation = 0
+custom_constants/separation = 3
 
 [node name="damaging" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+visible = false
 material = SubResource( 67 )
 margin_right = 10.0
 margin_bottom = 10.0
@@ -495,32 +497,32 @@ stretch_mode = 5
 
 [node name="berserk" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
 material = SubResource( 67 )
-margin_left = 10.0
-margin_right = 20.0
+margin_right = 10.0
 margin_bottom = 10.0
 texture = SubResource( 68 )
 stretch_mode = 5
 
 [node name="armored" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+visible = false
 material = SubResource( 67 )
-margin_left = 20.0
-margin_right = 30.0
+margin_left = 26.0
+margin_right = 36.0
 margin_bottom = 10.0
 texture = SubResource( 70 )
 stretch_mode = 5
 
 [node name="invincible" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+visible = false
 material = SubResource( 67 )
-margin_left = 30.0
-margin_right = 40.0
+margin_right = 10.0
 margin_bottom = 10.0
 texture = SubResource( 71 )
 stretch_mode = 5
 
 [node name="healing" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
 material = SubResource( 67 )
-margin_left = 40.0
-margin_right = 50.0
+margin_left = 13.0
+margin_right = 23.0
 margin_bottom = 10.0
 texture = SubResource( 72 )
 stretch_mode = 5

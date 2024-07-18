@@ -8,8 +8,16 @@ var gold
 
 func _ready():
 	$UI/Leaderboard.connect("button_down", self, "OpenLeaderboard")
+	
+	if ClientAuth.cached_email and ClientAuth.cached_password:
+		email = ClientAuth.cached_email
+		password = ClientAuth.cached_password
+		AuthenticatedUser()
+		$LoginPopup.visible = false
+		$CharacterSelection.visible = true
 
 func AuthenticatedUser():
+	print("AUTH")
 	Gateway.ConnectToServer(email, password, 4)
 
 func UpdateGold():
@@ -30,6 +38,8 @@ func SelectionScreen(account_data):
 	get_node("UI").visible = true
 	GameUI.SetAccountData(account_data)
 	Gateway.ConnectToServer(email, password, 5)
+	ClientAuth.cached_email = email
+	ClientAuth.cached_password = password
 	
 	var selection_screen = get_node("CharacterSelection")
 	selection_screen.characters = account_data.characters
@@ -41,6 +51,8 @@ func SelectionScreen(account_data):
 	UpdateGold()
 	
 func EnterGame(character_index, character):
+	Server.token = null
+	Gateway.ConnectToServer(email, password, 6)
 	Server.ConnectToServer()
 	Server.SetCharacterIndex(character_index)
 	
@@ -48,6 +60,7 @@ func EnterGame(character_index, character):
 	nexus_instance.get_node("YSort/player").SetCharacter(character)
 	get_parent().add_child(nexus_instance)
 	GameUI.visible = true
+	GameUI.Init()
 	GameUI.get_node("GameButtons").visible = true
 	queue_free()
 	

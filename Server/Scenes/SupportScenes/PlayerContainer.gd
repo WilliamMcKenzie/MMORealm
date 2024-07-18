@@ -18,6 +18,7 @@ var status_effects = {
 	"healing" : 0,
 	"invincible" : 0,
 }
+var last_teleported = 0
 
 #Status Effects
 
@@ -48,29 +49,101 @@ func _physics_process(delta):
 		if status_effects[effect] <= 0:
 			if character.status_effects.has(effect):
 				character.status_effects.erase(effect)
+				var server_node = get_node("/root/Server")
+				var instance_tree = server_node.player_state_collection[int(name)]["I"]
+				var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
+				instance_node.player_list[name].status_effects.erase(effect)
 				get_node("/root/Server").SendCharacterData(name, character)
 			status_effects.erase(effect)
+
+
+#TRADE
+
+var other_player_container
+var other_player_inventory = []
+var other_player_selection = [false,false,false,false,false,false,false,false]
+var selection = [false,false,false,false,false,false,false,false]
+
+func StartTrade(other_player_name):
+	var other_player_id = get_node("/root/Server").player_id_by_name[other_player_name]
+	var instance_tree = get_node("/root/Server").player_state_collection[int(other_player_id)]["I"]
+	
+	other_player_container = get_node("/root/Server/Instances/"+ get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(other_player_id))
+	other_player_inventory = other_player_container.character.inventory.duplicate()
+	
+	get_node("/root/Server").SendTradeData(name, other_player_inventory, other_player_selection)
+
+func ResetTrade():
+	other_player_inventory = []
+	other_player_selection = [false,false,false,false,false,false,false,false]
+	selection = [false,false,false,false,false,false,false,false]
+
+func FinishTrade():
+	if other_player_inventory.hash() != other_player_container.character.inventory.hash():
+		get_node("/root/Server").ForceCancelTrade(int(other_player_container.name))
+	
+	var free_spaces = 0
+	var taken_spaces = 0
+	for i in range(character.inventory.size()):
+		if selection[i]:
+			free_spaces += 1
+		if other_player_selection[i]:
+			taken_spaces += 1
+		if character.inventory[i]:
+			taken_spaces += 1
+		else:
+			free_spaces += 1
+	if taken_spaces > free_spaces:
+		return
+
+func SelectItem(i):
+	pass
+
+func DeSelectItem(i):
+	pass
+
+#ABILITY
 
 func UseAbility():
 	if character.ability_cooldown > 0 or not gear.has("helmet"):
 		return
 	
 	character.ability_cooldown = gear.helmet.cooldown
+	
+	var server_node = get_node("/root/Server")
+	var instance_tree = server_node.player_state_collection[int(name)]["I"]
+	var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
+	var player_list = instance_node.player_list
+	
+	var player_position = self.position
+	
 	var buffs = gear.helmet.buffs
 	for buff in buffs.keys():
-		GiveEffect(buff, buffs[buff].duration)
-	
-	get_node("/root/Server").SendCharacterData(name, character)
+		var buff_range = buffs[buff].range
+		
+		if buff_range == 0:
+			GiveEffect(buff, buffs[buff].duration)
+			continue
+		
+		for player_id in player_list.keys():
+			if player_list[player_id].position.distance_to(player_position) <= buff_range*5:
+				var player_container = instance_node.get_node("YSort/Players/"+str(player_id))
+				player_container.GiveEffect(buff, buffs[buff].duration)
 		
 func GiveEffect(effect, duration):
+	var server_node = get_node("/root/Server")
+	var instance_tree = server_node.player_state_collection[int(name)]["I"]
+	var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
 	if status_effects.has(effect) and status_effects[effect] > duration:
 		return
 	
 	status_effects[effect] = duration
-	print("nada")
 	if not character.status_effects.has(effect):
-		print("effect given")
 		character.status_effects.append(effect)
+	if not instance_node.player_list[name].has(effect):
+		instance_node.player_list[name].status_effects.append(effect)
+	
+	get_node("/root/Server").SendCharacterData(name, character)
 
 #Items
 
@@ -286,7 +359,10 @@ func AddExp(exp_amount):
 		
 	get_node("/root/Server").SendCharacterData(name, character)
 
-func DealDamage(damage, enemy_id):
+func DealDamage(damage, enemy_name):
+	if not character:
+		return
+	
 	var total_damage = floor(damage - character.stats.defense)
 	if status_effects.has("armored"):
 		total_damage = floor(damage - (character.stats.defense*2))
@@ -302,15 +378,15 @@ func DealDamage(damage, enemy_id):
 	UpdateStatistics("damage_taken", total_damage)
 	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	if health < 1 and not is_dead:
-		Death(enemy_id)
+		Death(enemy_name)
 
-func Death(enemy_id):
+func Death(enemy_name):
 	var username = get_node("/root/Server").player_name_by_id[int(name)]
 	
 	account_data.characters.remove(character_index)
 	account_data.graveyard.append(character)
 	HubConnection.UpdateLeaderboard(username, character)
-	get_node("/root/Server").NotifyDeath(int(name), enemy_id)
+	get_node("/root/Server").NotifyDeath(int(name), enemy_name)
 	
 	is_dead = true
 

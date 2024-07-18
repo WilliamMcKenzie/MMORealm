@@ -45,6 +45,8 @@ func _onConnectionFailed():
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
+	if(task == 6):
+		SendToken()
 	if(task == 5):
 		GetLeaderboards()
 	if(task == 4):
@@ -104,9 +106,7 @@ remote func ReturnCreateAccountRequest(results, message):
 
 func RequestLogin():
 	rpc_id(1, "LoginRequest", email, password)
-remote func ReturnLogin(result, token):
-	if(result):
-		Server.token = token
+remote func ReturnLogin(result):
 	get_node("../SceneHandler/Home/LoginPopup").LoginResult(result)
 	
 func GetLeaderboards():
@@ -114,3 +114,9 @@ func GetLeaderboards():
 remote func ReturnLeaderboards(weekly, monthly, all_time):
 	get_node("../SceneHandler/Home/Leaderboard").SetLeaderboard(weekly, monthly, all_time)
 	GameUI.SetLeaderboard(weekly, monthly, all_time)
+	
+func SendToken():
+	rpc_id(1, "SendToken", email)
+remote func ReturnToken(token):
+	print("Returend")
+	Server.token = token

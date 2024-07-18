@@ -48,15 +48,13 @@ func _physics_process(delta):
 		for player_id in player_list.keys():
 			if not projectile_list[projectile_id]["hit_players"].has(player_id) and player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
 				projectile_list[projectile_id]["hit_players"][player_id] = true
-				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_id"])
+				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_name"])
 		if projectile_list[projectile_id]["start_position"].distance_to(projectile_list[projectile_id]["path"]) >= projectile_list[projectile_id]["tile_range"]*8:
-			print(projectile_list[projectile_id]["path"])
 			projectile_list.erase(projectile_id)
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
 			enemy_list[enemy_id]["timer"] -= tick_rate
 			if enemy_list[enemy_id]["timer"] <= 0:
-				print("Spawning projectile")
 				var attack_pattern = ServerData.GetEnemy(enemy_list[enemy_id]["name"])["attack_pattern"]
 				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
 				var projectile_data = {
@@ -72,7 +70,7 @@ func _physics_process(delta):
 					"hit_players" : {},
 					"size" : 4,
 				}
-				SpawnEnemyProjectile(projectile_data,instance_tree, enemy_id)
+				SpawnEnemyProjectile(projectile_data,instance_tree, enemy_id, enemy_list[enemy_id]["name"])
 				enemy_list[enemy_id]["timer"] = current_attack["wait"]
 				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
 					enemy_list[enemy_id]["pattern_index"] = 0
@@ -115,6 +113,7 @@ func SpawnPlayer(player_container):
 	if player_container:
 		player_list[player_container.name] = {
 				"name": player_container.name,
+				"status_effects" : [],
 				"position": player_container.position,
 				"animation": { "A" : "Idle", "C" : Vector2.ZERO },
 				"sprite": { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {
@@ -154,8 +153,9 @@ func SpawnPlayerProjectile(projectile_data, player_id):
 	
 	add_child(projectile_instance)
 
-func SpawnEnemyProjectile(projectile_data,instance, enemy_id):
+func SpawnEnemyProjectile(projectile_data, instance, enemy_id, enemy_name):
 	projectile_data["enemy_id"] = enemy_id
+	projectile_data["enemy_name"] = enemy_name
 	projectile_list[projectile_id_counter] = projectile_data
 	if int(projectile_id_counter) <= 2174000:
 		projectile_id_counter = str(int(projectile_id_counter)+1)
@@ -236,7 +236,10 @@ func CalculateLootPool(enemy):
 	var exp_amount = ServerData.GetEnemy(enemy["name"]).exp
 	for player_id in player_pool.keys():
 		var player_container = get_node("YSort/Players/"+str(player_id))
-		player_container.AddExp(exp_amount)
+		if not player_container:
+			player_pool.erase(player_id)
+		else:
+			player_container.AddExp(exp_amount)
 	
 	#Handle loot drops
 	var ordered_pairs = []

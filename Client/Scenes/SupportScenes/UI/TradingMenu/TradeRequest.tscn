@@ -1,0 +1,131 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/ui/pill_background.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/SupportScenes/UI/TradingMenu/TradeRequest.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "Close"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "Open"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="TradeRequest" type="VBoxContainer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -125.0
+margin_top = -124.0
+margin_right = 119.0
+margin_bottom = 14.0
+custom_constants/separation = 16
+script = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+margin_right = 244.0
+margin_bottom = 22.0
+custom_fonts/font = SubResource( 1 )
+text = "WilliamQM wants to trade"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_top = 38.0
+margin_right = 244.0
+margin_bottom = 138.0
+rect_min_size = Vector2( 200, 100 )
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_constants/separation = 16
+
+[node name="AcceptRequest" type="TextureButton" parent="HBoxContainer"]
+self_modulate = Color( 1, 1, 1, 0.313726 )
+margin_right = 114.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 2 )
+expand = true
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="HBoxContainer/AcceptRequest"]
+margin_left = 37.0
+margin_top = 11.0
+margin_right = 79.0
+margin_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Accept"
+
+[node name="RejectRequest" type="TextureButton" parent="HBoxContainer"]
+self_modulate = Color( 1, 1, 1, 0.313726 )
+margin_left = 130.0
+margin_right = 244.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 2 )
+expand = true
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="HBoxContainer/RejectRequest"]
+margin_left = 38.0
+margin_top = 11.0
+margin_right = 80.0
+margin_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Reject"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Close = SubResource( 4 )
+anims/Open = SubResource( 2 )
+anims/RESET = SubResource( 3 )

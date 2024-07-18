@@ -2,11 +2,11 @@
 
 [ext_resource path="res://Resources/ColorGear.gdshader" type="Shader" id=1]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/SupportScenes/UI/NearbyPlayers/GearSlot/ItemSlotView.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/SupportScenes/UI/PlayerMenu/GearSlot/ItemSlotView.gd" type="Script" id=3]
 
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 2 )
-region = Rect2( 160, 220, 10, 10 )
+region = Rect2( 150, 220, 10, 10 )
 
 [sub_resource type="ShaderMaterial" id=9]
 shader = ExtResource( 1 )
@@ -54,8 +54,7 @@ script = ExtResource( 3 )
 
 [node name="ItemBackground" type="TextureRect" parent="."]
 modulate = Color( 0.517647, 0.517647, 0.517647, 0.803922 )
-margin_left = -1.5
-margin_right = 28.5
+margin_right = 30.0
 margin_bottom = 30.0
 texture = SubResource( 8 )
 expand = true
@@ -64,8 +63,7 @@ stretch_mode = 5
 [node name="ItemIcon" type="TextureRect" parent="."]
 visible = false
 material = SubResource( 9 )
-margin_left = -1.0
-margin_right = 29.0
+margin_right = 30.0
 margin_bottom = 30.0
 texture = SubResource( 6 )
 expand = true

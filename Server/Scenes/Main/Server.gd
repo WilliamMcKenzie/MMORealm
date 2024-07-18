@@ -30,8 +30,8 @@ func _ready():
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
-	get_node("Instances/nexus").OpenPortal("overgrown_temple", ["nexus"], Vector2.ZERO)
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
+	#get_node("Instances/nexus").OpenPortal("overgrown_temple", ["nexus"], Vector2.ZERO)
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
 			{
@@ -73,11 +73,47 @@ func _Peer_Disconnected(id):
 		player_state_collection.erase(id)
 		rpc_id(0, "DespawnPlayer", id)
 
-#INVENTORY/ITEMS	
+#TRADE
+remote func AcceptTrade(player1_name):
+	var player1_id = player_id_by_name[player1_name]
+	var player2_id = get_tree().get_rpc_sender_id()
+	var player2_name = player_name_by_id[player2_id]
+	
+	var instance_tree1 = player_state_collection[int(player1_id)]["I"]
+	var player_container1 = get_node("Instances/"+StringifyInstanceTree(instance_tree1)+"/YSort/Players/"+str(player1_id))
+	
+	var instance_tree2 = player_state_collection[int(player2_id)]["I"]
+	var player_container2 = get_node("Instances/"+StringifyInstanceTree(instance_tree2)+"/YSort/Players/"+str(player2_id))
+	
+	player_container1.StartTrade(player2_name)
+	player_container2.StartTrade(player1_name)
+	rpc_id(player1_id, "StartTrade", player2_name)
+	rpc_id(player2_id, "StartTrade", player1_name)
+
+func SendTradeData(player_id, other_player_inventory, other_player_selection):
+	rpc_id(int(player_id), "RecieveTradeData", other_player_inventory, other_player_selection)
+	
+#INVENTORY/ITEMS
 remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_data = get_parent().get_node(str(player_id)).getPlayerData()
 	rpc_id(player_id, "ReturnPlayerData", player_data)
+remote func FetchBatchCharacterData(ids):
+	var player_id = get_tree().get_rpc_sender_id()
+	var characters_data = []
+	for id in ids:
+		if player_state_collection.has(int(id)):
+			var instance_tree = player_state_collection[int(id)]["I"]
+			var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
+			if player_container:
+				var character_data = player_container.character
+				characters_data.append({
+					"name" : player_name_by_id[int(id)],
+					"class" : character_data.class,
+					"level" : character_data.level,
+					"gear" : character_data.gear,
+				})
+	rpc_id(player_id, "ReturnBatchCharacterData", characters_data)
 
 remote func UseItem(index):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -154,9 +190,11 @@ func _on_VerificationExpiration_timeout():
 	PlayerVerification.VerificationExpiration()
 
 func FetchToken(player_id):
+	print("Fetching...")
 	rpc_id(player_id, "FetchToken")
 
 remote func ReturnToken(token, character_index):
+	print(token)
 	var player_id = get_tree().get_rpc_sender_id()
 	PlayerVerification.Verify(player_id, token, character_index)
 
@@ -254,6 +292,7 @@ remote func EnterInstance(instance_id):
 	if current_instance_node.has_node(instance_id):
 		var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+		player_container.GiveEffect("invincible", 5)
 		
 		player_instance_tracker[instance_tree].erase(player_id)
 		instance_tree.append(str(instance_id))
@@ -308,11 +347,28 @@ remote func RecieveChatMessage(message):
 	
 	if len(message) >= 1:
 		if message[0] == "/":
+			if message_words[0] == "/trade":
+				print(message)
+				var selected_player_name = message.substr(7,-1)
+				if player_id_by_name.has(selected_player_name):
+					var selected_player_id = player_id_by_name[selected_player_name]
+					if player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"] and player_container.position.distance_to(get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(selected_player_id)).position) > 32*8:
+						rpc_id(player_id, "RecieveChat", "To far away!", "System")
+					elif player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
+						rpc_id(player_id, "RecieveChat", "You have requested a trade with " + selected_player_name, "System")
+						rpc_id(selected_player_id, "RequestTrade", player_name)
+					else:
+						rpc_id(player_id, "RecieveChat", "Invalid username: " + selected_player_name, "System")
+				else:
+					rpc_id(player_id, "RecieveChat", "Invalid username: " + selected_player_name, "SystemERROR")
 			if message_words[0] == "/tp":
 				var selected_player_name = message.substr(4,-1)
 				if player_id_by_name.has(selected_player_name):
 					var selected_player_id =  player_id_by_name[message.substr(4,-1)]
-					if player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
+					if OS.get_system_time_secs() - player_container.last_teleported < 5:
+						rpc_id(player_id, "RecieveChat", "Teleport on cooldown, wait " + str(5 - (OS.get_system_time_secs() - player_container.last_teleported)) + " more seconds.", "System")
+					elif player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
+						player_container.last_teleported = OS.get_system_time_secs()
 						player_state_collection[player_id]["P"] = player_state_collection[selected_player_id]["P"]
 						rpc_id(player_id, "MovePlayer", player_state_collection[player_id]["P"])
 						rpc_id(player_id, "RecieveChat", "You have teleported to " + selected_player_name, "System")
@@ -366,9 +422,8 @@ remote func RecieveChatMessage(message):
 
 #PLAYER INTERACTION
 
-func NotifyDeath(player_id, enemy_id):
+func NotifyDeath(player_id, enemy_name):
 	var instance_tree = player_state_collection[int(player_id)]["I"]
-	var enemy_name = get_node("Instances/"+StringifyInstanceTree(instance_tree)).enemy_list[enemy_id].name
 	
 	rpc_id(player_id, "CharacterDied", enemy_name)
 	rpc("RecieveChat", str(player_name_by_id[player_id]) + " has been killed by a "+enemy_name, "System")

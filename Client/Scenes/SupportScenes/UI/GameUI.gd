@@ -14,6 +14,17 @@ var account_data
 var animation_timer = 0
 var animation_tracker = []
 
+func Init():
+	is_dead = false
+	in_chat = false
+	is_in_ui = false
+	is_in_menu = false
+	is_in_chat = false
+	last_opened = 0
+	last_menu = "inventory"
+	animation_tracker = []
+	$LeftContainer/BarContainer/Health.ChangeHealth(100, 100)
+
 func _ready():
 	$Inventory/BackpackContainer/CloseButton.connect("pressed", self, "Toggle", ["inventory"])
 	$Inventory/LootContainer/CloseButton.connect("pressed", self, "Toggle", ["inventory"])
@@ -116,14 +127,38 @@ func SetCharacterData(character):
 	if is_in_menu and last_menu == "stats":
 		$Stats.SetStats(last_character)
 
+func SetNearbyCharacters(characters_data):
+	var node = get_node("Nearby")
+	node.SetCharacters(characters_data)
+
 func OpenChat():
-	is_in_chat = true
 	get_node("ChatControl").Open()
 
 func CloseChat():
-	is_in_chat = false
 	get_node("ChatControl").Close()
 
+#TRADE
+
+func TradeRequest(player_name):
+	var node = get_node("TradeRequest")
+	node.Open(player_name)
+
+#INVENTORY
+
+func InventoryToggleLogic():
+	if is_in_menu == false or last_menu != "inventory":
+		return
+	if get_node("Inventory").loot == null and $LeftContainer.visible == false:
+		$LeftContainer.visible = true
+	elif get_node("Inventory").loot != null and $LeftContainer.visible == true:
+		$LeftContainer.visible = false
+func NearbyToggleLogic():
+	if is_in_menu == false or last_menu != "nearby":
+		return
+	if not get_node("Nearby").viewing_player:
+		$LeftContainer.visible = true
+	else:
+		$LeftContainer.visible = false
 func Toggle(which):
 	last_menu = which
 	var node_map = {
@@ -131,7 +166,9 @@ func Toggle(which):
 		"stats" : get_node("Stats"),
 		"inventory" : get_node("Inventory"),
 		"achievements" : get_node("Achievements"),
-		"death" : get_node("DeathScreen")
+		"death" : get_node("DeathScreen"),
+		"nearby" : get_node("Nearby"),
+		"trade" : get_node("TradingMenu")
 	}
 	
 	var node
@@ -141,6 +178,7 @@ func Toggle(which):
 		for key in node_map.keys():
 			node = node_map[key]
 			node.Close()
+		return
 	
 	if not last_character:
 		ErrorPopup.OpenPopup("Server Disconnected")
@@ -157,8 +195,10 @@ func Toggle(which):
 		is_in_menu = false
 	else:
 		node.Open()
-		if which != "stats":
-			$LeftContainer.visible = false
+		$LeftContainer.visible = false
+		if which == "stats" or (which == "inventory" and node.loot == null):
+			$LeftContainer.visible = true
+			
 		$GameButtons.visible = false
 		$UtilityButtons.visible = false
 		$ChatControl.visible = false

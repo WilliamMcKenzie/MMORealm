@@ -2,16 +2,13 @@ extends CanvasLayer
 
 var inspecting_item = null
 
-var loot = null
-var loot_container_id = null
-var loot_containers = {}
+var other_player_name = ""
+var other_player_selection = []
+var self_selection = []
 
 func _ready():
-	$InventoryBackground.connect("button_down", self, "ToggleInventory")
-	$BackpackContainer/CloseButton.connect("pressed", self, "ToggleInventory")
-	$BackpackContainer/CloseButton2.connect("pressed", self, "ToggleInventory")
-	$LootContainer/CloseButton.connect("pressed", self, "ToggleInventory")
-	$LootContainer/CloseButton2.connect("pressed", self, "ToggleInventory")
+	$Options/Cancel/Button.connect("button_down", self, "CancelOffer")
+	$Options/Accept/Button.connect("button_down", self, "AcceptOffer")
 
 func InspectItem(_item):
 	if not _item:
@@ -24,7 +21,7 @@ func InspectItem(_item):
 	var item = ClientData.GetItem(_item.item)
 	var multipliers = ClientData.GetMultiplier(_item.item)
 	
-	var animator = $InventoryAnimations
+	var animator = $TradingAnimations
 	animator.play("InspectItem")
 	inspecting_item = _item
 	$InspectItem.visible = true
@@ -140,7 +137,7 @@ func InspectItem(_item):
 		stats_node.visible = false
 func DeInspectItem(item):
 	if inspecting_item == item:
-		var animator = $InventoryAnimations
+		var animator = $TradingAnimations
 		animator.play("DeInspectItem")
 		inspecting_item = null
 		
@@ -153,105 +150,72 @@ func DeInspectItem(item):
 		
 		$InspectItem.visible = false
 
-func ToggleInventory():
-	get_parent().Toggle("inventory")
+func ToggleTradeMenu():
+	get_parent().Toggle("trade")
 
 func Open():
-	var gear_tween = $GearTween
-	var backpack_tween = $BackpackTween
-	var loot_tween = $LootTween
+	SetInventory(GameUI.last_character.inventory)
+	$GetContainer/MarginContainer/OtherPlayerName.text = other_player_name
+	$GiveContainer/MarginContainer/PlayerName.text = GameUI.account_data.username
+	$Options.visible = true
 	
-	var gear_element = $PanelContainer
-	var backpack_element = $BackpackContainer
-	var loot_element = $LootContainer
+	var give_tween = $GiveTween
+	var get_tween = $GetTween
+
+	var give_element = $GiveContainer
+	var get_element = $GetContainer
 	
-	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, Vector2(0, -110)+gear_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	gear_tween.start()
-	backpack_tween.interpolate_property(backpack_element, "rect_position", backpack_element.rect_position, Vector2(-100, 0)+backpack_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	backpack_tween.start()
-	loot_tween.interpolate_property(loot_element, "rect_position", loot_element.rect_position, Vector2(100, 0)+loot_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	loot_tween.start()
-	
-	var timer = Timer.new()
-	timer.wait_time = 0.4
-	timer.one_shot = true
-	add_child(timer)
-	timer.start()
-	yield(timer, "timeout")
-	
-	$InventoryBackground.visible = true
+	give_tween.interpolate_property(give_element, "rect_position", give_element.rect_position, Vector2(-200, 0)+give_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	give_tween.start()
+	get_tween.interpolate_property(get_element, "rect_position", get_element.rect_position, Vector2(200, 0)+get_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	get_tween.start()
 
 func Close():
-	var gear_tween = $GearTween
-	var backpack_tween = $BackpackTween
-	var loot_tween = $LootTween
+	$Options.visible = false
 	
-	var gear_element = $PanelContainer
-	var backpack_element = $BackpackContainer
-	var loot_element = $LootContainer
+	var give_tween = $GiveTween
+	var get_tween = $GetTween
+
+	var give_element = $GiveContainer
+	var get_element = $GetContainer
 	
-	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, Vector2(0, 110)+gear_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	gear_tween.start()
-	backpack_tween.interpolate_property(backpack_element, "rect_position", backpack_element.rect_position, Vector2(100, 0)+backpack_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	backpack_tween.start()
-	loot_tween.interpolate_property(loot_element, "rect_position", loot_element.rect_position, Vector2(-100, 0)+loot_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	loot_tween.start()
-	$InventoryBackground.visible = false
+	give_tween.interpolate_property(give_element, "rect_position", give_element.rect_position, Vector2(200, 0)+give_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	give_tween.start()
+	get_tween.interpolate_property(get_element, "rect_position", get_element.rect_position, Vector2(-200, 0)+get_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	get_tween.start()
+
+func SetTradeData(other_player_inventory, other_player_selection):
+	var inventory_slots = $GetContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()
+	var i = 0
+	
+	for slot in inventory_slots:
+		slot.SetItem(other_player_inventory[i], 1)
+		slot.index = i
+		slot.parent = "other_player_inventory"
+		
+		if other_player_selection[i] == true:
+			slot.Activate()
+		else:
+			slot.DeActivate()
+		
+		i += 1
 
 func SetInventory(inventory):
-	var inventory_slots = $BackpackContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()
+	var inventory_slots = $GiveContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()
 	var i = 0
 	
 	for slot in inventory_slots:
 		slot.SetItem(inventory[i], 1)
 		slot.index = i
 		slot.parent = "inventory"
-		#slot.connect("pressed", self, "EquipItem", [i])
-		i += 1
-func SetGear(gear):
-	var gear_slots = $PanelContainer/MarginContainer/GearContainer.get_children()
-	var gear_types = [
-		"weapon",
-		"helmet",
-		"armor"
-	]
-	
-	for slot_index in range(0, 3):
-		var gear_type = gear_types[slot_index]
-		
-		gear_slots[slot_index].index = gear_type
-		gear_slots[slot_index].parent = "gear"
-		
-		if gear.has(gear_type):
-			gear_slots[slot_index].SetItem(gear[gear_type], 1)
-		else:
-			gear_slots[slot_index].SetItem(null, 1)
-func SetLoot(_loot_container_id, _loot):
-	loot = _loot
-	loot_container_id = _loot_container_id
-	if self.visible == true:
-		GameUI.InventoryToggleLogic()
-	
-	if loot != null:
-		$LootContainer.visible = true
-	else:
-		$LootContainer.visible = false
-		return
-	
-	var loot_slots = $LootContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()
-	var i = 0
-	
-	for slot in loot_slots:
-		slot.SetItem(loot[i], 1)
-		slot.index = i
-		slot.parent = loot_container_id
+		slot.connect("pressed", self, "SelectItem", [i])
 		i += 1
 
-func UseItem(i):
-	Server.UseItem(i)
-func EquipItem(i):
-	Server.EquipItem(i)
-func ChangeItem(to_data, from_data):
-	Server.ChangeItem(to_data, from_data)
-func DropItem(data):
-	Server.DropItem(data)
+func SelectItem(i):
+	Server.SelectItem(i)
+func DeselectItem(i):
+	Server.DeselectItem(i)
+func AcceptOffer():
+	Server.AcceptOffer()
+func CancelOffer():
+	Server.CancelOffer()

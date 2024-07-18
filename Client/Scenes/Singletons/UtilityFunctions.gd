@@ -1,5 +1,25 @@
 extends Node
 
+func SetCharacterSprite(character, CharacterSpriteEle):
+	var gear = {}
+	for slot in character.gear.keys():
+		if character.gear[slot] != null:
+			var item_id = character.gear[slot].item
+			gear[slot] = ClientData.GetItem(item_id)
+	
+	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
+	CharacterSpriteEle.ColorGear(gear, character.class)
+	CharacterSpriteEle.SetCharacterClass(character.class)
+	if character.gear.has("weapon") and character.gear.weapon != null: 
+		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
+
+func SetSpriteData(sprite, path):
+	var spriteTexture = load("res://Assets/"+path[0]) 
+	sprite.texture = spriteTexture
+	sprite.hframes = path[1]
+	sprite.vframes = path[2]
+	sprite.frame_coords = path[3]
+
 func CompareArrays(arr1, arr2):
 	if arr1.size() != arr2.size():
 		return false

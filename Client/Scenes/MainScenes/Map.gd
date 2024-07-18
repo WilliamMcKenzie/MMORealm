@@ -38,6 +38,7 @@ func _physics_process(delta):
 				elif get_node("YSort/OtherPlayers").has_node(str(player)):
 					var new_position = lerp(players1[player]["position"], players2[player]["position"], interpolation_factor)
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players2[player]["animation"], players2[player]["sprite"])
+					get_node("YSort/OtherPlayers/" + str(player)).UpdateStatusEffects(players2[player]["status_effects"])
 				else:
 					SpawnNewPlayer(player, players2[player]["position"])
 			RefreshPlayers(world_state_buffer[2]["P"])
@@ -79,6 +80,7 @@ func _physics_process(delta):
 					var position_delta = (players1[player]["position"] - players0[player]["position"])
 					var new_position = players1[player]["position"] + (position_delta * extrapolation_factor)
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players1[player]["animation"], players1[player]["sprite"])
+					get_node("YSort/OtherPlayers/" + str(player)).UpdateStatusEffects(players1[player]["status_effects"])
 				else:
 					SpawnNewPlayer(player, players1[player]["position"])
 			
@@ -119,7 +121,6 @@ func UpdateWorldState(world_state):
 #Enemy nodes
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
-		print(enemy_name)
 		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+".tscn")
 		var enemy_instance = enemy_scene.instance()
 		enemy_instance.name = enemy_id

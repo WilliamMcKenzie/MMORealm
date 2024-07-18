@@ -90,11 +90,17 @@ func ReturnCreateAccountRequest(result, player_id, message):
 remote func LoginRequest(email, password):
 	var player_id = custom_multiplayer.get_rpc_sender_id()
 	Authenticate.AuthenticatePlayer(email, password, player_id)
-func ReturnLoginRequest(player_id, result, token):
-	rpc_id(player_id, "ReturnLogin", result, token)
+func ReturnLoginRequest(player_id, result):
+	rpc_id(player_id, "ReturnLogin", result)
 
 remote func GetLeaderboards():
 	var player_id = custom_multiplayer.get_rpc_sender_id()
 	Authenticate.GetLeaderboards(player_id)
 func ReturnLeaderboardsResult(weekly, monthly, all_time, player_id):
 	rpc_id(player_id, "ReturnLeaderboards", weekly, monthly, all_time)
+	
+remote func SendToken(email):
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	Authenticate.SendToken(email, player_id)
+func ReturnToken(token, player_id):
+	rpc_id(player_id, "ReturnToken", token)

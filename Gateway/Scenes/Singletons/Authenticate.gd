@@ -39,8 +39,13 @@ remote func ReturnCreateAccountRequest(result, player_id, message):
 
 func AuthenticatePlayer(email, password, id):
 	rpc_id(1, "AuthenticatePlayer", email, password, id) 
-remote func AuthenticateResults(result, player_id, token):
-	Gateway.ReturnLoginRequest(player_id, result, token)
+remote func AuthenticateResults(result, player_id):
+	Gateway.ReturnLoginRequest(player_id, result)
+	
+func SendToken(email, player_id):
+	rpc_id(1, "SendToken", email, player_id)
+remote func ReturnToken(token, player_id):
+	Gateway.ReturnToken(token, player_id)
 
 func GetLeaderboards(player_id):
 	rpc_id(1, "GetLeaderboards", player_id) 

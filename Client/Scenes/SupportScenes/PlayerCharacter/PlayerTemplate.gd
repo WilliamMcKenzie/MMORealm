@@ -3,6 +3,7 @@ extends KinematicBody2D
 onready var animationTree = $AnimationTree
 onready var CharacterSpriteEle = $CharacterSprite
 var projectile_dict = {}
+var last_status_effects = []
 var last_sprite_data = {
 	"P" : {
 		"ColorParams" : {}
@@ -42,6 +43,14 @@ func SetSpriteData(sprite, path):
 	sprite.vframes = path[2]
 	sprite.frame_coords = path[3]
 
+func UpdateStatusEffects(status_effects):
+	last_status_effects = status_effects
+	for status_node in $HBoxContainer/HBoxContainer.get_children():
+		if status_effects.has(status_node.name):
+			status_node.visible = true
+		else:
+			status_node.visible = false
+
 func MovePlayer(new_position, animation, sprite_data):
 	set_position(new_position)
 	SetCharacterSprite(sprite_data)
@@ -67,9 +76,15 @@ func ShootProjectile():
 			
 			#Set projectile data
 			projectile_instance.projectile = projectile_data["Projectile"]
-			projectile_instance.damage = projectile_data["Damage"]
+			projectile_instance.damage = round(CalculateDamageWithMultiplier(projectile_data["Damage"]))
 			projectile_instance.tile_range = projectile_data["TileRange"]
 			projectile_instance.set_direction(projectile_data["Direction"])
 			projectile_dict.erase(projectile_time)
 			get_parent().get_parent().add_child(projectile_instance)
 			get_parent().get_parent().get_node(projectile_instance.name).look_at(projectile_data["MousePosition"])
+
+func CalculateDamageWithMultiplier(damage):
+	if last_status_effects.has("damaging"):
+		damage = floor(damage*1.25)
+		
+	return damage

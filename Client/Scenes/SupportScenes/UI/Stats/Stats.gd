@@ -65,7 +65,7 @@ func SetStats(character):
 	
 	var info = "Level " + str(character.level) + " " + character.class
 	$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/Info.text = info
-	SetCharacterSprite(character, gear)
+	UtilityFunctions.SetCharacterSprite(character, $StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/MarginContainer/Sprite)
 	
 	var health_node = stats_node.get_node("Health")
 	var attack_node = stats_node.get_node("Attack")
@@ -121,19 +121,3 @@ func SetStats(character):
 			bar_node.max_value = stats[stat].threshold
 			bar_node.add_stylebox_override("fg", blue)
 			bar_node.add_stylebox_override("bg", orange)
-
-func SetCharacterSprite(character, gear):
-	var CharacterSpriteEle = $StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/MarginContainer/Sprite
-	
-	CharacterSpriteEle.SetCharacterClass(character.class)
-	if character.gear.has("weapon") and character.gear.weapon != null: 
-		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
-	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
-	CharacterSpriteEle.ColorGear(gear)
-
-func SetSpriteData(sprite, path):
-	var spriteTexture = load("res://Assets/"+path[0]) 
-	sprite.texture = spriteTexture
-	sprite.hframes = path[1]
-	sprite.vframes = path[2]
-	sprite.frame_coords = path[3]

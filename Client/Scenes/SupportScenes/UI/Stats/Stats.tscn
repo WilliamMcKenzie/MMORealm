@@ -23,10 +23,10 @@ outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 8 )
 
-[sub_resource type="StyleBoxEmpty" id=53]
+[sub_resource type="StyleBoxEmpty" id=39]
 
 [sub_resource type="Theme" id=38]
-PanelContainer/styles/panel = SubResource( 53 )
+PanelContainer/styles/panel = SubResource( 39 )
 
 [sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 1 )
