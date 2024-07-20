@@ -12,6 +12,7 @@ func _physics_process(delta):
 	last_click += delta
 
 func _ready():
+	connect("pressed", self, "Toggle")
 	$TouchScreenButton.connect("pressed", self, "InspectItem")
 	connect("pressed", self, "InspectItem")
 	connect("mouse_exited", self, "DeInspectItem")
@@ -19,12 +20,12 @@ func _ready():
 
 var activated = false
 func Toggle():
-	if parent != "inventory":
-		return
 	if activated:
 		DeActivate()
+		activated = false
 	else:
 		Activate()
+		activated = true
 		
 func Activate():
 	$ItemIcon.modulate = Color(1,1,1)
@@ -32,10 +33,6 @@ func DeActivate():
 	$ItemIcon.modulate = Color(131.0/255,131.0/255,131.0/255)
 
 func InspectItem():
-	if last_click < 1 and parent == "inventory":
-		GameUI.get_node("Inventory").UseItem(index)
-	else:
-		last_click = 0
 	GameUI.get_node("Inventory").InspectItem(item)
 func DeInspectItem():
 	GameUI.get_node("Inventory").DeInspectItem(item)

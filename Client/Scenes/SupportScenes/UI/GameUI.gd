@@ -5,7 +5,7 @@ var is_in_ui = false
 var is_in_menu = false
 var is_in_chat = false
 var last_opened = 0
-var last_menu = "inventory"
+var last_menu = "NULL"
 
 var is_dead = false
 var last_character
@@ -24,6 +24,7 @@ func Init():
 	last_menu = "inventory"
 	animation_tracker = []
 	$LeftContainer/BarContainer/Health.ChangeHealth(100, 100)
+	Server.Init()
 
 func _ready():
 	$Inventory/BackpackContainer/CloseButton.connect("pressed", self, "Toggle", ["inventory"])
@@ -103,7 +104,7 @@ func SetCharacterData(character):
 		pass
 	elif character.exp > last_character.exp:
 		var difference = character.exp - last_character.exp
-		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("ascension", difference)
+		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("exp", difference)
 	elif character.level > last_character.level:
 		var difference = character.level - last_character.level
 		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("level", difference)
@@ -160,7 +161,6 @@ func NearbyToggleLogic():
 	else:
 		$LeftContainer.visible = false
 func Toggle(which):
-	last_menu = which
 	var node_map = {
 		"classes" : get_node("Classes"),
 		"stats" : get_node("Stats"),
@@ -173,11 +173,14 @@ func Toggle(which):
 	
 	var node
 	if which != "all":
+		last_menu = which
 		node = node_map[which]
+	elif last_menu != "NULL" and is_in_menu:
+		is_in_menu = false
+		node = node_map[last_menu]
+		node.Close()
+		return
 	else:
-		for key in node_map.keys():
-			node = node_map[key]
-			node.Close()
 		return
 	
 	if not last_character:

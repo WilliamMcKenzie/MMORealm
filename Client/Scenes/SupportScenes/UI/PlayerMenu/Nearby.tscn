@@ -229,9 +229,9 @@ custom_constants/separation = 16
 alignment = 1
 
 [node name="Teleport" type="Button" parent="PlayerMenu/PanelContainer2/MarginContainer/ResizeContainer/Options"]
-margin_top = 41.0
+margin_top = 67.0
 margin_right = 200.0
-margin_bottom = 77.0
+margin_bottom = 103.0
 rect_min_size = Vector2( 0, 36 )
 custom_fonts/font = SubResource( 63 )
 custom_styles/hover = SubResource( 64 )
@@ -242,9 +242,9 @@ custom_styles/normal = ExtResource( 9 )
 text = "Teleport"
 
 [node name="Trade" type="Button" parent="PlayerMenu/PanelContainer2/MarginContainer/ResizeContainer/Options"]
-margin_top = 93.0
+margin_top = 119.0
 margin_right = 200.0
-margin_bottom = 129.0
+margin_bottom = 155.0
 rect_min_size = Vector2( 0, 36 )
 custom_fonts/font = SubResource( 63 )
 custom_styles/hover = SubResource( 64 )
@@ -253,16 +253,3 @@ custom_styles/focus = ExtResource( 9 )
 custom_styles/disabled = ExtResource( 9 )
 custom_styles/normal = ExtResource( 9 )
 text = "Trade"
-
-[node name="Lock" type="Button" parent="PlayerMenu/PanelContainer2/MarginContainer/ResizeContainer/Options"]
-margin_top = 145.0
-margin_right = 200.0
-margin_bottom = 181.0
-rect_min_size = Vector2( 0, 36 )
-custom_fonts/font = SubResource( 63 )
-custom_styles/hover = SubResource( 64 )
-custom_styles/pressed = ExtResource( 9 )
-custom_styles/focus = ExtResource( 9 )
-custom_styles/disabled = ExtResource( 9 )
-custom_styles/normal = ExtResource( 9 )
-text = "Lock"

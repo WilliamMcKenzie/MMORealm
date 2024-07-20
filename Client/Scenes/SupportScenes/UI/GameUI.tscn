@@ -43,9 +43,6 @@ anchor_bottom = 1.0
 margin_top = -212.0
 margin_bottom = 0.0
 
-[node name="TradeRequest" parent="." instance=ExtResource( 18 )]
-visible = false
-
 [node name="EnterPortal" type="PanelContainer" parent="."]
 visible = false
 anchor_left = 0.5
@@ -145,6 +142,9 @@ visible = false
 [node name="Nearby" parent="." instance=ExtResource( 14 )]
 
 [node name="TradingMenu" parent="." instance=ExtResource( 16 )]
+
+[node name="TradeRequest" parent="." instance=ExtResource( 18 )]
+visible = false
 
 [node name="GameButtons" type="Control" parent="."]
 anchor_left = 1.0

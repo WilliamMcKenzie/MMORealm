@@ -255,7 +255,9 @@ func ShowIndicator(type, amount):
 	var id = str(OS.get_system_time_msecs())
 	
 	indicator.name = id
-	if type == "damage" and amount > 0:
+	if type == "damage" and amount == 0:
+		return
+	if type == "damage" and amount < 0:
 		indicator.get_node("Label").text = str(amount)
 	else:
 		indicator.get_node("Label").text = "+"+str(amount)

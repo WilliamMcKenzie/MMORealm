@@ -92,7 +92,49 @@ remote func AcceptTrade(player1_name):
 
 func SendTradeData(player_id, other_player_inventory, other_player_selection):
 	rpc_id(int(player_id), "RecieveTradeData", other_player_inventory, other_player_selection)
+
+remote func OfferWithdrawn(player_id1, player_id2):
+	rpc_id(int(player_id1), "OfferWithdrawn")
+	rpc_id(int(player_id2), "OfferWithdrawn")
+
+remote func SelectItem(i):
+	var player_id = get_tree().get_rpc_sender_id()
 	
+	var instance_tree = player_state_collection[int(player_id)]["I"]
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	player_container.SelectItem(i)
+	
+remote func DeselectItem(i):
+	var player_id = get_tree().get_rpc_sender_id()
+	
+	var instance_tree = player_state_collection[int(player_id)]["I"]
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	player_container.DeselectItem(i)
+
+remote func AcceptOffer():
+	var player_id = get_tree().get_rpc_sender_id()
+	
+	var instance_tree = player_state_collection[int(player_id)]["I"]
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	player_container.AcceptOffer()
+
+remote func CancelOffer():
+	var player_id = get_tree().get_rpc_sender_id()
+	
+	var instance_tree = player_state_collection[int(player_id)]["I"]
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	player_container.CancelOffer(true)
+
+func ForceCancelTrade(player_id):
+	rpc_id(int(player_id), "ForceCancelTrade")
+
+func OfferAccepted(player_id):
+	rpc_id(int(player_id), "OfferAccepted")
+
+func FinalizeTrade(player_id1, player_id2):
+	rpc_id(int(player_id1), "FinalizeTrade")
+	rpc_id(int(player_id2), "FinalizeTrade")
+
 #INVENTORY/ITEMS
 remote func FetchPlayerData(email):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -133,7 +175,7 @@ remote func ChangeItem(to_data, from_data):
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).LootItem(to_data, from_data)
 	else:
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(to_data, from_data)
-		
+	
 remote func DropItem(data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]

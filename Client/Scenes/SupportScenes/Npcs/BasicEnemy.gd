@@ -10,38 +10,27 @@ var projectile_dict = {}
 func _physics_process(delta):
 	if not $AnimationPlayer.is_playing():
 		$AnimationPlayer.play("Idle")
-	if projectile_dict != {}:
-		ShootProjectile()
 
 func _ready():
 	$Area2D.connect("area_entered", self, "OnHit")
 
+var theoretical_position = position
 func MoveEnemy(new_position):
-	var old_position = position
-	set_position(new_position)
-	
-	if new_position.x-old_position.x > 0:
-		$Sprite.flip_h = false
-	elif new_position.x-old_position.x < 0:
-		$Sprite.flip_h = true
+	theoretical_position = new_position
+	if Server.IsWithinRange(new_position):
+		self.visible = true
+		var old_position = position
+		set_position(theoretical_position)
+		
+		if new_position.x-old_position.x > 0:
+			$Sprite.flip_h = false
+		elif new_position.x-old_position.x < 0:
+			$Sprite.flip_h = true
+	else:
+		self.visible = false
 
 func ShootProjectile():
-	for projectile_time in projectile_dict.keys():
-		if projectile_time <= OS.get_system_time_msecs():
-			$AnimationPlayer.play("Attack")
-			var projectile_data = projectile_dict[projectile_time]
-			var projectile_node = load("res://Scenes/SupportScenes/Projectiles/Enemies/" + str(projectile_data["Projectile"]) + "/" + str(projectile_data["Projectile"]) + ".tscn")
-			var projectile_instance = projectile_node.instance()
-			projectile_instance.position = projectile_data["Position"]
-			
-			#Set projectile data
-			projectile_instance.damage = projectile_data["Damage"]
-			projectile_instance.tile_range = projectile_data["TileRange"]
-			projectile_instance.set_direction(projectile_data["Direction"])
-			projectile_instance.look_at(projectile_data["TargetPosition"])
-			projectile_dict.erase(projectile_time)
-			get_parent().get_parent().add_child(projectile_instance)
-			get_parent().get_parent().get_node(projectile_instance.name).look_at(projectile_data["TargetPosition"])
+	$AnimationPlayer.play("Attack")
 
 #Damage Taken section
 func OnHit(body):

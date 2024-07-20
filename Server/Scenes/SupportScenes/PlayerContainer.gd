@@ -59,6 +59,9 @@ func _physics_process(delta):
 
 #TRADE
 
+var accepted = false
+var other_player_accepted = false
+
 var other_player_container
 var other_player_inventory = []
 var other_player_selection = [false,false,false,false,false,false,false,false]
@@ -74,34 +77,110 @@ func StartTrade(other_player_name):
 	get_node("/root/Server").SendTradeData(name, other_player_inventory, other_player_selection)
 
 func ResetTrade():
+	accepted = false
+	other_player_accepted = false
 	other_player_inventory = []
 	other_player_selection = [false,false,false,false,false,false,false,false]
 	selection = [false,false,false,false,false,false,false,false]
 
-func FinishTrade():
+func AcceptOffer():
 	if other_player_inventory.hash() != other_player_container.character.inventory.hash():
-		get_node("/root/Server").ForceCancelTrade(int(other_player_container.name))
+		get_node("/root/Server").ForceCancelTrade(other_player_container.name)
 	
+	#If someone else already accepted no need to check
+	#We can go straight to moving the items
+	if other_player_accepted:
+		FinishTrade()
+		return
+	
+	#Check if inventory will overflow
 	var free_spaces = 0
-	var taken_spaces = 0
+	var selection_count = 0
+	
 	for i in range(character.inventory.size()):
 		if selection[i]:
 			free_spaces += 1
-		if other_player_selection[i]:
-			taken_spaces += 1
-		if character.inventory[i]:
-			taken_spaces += 1
-		else:
+			selection_count += 1
+		if not other_player_selection[i] and not character.inventory[i]:
 			free_spaces += 1
-	if taken_spaces > free_spaces:
+	
+	var other_free_spaces = 0
+	var other_selection_count = 0
+	
+	for i in range(other_player_inventory.size()):
+		if other_player_selection[i]:
+			other_selection_count += 1
+			other_free_spaces += 1
+		if not selection[i] and not other_player_inventory[i]:
+			other_free_spaces += 1
+	
+	var other_overflow = selection_count > other_free_spaces
+	var self_overflow = other_selection_count > free_spaces
+	
+	if other_overflow or self_overflow:
 		return
+	
+	other_player_container.OtherPlayerAccepts()
+	accepted = true
+
+func OtherPlayerAccepts():
+	other_player_accepted = true
+	get_node("/root/Server").OfferAccepted(name)
+	get_node("/root/Server").OfferAccepted(other_player_container.name)
 
 func SelectItem(i):
-	pass
+	accepted = false
+	other_player_accepted = false
+	other_player_container.accepted = false
+	other_player_container.other_player_accepted = false
+	
+	selection[i] = true
+	other_player_container.other_player_selection = selection
+	get_node("/root/Server").OfferWithdrawn(other_player_container.name, name)
+	get_node("/root/Server").SendTradeData(other_player_container.name, character.inventory, selection)
+	
+func DeselectItem(i):
+	accepted = false
+	other_player_accepted = false
+	other_player_container.accepted = false
+	other_player_container.other_player_accepted = false
+	
+	selection[i] = false
+	other_player_container.other_player_selection = selection
+	get_node("/root/Server").OfferWithdrawn(other_player_container.name, name)
+	get_node("/root/Server").SendTradeData(other_player_container.name, character.inventory, selection)
 
-func DeSelectItem(i):
-	pass
+func CancelOffer(original):
+	if original:
+		other_player_container.CancelOffer(false)
+	else:
+		get_node("/root/Server").ForceCancelTrade(name)
 
+func FinishTrade():
+	var other_player_new_items = []
+	var our_new_items = []
+	
+	for i in range(character.inventory.size()):
+		if selection[i]:
+			other_player_new_items.append(character.inventory[i].duplicate())
+			character.inventory[i] = null
+		if other_player_selection[i]:
+			our_new_items.append(other_player_inventory[i].duplicate())
+			other_player_inventory[i] = null
+	
+	for i in range(character.inventory.size()):
+		if character.inventory[i] == null and our_new_items.size() > 0:
+			character.inventory[i] = our_new_items[0].duplicate()
+			our_new_items.pop_front()
+		if other_player_inventory[i] == null and other_player_new_items.size() > 0:
+			other_player_inventory[i] = other_player_new_items[0].duplicate()
+			other_player_new_items.pop_front()
+			
+	other_player_container.character.inventory = other_player_inventory
+	get_node("/root/Server").SendCharacterData(name, character)
+	get_node("/root/Server").SendCharacterData(other_player_container.name, other_player_container.character)
+	get_node("/root/Server").FinalizeTrade(other_player_container.name, name)
+	
 #ABILITY
 
 func UseAbility():
@@ -253,6 +332,8 @@ func LootItem(to_data, from_data):
 		loot_id = from_data.parent
 	
 	#Check if it is soulbound, if so make sure the right player is requesting
+	if not get_parent().get_parent().get_parent().object_list.has(loot_id):
+		return
 	if get_parent().get_parent().get_parent().object_list[loot_id].soulbound == true and get_parent().get_parent().get_parent().object_list[loot_id].player_id != name:
 		return
 	var loot = get_parent().get_parent().get_parent().object_list[loot_id].loot

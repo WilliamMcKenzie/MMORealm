@@ -30,8 +30,9 @@ var projectile_pool = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Po
 #For player hierarchy
 var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 
-func _ready():
-	pass
+func Init():
+	current_instance_tree = ["nexus"]
+
 func _physics_process(delta):
 	client_clock = OS.get_system_time_msecs()+latency
 
@@ -42,6 +43,14 @@ func UpdateLeftJoystick(output):
 	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").left_joystick_output = output.normalized()
 
+#Check if vector is within a certain range of player
+func IsWithinRange(_vector, _range = 16):
+	var player_position = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position
+	if player_position.distance_to(_vector) <= _range*8:
+		return true
+	else:
+		return false
+	
 func ConnectToServer():
 	if not token:
 		var start = OS.get_system_time_secs()
@@ -121,13 +130,37 @@ func AcceptTrade(player_name):
 	rpc_id(1, "AcceptTrade", player_name)
 
 remote func StartTrade(player_name):
-	if GameUI.is_in_menu:
-		GameUI.Toggle(GameUI.last_menu)
+	GameUI.Toggle("all")
+	GameUI.is_in_menu = false
 	GameUI.get_node("TradingMenu").other_player_name = player_name
 	GameUI.Toggle("trade")
+	
+	if GameUI.is_in_menu == false:
+		GameUI.Toggle("trade")
 
-func RecieveTradeData(other_player_inventory, other_player_selection):
+remote func RecieveTradeData(other_player_inventory, other_player_selection):
 	GameUI.get_node("TradingMenu").SetTradeData(other_player_inventory, other_player_selection)
+remote func OfferWithdrawn():
+	GameUI.get_node("TradingMenu").OfferWithdrawn()
+
+func SelectItem(i):
+	rpc_id(1, "SelectItem", i)
+func DeselectItem(i):
+	rpc_id(1, "DeselectItem", i)
+func AcceptOffer():
+	rpc_id(1, "AcceptOffer")
+func CancelOffer():
+	rpc_id(1, "CancelOffer")
+
+remote func ForceCancelTrade():
+	GameUI.is_in_menu = true
+	GameUI.Toggle("trade")
+remote func OfferAccepted():
+	GameUI.get_node("TradingMenu").OfferAccepted()
+
+remote func FinalizeTrade():
+	GameUI.is_in_menu = true
+	GameUI.Toggle("trade")
 
 #INVENTORY/ITEMS
 remote func RecieveAccountData(account_data):
@@ -150,6 +183,7 @@ func DropItem(data):
 func IncreaseStat(stat):
 	rpc_id(1, "IncreaseStat", stat)
 
+
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
 	get_node("../SceneHandler/"+GetCurrentInstance()).SpawnNewPlayer(player_id, spawn_position)
@@ -170,12 +204,13 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 	if instance_tree != current_instance_tree:
 		pass
 	elif get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
+		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)).ShootProjectile()
 		if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").has_node("Pool"):
-			for i in range(get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child_count()):
-				if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).is_active == false:
-					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).projectile_data = projectile_data
-					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).is_active = true
-					get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_child(i).Activate()
+			for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_children():
+				if child.is_active == false:
+					child.projectile_data = projectile_data
+					child.is_active = true
+					child.Activate()
 					break
 		else:
 			CreatePool(projectile_pool_amount)

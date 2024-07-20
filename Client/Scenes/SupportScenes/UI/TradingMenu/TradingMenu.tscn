@@ -92,20 +92,19 @@ region = Rect2( 30, 200, 10, 10 )
 atlas = ExtResource( 5 )
 region = Rect2( 50, 200, 10, 10 )
 
-[sub_resource type="DynamicFont" id=48]
-outline_size = 1
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 8 )
-
-[sub_resource type="AtlasTexture" id=49]
-atlas = ExtResource( 5 )
-region = Rect2( 240, 220, 10, 10 )
-
 [sub_resource type="DynamicFont" id=47]
 size = 24
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=48]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="StyleBoxFlat" id=53]
+bg_color = Color( 0, 0, 0, 0.313726 )
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.313726 )
@@ -812,30 +811,60 @@ margin_bottom = 19.0
 custom_colors/font_color = Color( 0, 0.576471, 1, 1 )
 text = "(+5)"
 
-[node name="Options" type="HBoxContainer" parent="."]
-visible = false
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -106.0
-margin_top = 12.0
-margin_right = 106.0
-margin_bottom = 52.0
+[node name="GiveContainer" type="HBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 91.0
+margin_right = 200.0
+margin_bottom = 4.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 0
+custom_constants/separation = 16
+alignment = 2
+
+[node name="Options" type="VBoxContainer" parent="GiveContainer"]
+margin_right = 70.0
+margin_bottom = 142.0
 size_flags_vertical = 0
 custom_constants/separation = 16
 
-[node name="Accept" type="MarginContainer" parent="Options"]
+[node name="MarginContainer" type="MarginContainer" parent="GiveContainer/Options"]
+margin_left = 37.0
 margin_right = 70.0
-margin_bottom = 40.0
+margin_bottom = 30.0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+custom_constants/margin_top = 8
+
+[node name="PlayerName" type="Label" parent="GiveContainer/Options/MarginContainer"]
+margin_top = 8.0
+margin_right = 33.0
+margin_bottom = 30.0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 47 )
+text = "You"
+
+[node name="Accept" type="MarginContainer" parent="GiveContainer/Options"]
+margin_top = 46.0
+margin_right = 70.0
+margin_bottom = 86.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="Button" type="Button" parent="Options/Accept"]
+[node name="Green" type="Button" parent="GiveContainer/Options/Accept"]
+visible = false
 margin_right = 70.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 70, 40 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_colors/font_color_disabled = Color( 0.458824, 0.776471, 0.462745, 1 )
+custom_colors/font_color_focus = Color( 0.458824, 0.776471, 0.462745, 1 )
 custom_colors/font_color = Color( 0.458824, 0.776471, 0.462745, 1 )
+custom_colors/font_color_hover = Color( 0.568627, 0.917647, 0.572549, 1 )
+custom_colors/font_color_pressed = Color( 0.34902, 0.592157, 0.34902, 1 )
 custom_fonts/font = SubResource( 48 )
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 6 )
@@ -844,29 +873,63 @@ custom_styles/disabled = ExtResource( 6 )
 custom_styles/normal = ExtResource( 6 )
 text = "Accept"
 
-[node name="TextureRect" type="TextureRect" parent="Options"]
-margin_left = 86.0
-margin_right = 126.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 0 )
-texture = SubResource( 49 )
-expand = true
-stretch_mode = 5
-
-[node name="Cancel" type="MarginContainer" parent="Options"]
-margin_left = 142.0
-margin_right = 212.0
-margin_bottom = 40.0
-size_flags_horizontal = 3
-size_flags_vertical = 0
-
-[node name="Button" type="Button" parent="Options/Cancel"]
+[node name="Button" type="Button" parent="GiveContainer/Options/Accept"]
 margin_right = 70.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 70, 40 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_colors/font_color_disabled = Color( 0.796078, 0.796078, 0.796078, 1 )
+custom_colors/font_color_focus = Color( 0.796078, 0.796078, 0.796078, 1 )
+custom_colors/font_color = Color( 0.796078, 0.796078, 0.796078, 1 )
+custom_colors/font_color_hover = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_colors/font_color_pressed = Color( 0.717647, 0.717647, 0.717647, 1 )
+custom_fonts/font = SubResource( 48 )
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 6 )
+custom_styles/focus = ExtResource( 6 )
+custom_styles/disabled = ExtResource( 6 )
+custom_styles/normal = ExtResource( 6 )
+text = "Accept"
+
+[node name="Red" type="Button" parent="GiveContainer/Options/Accept"]
+visible = false
+margin_right = 70.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 70, 40 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color_disabled = Color( 0.847059, 0.286275, 0.286275, 1 )
+custom_colors/font_color_focus = Color( 0.847059, 0.286275, 0.286275, 1 )
 custom_colors/font_color = Color( 0.847059, 0.286275, 0.286275, 1 )
+custom_colors/font_color_hover = Color( 0.929412, 0.341176, 0.341176, 1 )
+custom_colors/font_color_pressed = Color( 0.592157, 0.188235, 0.188235, 1 )
+custom_fonts/font = SubResource( 48 )
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 6 )
+custom_styles/focus = ExtResource( 6 )
+custom_styles/disabled = ExtResource( 6 )
+custom_styles/normal = ExtResource( 6 )
+text = "Accept"
+
+[node name="Cancel" type="MarginContainer" parent="GiveContainer/Options"]
+margin_top = 102.0
+margin_right = 70.0
+margin_bottom = 142.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="GiveContainer/Options/Cancel"]
+margin_right = 70.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 70, 40 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color_disabled = Color( 0.847059, 0.286275, 0.286275, 1 )
+custom_colors/font_color_focus = Color( 0.847059, 0.286275, 0.286275, 1 )
+custom_colors/font_color = Color( 0.847059, 0.286275, 0.286275, 1 )
+custom_colors/font_color_hover = Color( 0.929412, 0.341176, 0.341176, 1 )
+custom_colors/font_color_pressed = Color( 0.592157, 0.188235, 0.188235, 1 )
 custom_fonts/font = SubResource( 48 )
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 6 )
@@ -875,40 +938,13 @@ custom_styles/disabled = ExtResource( 6 )
 custom_styles/normal = ExtResource( 6 )
 text = "Cancel"
 
-[node name="GiveContainer" type="HBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 62.0
-margin_right = 200.0
-margin_bottom = 4.0
-grow_horizontal = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="GiveContainer"]
-margin_right = 123.0
-margin_bottom = 38.0
-size_flags_horizontal = 8
-size_flags_vertical = 0
-custom_constants/margin_right = 8
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
-
-[node name="PlayerName" type="Label" parent="GiveContainer/MarginContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 115.0
-margin_bottom = 30.0
-size_flags_vertical = 0
-custom_fonts/font = SubResource( 47 )
-text = "Crepertime"
-
 [node name="PanelContainer2" type="PanelContainer" parent="GiveContainer"]
-margin_left = 127.0
-margin_right = 183.0
+margin_left = 86.0
+margin_right = 142.0
 margin_bottom = 364.0
+size_flags_horizontal = 8
 theme = ExtResource( 2 )
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 53 )
 
 [node name="MarginContainer" type="MarginContainer" parent="GiveContainer/PanelContainer2"]
 margin_right = 56.0
@@ -1020,7 +1056,7 @@ script = ExtResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="GetContainer"]
 margin_left = 60.0
-margin_right = 161.0
+margin_right = 183.0
 margin_bottom = 38.0
 size_flags_vertical = 0
 custom_constants/margin_right = 8
@@ -1031,11 +1067,11 @@ custom_constants/margin_bottom = 8
 [node name="OtherPlayerName" type="Label" parent="GetContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 93.0
+margin_right = 115.0
 margin_bottom = 30.0
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 47 )
-text = "WilliamQM"
+text = "Crepertime"
 
 [node name="TradingAnimations" type="AnimationPlayer" parent="."]
 anims/DeInspectItem = SubResource( 13 )

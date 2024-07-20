@@ -19,7 +19,7 @@ func _physics_process(delta):
 			world_state["E"] = node.enemy_list
 			world_state["O"] = node.object_list
 			world_state["T"] = OS.get_system_time_msecs()
-				
+			
 			#We add speed checks here
 			for id in get_node("/root/Server").player_instance_tracker[instance_tree]:
 				get_node("/root/Server").SendWorldState(id, world_state)

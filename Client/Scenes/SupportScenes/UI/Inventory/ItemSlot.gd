@@ -81,6 +81,19 @@ func drop_data(position, data):
 func InspectItem():
 	if last_click < 1 and parent == "inventory":
 		GameUI.get_node("Inventory").UseItem(index)
+	elif last_click < 1 and parent != "gear" and item:
+		for _index in range(GameUI.last_character.inventory.size()):
+			if GameUI.last_character.inventory[_index] == null:
+				var current_data = {
+					"parent" : "inventory",
+					"index" : _index
+				}
+				var data = {
+					"parent" : parent,
+					"index" : index
+				}
+				GameUI.get_node("Inventory").ChangeItem(current_data, data)
+				break
 	else:
 		last_click = 0
 	GameUI.get_node("Inventory").InspectItem(item)

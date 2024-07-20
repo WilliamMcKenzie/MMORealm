@@ -20,6 +20,11 @@ func InspectItem():
 func DeInspectItem():
 	GameUI.get_node("Inventory").DeInspectItem(item)
 
+func Activate():
+	$ItemIcon.modulate = Color(1,1,1)
+func DeActivate():
+	$ItemIcon.modulate = Color(131.0/255,131.0/255,131.0/255)
+
 func SetItem(_item, _quantity):
 	item = _item
 	quantity = _quantity

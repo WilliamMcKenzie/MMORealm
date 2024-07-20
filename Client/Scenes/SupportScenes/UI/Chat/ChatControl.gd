@@ -85,5 +85,5 @@ func _physics_process(delta):
 		chat_input.grab_focus()
 		chat_input.text = "/"
 		chat_input.caret_position = chat_input.text.length()
-		if GameUI.is_in_menu:
-			GameUI.Toggle("all")
+		if GameUI.is_in_menu and GameUI.last_menu != "trade":
+			GameUI.Toggle(GameUI.last_menu)

@@ -1,14 +1,18 @@
 extends CanvasLayer
 
+var accepted = false
+var mode = "closed"
 var inspecting_item = null
 
+var other_player_inventory = []
 var other_player_name = ""
-var other_player_selection = []
-var self_selection = []
+var other_player_selection = [false,false,false,false,false,false,false,false]
+var self_selection = [false,false,false,false,false,false,false,false]
 
 func _ready():
-	$Options/Cancel/Button.connect("button_down", self, "CancelOffer")
-	$Options/Accept/Button.connect("button_down", self, "AcceptOffer")
+	$GiveContainer/Options/Cancel/Button.connect("button_down", self, "CancelOffer")
+	$GiveContainer/Options/Accept/Button.connect("button_down", self, "AcceptOffer")
+	$GiveContainer/Options/Accept/Green.connect("button_down", self, "AcceptOffer")
 
 func InspectItem(_item):
 	if not _item:
@@ -154,10 +158,13 @@ func ToggleTradeMenu():
 	get_parent().Toggle("trade")
 
 func Open():
+	visible = true
+	if mode == "open":
+		return
+	ResetTrade()
 	SetInventory(GameUI.last_character.inventory)
 	$GetContainer/MarginContainer/OtherPlayerName.text = other_player_name
-	$GiveContainer/MarginContainer/PlayerName.text = GameUI.account_data.username
-	$Options.visible = true
+	$GiveContainer/Options.visible = true
 	
 	var give_tween = $GiveTween
 	var get_tween = $GetTween
@@ -169,22 +176,79 @@ func Open():
 	give_tween.start()
 	get_tween.interpolate_property(get_element, "rect_position", get_element.rect_position, Vector2(200, 0)+get_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	get_tween.start()
+	mode = "open"
 
 func Close():
-	$Options.visible = false
+	visible = false
+	if mode == "closed":
+		return
+	$GiveContainer/Options.visible = false
 	
 	var give_tween = $GiveTween
 	var get_tween = $GetTween
 
 	var give_element = $GiveContainer
 	var get_element = $GetContainer
-	
 	give_tween.interpolate_property(give_element, "rect_position", give_element.rect_position, Vector2(200, 0)+give_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	give_tween.start()
 	get_tween.interpolate_property(get_element, "rect_position", get_element.rect_position, Vector2(-200, 0)+get_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	get_tween.start()
+	mode = "closed"
 
-func SetTradeData(other_player_inventory, other_player_selection):
+func OfferAccepted():
+	accepted = true
+	$GiveContainer/Options/Accept/Button.visible = false
+	$GiveContainer/Options/Accept/Green.visible = true
+	$GiveContainer/Options/Accept/Red.visible = false
+func OfferWithdrawn():
+	accepted = false
+	$GiveContainer/Options/Accept/Button.visible = true
+	$GiveContainer/Options/Accept/Green.visible = false
+	$GiveContainer/Options/Accept/Red.visible = false
+func _physics_process(delta):
+	if mode == "closed":
+		return
+	
+	var character = GameUI.last_character
+	var overflow = false
+	
+	var free_spaces = 0
+	var selection_count = 0
+	
+	for i in range(character.inventory.size()):
+		if self_selection[i]:
+			free_spaces += 1
+			selection_count += 1
+		if not other_player_selection[i] and not character.inventory[i]:
+			free_spaces += 1
+	
+	var other_free_spaces = 0
+	var other_selection_count = 0
+	
+	for i in range(other_player_inventory.size()):
+		if other_player_selection[i]:
+			other_selection_count += 1
+			other_free_spaces += 1
+		if not self_selection[i] and not other_player_inventory[i]:
+			other_free_spaces += 1
+	
+	if selection_count > other_free_spaces:
+		overflow = true
+	if other_selection_count > free_spaces:
+		overflow = true
+	
+	if overflow:
+		$GiveContainer/Options/Accept/Button.visible = false
+		$GiveContainer/Options/Accept/Green.visible = false
+		$GiveContainer/Options/Accept/Red.visible = true
+	elif accepted:
+		OfferAccepted()
+	else:
+		OfferWithdrawn()
+
+func SetTradeData(_other_player_inventory, _other_player_selection):
+	other_player_selection = _other_player_selection
+	other_player_inventory = _other_player_inventory
 	var inventory_slots = $GetContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()
 	var i = 0
 	
@@ -208,14 +272,30 @@ func SetInventory(inventory):
 		slot.SetItem(inventory[i], 1)
 		slot.index = i
 		slot.parent = "inventory"
-		slot.connect("pressed", self, "SelectItem", [i])
+		slot.DeActivate()
+		slot.connect("pressed", self, "ToggleSelection", [i])
 		i += 1
 
+func ResetTrade():
+	accepted = false
+	other_player_name = ""
+	other_player_selection = [false,false,false,false,false,false,false,false]
+	self_selection = [false,false,false,false,false,false,false,false]
+
+func ToggleSelection(i):
+	if self_selection[i]:
+		DeselectItem(i)
+	else:
+		SelectItem(i)
 func SelectItem(i):
+	self_selection[i] = true
 	Server.SelectItem(i)
 func DeselectItem(i):
+	self_selection[i] = false
 	Server.DeselectItem(i)
 func AcceptOffer():
 	Server.AcceptOffer()
 func CancelOffer():
 	Server.CancelOffer()
+	GameUI.is_in_menu = true
+	GameUI.Toggle("trade")

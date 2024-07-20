@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+var active = false
 var inspecting_item = null
 
 var loot = null
@@ -157,6 +158,9 @@ func ToggleInventory():
 	get_parent().Toggle("inventory")
 
 func Open():
+	if active:
+		return
+	
 	var gear_tween = $GearTween
 	var backpack_tween = $BackpackTween
 	var loot_tween = $LootTween
@@ -180,8 +184,12 @@ func Open():
 	yield(timer, "timeout")
 	
 	$InventoryBackground.visible = true
+	active = true
 
 func Close():
+	if not active:
+		return
+	
 	var gear_tween = $GearTween
 	var backpack_tween = $BackpackTween
 	var loot_tween = $LootTween
@@ -197,6 +205,7 @@ func Close():
 	loot_tween.interpolate_property(loot_element, "rect_position", loot_element.rect_position, Vector2(-100, 0)+loot_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	loot_tween.start()
 	$InventoryBackground.visible = false
+	active = false
 
 func SetInventory(inventory):
 	var inventory_slots = $BackpackContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()

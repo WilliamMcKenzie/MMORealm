@@ -12,14 +12,11 @@ func _ready():
 	
 	$PlayerMenu/PanelContainer2/MarginContainer/ResizeContainer/Options/Teleport.connect("pressed", self, "Teleport")
 	$PlayerMenu/PanelContainer2/MarginContainer/ResizeContainer/Options/Trade.connect("pressed", self, "Trade")
-	$PlayerMenu/PanelContainer2/MarginContainer/ResizeContainer/Options/Lock.connect("pressed", self, "Lock")
 
 func Teleport():
 	Server.SendChatMessage("/tp " + viewing_player_name)
 func Trade():
 	Server.SendChatMessage("/trade " + viewing_player_name)
-func Lock():
-	Server.SendChatMessage("/lock " + viewing_player_name)
 
 var sync_clock_counter = 0
 func _physics_process(delta):

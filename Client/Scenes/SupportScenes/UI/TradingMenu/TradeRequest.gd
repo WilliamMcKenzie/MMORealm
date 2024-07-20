@@ -13,6 +13,8 @@ func Open(player_name):
 	
 func Accept():
 	get_node("/root/Server").AcceptTrade(current_requester)
+	visible = false
+	current_requester = null
 	
 func Reject():
 	visible = false

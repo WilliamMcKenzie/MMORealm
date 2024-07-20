@@ -196,11 +196,11 @@ var overgrown_temple_enemies = {
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
-			"formula" : "x",
+			"formula" : "0",
 			"damage" : 10,
 			"wait" : 1,
 			"speed" : 10,
-			"tile_range" : 8,
+			"tile_range" : 5,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}
