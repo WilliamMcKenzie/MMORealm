@@ -17,7 +17,6 @@ func _ready():
 		$CharacterSelection.visible = true
 
 func AuthenticatedUser():
-	print("AUTH")
 	Gateway.ConnectToServer(email, password, 4)
 
 func UpdateGold():
@@ -40,6 +39,7 @@ func SelectionScreen(account_data):
 	Gateway.ConnectToServer(email, password, 5)
 	ClientAuth.cached_email = email
 	ClientAuth.cached_password = password
+	ClientAuth.SaveUser(email, password)
 	
 	var selection_screen = get_node("CharacterSelection")
 	selection_screen.characters = account_data.characters

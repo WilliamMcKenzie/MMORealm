@@ -32,13 +32,13 @@ config/icon="res://icon.png"
 
 [autoload]
 
+ClientAuth="*res://Data/ClientAuth.gd"
 Server="*res://Scenes/Singletons/Server.gd"
 Gateway="*res://Scenes/Singletons/Gateway.gd"
 GameUI="*res://Scenes/SupportScenes/UI/GameUI.tscn"
 ClientData="*res://Data/ClientData.gd"
 UtilityFunctions="*res://Scenes/Singletons/UtilityFunctions.gd"
 ErrorPopup="*res://Scenes/SupportScenes/UI/ErrorPopup.tscn"
-ClientAuth="*res://Data/ClientAuth.gd"
 
 [display]
 

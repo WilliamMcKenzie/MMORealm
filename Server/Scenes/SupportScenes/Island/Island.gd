@@ -266,7 +266,7 @@ func ArrayToTiles():
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": mountain_enemies[enemy_index]}
 				spawn_point_index += 1
 			#For visualizing realms
-			#$Tiles.set_cell(x, y, map_as_array[x][y])
+			#$TileMap.set_cell(x, y, map_as_array[x][y])
 func PopulateObstacles():
 	for x in range(map_size.x):
 		for y in range(map_size.y):

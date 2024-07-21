@@ -33,7 +33,9 @@ func _physics_process(delta):
 		$Container/ReputationContainer/Placement.visible = true
 		$Container/ReputationContainer/Placement/TextureRect.texture.region = Rect2(leaderboards_map[leaderboard_position.which], Vector2(10,10))
 		$Container/ReputationContainer/Placement/Label.text = "#"+str(leaderboard_position.position)
-		
+	else:
+		$Container/ReputationContainer/Placement.visible = false
+	
 	reputation_node.text = str(round(reputation))
 
 func CalculateRanking(reputation):

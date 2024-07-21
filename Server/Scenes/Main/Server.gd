@@ -26,6 +26,8 @@ var player_id_by_name = {}
 func _ready():
 	StartServer()
 	
+	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
+	
 	#Open realm
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
@@ -463,6 +465,8 @@ remote func RecieveChatMessage(message):
 			rpc("RecieveChat", message, player_name, player_container.character.class)
 
 #PLAYER INTERACTION
+func SendError(player_id, error):
+	rpc_id(player_id, "RecieveError", error)
 
 func NotifyDeath(player_id, enemy_name):
 	var instance_tree = player_state_collection[int(player_id)]["I"]

@@ -30,7 +30,7 @@ func _ready():
 		CharacterSpriteEle.SetCharacterWeapon(ClientData.GetItem(character.gear.weapon.item).type)
 	
 	SetSpriteData(CharacterSpriteEle, characterPath)
-	CharacterSpriteEle.ColorGear(gear)
+	CharacterSpriteEle.ColorGear(gear, character.class)
 	
 	PlayButton.connect("pressed", self, "EnterGame")
 	

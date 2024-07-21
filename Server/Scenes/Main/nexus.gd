@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 var collision_layer = 1
 var instance_tree = []
@@ -45,11 +45,16 @@ func _physics_process(delta):
 		projectile_list[projectile_id]["path"] += vertical_move_vector
 		projectile_list[projectile_id]["position"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
 		
+		var space_state = get_world_2d().direct_space_state
+		
+		var obstacle_collision = space_state.intersect_point(projectile_list[projectile_id]["position"], 1, [], 1, true, true).size() > 0 and space_state.intersect_point(projectile_list[projectile_id]["position"], 1, [], 1, true, true)[0].collider.name != "PlayerHitbox"
+		var max_range = projectile_list[projectile_id]["start_position"].distance_to(projectile_list[projectile_id]["path"]) >= projectile_list[projectile_id]["tile_range"]*8
+		
 		for player_id in player_list.keys():
 			if not projectile_list[projectile_id]["hit_players"].has(player_id) and player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
 				projectile_list[projectile_id]["hit_players"][player_id] = true
 				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_name"])
-		if projectile_list[projectile_id]["start_position"].distance_to(projectile_list[projectile_id]["path"]) >= projectile_list[projectile_id]["tile_range"]*8:
+		if obstacle_collision or max_range:
 			projectile_list.erase(projectile_id)
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
@@ -86,21 +91,34 @@ func _physics_process(delta):
 			if (enemy_list[enemy_id]["behavior"] == 1):
 				
 				var target = enemy_list[enemy_id]["target"]
-				var position = enemy_list[enemy_id]["position"]
+				var pos = enemy_list[enemy_id]["position"]
 				
-				var x_move = -cos(position.angle_to_point(target))*(0.1/tick_rate)
-				var y_move = -sin(position.angle_to_point(target))*(0.1/tick_rate)
+				var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)
+				var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)
 				
 				enemy_list[enemy_id]["position"] += Vector2(x_move,y_move)
 				
-				if (target - position).length() <= 4:
-					if (enemy_list[enemy_id]["anchor_position"]-position).length() >= 20:
+				if (target - pos).length() <= 4:
+					if (enemy_list[enemy_id]["anchor_position"]-pos).length() >= 20:
 						enemy_list[enemy_id]["target"] = enemy_list[enemy_id]["anchor_position"]
 					else:
-						enemy_list[enemy_id]["target"] = position + Vector2(rand_range(-7,7),rand_range(-7,7))
+						enemy_list[enemy_id]["target"] = DetermineCollisionSafePoint(pos, pos + Vector2(rand_range(-7,7),rand_range(-7,7)))
 				
 		if use_chunks == false:
 			last_tick = running_time
+
+func DetermineCollisionSafePoint(pos, point):
+	
+	var space_state = get_world_2d().direct_space_state
+	var result = true
+	var spots_to_check = [Vector2(-4,0), Vector2(4,0), Vector2(-4,-8), Vector2(4,-8)]
+	for spot in spots_to_check:
+		if space_state.intersect_point(point+position+spot, 1, [], 1, true, true).size() > 0:
+			result = false
+	
+	if result:
+		return point
+	return pos
 
 func UpdatePlayer(player_id, player_state):
 	if player_list.has(str(player_id)):
@@ -108,6 +126,16 @@ func UpdatePlayer(player_id, player_state):
 		player_list[str(player_id)]["animation"] = player_state["A"]
 		player_list[str(player_id)]["sprite"] = player_state["S"]
 		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["position"]
+		
+		var space_state = get_world_2d().direct_space_state
+		var collision = space_state.intersect_point(player_list[str(player_id)]["position"], 1, [], 1, true, true)
+		var colliding = collision.size() > 0
+		if colliding:
+			colliding = false
+			for collision_data in collision:
+				if collision_data.collider.name == "TileMap":
+					get_node("/root/Server").network.disconnect_peer(player_id)
+					break
 
 func SpawnPlayer(player_container):
 	if player_container:

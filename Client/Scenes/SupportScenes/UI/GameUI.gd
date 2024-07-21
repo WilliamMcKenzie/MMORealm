@@ -22,8 +22,11 @@ func Init():
 	is_in_chat = false
 	last_opened = 0
 	last_menu = "inventory"
+	last_character = null
 	animation_tracker = []
 	$LeftContainer/BarContainer/Health.ChangeHealth(100, 100)
+	$LeftContainer/BarContainer/ExpContainer/ExpBar.ChangeExp(100, 0)
+	$DeathScreen.reputation = 0
 	Server.Init()
 
 func _ready():
@@ -84,10 +87,10 @@ func SetAccountData(_account_data):
 			if account_data.achievements[achievement] != _account_data.achievements[achievement]:
 				animation_tracker.append({ "name" : "UnlockAchievement", "data" : achievement})
 	
-	account_data = _account_data
-	$Stats.SetName(account_data.username)
-	if is_in_menu and last_menu == "achievements":
-		$Achievements.Open()
+		account_data = _account_data
+		$Stats.SetName(account_data.username)
+		if is_in_menu and last_menu == "achievements":
+			$Achievements.Open()
 
 func SetCharacterData(character):
 	

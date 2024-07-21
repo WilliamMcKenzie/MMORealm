@@ -13,6 +13,7 @@ func _physics_process(delta):
 	delta_counter += delta
 	if is_active:
 		#Check if it should render
+		
 		if Server.IsWithinRange(theoretical_position):
 			if not self.visible:
 				self.visible = true
@@ -32,8 +33,16 @@ func _physics_process(delta):
 		elif self.visible:
 			self.visible = false
 		
+		#Check if colliding
+		var space_state = get_world_2d().direct_space_state
+		var result = true
+		var spots_to_check = [Vector2(0,0)]
+		for spot in spots_to_check:
+			if space_state.intersect_point(position+spot, 1, [], 4, true, true).size() > 0:
+				result = false
+		
 		#Check if done
-		if projectile_data.start_position.distance_to(projectile_data.path) >= projectile_data.tile_range*8:
+		if not result or projectile_data.start_position.distance_to(projectile_data.path) >= projectile_data.tile_range*8:
 			is_active = false
 			self.visible = false
 			return

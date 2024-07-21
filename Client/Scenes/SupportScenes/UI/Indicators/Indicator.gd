@@ -1,7 +1,7 @@
 extends Node2D
 
 func _ready():
-	z_index = 2
+	z_index = 190
 	
 	var node = get_node("Label")
 	var tween = get_node("Tween")

@@ -72,6 +72,7 @@ func ConnectToServer():
 	get_tree().connect("connection_failed", self, "_onConnectionFailed")
 	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
 	get_tree().connect("network_peer_disconnected", self, "_Disconnected")
+	get_tree().connect("server_disconnected", self, "_Disconnected")
 
 func _Disconnected():
 	ErrorPopup.OpenPopup("Disconnected")

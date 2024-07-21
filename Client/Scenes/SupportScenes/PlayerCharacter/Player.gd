@@ -90,7 +90,7 @@ func SetCharacterSprite():
 		if weapon != null:
 			CharacterSpriteEle.SetCharacterWeapon(weapon.type)
 	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
-	CharacterSpriteEle.ColorGear(gear)
+	CharacterSpriteEle.ColorGear(gear, character.class)
 	lastSprite = { "R" : $CharacterSprite.get_region_rect(), "C" : character.class, "P" : CharacterSpriteEle.GetParams()}
 
 func SetSpriteData(sprite, path):
