@@ -66,7 +66,7 @@ func ConnectToServerHTML():
 		var start = OS.get_system_time_secs()
 		var current = OS.get_system_time_secs()
 		
-		while current - start < 10:
+		while current - start < 4:
 			yield(get_tree().create_timer(1), "timeout")
 			current = OS.get_system_time_secs()
 			if token:
@@ -74,8 +74,7 @@ func ConnectToServerHTML():
 	
 	if not token:
 		ErrorPopup.OpenPopup("Connection failed")
-
-
+	
 	var url = "ws://127.0.0.1:" + str(port)
 	var error = html_network.connect_to_url(url, PoolStringArray(), true);
 	
@@ -89,6 +88,9 @@ func ConnectToServerHTML():
 	get_tree().connect("server_disconnected", self, "_Disconnected")
 
 func ConnectToServer():
+	ConnectToServerHTML()
+	return
+	
 	if not token:
 		var start = OS.get_system_time_secs()
 		var current = OS.get_system_time_secs()

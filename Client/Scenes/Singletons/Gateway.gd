@@ -35,7 +35,7 @@ func ConnectToServerHTML():
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(html_network)
 
-	custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
+	#custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
 	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
 
 func ConnectToServerDefault():
@@ -62,9 +62,10 @@ func ConnectToServer(_email, _password, _task):
 		ConnectToServerDefault()
 
 func _onConnectionFailed():
-	print("Connection failed, gateway server down.")
-	get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
-	get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
+	pass
+	#print("Connection failed, gateway server down.")
+	#get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
+	#get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
