@@ -3,6 +3,7 @@ extends Node
 var max_players = 100
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
+var html_network = WebSocketServer.new();
 
 var expected_tokens = {}
 
@@ -24,7 +25,7 @@ var player_name_by_id = {}
 var player_id_by_name = {}
 
 func _ready():
-	StartServer()
+	StartHTMLServer()
 	OS.get_system_time_msecs()
 	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	
@@ -32,7 +33,7 @@ func _ready():
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
 	#get_node("Instances/nexus").OpenPortal("overgrown_temple", ["nexus"], Vector2.ZERO)
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
@@ -52,6 +53,19 @@ func _ready():
 				"item" : 4,
 				"id" : generate_unique_id()
 			}], null, ["nexus"], Vector2(120, 50))
+
+func _process(delta):
+	if html_network.is_listening():
+		html_network.poll();
+
+func StartHTMLServer():
+	html_network.listen(port, PoolStringArray(), true);
+	get_tree().set_network_peer(html_network);
+	
+	get_tree().connect("network_peer_connected", self, "_Peer_Connected")
+	get_tree().connect("network_peer_disconnected", self, "_Peer_Disconnected")
+
+#This startserver func is now legacy, somehow html server works for mobile clients as well
 func StartServer():
 	network.create_server(port, max_players)
 	get_tree().network_peer = network

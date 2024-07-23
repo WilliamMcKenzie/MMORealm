@@ -4,11 +4,15 @@ extends Node
 var ip_address = "localhost"
 var port = 20201
 var network = NetworkedMultiplayerENet.new()
+var html_network = WebSocketClient.new();
 var gateway_api = MultiplayerAPI.new()
 
 var email
 var password
 var task
+
+#if we are using the web client
+var html = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,13 +25,22 @@ func _process(delta):
 		return
 	custom_multiplayer.poll()
 	
+func ConnectToServerHTML():
+	var url = "ws://127.0.0.1:" + str(port)
+	var error = html_network.connect_to_url(url, PoolStringArray(), true);
+	gateway_api = MultiplayerAPI.new()
+	
+	set_custom_multiplayer(gateway_api)
+	set_custom_multiplayer(gateway_api)
+	custom_multiplayer.set_root_node(self)
+	custom_multiplayer.set_network_peer(html_network)
 
-func ConnectToServer(_email, _password, _task):
+	custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
+	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
+
+func ConnectToServerDefault():
 	network = NetworkedMultiplayerENet.new()
 	gateway_api = MultiplayerAPI.new()
-	email = _email
-	task = _task
-	password = _password
 	
 	network.create_client(ip_address, port)
 	set_custom_multiplayer(gateway_api)
@@ -37,6 +50,16 @@ func ConnectToServer(_email, _password, _task):
 
 	custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
 	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
+
+func ConnectToServer(_email, _password, _task):
+	email = _email
+	task = _task
+	password = _password
+	
+	if html:
+		ConnectToServerHTML()
+	else:
+		ConnectToServerDefault()
 
 func _onConnectionFailed():
 	print("Connection failed, gateway server down.")

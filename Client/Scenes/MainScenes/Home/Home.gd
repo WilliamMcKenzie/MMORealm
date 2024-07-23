@@ -53,7 +53,7 @@ func SelectionScreen(account_data):
 func EnterGame(character_index, character):
 	Server.token = null
 	Gateway.ConnectToServer(email, password, 6)
-	Server.ConnectToServer()
+	Server.ConnectToServerHTML()
 	Server.SetCharacterIndex(character_index)
 	
 	var nexus_instance = nexus.instance()

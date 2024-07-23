@@ -2,17 +2,33 @@ extends Node
 
 var max_players = 100
 var port = 20201
+
 var network = NetworkedMultiplayerENet.new()
+var html_network = WebSocketServer.new();
+
 var gateway_api = MultiplayerAPI.new()
+var gateway_html_api = MultiplayerAPI.new()
 
 func _ready():
-	StartServer()
+	#StartServer()
+	StartHTMLServer()
 
 func _process(delta):
 	if not custom_multiplayer.has_network_peer():
 		return
 	custom_multiplayer.poll()
 
+func StartHTMLServer():
+	html_network.listen(port, PoolStringArray(), true);
+	get_tree().set_network_peer(html_network);
+	set_custom_multiplayer(gateway_html_api)
+	custom_multiplayer.set_root_node(self)
+	custom_multiplayer.set_network_peer(html_network)
+
+	custom_multiplayer.connect("network_peer_connected", self, "_Peer_Connected")
+	custom_multiplayer.connect("network_peer_disconnected", self, "_Peer_Disconnected")
+
+#This startserver func is now legacy, somehow html server works for mobile clients as well
 func StartServer():
 	network.create_server(port, max_players)
 	set_custom_multiplayer(gateway_api)

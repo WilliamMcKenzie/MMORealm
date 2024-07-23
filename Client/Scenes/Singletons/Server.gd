@@ -3,7 +3,12 @@ extends Node
 #var ip_address = "159.203.0.78"
 var ip_address = "localhost"
 var port = 20200
+
 var network = NetworkedMultiplayerENet.new()
+var html_network = WebSocketClient.new();
+
+#if we are using the web client
+var html = true
 
 var character_index
 var token
@@ -50,7 +55,39 @@ func IsWithinRange(_vector, _range = 16):
 		return true
 	else:
 		return false
+
+func _process(delta):
+	if (html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED ||
+		html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
+		html_network.poll();
+
+func ConnectToServerHTML():
+	if not token:
+		var start = OS.get_system_time_secs()
+		var current = OS.get_system_time_secs()
+		
+		while current - start < 10:
+			yield(get_tree().create_timer(1), "timeout")
+			current = OS.get_system_time_secs()
+			if token:
+				break
 	
+	if not token:
+		ErrorPopup.OpenPopup("Connection failed")
+
+
+	var url = "ws://127.0.0.1:" + str(port)
+	var error = html_network.connect_to_url(url, PoolStringArray(), true);
+	
+	network.create_client(ip_address, port)
+	get_tree().set_network_peer(null)
+	get_tree().network_peer = html_network
+		
+	get_tree().connect("connection_failed", self, "_onConnectionFailed")
+	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
+	get_tree().connect("network_peer_disconnected", self, "_Disconnected")
+	get_tree().connect("server_disconnected", self, "_Disconnected")
+
 func ConnectToServer():
 	if not token:
 		var start = OS.get_system_time_secs()
