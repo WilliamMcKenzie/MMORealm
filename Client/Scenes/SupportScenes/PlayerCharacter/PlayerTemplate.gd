@@ -45,7 +45,7 @@ func SetSpriteData(sprite, path):
 
 func UpdateStatusEffects(status_effects):
 	last_status_effects = status_effects
-	for status_node in $HBoxContainer/HBoxContainer.get_children():
+	for status_node in $ZContainer/HBoxContainer/HBoxContainer.get_children():
 		if status_effects.has(status_node.name):
 			status_node.visible = true
 		else:

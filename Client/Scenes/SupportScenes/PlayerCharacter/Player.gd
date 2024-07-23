@@ -32,8 +32,9 @@ var lastSprite = { "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice"
 var shoot = false
 var last_shot_time = 0
 var time_between_shots = INF
+var practical_speed = 0
 
-onready var CharacterSpriteEle = $CharacterSprite
+onready var CharacterSpriteEle = $Control/CharacterSprite
 onready var animation_tree = $AnimationTree
 
 func _ready():
@@ -91,7 +92,7 @@ func SetCharacterSprite():
 			CharacterSpriteEle.SetCharacterWeapon(weapon.type)
 	SetSpriteData(CharacterSpriteEle, ClientData.GetCharacter(character.class).path)
 	CharacterSpriteEle.ColorGear(gear, character.class)
-	lastSprite = { "R" : $CharacterSprite.get_region_rect(), "C" : character.class, "P" : CharacterSpriteEle.GetParams()}
+	lastSprite = { "R" : CharacterSpriteEle.get_region_rect(), "C" : character.class, "P" : CharacterSpriteEle.GetParams()}
 
 func SetSpriteData(sprite, path):
 	var spriteTexture = load("res://Assets/"+path[0]) 
@@ -104,6 +105,7 @@ func _physics_process(delta):
 	if GameUI.is_dead:
 		return
 	
+	SpeedModifiers()
 	UpdateStatusEffects()
 	MovePlayer(delta)
 	DefinePlayerState()
@@ -113,8 +115,23 @@ func _unhandled_input(event):
 		shoot = true
 		holding_shoot = true
 
+func SpeedModifiers():
+	var tilemap = get_parent().get_parent().get_node("TileMap")
+	var tile_coords = tilemap.world_to_map(position)
+	var tile_index = tilemap.get_cell(tile_coords.x, tile_coords.y)
+
+	if tile_index != TileMap.INVALID_CELL and ClientData.unique_tiles.has(tile_index):
+		$Control.rect_size = Vector2(20,7)
+		$Control.rect_position = Vector2(-10,-6)
+		practical_speed = stats.speed * ClientData.unique_tiles[tile_index]
+	else:
+		$Control.rect_size = Vector2(20,10)
+		$Control.rect_position = Vector2(-10,-9)
+		practical_speed = stats.speed
+	
+
 func UpdateStatusEffects():
-	for status_node in $HBoxContainer/HBoxContainer.get_children():
+	for status_node in $ZContainer/HBoxContainer/HBoxContainer.get_children():
 		if character.status_effects.has(status_node.name):
 			status_node.visible = true
 		else:
@@ -189,7 +206,7 @@ func MovePlayer(delta):
 		animation_tree.get("parameters/playback").travel("Idle")
 		lastAnimation["A"] = "Idle"
 		
-	motion = move_and_slide(motion * stats.speed)
+	motion = move_and_slide(motion * practical_speed)
 	if get_parent().get_parent().has_method("LoadChunk"):
 		#Loading all possible chunks you might see around you
 		var chunk_size = 16

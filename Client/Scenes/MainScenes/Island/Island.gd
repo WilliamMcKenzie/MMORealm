@@ -41,7 +41,7 @@ func GenerateChunk(chunk_data, chunk):
 				if randf() < num_variations[2]:
 					random_index = (randi() % num_variations[1]) + num_variations[0]
 			
-			$Tiles.set_cell(x,y,tile,false,false,false, Vector2(random_index, 0))
+			$TileMap.set_cell(x,y,tile,false,false,false, Vector2(random_index, 0))
 			
 	for object in objects:
 		var object_node = load("res://Scenes/SupportScenes/Objects/Obstacles/" + object["N"] + ".tscn")

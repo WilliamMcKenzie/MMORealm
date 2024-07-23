@@ -20,13 +20,15 @@ func EnterChat():
 func ExitChat():
 	GameUI.in_chat = false
 
-func AddChat(message,username,classname):
+func AddChat(message,username,classname,id):
 	var chat_message = chat.instance()
 	
 	chat_message.get_node("From").text = "" + username + ":"
 	chat_message.get_node("Message").text = message
 	
 	if classname:
+		GameUI.UpdateChatBubbles(id, message)
+		
 		chat_message.get_node("Icon").visible = true
 		chat_message.get_node("Icon").texture = chat_message.get_node("Icon").texture.duplicate()
 		chat_message.get_node("Icon").texture.region = Rect2(ClientData.GetCharacter(classname).icon, Vector2(10,10))
@@ -70,11 +72,10 @@ func _physics_process(delta):
 		chat_input.caret_position = chat_input.text.length()
 		if GameUI.is_in_menu:
 			GameUI.Toggle("all")
-	if(Input.is_action_just_pressed ("command")):
+	if(Input.is_action_just_pressed ("command")) and not chat_input.has_focus():
 		if not GameUI.is_in_chat:
 			GameUI.OpenChat()
 		chat_input.grab_focus()
-		
 		var timer = Timer.new()
 		timer.wait_time = 0.1
 		timer.one_shot = true

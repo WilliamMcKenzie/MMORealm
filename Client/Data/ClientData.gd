@@ -2,6 +2,12 @@ extends Node
 
 var current_class = "Apprentice"
 
+#Tile data
+var unique_tiles = {
+	0 : 0.1,
+	1 : 0.5,
+}
+
 var basic_loot_pools = {
 	"lowlands_1" : {
 		"soulbound_loot" : [

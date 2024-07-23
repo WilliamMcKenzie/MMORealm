@@ -62,6 +62,12 @@ LineEdit/styles/normal = SubResource( 1 )
 [sub_resource type="DynamicFont" id=14]
 font_data = ExtResource( 9 )
 
+[sub_resource type="StyleBoxEmpty" id=27]
+content_margin_left = 8.0
+content_margin_right = 8.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+
 [sub_resource type="StyleBoxEmpty" id=24]
 
 [sub_resource type="StyleBoxEmpty" id=9]
@@ -69,12 +75,6 @@ font_data = ExtResource( 9 )
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 8 )
 region = Rect2( 230, 220, 10, 10 )
-
-[sub_resource type="StyleBoxEmpty" id=27]
-content_margin_left = 8.0
-content_margin_right = 8.0
-content_margin_top = 8.0
-content_margin_bottom = 8.0
 
 [sub_resource type="Animation" id=25]
 resource_name = "Hide"
@@ -246,7 +246,7 @@ visible = false
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 204.0
+margin_right = 264.0
 margin_bottom = 204.0
 rect_clip_content = true
 custom_styles/panel = SubResource( 15 )
@@ -254,12 +254,12 @@ custom_styles/panel = SubResource( 15 )
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 228.0
+margin_right = 248.0
 margin_bottom = 188.0
 rect_clip_content = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 220.0
+margin_right = 240.0
 margin_bottom = 140.0
 rect_min_size = Vector2( 180, 140 )
 theme = SubResource( 21 )
@@ -269,8 +269,9 @@ scroll_vertical = 10
 script = ExtResource( 10 )
 
 [node name="ChatVerticalContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
-margin_right = 220.0
-margin_bottom = 150.0
+margin_top = -10.0
+margin_right = 240.0
+margin_bottom = 140.0
 rect_min_size = Vector2( 0, 150 )
 rect_clip_content = true
 mouse_filter = 2
@@ -280,7 +281,7 @@ alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
 margin_top = 144.0
-margin_right = 220.0
+margin_right = 240.0
 margin_bottom = 180.0
 
 [node name="Close" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
@@ -309,18 +310,18 @@ stretch_mode = 4
 
 [node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 margin_left = 40.0
-margin_right = 220.0
+margin_right = 240.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource( 3 )
 
 [node name="VBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2"]
-margin_right = 180.0
+margin_right = 200.0
 margin_bottom = 36.0
 
 [node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
-margin_right = 140.0
+margin_right = 200.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -328,9 +329,9 @@ theme = SubResource( 3 )
 custom_styles/panel = SubResource( 23 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer"]
-margin_right = 140.0
+margin_right = 200.0
 margin_bottom = 36.0
-rect_min_size = Vector2( 140, 30 )
+rect_min_size = Vector2( 200, 30 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource( 4 )
@@ -342,7 +343,7 @@ custom_constants/margin_bottom = 8
 [node name="ChatInput" type="LineEdit" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 11.0
-margin_right = 132.0
+margin_right = 192.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -352,46 +353,10 @@ caret_blink = true
 caret_blink_speed = 0.5
 script = ExtResource( 2 )
 
-[node name="SendButton" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
-margin_left = 144.0
-margin_right = 180.0
-margin_bottom = 36.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-custom_styles/panel = SubResource( 24 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/SendButton"]
-margin_right = 36.0
-margin_bottom = 36.0
-
-[node name="NearbyButton" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/SendButton/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 36.0
-custom_styles/panel = SubResource( 9 )
-script = ExtResource( 7 )
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/SendButton/HBoxContainer/NearbyButton"]
-margin_right = 36.0
-margin_bottom = 36.0
-custom_constants/margin_right = 3
-custom_constants/margin_top = 3
-custom_constants/margin_left = 3
-custom_constants/margin_bottom = 3
-
-[node name="TextureButton" type="TextureButton" parent="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/SendButton/HBoxContainer/NearbyButton/MarginContainer"]
-margin_left = 3.0
-margin_top = 3.0
-margin_right = 33.0
-margin_bottom = 33.0
-rect_min_size = Vector2( 30, 30 )
-texture_normal = SubResource( 13 )
-expand = true
-stretch_mode = 4
-
 [node name="HiddenContainer" type="PanelContainer" parent="."]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 204.0
+margin_right = 264.0
 margin_bottom = 204.0
 rect_clip_content = true
 custom_styles/panel = SubResource( 27 )
@@ -414,9 +379,8 @@ scroll_vertical = 10
 script = ExtResource( 10 )
 
 [node name="ChatVerticalContainer" type="VBoxContainer" parent="HiddenContainer/VBoxContainer/ScrollContainer"]
-margin_top = -10.0
 margin_right = 180.0
-margin_bottom = 140.0
+margin_bottom = 150.0
 rect_min_size = Vector2( 0, 150 )
 rect_clip_content = true
 mouse_filter = 2

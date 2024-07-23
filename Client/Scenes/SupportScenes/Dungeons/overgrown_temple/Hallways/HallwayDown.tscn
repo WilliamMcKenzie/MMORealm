@@ -11,5 +11,7 @@ tile_set = ExtResource( 1 )
 cell_size = Vector2( 8, 8 )
 cell_custom_transform = Transform2D( 8, 0, 0, 8, 0, 0 )
 centered_textures = true
+collision_layer = 15
+collision_mask = 31
 format = 1
 tile_data = PoolIntArray( 1245193, 4, 3, 1245194, 0, 2, 1245195, 0, 2, 1245196, 4, 0, 1310729, 4, 0, 1310730, 0, 4, 1310731, 0, 1, 1310732, 4, 0, 1376265, 4, 3, 1376266, 0, 3, 1376267, 0, 2, 1376268, 4, 2, 1441801, 4, 2, 1441802, 0, 0, 1441803, 0, 3, 1441804, 4, 0 )

@@ -107,7 +107,7 @@ remote func ReturnLatency(client_time):
 
 remote func ReturnServerTime(server_time, client_time):
 	latency = (OS.get_system_time_msecs()-client_time)/2
-	client_clock = server_time+latency
+	latency = server_time - client_time - latency
 	
 remote func FetchToken():
 	rpc_id(1, "ReturnToken", token, character_index)
@@ -231,8 +231,8 @@ func GetCurrentInstance():
 
 func SendChatMessage(message):
 	rpc_id(1,"RecieveChatMessage", message)
-remote func RecieveChat(message,username,classname=null):
-	GameUI.get_node("ChatControl").AddChat(message,username,classname)
+remote func RecieveChat(message,username,classname=null,id=null):
+	GameUI.get_node("ChatControl").AddChat(message,username,classname,id)
 remote func MovePlayer(new_position):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position = new_position
 

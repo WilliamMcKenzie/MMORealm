@@ -150,7 +150,7 @@ func GenerateIslandMap():
 func PopulateTiles():
 	var center = map_size / 2
 	var ocean_distance = center.length() * 1.5
-	var beach_distance = center.length() * 1.3
+	var beach_distance = center.length() * 1.25
 	var forest_distance = center.length() * 1.2
 	var plains_distance = center.length() * 1
 	var badlands_distance = center.length() * 0.8
@@ -166,7 +166,7 @@ func PopulateTiles():
 			
 			#For wavy edges of island
 			var noise_scale = 0.6
-			var noise_intensity = 0.1
+			var noise_intensity = 0.05
 			
 			var noise_value = noise.get_noise_2d(x * noise_scale, y * noise_scale) * noise_intensity
 			
@@ -174,9 +174,9 @@ func PopulateTiles():
 			
 			var beach_value = (1.0 - (distance / beach_distance)) + noise_value/3
 			var forest_value = (1.0 - (distance / forest_distance)) + noise_value/3
-			var plains_value = (1.0 - (distance / plains_distance)) + noise_value/3 + rand_range(0,0.01)
-			var badlands_value = (1.0 - (distance / badlands_distance)) + noise_value + rand_range(0,0.01)
-			var mountains_value = (1.0 - (distance / mountains_distance)) + noise_value*2 + rand_range(0,0.01)
+			var plains_value = (1.0 - (distance / plains_distance)) + noise_value/3 + rand_range(0,0.03)
+			var badlands_value = (1.0 - (distance / badlands_distance)) + noise_value + rand_range(0,0.03)
+			var mountains_value = (1.0 - (distance / mountains_distance)) + noise_value*2 + rand_range(0,0.03)
 
 			if mountains_value > tile_cap:
 				map_as_array[x][y] = 6

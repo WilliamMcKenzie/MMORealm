@@ -129,6 +129,9 @@ func OtherPlayerAccepts():
 	get_node("/root/Server").OfferAccepted(other_player_container.name)
 
 func SelectItem(i):
+	if not character.inventory[i]:
+		return
+	
 	accepted = false
 	other_player_accepted = false
 	other_player_container.accepted = false
@@ -140,6 +143,9 @@ func SelectItem(i):
 	get_node("/root/Server").SendTradeData(other_player_container.name, character.inventory, selection)
 	
 func DeselectItem(i):
+	if not character.inventory[i]:
+		return
+	
 	accepted = false
 	other_player_accepted = false
 	other_player_container.accepted = false
@@ -420,6 +426,7 @@ func AddExp(exp_amount):
 	var exp_to_level = 100*pow(1.1962,character.level)
 	
 	if character.level >= 20 and character.exp >= 3600:
+		health = character.stats.health
 		character.level += 1
 		character.exp = 0
 	elif character.level < 20 and character.exp >= exp_to_level:
@@ -437,7 +444,9 @@ func AddExp(exp_amount):
 		
 		for stat in character.stats:
 			character.stats[stat] += stat_rolls[stat]
-		
+		health = character.stats.health
+	
+	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func DealDamage(damage, enemy_name):

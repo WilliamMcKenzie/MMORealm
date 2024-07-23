@@ -2,6 +2,12 @@ extends Node
 
 var current_class = "Apprentice"
 
+#Tile data
+var unique_tiles = {
+	0 : 0.1,
+	1 : 0.5,
+}
+
 var basic_loot_pools = {
 	"lowlands_1" : {
 		"soulbound_loot" : [
@@ -196,11 +202,11 @@ var overgrown_temple_enemies = {
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
-			"formula" : "0",
+			"formula" : "x",
 			"damage" : 10,
 			"wait" : 1,
 			"speed" : 10,
-			"tile_range" : 5,
+			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
 			}

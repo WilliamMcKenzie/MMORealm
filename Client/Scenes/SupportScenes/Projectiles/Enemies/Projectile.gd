@@ -10,26 +10,21 @@ onready var expression = Expression.new()
 
 var delta_counter = 0
 func _physics_process(delta):
-	delta_counter += delta
 	if is_active:
-		#Check if it should render
+		time += delta
+		expression.parse(projectile_data.formula,["x"])
+		
+		var alive_time = OS.get_system_time_msecs()/1000.0 - projectile_data.start_time
+		var vertical_move_vector = projectile_data.speed * projectile_data.direction.normalized() * delta
+		var horizontal_move_vector = Vector2(-velocity.y, velocity.x) * expression.execute([time * 50]) * 0.05
+		
+		projectile_data.path += vertical_move_vector
+		theoretical_position = projectile_data.path + horizontal_move_vector
 		
 		if Server.IsWithinRange(theoretical_position):
 			if not self.visible:
 				self.visible = true
-			time += delta_counter
-	
-			expression.parse(projectile_data.formula,["x"])
-			
-			var alive_time = OS.get_system_time_msecs()/1000.0 - projectile_data.start_time
-			var vertical_move_vector = projectile_data.speed * projectile_data.direction.normalized() * delta_counter
-			var horizontal_move_vector = Vector2(-velocity.y, velocity.x) * expression.execute([time * 50]) * 0.05
-			
-			projectile_data.path += vertical_move_vector
-			theoretical_position = projectile_data.path + horizontal_move_vector
-			
 			position = theoretical_position
-			delta_counter = 0
 		elif self.visible:
 			self.visible = false
 		

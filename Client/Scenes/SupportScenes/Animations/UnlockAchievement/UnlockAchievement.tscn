@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Resources/Roboto-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/ui/achievement_icons.png" type="Texture" id=3]
 [ext_resource path="res://Resources/ColorGearPixelPerfect.gdshader" type="Shader" id=5]
 [ext_resource path="res://Scenes/SupportScenes/Animations/UnlockAchievement/UnlockAchievement.gd" type="Script" id=6]
@@ -252,10 +252,10 @@ texture = ExtResource( 7 )
 
 [node name="TextureRect" type="TextureRect" parent="Container"]
 material = SubResource( 5 )
-margin_left = 51.0
-margin_top = 43.0
-margin_right = 87.0
-margin_bottom = 79.0
+margin_left = 63.0
+margin_top = 56.0
+margin_right = 99.0
+margin_bottom = 92.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_min_size = Vector2( 30, 30 )
@@ -278,18 +278,19 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Achievement" type="Label" parent="Container/HBoxContainer"]
-margin_top = 8.0
-margin_right = 175.0
-margin_bottom = 32.0
+margin_left = 4.0
+margin_top = 11.0
+margin_right = 170.0
+margin_bottom = 29.0
 custom_fonts/font = SubResource( 1 )
 text = "Starlight, Starbright"
 align = 1
 
 [node name="TextureRect" type="TextureRect" parent="Container/HBoxContainer"]
 material = SubResource( 5 )
-margin_left = 179.0
+margin_left = 174.0
 margin_top = 5.0
-margin_right = 209.0
+margin_right = 204.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 30, 30 )
 size_flags_horizontal = 0

@@ -25,14 +25,14 @@ var player_id_by_name = {}
 
 func _ready():
 	StartServer()
-	
+	OS.get_system_time_msecs()
 	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	
 	#Open realm
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
 	#get_node("Instances/nexus").OpenPortal("overgrown_temple", ["nexus"], Vector2.ZERO)
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
@@ -391,6 +391,8 @@ remote func RecieveChatMessage(message):
 	
 	if len(message) >= 1:
 		if message[0] == "/":
+			if message_words[0] == "/invincible":
+				player_container.GiveEffect("invincible", 99999)
 			if message_words[0] == "/trade":
 				print(message)
 				var selected_player_name = message.substr(7,-1)
@@ -462,7 +464,7 @@ remote func RecieveChatMessage(message):
 			if message_words[0] == "/max" and message_words.size() == 1:
 				player_container.Max()
 		else:
-			rpc("RecieveChat", message, player_name, player_container.character.class)
+			rpc("RecieveChat", message, player_name, player_container.character.class, player_container.name)
 
 #PLAYER INTERACTION
 func SendError(player_id, error):

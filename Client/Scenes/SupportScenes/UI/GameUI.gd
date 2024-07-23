@@ -47,6 +47,14 @@ func _physics_process(delta):
 		animation_tracker.pop_front()
 		animation_timer = 3
 
+func UpdateChatBubbles(id, text):
+	var base_node = get_node("ChatBubbles")
+	if not base_node.has_node(id):
+		var chat_bubble_instance = load("res://Scenes/SupportScenes/UI/ChatBubble.tscn").instance()
+		chat_bubble_instance.name = id
+		base_node.add_child(chat_bubble_instance)
+	base_node.get_node(id).Update(id, text)
+
 func GoHome():
 	Server.network.disconnect_peer(1, true)
 	var scene_handler = get_node("/root/SceneHandler")
@@ -56,6 +64,11 @@ func GoHome():
 		scene_handler.remove_child(child)
 	scene_handler.add_child(home_instance)
 	self.visible = false
+	
+	if is_in_menu:
+		Toggle(last_menu)
+	if is_in_chat:
+		CloseChat()
 
 func InUI():
 	is_in_ui = true
@@ -91,6 +104,8 @@ func SetAccountData(_account_data):
 		$Stats.SetName(account_data.username)
 		if is_in_menu and last_menu == "achievements":
 			$Achievements.Open()
+	else:
+		account_data = _account_data
 
 func SetCharacterData(character):
 	

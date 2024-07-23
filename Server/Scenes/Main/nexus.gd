@@ -108,13 +108,15 @@ func _physics_process(delta):
 			last_tick = running_time
 
 func DetermineCollisionSafePoint(pos, point):
-	
 	var space_state = get_world_2d().direct_space_state
 	var result = true
 	var spots_to_check = [Vector2(-4,0), Vector2(4,0), Vector2(-4,-8), Vector2(4,-8)]
 	for spot in spots_to_check:
-		if space_state.intersect_point(point+position+spot, 1, [], 1, true, true).size() > 0:
-			result = false
+		var collisions = space_state.intersect_point(point+position+spot, 1, [], 1, true, true)
+		if collisions.size() > 0:
+			for collision in collisions:
+				if collision.collider.name == "TileMap":
+					result = false
 	
 	if result:
 		return point
@@ -128,7 +130,7 @@ func UpdatePlayer(player_id, player_state):
 		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["position"]
 		
 		var space_state = get_world_2d().direct_space_state
-		var collision = space_state.intersect_point(player_list[str(player_id)]["position"], 1, [], 1, true, true)
+		var collision = space_state.intersect_point(player_list[str(player_id)]["position"]+position, 1, [], 1, true, true)
 		var colliding = collision.size() > 0
 		if colliding:
 			colliding = false
@@ -138,6 +140,7 @@ func UpdatePlayer(player_id, player_state):
 					break
 
 func SpawnPlayer(player_container):
+	print("SPAWNING")
 	if player_container:
 		player_list[player_container.name] = {
 				"name": player_container.name,

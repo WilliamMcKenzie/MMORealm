@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://Resources/Roboto-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=3]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=4]
@@ -215,6 +215,7 @@ margin_right = 82.0
 margin_bottom = -99.0
 custom_fonts/font = SubResource( 1 )
 text = "Discovered Class!"
+align = 1
 
 [node name="Halo" type="Sprite" parent="Container"]
 modulate = Color( 0, 0, 0, 0.313726 )
@@ -247,9 +248,9 @@ alignment = 1
 
 [node name="Class" type="Label" parent="Container/HBoxContainer"]
 margin_left = 5.0
-margin_top = 8.0
+margin_top = 11.0
 margin_right = 5.0
-margin_bottom = 32.0
+margin_bottom = 29.0
 custom_fonts/font = SubResource( 1 )
 align = 1
 
