@@ -9,6 +9,13 @@ func _ready():
 		cached_email = result.email
 		cached_password = result.password
 
+func DeleteUser():
+	var config = ConfigFile.new()
+	var error = config.load("user://login.cfg")
+	if error == OK:
+		config.erase_section("login")
+		config.save("user://login.cfg")
+
 func SaveUser(email, password):
 	var config = ConfigFile.new()
 	config.set_value("login", "email", email)
@@ -18,7 +25,7 @@ func SaveUser(email, password):
 func LoadUser():
 	var config = ConfigFile.new()
 	var error = config.load("user://login.cfg")
-	if error == OK:
+	if error == OK and config.has_section("login"):
 		var email = config.get_value("login", "email", "")
 		var password = config.get_value("login", "password", "")
 		return { "email" : email, "password" : password }

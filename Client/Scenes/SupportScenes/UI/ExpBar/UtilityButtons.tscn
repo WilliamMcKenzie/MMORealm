@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/ExpBar/LootButton.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/ClassButton.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/SupportScenes/UI/ExpBar/ClassesButton.gd" type="Script" id=7]
 [ext_resource path="res://Scenes/SupportScenes/UI/ExpBar/NearbyButton.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/SupportScenes/UI/ExpBar/HomeButton.gd" type="Script" id=9]
 
 [sub_resource type="StyleBoxTexture" id=17]
 texture = ExtResource( 5 )
@@ -108,7 +109,7 @@ region = Rect2( 180, 220, 10, 10 )
 
 [sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 1 )
-region = Rect2( 130, 220, 10, 10 )
+region = Rect2( 0, 250, 10, 10 )
 
 [node name="UtilityButtons" type="HBoxContainer"]
 margin_right = 81.0
@@ -328,13 +329,14 @@ scale = Vector2( 3.22222, 3 )
 z_index = 22
 normal = SubResource( 30 )
 
-[node name="SettingsButton" type="PanelContainer" parent="Column2"]
+[node name="HomeButton" type="PanelContainer" parent="Column2"]
 margin_top = 84.0
 margin_right = 38.0
 margin_bottom = 122.0
 custom_styles/panel = SubResource( 15 )
+script = ExtResource( 9 )
 
-[node name="MarginContainer" type="MarginContainer" parent="Column2/SettingsButton"]
+[node name="MarginContainer" type="MarginContainer" parent="Column2/HomeButton"]
 margin_right = 38.0
 margin_bottom = 38.0
 custom_constants/margin_right = 4
@@ -342,7 +344,7 @@ custom_constants/margin_top = 4
 custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
-[node name="TextureButton" type="TextureButton" parent="Column2/SettingsButton/MarginContainer"]
+[node name="TextureButton" type="TextureButton" parent="Column2/HomeButton/MarginContainer"]
 modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 4 )
 margin_left = 4.0
@@ -354,7 +356,7 @@ texture_normal = SubResource( 1 )
 texture_hover = SubResource( 5 )
 expand = true
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Column2/SettingsButton/MarginContainer"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Column2/HomeButton/MarginContainer"]
 position = Vector2( 4, 5 )
 scale = Vector2( 3, 3 )
 z_index = 22
@@ -365,4 +367,4 @@ normal = SubResource( 19 )
 [connection signal="pressed" from="Column1/StatsButton/MarginContainer/TouchScreenButton" to="Column1/StatsButton" method="_on_TouchScreenButton_pressed"]
 [connection signal="pressed" from="Column2/AchievementsButton/MarginContainer/TouchScreenButton" to="Column2/AchievementsButton" method="_on_TouchScreenButton_pressed"]
 [connection signal="pressed" from="Column2/ClassesButton/MarginContainer/TouchScreenButton" to="Column2/ClassesButton" method="_on_TouchScreenButton_pressed"]
-[connection signal="pressed" from="Column2/SettingsButton/MarginContainer/TouchScreenButton" to="Column2/SettingsButton" method="_on_TouchScreenButton_pressed"]
+[connection signal="pressed" from="Column2/HomeButton/MarginContainer/TouchScreenButton" to="Column2/HomeButton" method="_on_TouchScreenButton_pressed"]

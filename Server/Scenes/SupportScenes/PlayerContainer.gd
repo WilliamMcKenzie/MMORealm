@@ -361,6 +361,8 @@ func LootItem(to_data, from_data):
 		replaced_item_raw = character[to_data.parent][to_data.index]
 	
 	#Item you are dragging
+	if not selected_item_raw:
+		return
 	var selected_item = ServerData.GetItem(selected_item_raw.item)
 	
 	#Different Scenarios

@@ -9,6 +9,7 @@ var gold
 func _ready():
 	$UI/Leaderboard.connect("button_down", self, "OpenLeaderboard")
 	$UI/Graveyard.connect("button_down", self, "OpenGraveyard")
+	$UI/Logout.connect("button_down", self, "OpenLogout")
 	
 	if ClientAuth.cached_email and ClientAuth.cached_password:
 		email = ClientAuth.cached_email
@@ -17,6 +18,7 @@ func _ready():
 		get_node("LoginPopup").password = password
 		get_node("LoginPopup/VBoxContainer/EmailContainer/Email/MarginContainer/Email").text = email
 		get_node("LoginPopup/VBoxContainer/PasswordContainer/Password/MarginContainer/Password").text = password
+		get_node("LoginPopup").LoginAttempt()
 		get_node("LoginPopup").LoginAttempt()
 
 func AuthenticatedUser():
@@ -27,6 +29,45 @@ func UpdateGold():
 	var graveyard = get_node("Graveyard")
 	ui.get_node("Gold/Gold").text = str(gold)
 	graveyard.get_node("Gold/Gold").text = str(gold)
+
+func OpenLogout():
+	get_node("Logout").visible = true
+func CloseLogout():
+	get_node("Logout").visible = false
+func Logout():
+	get_node("Logout").visible = false
+	LoadingScreen.Transition("")
+	yield(get_tree().create_timer(0.3), "timeout")
+	email = null
+	password = null
+	GameUI.account_data = null
+	ClientAuth.cached_email = null
+	ClientAuth.cached_password = null
+	ClientAuth.DeleteUser()
+	
+	var selection_screen = get_node("CharacterSelection")
+	selection_screen.characters = []
+	selection_screen.character_slots = 0
+	selection_screen.Populate()
+	
+	var graveyard = get_node("Graveyard")
+	graveyard.graveyard = []
+	graveyard.can_revive = false
+	graveyard.SwitchGraveyard(graveyard.current)
+	
+	selection_screen.visible = false
+	get_node("Graveyard").visible = false
+	get_node("UI").visible = false
+	get_node("LoginPopup").visible = true
+	
+	gold = 0
+	Server.token = null
+	UpdateGold()
+	
+	get_node("LoginPopup").email = ""
+	get_node("LoginPopup").password = ""
+	get_node("LoginPopup/VBoxContainer/EmailContainer/Email/MarginContainer/Email").text = ""
+	get_node("LoginPopup/VBoxContainer/PasswordContainer/Password/MarginContainer/Password").text = ""
 
 func OpenLeaderboard():
 	get_node("UI").visible = false
@@ -76,6 +117,9 @@ func EnterGame(character_index, character):
 	Gateway.ConnectToServer(email, password, 6)
 	Server.ConnectToServerHTML()
 	Server.SetCharacterIndex(character_index)
+	
+	LoadingScreen.Transition("Nexus")
+	yield(get_tree().create_timer(0.3), "timeout")
 	
 	var nexus_instance = nexus.instance()
 	nexus_instance.get_node("YSort/player").SetCharacter(character)

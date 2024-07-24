@@ -20,14 +20,29 @@ func SwitchGraveyard(which):
 	var container = $MarginContainer/ScrollContainer/Top
 	for child in container.get_children():
 		container.remove_child(child)
-		
+	
 	var index = 0
 	for character in graveyard:
-		var character_instance = character_scene.instance()
-		character_instance.index = index
-		container.add_child(character_instance)
-		character_instance.SetData(character, index)
+		character.index = index
 		index += 1
+		
+	var temp_graveyard = graveyard.duplicate()
+	if which == "top":
+		temp_graveyard.sort_custom(SortByReputation, "sort_by_reputation")
+	if which == "recent":
+		temp_graveyard.invert()
+	
+	for character in temp_graveyard:
+		var character_instance = character_scene.instance()
+		character_instance.index = character.index
+		container.add_child(character_instance)
+		character_instance.SetData(character, character.index)
+
+class SortByReputation:
+	static func sort_by_reputation(a, b):
+		if a.level > b.level:
+			return true
+		return false
 	
 func SetGraveyard(_graveyard):
 	var container = $MarginContainer/ScrollContainer/Top

@@ -282,6 +282,8 @@ func Nexus():
 		return
 	rpc_id(1, "Nexus")
 remote func ConfirmNexus():
+	LoadingScreen.Transition("Nexus")
+	yield(get_tree().create_timer(0.3), "timeout")
 	var nexus_instance = nexus.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	
@@ -293,7 +295,10 @@ remote func ConfirmNexus():
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(nexus_instance)
 	current_instance_tree = ["nexus"]
+
 func EnterInstance(instance_id):
+	LoadingScreen.Transition(instance_id)
+	yield(get_tree().create_timer(0.3), "timeout")
 	if instance_id == GetCurrentInstance():
 		return
 	rpc_id(1, "EnterInstance", instance_id)
@@ -348,6 +353,7 @@ remote func ShowExpIndicator(xp):
 #ENEMIES
 remote func CharacterDied(enemy_name):
 	GameUI.is_dead = true
+	GameUI.Toggle("all")
 	GameUI.Toggle("death")
 
 remote func SetHealth(max_health, current_health):

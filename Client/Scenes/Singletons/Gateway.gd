@@ -102,6 +102,7 @@ remote func ReturnCreateCharacterRequest(result, new_character):
 		get_node("../SceneHandler/Home/CharacterSelection").Populate()
 	
 func RequestCreateAccount():
+	LoadingScreen.StartWaiting()
 	print("Requesting create account from gateway")
 	print(email)
 	print(password)
@@ -109,6 +110,7 @@ func RequestCreateAccount():
 	email = ""
 	password = ""
 remote func ReturnCreateAccountRequest(results, message):
+	LoadingScreen.EndWaiting()
 	print("Results recieved")
 	print(results)
 	print(message)
@@ -126,8 +128,10 @@ remote func ReturnCreateAccountRequest(results, message):
 	network.disconnect("connected_to_server", self, "_onConnectionSucceeded")
 
 func RequestLogin():
+	LoadingScreen.StartWaiting()
 	rpc_id(1, "LoginRequest", email, password)
 remote func ReturnLogin(result):
+	LoadingScreen.EndWaiting()
 	get_node("../SceneHandler/Home/LoginPopup").LoginResult(result)
 	
 func GetLeaderboards():

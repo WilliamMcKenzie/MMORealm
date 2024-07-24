@@ -7,7 +7,7 @@ func _physics_process(delta):
 	if timer > 10:
 		queue_free()
 	
-	if id:
+	if id and Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()):
 		var scene = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance())
 		var camera = scene.get_node("YSort/player/Camera2D")
 		var root_pos = scene.get_node("YSort/player").global_position

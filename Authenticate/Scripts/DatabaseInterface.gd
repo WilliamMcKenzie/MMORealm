@@ -216,6 +216,9 @@ func ReviveCharacter(email, index, player_id, gateway_id):
 		var cost = account_data.graveyard[index].revive_cost
 		account_data.gold -= cost
 		
+		if revived_character.level > 20:
+			revived_character.level = 20
+		
 		account_data.graveyard.erase(account_data.graveyard[index])
 		account_data.characters.append(revived_character)
 		

@@ -39,6 +39,7 @@ GameUI="*res://Scenes/SupportScenes/UI/GameUI.tscn"
 ClientData="*res://Data/ClientData.gd"
 UtilityFunctions="*res://Scenes/Singletons/UtilityFunctions.gd"
 ErrorPopup="*res://Scenes/SupportScenes/UI/ErrorPopup.tscn"
+LoadingScreen="*res://Scenes/SupportScenes/UI/LoadingScreen.tscn"
 
 [display]
 
