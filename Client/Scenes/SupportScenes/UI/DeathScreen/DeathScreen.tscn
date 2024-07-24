@@ -170,6 +170,7 @@ text = "#1"
 align = 1
 
 [node name="HomeButton" type="Button" parent="Container"]
+modulate = Color( 1, 1, 1, 0 )
 margin_left = 370.0
 margin_top = 227.0
 margin_right = 430.0

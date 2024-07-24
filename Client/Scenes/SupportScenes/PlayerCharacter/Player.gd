@@ -287,5 +287,5 @@ func ShowIndicator(type, amount):
 	timer.start()
 	yield(timer, "timeout")
 	
-	if is_instance_valid(get_node(id)): 
+	if has_node(id): 
 		get_node(id).queue_free()

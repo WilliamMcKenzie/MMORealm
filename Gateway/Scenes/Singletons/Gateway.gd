@@ -125,3 +125,7 @@ remote func SendToken(email):
 func ReturnToken(token, player_id):
 	rpc_id(player_id, "ReturnToken", token)
 	current_network.disconnect_peer(player_id)
+
+remote func ReviveCharacter(index, email, password):
+	var player_id = custom_multiplayer.get_rpc_sender_id()
+	Authenticate.ReviveCharacter(index, email, password, player_id)

@@ -56,7 +56,7 @@ func UpdateChatBubbles(id, text):
 	base_node.get_node(id).Update(id, text)
 
 func GoHome():
-	Server.network.disconnect_peer(1, true)
+	Server.html_network.disconnect_from_host()
 	var scene_handler = get_node("/root/SceneHandler")
 	var home_instance = load("res://Scenes/MainScenes/Home/Home.tscn").instance()
 	

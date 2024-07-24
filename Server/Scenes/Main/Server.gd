@@ -489,7 +489,8 @@ func NotifyDeath(player_id, enemy_name):
 	
 	rpc_id(player_id, "CharacterDied", enemy_name)
 	rpc("RecieveChat", str(player_name_by_id[player_id]) + " has been killed by a "+enemy_name, "System")
-	network.disconnect_peer(player_id)
+	yield(get_tree().create_timer(1), "timeout")
+	html_network.disconnect_peer(player_id)
 	
 func SetHealth(player_id, max_health, health):
 	rpc_id(player_id,"SetHealth",max_health, health)

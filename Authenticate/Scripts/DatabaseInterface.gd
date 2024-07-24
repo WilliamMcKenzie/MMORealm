@@ -149,7 +149,7 @@ func AddUser(email, password):
 		BEGIN;
 		INSERT INTO users VALUES ('%s', '%s', '%s');
 		COMMIT;
-	""" % [email, generate_hashed_password(password), JSON.print(default_account_data)]
+	""" % [email.to_lower(), generate_hashed_password(password), JSON.print(default_account_data)]
 	database.execute(command)
 
 func VerifyUser(email, password):
@@ -157,7 +157,7 @@ func VerifyUser(email, password):
 	var command = """
 		BEGIN;
 		SELECT * FROM users WHERE email = '%s' AND password = '%s';
-	""" % [email, generate_hashed_password(password)]
+	""" % [email.to_lower(), generate_hashed_password(password)]
 	var data_arr = database.execute(command)
 	
 	for _data in data_arr:
@@ -176,6 +176,9 @@ func DeleteUser(email):
 	database.execute(command)
 
 func UpdateUser(email, account_data):
+	#print(account_data.graveyard)
+	#print(account_data.characters)
+	
 	var user = null
 	var command = """
 		BEGIN;
@@ -204,6 +207,21 @@ func UpdateCharacter(email, character_data, character_index):
 		
 		UpdateUser(email, account_data)
 
+func ReviveCharacter(email, index, player_id, gateway_id):
+	var user = FindUser(email)
+	
+	if user:
+		var account_data = user.account_data
+		var revived_character = account_data.graveyard[index].duplicate()
+		var cost = account_data.graveyard[index].revive_cost
+		account_data.gold -= cost
+		
+		account_data.graveyard.erase(account_data.graveyard[index])
+		account_data.characters.append(revived_character)
+		
+		UpdateUser(email, account_data)
+		get_node("/root/Authenticate").rpc_id(gateway_id, "ReturnAccountData", account_data, player_id)
+
 func GetLeaderboard(days_ago):
 	var seconds_ago = OS.get_system_time_secs()-days_ago*24*60*60
 	var command = """
@@ -230,7 +248,6 @@ func GetLeaderboard(days_ago):
 
 func UpdateLeaderboard(_username, _character):
 	randomize()
-	
 	var character = { "gear" : _character.gear, "class" : _character.class}
 	var reputation = _character.level
 	var timestamp = OS.get_system_time_secs()
@@ -271,6 +288,7 @@ func AddToLeaderboard(leaderboard, new_value):
 			break
 	
 	return leaderboard
+	
 
 #Utility functions
 

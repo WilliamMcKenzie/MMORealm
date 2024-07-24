@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scenes/MainScenes/Home/Home.gd" type="Script" id=7]
 [ext_resource path="res://Resources/main_theme.tres" type="Theme" id=8]
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=9]
+[ext_resource path="res://Scenes/SupportScenes/UI/Graveyard/Graveyard.tscn" type="PackedScene" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=4]
 points = PoolVector2Array( 9, 25.0625, 1.0625, 25.0625, 1.0625, 16.9375, 8.9375, 17 )
@@ -271,6 +272,9 @@ current = true
 zoom = Vector2( 0.15, 0.15 )
 
 [node name="Leaderboard" parent="." instance=ExtResource( 6 )]
+visible = false
+
+[node name="Graveyard" parent="." instance=ExtResource( 10 )]
 visible = false
 
 [node name="LoginPopup" parent="." instance=ExtResource( 4 )]

@@ -26,6 +26,7 @@ func _physics_process(delta):
 	if reputation < reputation_end:
 		reputation += reputation_per_tick
 	if reputation > reputation_end:
+		$Container/HomeButton.modulate = Color(1,1,1,1)
 		reputation = reputation_end
 	
 	var leaderboard_position = CalculateRanking(reputation)
@@ -63,6 +64,7 @@ func GoHome():
 	GameUI.GoHome()
 
 func Open():
+	$Container/HomeButton.modulate = Color(1,1,1,0)
 	leaderboards = GameUI.GetLeaderboard()
 	
 	var character_data = GameUI.last_character

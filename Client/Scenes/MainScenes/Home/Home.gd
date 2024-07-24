@@ -8,20 +8,25 @@ var gold
 
 func _ready():
 	$UI/Leaderboard.connect("button_down", self, "OpenLeaderboard")
+	$UI/Graveyard.connect("button_down", self, "OpenGraveyard")
 	
 	if ClientAuth.cached_email and ClientAuth.cached_password:
 		email = ClientAuth.cached_email
 		password = ClientAuth.cached_password
-		AuthenticatedUser()
-		$LoginPopup.visible = false
-		$CharacterSelection.visible = true
+		get_node("LoginPopup").email = email
+		get_node("LoginPopup").password = password
+		get_node("LoginPopup/VBoxContainer/EmailContainer/Email/MarginContainer/Email").text = email
+		get_node("LoginPopup/VBoxContainer/PasswordContainer/Password/MarginContainer/Password").text = password
+		get_node("LoginPopup").LoginAttempt()
 
 func AuthenticatedUser():
 	Gateway.ConnectToServer(email, password, 4)
 
 func UpdateGold():
 	var ui = get_node("UI")
+	var graveyard = get_node("Graveyard")
 	ui.get_node("Gold/Gold").text = str(gold)
+	graveyard.get_node("Gold/Gold").text = str(gold)
 
 func OpenLeaderboard():
 	get_node("UI").visible = false
@@ -32,9 +37,16 @@ func CloseLeaderboard():
 	get_node("CharacterSelection").visible = true
 	get_node("Leaderboard").visible = false
 
-func SelectionScreen(account_data):
-	get_node("LoginPopup").visible = false
+func CloseGraveyard():
 	get_node("UI").visible = true
+	get_node("CharacterSelection").visible = true
+	get_node("Graveyard").visible = false
+func OpenGraveyard():
+	get_node("UI").visible = false
+	get_node("CharacterSelection").visible = false
+	get_node("Graveyard").visible = true
+
+func SelectionScreen(account_data):
 	GameUI.SetAccountData(account_data)
 	Gateway.ConnectToServer(email, password, 5)
 	ClientAuth.cached_email = email
@@ -45,7 +57,16 @@ func SelectionScreen(account_data):
 	selection_screen.characters = account_data.characters
 	selection_screen.character_slots = account_data.character_slots
 	selection_screen.Populate()
-	selection_screen.visible = true
+	
+	var graveyard = get_node("Graveyard")
+	graveyard.graveyard = account_data.graveyard
+	graveyard.can_revive = account_data.character_slots > account_data.characters.size()
+	graveyard.SwitchGraveyard(graveyard.current)
+	
+	if not get_node("Graveyard").visible:
+		selection_screen.visible = true
+		get_node("LoginPopup").visible = false
+		get_node("UI").visible = true
 	
 	gold = account_data.gold
 	UpdateGold()

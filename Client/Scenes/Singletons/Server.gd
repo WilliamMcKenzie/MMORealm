@@ -82,8 +82,9 @@ func ConnectToServerHTML():
 	get_tree().set_network_peer(null)
 	get_tree().network_peer = html_network
 		
-	get_tree().connect("connection_failed", self, "_onConnectionFailed")
-	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
+	get_tree().connect("connection_closed ", self, "_Disconnected")
+	get_tree().connect("server_close_request", self, "_Disconnected")
+	get_tree().connect("connection_error", self, "_Disconnected")
 	get_tree().connect("network_peer_disconnected", self, "_Disconnected")
 	get_tree().connect("server_disconnected", self, "_Disconnected")
 
@@ -259,7 +260,8 @@ func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 
 remote func RecieveWorldState(world_state):
-	get_node("../SceneHandler/"+GetCurrentInstance()).UpdateWorldState(world_state)
+	if get_node("../SceneHandler/"+GetCurrentInstance()):
+		get_node("../SceneHandler/"+GetCurrentInstance()).UpdateWorldState(world_state)
 	
 func UseAbility():
 	rpc_id(1, "UseAbility")

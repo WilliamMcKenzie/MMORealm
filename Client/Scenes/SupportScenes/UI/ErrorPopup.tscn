@@ -44,10 +44,11 @@ margin_left = -128.0
 margin_top = -53.5
 margin_right = 128.0
 margin_bottom = 53.5
+grow_horizontal = 2
 custom_styles/panel = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-margin_right = 256.0
+margin_right = 393.0
 margin_bottom = 107.0
 custom_constants/margin_right = 16
 custom_constants/margin_top = 16
@@ -57,36 +58,35 @@ custom_constants/margin_bottom = 16
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 margin_left = 16.0
 margin_top = 16.0
-margin_right = 240.0
+margin_right = 377.0
 margin_bottom = 91.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 224.0
+margin_right = 361.0
 margin_bottom = 18.0
 custom_constants/separation = 10
 alignment = 1
 
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 19.0
-margin_right = 68.0
+margin_right = 49.0
 margin_bottom = 18.0
 custom_fonts/font = SubResource( 2 )
 text = "Error:"
 align = 1
 
 [node name="ErrorName" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 78.0
-margin_right = 205.0
+margin_left = 59.0
+margin_right = 361.0
 margin_bottom = 18.0
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0.67451, 0.67451, 0.67451, 1 )
-text = "Server disconnected"
+text = "Server disconnectedddddddddddddddddddddddddd"
 align = 1
 valign = 1
 
 [node name="Close" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 margin_top = 22.0
-margin_right = 224.0
+margin_right = 361.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 0, 50 )
 custom_fonts/font = SubResource( 3 )

@@ -75,6 +75,31 @@ remote func CreateCharacter(email, password, player_id):
 		
 	rpc_id(gateway_id, "ReturnCreateCharacterRequest", result, DatabaseInterface.new_character, player_id)
 
+remote func ReviveCharacter(index, email, password, player_id):
+	var verification = DatabaseInterface.VerifyUser(email, password)
+	if not verification:
+		return
+	
+	var gateway_id = get_tree().get_rpc_sender_id()
+	var result = false
+	var account_data = DatabaseInterface.FindUser(email).account_data
+	
+	if account_data.graveyard.size() < index+1:
+		return
+	
+	var gold = account_data.gold
+	var cost = account_data.graveyard[index].revive_cost
+	var permadead = account_data.graveyard[index].has("permadead")
+	var char_slots = account_data.character_slots
+	var characters = account_data.characters
+	
+	var not_enough_slots = characters.size() >= char_slots
+	var not_enough_gold = gold < cost
+	
+	if not_enough_gold or not_enough_slots or permadead:
+		return
+	DatabaseInterface.ReviveCharacter(email, index, player_id, gateway_id)
+
 remote func CreateAccount(email, password, player_id):
 	var taken_email = DatabaseInterface.FindUser(email) != null
 	var gateway_id = get_tree().get_rpc_sender_id()

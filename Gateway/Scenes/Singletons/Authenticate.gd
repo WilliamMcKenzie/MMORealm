@@ -26,6 +26,7 @@ func GenericRequest(email, password, player_id, destination):
 	rpc_id(1, destination, email, password, player_id)
 
 remote func ReturnAccountData(account_data, player_id):
+	print("Returning account data")
 	Gateway.ReturnAccountData(account_data, player_id)
 
 remote func ReturnBuyCharacterSlotRequest(result, player_id):
@@ -52,3 +53,5 @@ func GetLeaderboards(player_id):
 remote func ReturnLeaderboardsResult(weekly, monthly, all_time, player_id):
 	Gateway.ReturnLeaderboardsResult(weekly, monthly, all_time, player_id)
 
+func ReviveCharacter(index, email, password, player_id):
+	rpc_id(1, "ReviveCharacter", index, email, password, player_id)

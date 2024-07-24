@@ -47,7 +47,7 @@ func UpdateScrollButtons():
 func ScrollLeftAction():
 	if scroll_index < 1:
 		pass
-	else:
+	elif has_node(active_node):
 		get_node(active_node).queue_free()
 		scroll_index -= 1		
 		AddCharacterButton(scroll_index)
@@ -61,7 +61,7 @@ func ScrollRightAction():
 		scroll_index += 1
 		AddCreateCharacterButton()
 		UpdateScrollButtons()
-	else:
+	elif has_node(active_node):
 		get_node(active_node).queue_free()
 		scroll_index += 1
 		AddCharacterButton(scroll_index)

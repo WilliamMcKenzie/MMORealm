@@ -474,11 +474,33 @@ func Death(enemy_name):
 	var username = get_node("/root/Server").player_name_by_id[int(name)]
 	
 	account_data.characters.remove(character_index)
-	account_data.graveyard.append(character)
+	if not character.has("revive_cost"):
+		character.revive_cost = DetermineReviveCost(character.level)
+		account_data.graveyard.append(character)
+	else:
+		character.revive_cost = 9999999
+		character.permadead = true
+		account_data.graveyard.append(character)
 	HubConnection.UpdateLeaderboard(username, character)
 	get_node("/root/Server").NotifyDeath(int(name), enemy_name)
-	
 	is_dead = true
+func DetermineReviveCost(reputation):
+	var cost = reputation * 10
+	if reputation > 20000:
+		cost = 5000
+	elif reputation > 10000:
+		cost = 4000
+	elif reputation > 5000:
+		cost = 3000
+	elif reputation > 1000:
+		cost = 2000
+	elif reputation > 500:
+		cost = 1000
+	elif reputation > 100:
+		cost = 500
+	elif reputation > 20:
+		cost = 200
+	return cost
 
 func UpdateStatistics(which, amount_increase):
 	if character.statistics.has(which) and character.ascension_stones >= ServerData.GetCharacter(character.class).ascension_stones:

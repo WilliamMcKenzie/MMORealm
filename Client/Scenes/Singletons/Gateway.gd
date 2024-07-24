@@ -10,6 +10,7 @@ var gateway_api = MultiplayerAPI.new()
 var email
 var password
 var task
+var index = null
 
 #if we are using the web client
 var html = true
@@ -60,15 +61,11 @@ func ConnectToServer(_email, _password, _task):
 		ConnectToServerHTML()
 	else:
 		ConnectToServerDefault()
-
-func _onConnectionFailed():
-	pass
-	#print("Connection failed, gateway server down.")
-	#get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
-	#get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
+	if(task == 7):
+		ReviveCharacter()
 	if(task == 6):
 		SendToken()
 	if(task == 5):
@@ -144,3 +141,8 @@ func SendToken():
 remote func ReturnToken(token):
 	print("Returend")
 	Server.token = token
+
+func ReviveCharacter():
+	if index != null:
+		rpc_id(1, "ReviveCharacter", index, email, password)
+		index = null
