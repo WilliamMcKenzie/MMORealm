@@ -1,5 +1,9 @@
 extends Node
 
+var url = "wss://lagso.com"
+#var url = "ws://143.110.213.88:20201"
+#var url = "ws://localhost:20201"
+
 #var ip_address = "143.110.213.88"
 var ip_address = "localhost"
 var port = 20201
@@ -27,8 +31,12 @@ func _process(delta):
 	custom_multiplayer.poll()
 	
 func ConnectToServerHTML():
-	var url = "ws://127.0.0.1:" + str(port)
-	var error = html_network.connect_to_url(url, PoolStringArray(), true);
+	# Connect to WebSocket server
+	var connection_result = html_network.connect_to_url(url, PoolStringArray(), true)
+	if connection_result == OK:
+		print("Connected to WebSocket server successfully.")
+	else:
+		print("Failed to connect to WebSocket server.")
 	gateway_api = MultiplayerAPI.new()
 	
 	set_custom_multiplayer(gateway_api)

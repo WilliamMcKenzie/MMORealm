@@ -1,5 +1,9 @@
 extends Node
 
+var url = "wss://gameserver.lagso.com"
+#var url = "ws://159.203.0.78:20200"
+#var url = "ws://localhost:20200"
+
 #var ip_address = "159.203.0.78"
 var ip_address = "localhost"
 var port = 20200
@@ -75,7 +79,6 @@ func ConnectToServerHTML():
 	if not token:
 		ErrorPopup.OpenPopup("Connection failed")
 	
-	var url = "ws://127.0.0.1:" + str(port)
 	var error = html_network.connect_to_url(url, PoolStringArray(), true);
 	
 	network.create_client(ip_address, port)

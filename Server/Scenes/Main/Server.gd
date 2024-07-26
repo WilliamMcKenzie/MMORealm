@@ -3,7 +3,7 @@ extends Node
 var max_players = 100
 var port = 20200
 var network = NetworkedMultiplayerENet.new()
-var html_network = WebSocketServer.new();
+var html_network = WebSocketServer.new()
 
 var expected_tokens = {}
 
@@ -33,7 +33,7 @@ func _ready():
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
 	#get_node("Instances/nexus").OpenPortal("overgrown_temple", ["nexus"], Vector2.ZERO)
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
@@ -59,7 +59,12 @@ func _process(delta):
 		html_network.poll();
 
 func StartHTMLServer():
-	html_network.listen(port, PoolStringArray(), true);
+	var result = html_network.listen(port, PoolStringArray(), true);
+	if result != OK:
+		print("Failed to start server:", result)
+	else:
+		print("Server is running on port", port)
+	
 	get_tree().set_network_peer(html_network);
 	
 	get_tree().connect("network_peer_connected", self, "_Peer_Connected")

@@ -4,7 +4,7 @@ var max_players = 100
 var port = 20201
 
 var network = NetworkedMultiplayerENet.new()
-var html_network = WebSocketServer.new();
+var html_network = WebSocketServer.new()
 var current_network
 
 var gateway_api = MultiplayerAPI.new()
@@ -16,12 +16,17 @@ func _ready():
 	StartHTMLServer()
 
 func _process(delta):
-	if not custom_multiplayer.has_network_peer():
+	if not custom_multiplayer or not custom_multiplayer.has_network_peer():
 		return
 	custom_multiplayer.poll()
 
 func StartHTMLServer():
-	html_network.listen(port, PoolStringArray(), true);
+	var result = html_network.listen(port, PoolStringArray(), true);
+	if result != OK:
+		print("Failed to start server:", result)
+	else:
+		print("Server is running on port", port)
+	
 	get_tree().set_network_peer(html_network);
 	set_custom_multiplayer(gateway_html_api)
 	custom_multiplayer.set_root_node(self)
