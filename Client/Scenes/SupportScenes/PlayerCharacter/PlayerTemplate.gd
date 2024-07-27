@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 onready var animationTree = $AnimationTree
-onready var CharacterSpriteEle = $CharacterSprite
+onready var CharacterSpriteEle = $Control/CharacterSprite
 var projectile_dict = {}
 var last_status_effects = []
 var last_sprite_data = {
@@ -11,8 +11,21 @@ var last_sprite_data = {
 }
 
 func _physics_process(delta):
+	SpeedModifiers()
 	if projectile_dict != {}:
 		ShootProjectile()
+
+func SpeedModifiers():
+	var tilemap = get_parent().get_parent().get_parent().get_node("TileMap")
+	var tile_coords = tilemap.world_to_map(position)
+	var tile_index = tilemap.get_cell(tile_coords.x, tile_coords.y)
+
+	if tile_index != TileMap.INVALID_CELL and ClientData.unique_tiles.has(tile_index):
+		$Control.rect_size = Vector2(20,7)
+		$Control.rect_position = Vector2(-10,-6)
+	else:
+		$Control.rect_size = Vector2(20,10)
+		$Control.rect_position = Vector2(-10,-9)
 
 func SetCharacterSprite(sprite_data):
 	var check1 = sprite_data.duplicate(true)

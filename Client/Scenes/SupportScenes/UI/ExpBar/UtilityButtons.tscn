@@ -63,7 +63,7 @@ region = Rect2( 69, 229.5, 12, 12 )
 
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 1 )
-region = Rect2( 69.5, 220, 12, 10 )
+region = Rect2( 69, 220, 12, 10 )
 
 [sub_resource type="StyleBoxTexture" id=25]
 texture = ExtResource( 5 )
@@ -215,7 +215,7 @@ texture_hover = SubResource( 6 )
 expand = true
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="Column1/NearbyButton/MarginContainer"]
-position = Vector2( 4, 4 )
+position = Vector2( 3, 4 )
 scale = Vector2( 2.83333, 3 )
 z_index = 22
 normal = SubResource( 11 )

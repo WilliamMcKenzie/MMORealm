@@ -8,7 +8,7 @@
 resource_name = "Attack"
 length = 0.6
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -25,7 +25,7 @@ resource_name = "Idle"
 length = 0.6
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -40,7 +40,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=3]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -59,9 +59,17 @@ extents = Vector2( 5, 5 )
 script = ExtResource( 1 )
 enemy_type = "shadow_mage"
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Control" type="Control" parent="."]
+margin_left = -10.0
+margin_top = -9.0
+margin_right = 10.0
+margin_bottom = 1.0
+rect_clip_content = true
+mouse_filter = 2
+
+[node name="Sprite" type="Sprite" parent="Control"]
 material = ExtResource( 3 )
-position = Vector2( 0, -4.5 )
+position = Vector2( 10, 4.5 )
 scale = Vector2( 1.00334, 1 )
 texture = ExtResource( 2 )
 hframes = 4

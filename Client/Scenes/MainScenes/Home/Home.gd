@@ -49,7 +49,7 @@ func Logout():
 	var selection_screen = get_node("CharacterSelection")
 	selection_screen.characters = []
 	selection_screen.character_slots = 0
-	selection_screen.Populate()
+	selection_screen.remove_child(selection_screen.get_child(0))
 	
 	var graveyard = get_node("Graveyard")
 	graveyard.graveyard = []
@@ -98,6 +98,8 @@ func SelectionScreen(account_data):
 	var selection_screen = get_node("CharacterSelection")
 	selection_screen.characters = account_data.characters
 	selection_screen.character_slots = account_data.character_slots
+	if selection_screen.get_child_count() > 1:
+		selection_screen.remove_child(selection_screen.get_child(0))
 	selection_screen.Populate()
 	
 	var graveyard = get_node("Graveyard")

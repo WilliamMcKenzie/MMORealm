@@ -271,6 +271,8 @@ func EquipItem(index):
 		return
 	
 	var selected_item = ServerData.GetItem(selected_item_raw.item)
+	if not selected_item.has("slot") or selected_item.slot == "na":
+		return
 	var replaced_item = character.gear[selected_item.slot]
 	
 	character.inventory[index] = replaced_item

@@ -2,6 +2,7 @@
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Classes/Classes.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Resources/Outline.gdshader" type="Shader" id=3]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=5]
 [ext_resource path="res://Resources/main_theme.tres" type="Theme" id=6]
@@ -12,7 +13,6 @@
 [ext_resource path="res://Assets/ui/black_gradient.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/SupportScenes/UI/Classes/ClassEvolutionButton.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/SupportScenes/UI/Classes/CharacterPreview.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Resources/ColorGearPixelPerfect.gdshader" type="Shader" id=14]
 [ext_resource path="res://Assets/ui/square_background_white.png" type="Texture" id=15]
 
 [sub_resource type="Animation" id=4]
@@ -87,13 +87,14 @@ outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="ShaderMaterial" id=23]
-shader = ExtResource( 14 )
-shader_param/color = Color( 0, 0, 0, 1 )
-shader_param/width = 0.6
-shader_param/pattern = 2
-shader_param/inside = false
-shader_param/add_margins = false
+[sub_resource type="ShaderMaterial" id=26]
+shader = ExtResource( 3 )
+shader_param/max_line_width = 0.8
+shader_param/min_line_width = -0.983
+shader_param/freq = 0.0
+shader_param/block_size = 22220.2
+shader_param/starting_colour = Plane( 0, 0, 0, 12 )
+shader_param/ending_colour = Plane( 0, 0, 0, 0 )
 shader_param/helmetTextureActive = false
 shader_param/bodyTextureActive = false
 shader_param/weaponTextureActive = false
@@ -305,9 +306,9 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Class" type="Label" parent="ClassInfo/MarginContainer/ResizeContainer/ClassName"]
-margin_left = 27.0
-margin_top = 4.0
-margin_right = 184.0
+margin_left = 44.0
+margin_top = 8.0
+margin_right = 167.0
 margin_bottom = 35.0
 size_flags_vertical = 8
 custom_colors/font_color = Color( 0.14902, 0.737255, 0.180392, 1 )
@@ -316,9 +317,9 @@ text = "Apprentice"
 align = 1
 
 [node name="TextureRect" type="TextureRect" parent="ClassInfo/MarginContainer/ResizeContainer/ClassName"]
-material = SubResource( 23 )
-margin_left = 188.0
-margin_right = 223.0
+material = SubResource( 26 )
+margin_left = 171.0
+margin_right = 206.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 35, 35 )
 size_flags_horizontal = 0
@@ -363,7 +364,7 @@ autowrap = true
 [node name="Multipliers" type="Label" parent="ClassInfo/MarginContainer/ResizeContainer"]
 margin_top = 217.0
 margin_right = 250.0
-margin_bottom = 254.0
+margin_bottom = 248.0
 custom_colors/font_color = Color( 0.741176, 0.741176, 0.741176, 1 )
 custom_fonts/font = SubResource( 13 )
 text = "+20% Sword Damage
@@ -371,7 +372,7 @@ text = "+20% Sword Damage
 align = 1
 
 [node name="Strengths" type="HBoxContainer" parent="ClassInfo/MarginContainer/ResizeContainer"]
-margin_top = 258.0
+margin_top = 252.0
 margin_right = 250.0
 margin_bottom = 297.0
 grow_horizontal = 2
@@ -381,19 +382,19 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="ClassInfo/MarginContainer/ResizeContainer/Strengths"]
-margin_left = 35.0
-margin_top = 11.0
-margin_right = 115.0
-margin_bottom = 28.0
+margin_left = 42.0
+margin_top = 15.0
+margin_right = 108.0
+margin_bottom = 29.0
 custom_fonts/font = SubResource( 10 )
 text = "Strengths:"
 align = 1
 
 [node name="Health" type="PanelContainer" parent="ClassInfo/MarginContainer/ResizeContainer/Strengths"]
-margin_left = 119.0
-margin_top = 5.0
-margin_right = 148.0
-margin_bottom = 34.0
+margin_left = 112.0
+margin_top = 8.0
+margin_right = 141.0
+margin_bottom = 37.0
 size_flags_vertical = 4
 custom_styles/panel = SubResource( 11 )
 
@@ -420,10 +421,10 @@ expand = true
 stretch_mode = 5
 
 [node name="Defense" type="PanelContainer" parent="ClassInfo/MarginContainer/ResizeContainer/Strengths"]
-margin_left = 152.0
-margin_top = 5.0
-margin_right = 181.0
-margin_bottom = 34.0
+margin_left = 145.0
+margin_top = 8.0
+margin_right = 174.0
+margin_bottom = 37.0
 size_flags_vertical = 4
 custom_styles/panel = SubResource( 11 )
 
@@ -450,10 +451,10 @@ expand = true
 stretch_mode = 5
 
 [node name="Vitality" type="PanelContainer" parent="ClassInfo/MarginContainer/ResizeContainer/Strengths"]
-margin_left = 185.0
-margin_top = 5.0
-margin_right = 214.0
-margin_bottom = 34.0
+margin_left = 178.0
+margin_top = 8.0
+margin_right = 207.0
+margin_bottom = 37.0
 size_flags_vertical = 4
 custom_styles/panel = SubResource( 24 )
 

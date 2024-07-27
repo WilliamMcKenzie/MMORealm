@@ -4,12 +4,31 @@ export var enemy_type = "crab"
 var distanceTraveled
 var velocity = Vector2.ZERO
 
+export var rect_size1 = Vector2(20,7)
+export var rect_size2 = Vector2(20,10)
+
+export var rect_position1 = Vector2(-10,-6)
+export var rect_position2 = Vector2(-10,-9)
+
 var damage_indicator_scene = preload("res://Scenes/SupportScenes/UI/Indicators/DamageIndicator.tscn")
 var projectile_dict = {}
 
 func _physics_process(delta):
 	if not $AnimationPlayer.is_playing():
 		$AnimationPlayer.play("Idle")
+	SpeedModifiers()
+
+func SpeedModifiers():
+	var tilemap = get_parent().get_parent().get_parent().get_node("TileMap")
+	var tile_coords = tilemap.world_to_map(position)
+	var tile_index = tilemap.get_cell(tile_coords.x, tile_coords.y)
+
+	if tile_index != TileMap.INVALID_CELL and ClientData.unique_tiles.has(tile_index):
+		$Control.rect_size = rect_size1
+		$Control.rect_position = rect_position1
+	else:
+		$Control.rect_size = rect_size2
+		$Control.rect_position = rect_position2
 
 func _ready():
 	$Area2D.connect("area_entered", self, "OnHit")
@@ -23,9 +42,9 @@ func MoveEnemy(new_position):
 		set_position(theoretical_position)
 		
 		if new_position.x-old_position.x > 0:
-			$Sprite.flip_h = false
+			$Control/Sprite.flip_h = false
 		elif new_position.x-old_position.x < 0:
-			$Sprite.flip_h = true
+			$Control/Sprite.flip_h = true
 	else:
 		self.visible = false
 

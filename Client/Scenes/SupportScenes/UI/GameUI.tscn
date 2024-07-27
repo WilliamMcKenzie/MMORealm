@@ -148,8 +148,10 @@ visible = false
 [node name="Nearby" parent="." instance=ExtResource( 14 )]
 
 [node name="TradingMenu" parent="." instance=ExtResource( 16 )]
+visible = false
 
 [node name="TradeRequest" parent="." instance=ExtResource( 18 )]
+visible = false
 
 [node name="GameButtons" type="Control" parent="."]
 anchor_left = 1.0

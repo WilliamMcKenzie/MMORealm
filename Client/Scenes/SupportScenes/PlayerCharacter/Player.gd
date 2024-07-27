@@ -128,7 +128,6 @@ func SpeedModifiers():
 		$Control.rect_size = Vector2(20,10)
 		$Control.rect_position = Vector2(-10,-9)
 		practical_speed = stats.speed
-	
 
 func UpdateStatusEffects():
 	for status_node in $ZContainer/HBoxContainer/HBoxContainer.get_children():

@@ -96,9 +96,15 @@ func _Peer_Disconnected(id):
 
 #TRADE
 remote func AcceptTrade(player1_name):
+	if not player_id_by_name.has(player1_name) or not player_name_by_id[get_tree().get_rpc_sender_id()]:
+		return
+	
 	var player1_id = player_id_by_name[player1_name]
 	var player2_id = get_tree().get_rpc_sender_id()
 	var player2_name = player_name_by_id[player2_id]
+	
+	if not player_state_collection.has(int(player1_id)) or not player_state_collection.has(int(player2_id)):
+		return
 	
 	var instance_tree1 = player_state_collection[int(player1_id)]["I"]
 	var player_container1 = get_node("Instances/"+StringifyInstanceTree(instance_tree1)+"/YSort/Players/"+str(player1_id))

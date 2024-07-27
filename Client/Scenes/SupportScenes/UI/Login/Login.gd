@@ -16,20 +16,14 @@ func SignupAttempt():
 	if password.length() < 7:
 		ErrorPopup.OpenPopup("Invalid credentials: Password length must be greater then 7.")
 	else:
-		loginButton.disabled = true
-		signupButton.disabled = true
 		Gateway.ConnectToServer(email, password, 1)
 
 func LoginAttempt():
 	if email == "" or password == "":
 		ErrorPopup.OpenPopup("Invalid credentials: Email/password cannot be blank")
 	else:
-		loginButton.disabled = true
-		signupButton.disabled = true
 		Gateway.ConnectToServer(email, password, 0)
 func LoginResult(result):
-	loginButton.disabled = false
-	signupButton.disabled = false
 	if(result == true):
 		get_node("/root/SceneHandler/Home").email = email
 		get_node("/root/SceneHandler/Home").password = password

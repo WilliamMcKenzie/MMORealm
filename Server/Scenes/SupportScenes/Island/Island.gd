@@ -2,7 +2,7 @@ extends "res://Scenes/Main/Nexus.gd"
 
 var noise
 var chunk_size = 16
-var map_size = Vector2(1000,1000)
+var map_size = Vector2(600,600)
 var tile_cap = 0.5
 var environment_caps = Vector3(0.4, 0.3, 0.04)
 

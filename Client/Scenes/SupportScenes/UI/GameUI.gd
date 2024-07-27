@@ -217,6 +217,9 @@ func Toggle(which):
 		$UtilityButtons.visible = true
 		$ChatControl.visible = true
 		is_in_menu = false
+		
+		if which == "trade":
+			get_node("TradeRequest").current_requester = null
 	else:
 		node.Open()
 		$LeftContainer.visible = false

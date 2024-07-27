@@ -2,6 +2,10 @@ extends VBoxContainer
 
 var current_requester = null
 
+#func _physics_process(delta):
+	#if GameUI.get_node("TradingMenu").visible:
+		#Reject()
+
 func _ready():
 	$HBoxContainer/AcceptRequest.connect("button_down", self, "Accept")
 	$HBoxContainer/RejectRequest.connect("button_down", self, "Reject")

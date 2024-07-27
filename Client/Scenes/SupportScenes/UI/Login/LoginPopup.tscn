@@ -150,7 +150,6 @@ margin_right = 107.0
 margin_bottom = 36.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
 custom_fonts/font = SubResource( 16 )
 text = "Login"
 align = 1
@@ -179,6 +178,6 @@ text = "Signup"
 align = 1
 valign = 1
 
-[connection signal="text_changed" from="VBoxContainer/EmailContainer/Email/MarginContainer/Email" to="." method="_on_Email_text_changed"]
 [connection signal="text_changed" from="VBoxContainer/EmailContainer/Email/MarginContainer/Email" to="." method="_on_Password_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/EmailContainer/Email/MarginContainer/Email" to="." method="_on_Email_text_changed"]
 [connection signal="text_changed" from="VBoxContainer/PasswordContainer/Password/MarginContainer/Password" to="." method="_on_Password_text_changed"]
