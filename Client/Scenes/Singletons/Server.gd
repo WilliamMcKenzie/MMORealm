@@ -1,8 +1,8 @@
 extends Node
 
-var url = "wss://gameserver.lagso.com"
+#var url = "wss://gameserver.lagso.com"
 #var url = "ws://159.203.0.78:20200"
-#var url = "ws://localhost:20200"
+var url = "ws://localhost:20200"
 
 #var ip_address = "159.203.0.78"
 var ip_address = "localhost"
@@ -42,8 +42,14 @@ var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 func Init():
 	current_instance_tree = ["nexus"]
 
+var latency_timer = 59
 func _physics_process(delta):
+	latency_timer += 1
 	client_clock = OS.get_system_time_msecs()+latency
+	
+	if latency_timer == 60:
+		latency_timer = 0
+		rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 
 func UpdateRightJoystick(output):
 	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player"):
