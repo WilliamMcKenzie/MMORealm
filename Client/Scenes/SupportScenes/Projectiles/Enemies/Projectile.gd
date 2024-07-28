@@ -33,8 +33,13 @@ func _physics_process(delta):
 		var result = true
 		var spots_to_check = [Vector2(0,0)]
 		for spot in spots_to_check:
-			if space_state.intersect_point(position+spot, 1, [], 4, true, true).size() > 0:
-				result = false
+			var check = space_state.intersect_point(position+spot, 1, [], 4, true, true)
+			if check.size() > 0:
+				for i in check:
+					if not "is_projectile" in i["collider"]:
+						result = false
+						print("no is_projectile found in "+ i["collider"].name)
+						break
 		
 		#Check if done
 		if not result or projectile_data.start_position.distance_to(projectile_data.path) >= projectile_data.tile_range*8:

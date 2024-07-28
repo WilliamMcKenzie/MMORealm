@@ -93,6 +93,16 @@ var realm_enemies = {
 			"tile_range" : 8,
 			"direction" : Vector2(0,1),
 			"size" : 20
+			},
+						{
+			"projectile" : "GreySlash",
+			"formula" : "0",
+			"damage" : 10,
+			"wait" : 1,
+			"speed" : 10,
+			"tile_range" : 8,
+			"direction" : Vector2(-1,1),
+			"size" : 20
 			}
 		]
 	},
