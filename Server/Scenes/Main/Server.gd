@@ -263,8 +263,10 @@ func FetchToken(player_id):
 	rpc_id(player_id, "FetchToken")
 
 remote func ReturnToken(token, character_index):
-	print(token)
 	var player_id = get_tree().get_rpc_sender_id()
+	if not token:
+		network.disconnect_peer(player_id)
+		return
 	PlayerVerification.Verify(player_id, token, character_index)
 
 func ReturnTokenVerificationResults(player_id, result):
@@ -353,7 +355,7 @@ remote func Nexus():
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnPlayer(player_container)
 	
 	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
-	
+
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"]))
@@ -389,7 +391,7 @@ remote func EnterInstance(instance_id):
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
 			player_instance_tracker[instance_tree].append(player_id)
 		SendCharacterData(player_id, player_container.character)
-		
+
 remote func FetchIslandChunk(chunk):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -502,7 +504,7 @@ func NotifyDeath(player_id, enemy_name):
 	rpc("RecieveChat", str(player_name_by_id[player_id]) + " has been killed by a "+enemy_name, "System")
 	yield(get_tree().create_timer(1), "timeout")
 	html_network.disconnect_peer(player_id)
-	
+
 func SetHealth(player_id, max_health, health):
 	rpc_id(player_id,"SetHealth",max_health, health)
 

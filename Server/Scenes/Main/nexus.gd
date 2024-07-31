@@ -47,14 +47,17 @@ func _physics_process(delta):
 		
 		var space_state = get_world_2d().direct_space_state
 		
-		var obstacle_collision = space_state.intersect_point(projectile_list[projectile_id]["position"], 1, [], 1, true, true).size() > 0 and space_state.intersect_point(projectile_list[projectile_id]["position"], 1, [], 1, true, true)[0].collider.name != "PlayerHitbox"
+		var collision = space_state.intersect_point(projectile_list[projectile_id]["position"]+self.position, 1, [], 1, true, true)
+		var valid_collision = collision.size() > 0 and collision[0].collider.name != "PlayerHitbox" and not "ChunkArea" in collision[0].collider.name
 		var max_range = projectile_list[projectile_id]["start_position"].distance_to(projectile_list[projectile_id]["path"]) >= projectile_list[projectile_id]["tile_range"]*8
 		
 		for player_id in player_list.keys():
 			if not projectile_list[projectile_id]["hit_players"].has(player_id) and player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
 				projectile_list[projectile_id]["hit_players"][player_id] = true
 				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_name"])
-		if obstacle_collision or max_range:
+				if not projectile_list[projectile_id].piercing:
+					valid_collision = true
+		if valid_collision or max_range:
 			projectile_list.erase(projectile_id)
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
@@ -69,6 +72,7 @@ func _physics_process(delta):
 					"start_position" : enemy_list[enemy_id]["position"],
 					"start_time" : OS.get_system_time_msecs()/1000,
 					"damage" : current_attack["damage"],
+					"piercing" : current_attack["piercing"],
 					"speed" : current_attack["speed"],	
 					"formula" : current_attack["formula"],
 					"path" : enemy_list[enemy_id]["position"],

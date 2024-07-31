@@ -17,6 +17,7 @@ var default_account_data = {
 	"username" : "[unset]",
 	"character_slots": 1,
 	"gold": 5000,
+	"finished_tutorial": false,
 	"achievements": {
 		"Trial By Fire" : false,
 	},

@@ -2,7 +2,7 @@ extends "res://Scenes/Main/Nexus.gd"
 
 var noise
 var chunk_size = 16
-var map_size = Vector2(600,600)
+var map_size = Vector2(300,300)
 var tile_cap = 0.5
 var environment_caps = Vector3(0.4, 0.3, 0.04)
 
@@ -15,6 +15,8 @@ var spawn_points = []
 var enemy_spawn_points = {}
 
 #Enemy variety
+var ruler = "rat_king"
+
 var beach_enemies = ["crab"]
 var forest_enemies = ["goblin_warrior", "goblin_cannon"]
 var plains_enemies = ["troll_warrior", "troll_brute"]
@@ -312,6 +314,7 @@ func CreateObstacle(obstacle_name, instance_tree, obstacle_position, hitbox_size
 	if get_node("/root/Server/Instances/"+instance_tree_str):
 		var obstacle = load("res://Scenes/SupportScenes/Obstacles/"+hitbox_size+".tscn").instance()
 		obstacle.name = obstacle_id
-		obstacle.position = obstacle_position + self.position
+		
+		obstacle.position = obstacle_position
 		get_node("/root/Server/Instances/"+instance_tree_str+"/YSort/Objects").add_child(obstacle)
 		map_objects[obstacle_position] = {"P": obstacle_position, "I": instance_tree, "N":obstacle_name, "Type":"Obstacles"}

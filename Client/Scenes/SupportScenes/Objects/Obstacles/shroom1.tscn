@@ -21,13 +21,13 @@ hframes = 26
 vframes = 26
 frame = 135
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Obstacle" type="Area2D" parent="."]
 visible = false
 position = Vector2( -4, -8 )
 collision_layer = 0
 collision_mask = 23
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacle"]
 position = Vector2( 4, 4.5 )
 shape = SubResource( 1 )
 

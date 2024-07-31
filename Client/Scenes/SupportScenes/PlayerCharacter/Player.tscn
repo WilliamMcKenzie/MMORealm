@@ -395,7 +395,6 @@ atlas = ExtResource( 3 )
 region = Rect2( 40, 190, 10, 10 )
 
 [node name="player" type="KinematicBody2D"]
-collision_mask = 0
 script = ExtResource( 2 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -457,7 +456,6 @@ current = true
 zoom = Vector2( 0.18, 0.18 )
 
 [node name="Axis" type="Area2D" parent="."]
-visible = false
 position = Vector2( 0, -4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Axis"]

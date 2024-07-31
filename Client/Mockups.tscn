@@ -426,7 +426,16 @@ z_index = 3
 texture = ExtResource( 4 )
 hframes = 15
 vframes = 15
-frame = 71
+frame = 124
+
+[node name="Sprite11" type="Sprite" parent="DesertCatacombs"]
+material = ExtResource( 2 )
+position = Vector2( -128, 121 )
+z_index = 3
+texture = ExtResource( 4 )
+hframes = 15
+vframes = 15
+frame = 122
 
 [node name="Sprite6" type="Sprite" parent="DesertCatacombs"]
 visible = false
