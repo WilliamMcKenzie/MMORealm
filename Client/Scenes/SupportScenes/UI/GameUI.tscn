@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/Inventory.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/UtilityButtons/ClassesButton.gd" type="Script" id=26]
 [ext_resource path="res://Scenes/SupportScenes/UI/UtilityButtons/NearbyButton.gd" type="Script" id=27]
 [ext_resource path="res://Scenes/SupportScenes/UI/TutorialDialogue/TutorialDialogue.tscn" type="PackedScene" id=28]
+[ext_resource path="res://Scenes/SupportScenes/UI/ChooseName/ChooseName.tscn" type="PackedScene" id=29]
 
 [sub_resource type="Animation" id=34]
 resource_name = "Ability"
@@ -215,6 +216,21 @@ tracks/6/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=38]
+resource_name = "ChooseName"
+tracks/0/type = "value"
+tracks/0/path = NodePath("ChooseName:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=36]
@@ -523,6 +539,18 @@ tracks/14/keys = {
 "update": 0,
 "values": [ Vector2( -153, -88 ) ]
 }
+tracks/15/type = "value"
+tracks/15/path = NodePath("ChooseName:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=37]
 resource_name = "Start"
@@ -824,6 +852,7 @@ script = ExtResource( 3 )
 [node name="TutorialAnimations" type="AnimationPlayer" parent="."]
 anims/Ability = SubResource( 34 )
 anims/Backpack = SubResource( 32 )
+anims/ChooseName = SubResource( 38 )
 anims/Final = SubResource( 36 )
 anims/RESET = SubResource( 33 )
 anims/Start = SubResource( 37 )
@@ -1206,6 +1235,10 @@ visible = false
 [node name="TutorialDialogue" parent="." instance=ExtResource( 28 )]
 visible = false
 
+[node name="ChooseName" parent="." instance=ExtResource( 29 )]
+layer = 25
+visible = false
+
 [node name="TradeRequest" parent="." instance=ExtResource( 18 )]
 visible = false
 
@@ -1220,12 +1253,10 @@ margin_right = -3.0
 margin_bottom = 19.0
 
 [node name="HelmetButton" parent="GameButtons" instance=ExtResource( 12 )]
-modulate = Color( 1, 1, 1, 0.784314 )
 position = Vector2( -84, -107 )
 scale = Vector2( 0.4, 0.4 )
 
 [node name="HomeButton" parent="GameButtons" instance=ExtResource( 11 )]
-modulate = Color( 1, 1, 1, 0.784314 )
 position = Vector2( -153, -88 )
 scale = Vector2( 0.3, 0.3 )
 

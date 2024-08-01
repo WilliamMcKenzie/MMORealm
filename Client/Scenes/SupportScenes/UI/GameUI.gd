@@ -36,8 +36,9 @@ func _ready():
 	
 	$GameButtons/HelmetButton.connect("pressed", self, "InUI")
 	$GameButtons/HomeButton.connect("pressed", self, "InUI")
-	
-	StartTutorial()
+	if str(OS.get_model_name()) == 'GenericDevice':
+		$GameButtons/HelmetButton.visible = false
+		$GameButtons/HomeButton.visible = false
 
 func _physics_process(delta):
 	animation_timer -= delta
@@ -51,6 +52,7 @@ func _physics_process(delta):
 
 func StartTutorial():
 	$TutorialAnimations.play("Start")
+	$TutorialDialogue.StartSubject("Intro")
 
 func UpdateChatBubbles(id, text):
 	var base_node = get_node("ChatBubbles")
@@ -159,7 +161,6 @@ func SetNearbyCharacters(characters_data):
 	node.SetCharacters(characters_data)
 
 func OpenChat():
-	$TutorialDialogue.StartSubject("Intro")
 	get_node("ChatControl").Open()
 
 func CloseChat():
