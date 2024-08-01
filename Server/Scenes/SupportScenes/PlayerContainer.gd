@@ -26,6 +26,11 @@ var heal_rate = 1
 var running_time = 0
 var last_tick = 0
 
+#Tutorial
+var in_tutorial = false
+var tutorial_step = 0
+var tutorial_step_translation = ["Intro", "Controls", "Backpack", "Ability", "Quest", "Stats", "Final"]
+
 func _physics_process(delta):
 	if not character:
 		return
@@ -192,6 +197,10 @@ func FinishTrade():
 func UseAbility():
 	if character.ability_cooldown > 0 or not gear.has("helmet"):
 		return
+		
+	if in_tutorial and tutorial_step == 3:
+		tutorial_step += 1
+		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 	
 	character.ability_cooldown = gear.helmet.cooldown
 	
@@ -233,6 +242,10 @@ func GiveEffect(effect, duration):
 #Items
 
 func IncreaseStat(stat):
+	if in_tutorial and tutorial_step == 5:
+		tutorial_step += 1
+		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+	
 	if character.ascension_stones > character.used_ascension_stones:
 		character.used_ascension_stones += 1
 		if stat == "health":
@@ -280,6 +293,9 @@ func EquipItem(index):
 	gear[selected_item.slot] = selected_item
 	
 	get_node("/root/Server").SendCharacterData(name, character)
+	if in_tutorial and tutorial_step == 2 and selected_item.slot == "helmet":
+		tutorial_step += 1
+		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 	
 func ChangeItem(to_data, from_data):
 	var remove_gear = false
@@ -299,6 +315,10 @@ func ChangeItem(to_data, from_data):
 			return
 		else:
 			gear[to_data.index] = selected_item
+			
+			if in_tutorial and tutorial_step == 2 and selected_item.slot == "helmet":
+				tutorial_step += 1
+				get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 			
 	#Vice versa, trying to place gear slot into inventory
 	if from_data.parent == "gear":
@@ -425,7 +445,14 @@ func SetCharacter(characters):
 			
 	get_node("/root/Server").SendCharacterData(name, character)
 
-func AddExp(exp_amount):
+func AddExp(exp_amount, enemy_name):
+	if in_tutorial and tutorial_step == 4 and enemy_name == "rat_king":
+		tutorial_step += 1
+		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+	if in_tutorial and tutorial_step == 1:
+		tutorial_step += 1
+		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+	
 	character.exp += exp_amount
 	var exp_to_level = 100*pow(1.1962,character.level)
 	

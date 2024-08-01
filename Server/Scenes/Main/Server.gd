@@ -33,7 +33,7 @@ func _ready():
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2.ZERO)
+	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO)
 	#get_node("Instances/nexus").OpenPortal("overgrown_temple", ["nexus"], Vector2.ZERO)
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
@@ -94,11 +94,54 @@ func _Peer_Disconnected(id):
 		player_state_collection.erase(id)
 		rpc_id(0, "DespawnPlayer", id)
 
+#TUTORIAL
 func StartTutorial(player_id):
-	print("Startingg")
+	var instance_tree = player_state_collection[player_id]["I"].duplicate()
+	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+	var player_container = current_instance_node.get_node("YSort/Players/"+str(player_id))
+	
+	var instance_id = null
+	for child in current_instance_node.get_children():
+		if "tutorial_island" in child.name:
+			instance_id = child.name
+	
+	if instance_id:
+		player_instance_tracker[instance_tree].erase(player_id)
+		instance_tree.append(str(instance_id))
+		
+		var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+		var spawnpoint = island_node.GetMapSpawnpoint()
+			
+		rpc_id(player_id, "ReturnIslandData", { "Name": current_instance_node.object_list[instance_id]["name"], "Id":instance_id, "Position": spawnpoint})
+		get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
+		
+		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
+		player_instance_tracker[instance_tree].append(player_id)
+		
+		SendCharacterData(player_id, player_container.character)
+		rpc_id(int(player_id), "StartTutorial")
+
+func TutorialStep(step, player_id):
+	rpc_id(int(player_id), "TutorialStep", step)
+
+remote func ChooseUsername(username):
+	var player_id = get_tree().get_rpc_sender_id()
+	HubConnection.ConfirmUsername(username, player_id)
+	
+func ConfirmUsername(result, username, player_id):
 	var instance_tree = player_state_collection[player_id]["I"]
 	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
-	rpc_id(int(player_id), "StartTutorial")
+	
+	if result:
+		player_name_by_id[player_id] = username
+		player_id_by_name[username] = player_id
+		player_container.account_data.username = username
+	
+	rpc_id(player_id, "ConfirmUsername", result, username)
+	player_container.tutorial_step = 1
+	player_container.in_tutorial = true
+	TutorialStep("Controls", player_id)
 
 #TRADE
 remote func AcceptTrade(player1_name):

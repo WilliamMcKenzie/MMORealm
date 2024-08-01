@@ -14,12 +14,11 @@ func _on_Name_text_changed(new_text):
 		$MarginContainer/Container/InputContainer/NameContainter/NameWarning.text = "Too long!"
 	elif len(username) == 0:
 		$MarginContainer/Container/InputContainer/NameContainter/NameWarning.text = "Name cannot be blank!"
-	elif " " in username or ";" in username:
+	elif not username.is_valid_identifier():
 		$MarginContainer/Container/InputContainer/NameContainter/NameWarning.text = "Invalid characters!"
 	else:
 		$MarginContainer/Container/InputContainer/NameContainter/NameWarning.text = ""
 
 func _on_Confirm_pressed():
 	if $MarginContainer/Container/InputContainer/NameContainter/NameWarning.text == "":
-		#Server.SetUsername(username)
-		print(username)
+		Server.ChooseUsername(username)

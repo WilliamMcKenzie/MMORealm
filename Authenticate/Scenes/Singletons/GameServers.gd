@@ -52,3 +52,15 @@ remote func UpdateAccountData(email, account_data):
 	
 remote func UpdateLeaderboard(username, character_data):
 	DatabaseInterface.UpdateLeaderboard(username, character_data)
+
+remote func ConfirmUsername(username, player_id):
+	var server_id = custom_multiplayer.get_rpc_sender_id()
+	var too_long = len(username) > 10
+	var too_short = len(username) == 0
+	var invalid_characters = username.is_valid_identifier()
+	
+	if too_long or too_short or invalid_characters:
+		rpc_id(server_id, "ReturnUsernameConfirmation", false, username, player_id)
+	
+	var result = DatabaseInterface.ConfirmUsername(username, player_id)
+	rpc_id(server_id, "ReturnUsernameConfirmation", result, username, player_id)

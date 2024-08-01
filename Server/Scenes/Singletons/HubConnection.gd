@@ -57,3 +57,8 @@ func UpdateAccountData(email, account_data):
 func UpdateLeaderboard(username, character_data):
 	var character = { "gear" : character_data.gear, "class" : character_data.class, "level" : character_data.level}
 	rpc_id(1, "UpdateLeaderboard", username, character)
+
+func ConfirmUsername(username, player_id):
+	rpc_id(1, "ConfirmUsername", username, player_id)
+remote func ReturnUsernameConfirmation(result, username, player_id):
+	get_node("/root/Server").ConfirmUsername(result, username, player_id)

@@ -263,6 +263,9 @@ class SortByValue:
 		return false
 func CalculateLootPool(enemy):
 	randomize()
+	if ServerData.GetEnemy(enemy.name).has("dungeon") and randf() < ServerData.GetEnemy(enemy.name).dungeon.rate:
+		OpenPortal(ServerData.GetEnemy(enemy.name).dungeon.name, instance_tree, enemy.position)
+	
 	var player_pool = enemy["damage_tracker"]
 	var loot_pool = ServerData.GetEnemy(enemy["name"]).loot_pool
 	
@@ -273,7 +276,7 @@ func CalculateLootPool(enemy):
 		if not player_container:
 			player_pool.erase(player_id)
 		else:
-			player_container.AddExp(exp_amount)
+			player_container.AddExp(exp_amount, enemy["name"])
 	
 	#Handle loot drops
 	var ordered_pairs = []
@@ -325,13 +328,16 @@ func _compare_values(a, b):
 		
 func OpenPortal(portal_name, instance_tree, position):
 	var instance_id = get_node("/root/Server").generate_unique_id()
-	if portal_name == "island":
-		instance_id = "island " + instance_id
+	if "island" in portal_name:
+		instance_id = portal_name + " " + instance_id
+		
 		var island_instance = load("res://Scenes/SupportScenes/Island/Island.tscn").instance()
+		if portal_name == "tutorial_island":
+			island_instance = load("res://Scenes/SupportScenes/Island/TutorialIsland.tscn").instance()
 		island_instance.name = instance_id
 		
 		object_list[instance_id] = {
-			"name":"island",
+			"name": portal_name,
 			"type":"DungeonPortals",
 			"end_time": OS.get_system_time_msecs()+99999999999999,
 			"position": position,

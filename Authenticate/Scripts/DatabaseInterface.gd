@@ -292,7 +292,22 @@ func AddToLeaderboard(leaderboard, new_value):
 			break
 	
 	return leaderboard
+
+func ConfirmUsername(username, player_id):
+	var command = """
+		BEGIN;
+		SELECT * FROM users WHERE account_data->>'username' = '%s';
+	""" % [username]
 	
+	var data_arr = database.execute(command)
+	
+	var result = true
+	for _data in data_arr:
+		var data = _data.data_row
+		if data != []:
+			result = false
+			
+	return result
 
 #Utility functions
 

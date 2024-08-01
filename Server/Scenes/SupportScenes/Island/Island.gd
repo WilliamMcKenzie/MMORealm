@@ -1,8 +1,10 @@
 extends "res://Scenes/Main/Nexus.gd"
 
+export var map_size = Vector2(300,300)
+export var ruler = "rat_king"
+
 var noise
 var chunk_size = 16
-var map_size = Vector2(300,300)
 var tile_cap = 0.5
 var environment_caps = Vector3(0.4, 0.3, 0.04)
 
@@ -15,8 +17,6 @@ var spawn_points = []
 var enemy_spawn_points = {}
 
 #Enemy variety
-var ruler = "rat_king"
-
 var beach_enemies = ["crab"]
 var forest_enemies = ["goblin_warrior", "goblin_cannon"]
 var plains_enemies = ["troll_warrior", "troll_brute"]
@@ -29,7 +29,34 @@ var chunks = {}
 
 # warning-ignore:unused_argument
 var sync_clock_counter = 0
+var sync_clock_counter_2 = 0
+var island_close_timer = 20
+var island_closed = false
 
+#Handle ruler
+func _process(delta):
+	sync_clock_counter_2 += 1
+	
+	var ruler_alive = false
+	if sync_clock_counter_2 >= 60:
+		for enemy_id in enemy_list:
+			var enemy = enemy_list[enemy_id]
+			if enemy.name == ruler:
+				ruler_alive = true
+	
+	if not ruler_alive and not ServerData.GetEnemy(ruler).has("dungeon"):
+		var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
+		instance_tree.append(name)
+		get_node("/root/Server").SpawnNPC(ruler, instance_tree, Vector2(map_size/2, map_size/2))
+	elif not ruler_alive:
+		island_close_timer -= delta
+		
+	if island_close_timer <= 0 and not island_closed:
+		island_closed = true
+		var dungeon = ServerData.GetEnemy(ruler).dungeon.name
+		#Send everyone to dungeon
+		
+#Handle standard stuff
 func _physics_process(delta):
 	use_chunks = true
 	

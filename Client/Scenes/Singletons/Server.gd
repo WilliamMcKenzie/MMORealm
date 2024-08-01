@@ -166,8 +166,19 @@ remote func ReturnTokenVerificationResults(results):
 	else:
 		ErrorPopup.OpenPopup("Login failed")
 
+#Tutorial
 remote func StartTutorial():
 	GameUI.StartTutorial()
+func ChooseUsername(username):
+	rpc_id(1, "ChooseUsername", username)
+remote func ConfirmUsername(result, username):
+	if result:
+		GameUI.account_data.username = username
+		GameUI.get_node("ChooseName").visible = false
+	else:
+		GameUI.get_node("ChooseName/MarginContainer/Container/InputContainer/NameContainter/NameWarning").text = "Name is taken!"
+remote func TutorialStep(step):
+	GameUI.TutorialStep(step)
 
 #OTHER PLAYERS
 func FetchBatchCharacterData(other_players_ids):

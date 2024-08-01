@@ -53,6 +53,8 @@ func _physics_process(delta):
 func StartTutorial():
 	$TutorialAnimations.play("Start")
 	$TutorialDialogue.StartSubject("Intro")
+func TutorialStep(step):
+	$TutorialDialogue.StartSubject(step)
 
 func UpdateChatBubbles(id, text):
 	var base_node = get_node("ChatBubbles")
