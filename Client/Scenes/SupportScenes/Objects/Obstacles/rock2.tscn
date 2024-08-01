@@ -4,11 +4,11 @@
 [ext_resource path="res://Assets/objects/objects_8x8.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/SupportScenes/Objects/Obstacles/Obstacle.gd" type="Script" id=3]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 4, 4 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 4.5, 4.5 )
+extents = Vector2( 4, 4 )
 
 [node name="Rock" type="Node2D"]
 script = ExtResource( 3 )
@@ -22,17 +22,14 @@ vframes = 26
 frame = 138
 
 [node name="Obstacle" type="Area2D" parent="."]
-visible = false
 position = Vector2( -4, -8 )
-collision_layer = 23
-collision_mask = 0
+collision_mask = 23
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacle"]
 position = Vector2( 4, 4 )
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="."]
-visible = false
 position = Vector2( -4, -8 )
 collision_layer = 0
 collision_mask = 23

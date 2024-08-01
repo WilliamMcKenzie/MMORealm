@@ -33,28 +33,28 @@ func _physics_process(delta):
 		var result = true
 		var spots_to_check = [Vector2(0,0)]
 		for spot in spots_to_check:
-<<<<<<< Updated upstream
-			var check = space_state.intersect_point(position+spot, 1, [], 4, true, true)
-			if check.size() > 0:
-				for i in check:
-					if not "is_projectile" in i["collider"]:
-						result = false
-						print("no is_projectile found in "+ i["collider"].name)
-						break
-=======
-			var collision1 = space_state.intersect_point(position+spot, 1, [], 1, true, true)
-			var collision17 = space_state.intersect_point(position+spot, 17, [], 17, true, true)
+			var collision1 = space_state.intersect_point(position+spot, 1, [], 9, true, true)
+			var collision17 = space_state.intersect_point(position+spot, 17, [], 9, true, true)
 			var colliding = collision1.size() > 0 or collision17.size() > 0
 			if colliding:
-				var enviornment = collision1[0].collider.name == "TileMap"
-				var player = collision1[0].collider.name == "Axis"
-				var other_player = collision17[0].collider.name == "PlayerTemplate"
+				var enviornment = false
+				var player = false
+				var other_player = false
+				
+				for collision in collision1:
+					if collision.collider.name == "TileMap" or collision.collider.name == "Obstacle":
+						enviornment = true
+					if collision.collider.name == "Axis" or collision.collider.name == "player":
+						player = true
+				
+				for collision in collision17:
+					if collision.collider.name == "PlayerTemplate":
+						other_player = true
 				
 				if enviornment:
 					result = false
 				if (other_player or player) and not projectile_data.piercing:
 					result = false
->>>>>>> Stashed changes
 		
 		#Check if done
 		if not result or projectile_data.start_position.distance_to(projectile_data.path) >= projectile_data.tile_range*8:

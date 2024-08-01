@@ -166,6 +166,9 @@ remote func ReturnTokenVerificationResults(results):
 	else:
 		ErrorPopup.OpenPopup("Login failed")
 
+remote func StartTutorial():
+	GameUI.StartTutorial()
+
 #OTHER PLAYERS
 func FetchBatchCharacterData(other_players_ids):
 	rpc_id(1, "FetchBatchCharacterData", other_players_ids)

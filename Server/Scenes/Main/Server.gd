@@ -94,6 +94,12 @@ func _Peer_Disconnected(id):
 		player_state_collection.erase(id)
 		rpc_id(0, "DespawnPlayer", id)
 
+func StartTutorial(player_id):
+	print("Startingg")
+	var instance_tree = player_state_collection[player_id]["I"]
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	rpc_id(int(player_id), "StartTutorial")
+
 #TRADE
 remote func AcceptTrade(player1_name):
 	if not player_id_by_name.has(player1_name) or not player_name_by_id[get_tree().get_rpc_sender_id()]:
@@ -494,6 +500,7 @@ remote func RecieveChatMessage(message):
 			rpc("RecieveChat", message, player_name, player_container.character.class, player_container.name)
 
 #PLAYER INTERACTION
+
 func SendError(player_id, error):
 	rpc_id(player_id, "RecieveError", error)
 

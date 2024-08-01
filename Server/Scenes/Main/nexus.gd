@@ -145,7 +145,6 @@ func UpdatePlayer(player_id, player_state):
 					break
 
 func SpawnPlayer(player_container):
-	print("SPAWNING")
 	if player_container:
 		player_list[player_container.name] = {
 				"name": player_container.name,

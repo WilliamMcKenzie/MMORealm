@@ -46,6 +46,8 @@ remote func ReturnAccountData(player_id, account_data):
 	get_node("/root/Server").player_id_by_name[account_data.username] = player_id
 	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).account_data = account_data
 	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).SetCharacter(account_data.characters)
+	if not account_data.finished_tutorial:
+		get_node("/root/Server").StartTutorial(player_id)
 
 func UpdateCharacterData(email, character_data, character_index):
 	rpc_id(1, "UpdateCharacterData", email, character_data, character_index)
