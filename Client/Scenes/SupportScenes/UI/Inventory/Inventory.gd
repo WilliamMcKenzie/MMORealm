@@ -33,21 +33,17 @@ func InspectItem(_item):
 	var item_name = $InspectItem/MarginContainer/VBoxContainer/ItemName
 	var item_sprite = $InspectItem/MarginContainer/VBoxContainer/ItemSpriteContainer/ItemSprite
 	var item_description = $InspectItem/MarginContainer/VBoxContainer/ItemDescription
-	var item_tier = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Tier
 	var item_use = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Use
 	var item_on_use = $InspectItem/MarginContainer/VBoxContainer/ItemStats/OnUse
 		
 	item_name.text = item.name
 	item_sprite.texture.region = Rect2(item.path[3]*10, Vector2(10, 10))
 	item_description.text = item.description + "\n"
-	item_tier.text = "Tier: " + item.tier
 	
 	if item.type == "Consumable":
 		item_use.visible = true
-		item_tier.visible = false
 	else:
 		item_use.visible = false
-		item_tier.visible = true
 	
 	for buff in item_on_use.get_children():
 		buff.visible = false

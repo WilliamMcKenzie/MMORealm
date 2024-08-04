@@ -3,6 +3,15 @@ extends CanvasLayer
 var username = ""
 var animation_played = false
 
+func _ready():
+	$MarginContainer/Container/InputContainer/NameContainter/Name/MarginContainer/Name.connect("focus_entered", self, "EnterChat")
+	$MarginContainer/Container/InputContainer/NameContainter/Name/MarginContainer/Name.connect("focus_exited", self, "ExitChat")
+
+func EnterChat():
+	GameUI.in_chat = true
+func ExitChat():
+	GameUI.in_chat = false
+
 func _process(delta):
 	if self.visible and not animation_played:
 		$AnimationPlayer.play("Init")

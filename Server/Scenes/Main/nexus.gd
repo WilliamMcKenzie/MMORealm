@@ -7,7 +7,6 @@ var player_list = {}
 var enemy_list = {}
 var object_list = {}
 var projectile_list = {}
-var player_projectile_list = {}
 
 var projectile_id_counter = "0"
 

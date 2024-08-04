@@ -111,9 +111,11 @@ func _ready():
 	timer.start()
 	yield(timer, "timeout")
 	
-	weekly_leaderboard = GetLeaderboard(7)
-	monthly_leaderboard = GetLeaderboard(30)
-	all_time_leaderboard = GetLeaderboard(OS.get_system_time_secs())
+	#AddUser("Jonavin", "Schizo")
+	
+	#weekly_leaderboard = GetLeaderboard(7)
+	#monthly_leaderboard = GetLeaderboard(30)
+	#all_time_leaderboard = GetLeaderboard(OS.get_system_time_secs())
 	
 func _physics_process(delta):
 	database.poll()
@@ -142,9 +144,6 @@ func FindUser(email):
 
 func AddUser(email, password):
 	randomize()
-	var tester_names = ["WilliamQM", "dogdogman", "Zoro", "booga", "SChronos", "Juix"]
-	default_account_data.username = tester_names[randi() % tester_names.size()]
-	
 	var user = null
 	var command = """
 		BEGIN;

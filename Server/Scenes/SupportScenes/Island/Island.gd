@@ -2,6 +2,7 @@ extends "res://Scenes/Main/Nexus.gd"
 
 export var map_size = Vector2(300,300)
 export var ruler = "rat_king"
+var ruler_id
 
 var noise
 var chunk_size = 16
@@ -37,19 +38,25 @@ var island_closed = false
 func _process(delta):
 	sync_clock_counter_2 += 1
 	
-	var ruler_alive = false
 	if sync_clock_counter_2 >= 60:
+		sync_clock_counter_2 = 0
+		
+		var ruler_alive = false
+		ruler_id = null
+		
 		for enemy_id in enemy_list:
 			var enemy = enemy_list[enemy_id]
 			if enemy.name == ruler:
+				ruler_id = enemy_id
 				ruler_alive = true
 	
-	if not ruler_alive and not ServerData.GetEnemy(ruler).has("dungeon"):
-		var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
-		instance_tree.append(name)
-		get_node("/root/Server").SpawnNPC(ruler, instance_tree, Vector2(map_size/2, map_size/2))
-	elif not ruler_alive:
-		island_close_timer -= delta
+		if not ruler_alive and not ServerData.GetEnemy(ruler).has("dungeon"):
+			var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
+			instance_tree.append(name)
+			if instance_tree:
+				get_node("/root/Server").SpawnNPC(ruler, instance_tree, map_size/2*8-position)
+		elif not ruler_alive:
+			island_close_timer -= delta
 		
 	if island_close_timer <= 0 and not island_closed:
 		island_closed = true
@@ -86,8 +93,9 @@ func _physics_process(delta):
 					chunks[chunk]["E"].erase(id)
 			if IsChunkRadiusEmpty(chunk):
 				for id in chunks[chunk]["E"].keys():
-					enemy_list.erase(id)
-				chunks[chunk]["E"] = {}
+					if enemy_list[id].name != ruler:
+						enemy_list.erase(id)
+						chunks[chunk]["E"].erase(id)
 func SpawnEnemy(enemy, enemy_id):
 	enemy_list[str(enemy_id)] = enemy
 	AddChunkData(CalculateChunk(enemy["position"]), enemy_id, false)
@@ -138,7 +146,7 @@ func GetIslandChunk(chunk):
 	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
 		result.append([])
 		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
-			if map_as_array.size() >= x and map_as_array[x].size() >= y:
+			if map_as_array.size() > x and map_as_array[x].size() > y:
 				result[result.size()-1].append(map_as_array[x][y])
 				if map_objects.has(Vector2(x*8, y*8)):
 					objects.append(map_objects[Vector2(x*8, y*8)])

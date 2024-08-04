@@ -235,6 +235,8 @@ remote func RecieveCharacterData(character):
 	var player_node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player")
 	GameUI.SetCharacterData(character)
 	player_node.SetCharacter(character)
+remote func RecieveQuestData(current_quest_data):
+	GameUI.SetQuest(current_quest_data)
 
 func UseItem(index):
 	rpc_id(1, "UseItem", index)

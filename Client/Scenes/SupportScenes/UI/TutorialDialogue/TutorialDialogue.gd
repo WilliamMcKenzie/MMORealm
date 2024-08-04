@@ -16,7 +16,7 @@ var subject_data = {
 		"text" : ["Great, next let me teach you about the basics.", "To walk around, you can use [WASD] controls.", "To attack, simply click where you want to shoot with your left mouse button. Try to slay some enemies!"],
 	},
 	"Backpack" : {
-		"text" : ["Good job! If you press the backpack icon in the top right, you can see your inventory and equipment.", "You can drag gear from slot to slot, to equip/put it into your inventory.", "Go ahead and run over to the bag and try to equip a helmet."],
+		"text" : ["Good job! If you press the backpack icon in the top right, you can see your inventory and equipment.", "You can drag gear from slot to slot, to equip/put it into your inventory.", "Go ahead and run over to the chest and try to equip a helmet."],
 		"animation" : "Backpack",
 	},
 	"Ability" : {
@@ -24,7 +24,8 @@ var subject_data = {
 		"animation" : "Ability",
 	},
 	"Quest" : {
-		"text" : ["Good job! Now follow your quest to the center of the map and defeat the rat king!"]
+		"text" : ["Good job! Now follow your quest to the center of the map and defeat the rat king!"],
+		"animation" : "Quest",
 	},
 	"Stats" : {
 		"text" : ["Wow! You got an ascension stone, consuming it by double clicking gives you two things...", "First, it brings you closer to ascending, and when ascended you can evolve your class through quests.", "Second, it lets you increase your stats. To ascend might take a while...", "But you can level up your stats right now. Consume it then open your stats to see!"],
@@ -38,12 +39,14 @@ var subject_data = {
 var subject = null
 var speech_index = null
 
+var last_start = 0
 var last_click = 0
 func _input(event):
 	if self.visible and (event is InputEventMouseButton or event is InputEventScreenTouch):
 		var spamming = OS.get_system_time_msecs() - last_click < 500
+		var misclick = OS.get_system_time_msecs() - last_start < 1000
 		
-		if not spamming:
+		if not spamming and not misclick:
 			last_click = OS.get_system_time_msecs()
 			Talk()
 
@@ -54,6 +57,7 @@ func StartSubject(_subject):
 	self.visible = true
 	subject = _subject
 	speech_index = 0
+	last_start = OS.get_system_time_msecs()
 	Talk()
 
 func Talk():

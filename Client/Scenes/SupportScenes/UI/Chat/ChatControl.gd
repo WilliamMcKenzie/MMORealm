@@ -2,6 +2,7 @@ extends Control
 
 onready var chat_input = $PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput
 var chat = load("res://Scenes/SupportScenes/UI/Chat/ChatMsg.tscn")
+var is_mobile = true
 
 var interacted = false
 onready var scroll_container = $PanelContainer/VBoxContainer/ScrollContainer
@@ -9,6 +10,9 @@ onready var scroll_container = $PanelContainer/VBoxContainer/ScrollContainer
 func _ready():
 	chat_input.connect("focus_entered", self, "EnterChat")
 	chat_input.connect("focus_exited", self, "ExitChat")
+	
+	if str(OS.get_model_name()) == 'GenericDevice':
+		is_mobile = false
 
 func Open():
 	$AnimationPlayer.play("Show")

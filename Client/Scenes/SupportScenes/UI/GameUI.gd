@@ -52,9 +52,19 @@ func _physics_process(delta):
 
 func StartTutorial():
 	$TutorialAnimations.play("Start")
-	$TutorialDialogue.StartSubject("Intro")
+	if account_data.username == "[unset]":
+		$TutorialDialogue.StartSubject("Intro")
+	else:
+		Server.ChooseUsername(account_data.username)
+	
 func TutorialStep(step):
 	$TutorialDialogue.StartSubject(step)
+
+func SetQuest(current_quest_data):
+	if current_quest_data:
+		get_node("QuestMarker").SetQuest(current_quest_data)
+	else:
+		get_node("QuestMarker").RemoveQuest()
 
 func UpdateChatBubbles(id, text):
 	var base_node = get_node("ChatBubbles")

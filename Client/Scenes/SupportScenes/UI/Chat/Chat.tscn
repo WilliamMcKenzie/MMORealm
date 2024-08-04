@@ -246,7 +246,7 @@ visible = false
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 204.0
+margin_right = 264.0
 margin_bottom = 204.0
 rect_clip_content = true
 custom_styles/panel = SubResource( 15 )
@@ -269,8 +269,9 @@ scroll_vertical = 10
 script = ExtResource( 10 )
 
 [node name="ChatVerticalContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+margin_top = -10.0
 margin_right = 240.0
-margin_bottom = 150.0
+margin_bottom = 140.0
 rect_min_size = Vector2( 0, 150 )
 rect_clip_content = true
 mouse_filter = 2
@@ -355,7 +356,7 @@ script = ExtResource( 2 )
 [node name="HiddenContainer" type="PanelContainer" parent="."]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 204.0
+margin_right = 264.0
 margin_bottom = 204.0
 rect_clip_content = true
 custom_styles/panel = SubResource( 27 )
@@ -378,9 +379,8 @@ scroll_vertical = 10
 script = ExtResource( 10 )
 
 [node name="ChatVerticalContainer" type="VBoxContainer" parent="HiddenContainer/VBoxContainer/ScrollContainer"]
-margin_top = -10.0
 margin_right = 180.0
-margin_bottom = 140.0
+margin_bottom = 150.0
 rect_min_size = Vector2( 0, 150 )
 rect_clip_content = true
 mouse_filter = 2

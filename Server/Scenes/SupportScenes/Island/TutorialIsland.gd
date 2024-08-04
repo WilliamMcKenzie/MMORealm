@@ -5,7 +5,7 @@ var boss_is_alive = false
 func PopulateTiles():
 	var center = map_size / 2
 	var ocean_distance = center.length() * 1.5
-	var beach_distance = center.length() * 1.1
+	var beach_distance = center.length() * 1.2
 	var forest_distance = center.length() * 1
 	for x in range(map_size.x):
 		map_as_array.append([])

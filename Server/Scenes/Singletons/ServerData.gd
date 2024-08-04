@@ -92,10 +92,6 @@ var realm_enemies = {
 			],
 			"loot" : []
 		},
-		"dungeon" : {
-			"name" : "overgrown_temple",
-			"rate" : 0
-		},
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",

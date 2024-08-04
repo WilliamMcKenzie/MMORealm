@@ -9,6 +9,7 @@ var is_dead = false
 
 var health = 100
 var gear = {}
+var current_quest
 
 #Ability Stuff
 var status_effects = {
@@ -21,7 +22,6 @@ var status_effects = {
 var last_teleported = 0
 
 #Status Effects
-
 var heal_rate = 1
 var running_time = 0
 var last_tick = 0
@@ -31,9 +31,26 @@ var in_tutorial = false
 var tutorial_step = 0
 var tutorial_step_translation = ["Intro", "Controls", "Backpack", "Ability", "Quest", "Stats", "Final"]
 
+var clock_sync_timer = 0
 func _physics_process(delta):
+	clock_sync_timer += 1
 	if not character:
 		return
+		
+	if clock_sync_timer >= 3:
+		clock_sync_timer = 0
+		var server_node = get_node("/root/Server")
+		var instance_tree = server_node.player_state_collection[int(name)]["I"]
+		var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
+		
+		if "ruler_id" in instance_node and instance_node.ruler_id and instance_node.enemy_list.has(instance_node.ruler_id):
+			current_quest = instance_node.ruler_id
+			var current_quest_data = instance_node.enemy_list[current_quest].duplicate()
+			current_quest_data.id = current_quest
+			server_node.SendQuestData(name, current_quest_data)
+		else:
+			current_quest = null
+			server_node.SendQuestData(name, null)
 	
 	character.ability_cooldown -= delta
 	running_time += delta
@@ -61,9 +78,7 @@ func _physics_process(delta):
 				get_node("/root/Server").SendCharacterData(name, character)
 			status_effects.erase(effect)
 
-
 #TRADE
-
 var accepted = false
 var other_player_accepted = false
 
@@ -244,6 +259,8 @@ func GiveEffect(effect, duration):
 func IncreaseStat(stat):
 	if in_tutorial and tutorial_step == 5:
 		tutorial_step += 1
+		in_tutorial = false
+		account_data.finished_tutorial = true
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 	
 	if character.ascension_stones > character.used_ascension_stones:

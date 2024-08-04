@@ -9,7 +9,6 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/attack_joystick.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd" type="Script" id=9]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=10]
-[ext_resource path="res://Assets/ui/button.png" type="Texture" id=11]
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=12]
 
 [sub_resource type="AnimationNodeAnimation" id=81]
@@ -333,6 +332,8 @@ tracks/0/keys = {
 "values": [ 13, 12 ]
 }
 
+[sub_resource type="GradientTexture2D" id=93]
+
 [sub_resource type="RectangleShape2D" id=61]
 extents = Vector2( 4, 4 )
 
@@ -424,11 +425,10 @@ anims/walk_up = SubResource( 10 )
 
 [node name="BlackBackground" type="Sprite" parent="."]
 modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 1, -9 )
-scale = Vector2( 2.29178, 5.24 )
+scale = Vector2( 100, 100 )
 z_index = -1000
 z_as_relative = false
-texture = ExtResource( 11 )
+texture = SubResource( 93 )
 
 [node name="Control" type="Control" parent="."]
 margin_left = -10.0

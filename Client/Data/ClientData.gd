@@ -77,12 +77,50 @@ var basic_loot_pools = {
 }
 
 var realm_enemies = {
+	"rat_king" : {
+		"health" : 600,
+		"defense" : 1,
+		"exp" : 20,
+		"behavior" : 1,
+		"loot_pool" :  {
+			"soulbound_loot" : [
+				{
+					"item" : 0,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
+			"loot" : []
+		},
+		"attack_pattern" : [
+			{
+			"projectile" : "GreySlash",
+			"formula" : "0",
+			"damage" : 10,
+			"piercing" : false,
+			"wait" : 1,
+			"speed" : 10,
+			"tile_range" : 8,
+			"direction" : Vector2(0,1),
+			"size" : 20
+			}
+		]
+	},
 	"crab" : {
 		"health" : 60,
 		"defense" : 1,
 		"exp" : 20,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 5,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
+			"loot" : []
+		},
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
@@ -103,6 +141,10 @@ var realm_enemies = {
 		"exp" : 40,
 		"behavior" : 1,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"dungeon" : {
+			"name" : "overgrown_temple",
+			"rate" : 0.3
+		},
 		"attack_pattern" : [
 			{
 			"projectile" : "GreySlash",
@@ -192,7 +234,7 @@ var realm_enemies = {
 			"wait" : 1,
 			"speed" : 10,
 			"tile_range" : 8,
-			"direction" : Vector2(0,1),
+			"direction" : Vector2(1,0),
 			"size" : 20
 			}
 		]

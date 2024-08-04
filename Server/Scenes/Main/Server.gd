@@ -127,21 +127,27 @@ func TutorialStep(step, player_id):
 
 remote func ChooseUsername(username):
 	var player_id = get_tree().get_rpc_sender_id()
-	HubConnection.ConfirmUsername(username, player_id)
+	var instance_tree = player_state_collection[player_id]["I"].duplicate()
+	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+	var player_container = current_instance_node.get_node("YSort/Players/"+str(player_id))
+	if player_container.account_data.username == "[unset]":
+		HubConnection.ConfirmUsername(username, player_id)
+	else:
+		ConfirmUsername(true, player_container.account_data.username, player_id)
 	
 func ConfirmUsername(result, username, player_id):
 	var instance_tree = player_state_collection[player_id]["I"]
 	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
-	
 	if result:
 		player_name_by_id[player_id] = username
 		player_id_by_name[username] = player_id
 		player_container.account_data.username = username
+		
+		player_container.tutorial_step = 1
+		player_container.in_tutorial = true
+		TutorialStep("Controls", player_id)
 	
 	rpc_id(player_id, "ConfirmUsername", result, username)
-	player_container.tutorial_step = 1
-	player_container.in_tutorial = true
-	TutorialStep("Controls", player_id)
 
 #TRADE
 remote func AcceptTrade(player1_name):
@@ -324,6 +330,8 @@ func ReturnTokenVerificationResults(player_id, result):
 		rpc_id(0, "SpawnNewPlayer", player_id, Vector2(79, 56))
 
 #CHARACTERS
+func SendQuestData(player_id, current_quest_data):
+	rpc_id(int(player_id), "RecieveQuestData", current_quest_data)
 func SendCharacterData(player_id, character):
 	rpc_id(int(player_id), "RecieveCharacterData", character)
 func SendAccountData(player_id, account_data):
@@ -394,9 +402,11 @@ remote func NPCHit(enemy_id, damage):
 #INSTANCES
 remote func Nexus():
 	var player_id = get_tree().get_rpc_sender_id()
-	rpc_id(player_id, "ConfirmNexus")
 	var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
 	var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
+	
+	if not player_container.in_tutorial:
+		rpc_id(player_id, "ConfirmNexus")
 	
 	player_instance_tracker[instance_tree].erase(player_id)
 	player_instance_tracker[["nexus"]].append(player_id)
