@@ -62,14 +62,27 @@ func _physics_process(delta):
 			projectile_list.erase(projectile_id)
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
-			enemy_list[enemy_id]["timer"] -= tick_rate
-			if enemy_list[enemy_id]["timer"] <= 0:
-				var attack_pattern = ServerData.GetEnemy(enemy_list[enemy_id]["name"])["attack_pattern"]
+			enemy_list[enemy_id]["pattern_timer"] -= tick_rate
+			enemy_list[enemy_id]["phase_timer"] -= tick_rate
+			if enemy_list[enemy_id]["pattern_timer"] <= 0:
+				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
+				var phase_index = enemy_list[enemy_id]["phase_index"]
+				
+				var attack_pattern = enemy_data["phases"][phase_index].attack_pattern
 				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
+				var direction = current_attack["direction"]
+				if direction == Vector2(-99,-99):
+					var closest = 9999999
+					direction = Vector2(0,0)
+					for player_id in player_list.keys():
+						if player_list[player_id]["position"].distance_to(enemy_list[enemy_id]["position"]) <= closest:
+							direction = enemy_list[enemy_id]["position"].direction_to(player_list[player_id]["position"])
+				
 				var projectile_data = {
 					"id" : projectile_id_counter,
+					"name" : current_attack["projectile"],
 					"position" : enemy_list[enemy_id]["position"],
-					"direction" : current_attack["direction"],
+					"direction" : direction,
 					"tile_range" : current_attack["tile_range"],
 					"start_position" : enemy_list[enemy_id]["position"],
 					"start_time" : OS.get_system_time_msecs()/1000,
@@ -82,12 +95,30 @@ func _physics_process(delta):
 					"size" : 4,
 				}
 				SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_list[enemy_id]["name"])
-				enemy_list[enemy_id]["timer"] = current_attack["wait"]
+				enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
 				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
 					enemy_list[enemy_id]["pattern_index"] = 0
 				else:
 					enemy_list[enemy_id]["pattern_index"] += 1
-			
+			if enemy_list[enemy_id]["phase_timer"] <= 0:
+				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
+				var phases = enemy_data.phases
+				var phase_index = enemy_list[enemy_id]["phase_index"]
+				
+				var possible_phases = []
+				var _phase_index = -1
+				for phase in phases:
+					_phase_index += 1
+					var health_ratio = (enemy_list[enemy_id].health/enemy_list[enemy_id].max_health)*100
+					var health = health_ratio >= phase.health[0] and health_ratio <= phase.health[1] 
+					if health:
+						possible_phases.append(_phase_index)
+						
+				if len(possible_phases) > 0:
+					var chosen_index = randi() % len(possible_phases)
+					enemy_list[enemy_id]["phase_index"] = possible_phases[chosen_index]
+					enemy_list[enemy_id]["phase_timer"] = phases[possible_phases[chosen_index]].duration
+				
 			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
 				CalculateLootPool(enemy_list[enemy_id])
@@ -327,7 +358,26 @@ func CalculateLootPool(enemy):
 
 func _compare_values(a, b):
 	return a[1] - b[1]
-		
+
+var taken_points = []
+func GetBoatSpawnpoints():
+	var room_size = 50
+	var res = []
+	
+	for x in range(-room_size, room_size*2):
+		for y in range(-room_size, room_size*2):
+			var current_tile = $TileMap.get_cell(x,y)
+			var current_position = Vector2(x*8, y*8) - position + Vector2(4,4)
+			
+			if current_tile == 12:
+				res.append(current_position)
+				
+	var index = round(rand_range(0, res.size()-1))
+	while(taken_points.has(index)):
+		index = round(rand_range(0, res.size()-1))
+	taken_points.append(index)
+	return res[index]
+	
 func OpenPortal(portal_name, instance_tree, position):
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if "island" in portal_name:

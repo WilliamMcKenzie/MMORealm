@@ -3,8 +3,11 @@ extends Node2D
 var object_id
 
 func _ready():
+	randomize()
 	$Area2D.connect("area_entered", self, "OnPortal")
 	$Area2D.connect("area_exited", self, "OffPortal")
+	var scale_amt = round(rand_range(0.9, 1.2))
+	$Control.rect_scale = Vector2(scale_amt,scale_amt)
 	
 #Interface Section
 func OnPortal(body):

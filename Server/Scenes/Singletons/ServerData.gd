@@ -92,17 +92,73 @@ var realm_enemies = {
 			],
 			"loot" : []
 		},
-		"attack_pattern" : [
+		"phases" : [
 			{
-			"projectile" : "GreySlash",
-			"formula" : "0",
-			"damage" : 10,
-			"piercing" : false,
-			"wait" : 1,
-			"speed" : 10,
-			"tile_range" : 8,
-			"direction" : Vector2(0,1),
-			"size" : 20
+				"duration" : 4,
+				"health" : [50,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GoldenArrow",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-99,-99),
+						"size" : 20
+					}
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(1,0),
+						"size" : 20
+					},
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-1,0),
+						"size" : 20
+					},
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(0,1),
+						"size" : 20
+					},
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(0,-1),
+						"size" : 20
+					},
+				]
 			}
 		]
 	},
@@ -121,17 +177,23 @@ var realm_enemies = {
 			],
 			"loot" : []
 		},
-		"attack_pattern" : [
+		"phases" : [
 			{
-			"projectile" : "GreySlash",
-			"formula" : "0",
-			"damage" : 10,
-			"piercing" : false,
-			"wait" : 1,
-			"speed" : 10,
-			"tile_range" : 8,
-			"direction" : Vector2(0,1),
-			"size" : 20
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-99,-99),
+						"size" : 20
+					}
+				]
 			}
 		]
 	},
@@ -145,17 +207,23 @@ var realm_enemies = {
 			"name" : "overgrown_temple",
 			"rate" : 0.3
 		},
-		"attack_pattern" : [
+		"phases" : [
 			{
-			"projectile" : "GreySlash",
-			"formula" : "0",
-			"damage" : 10,
-			"piercing" : false,
-			"wait" : 1,
-			"speed" : 10,
-			"tile_range" : 8,
-			"direction" : Vector2(0,1),
-			"size" : 20
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-99,-99),
+						"size" : 20
+					}
+				]
 			}
 		]
 	},
@@ -165,17 +233,23 @@ var realm_enemies = {
 		"exp" : 250,
 		"behavior" : 1,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
-		"attack_pattern" : [
+		"phases" : [
 			{
-			"projectile" : "GreySlash",
-			"formula" : "0",
-			"damage" : 10,
-			"piercing" : false,
-			"wait" : 1,
-			"speed" : 10,
-			"tile_range" : 8,
-			"direction" : Vector2(0,1),
-			"size" : 20
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-99,-99),
+						"size" : 20
+					}
+				]
 			}
 		]
 	},
@@ -185,17 +259,23 @@ var realm_enemies = {
 		"exp" : 200,
 		"behavior" : 10,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
-		"attack_pattern" : [
+		"phases" : [
 			{
-			"projectile" : "GreySlash",
-			"formula" : "0",
-			"damage" : 10,
-			"piercing" : false,
-			"wait" : 1,
-			"speed" : 10,
-			"tile_range" : 8,
-			"direction" : Vector2(0,1),
-			"size" : 20
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-99,-99),
+						"size" : 20
+					}
+				]
 			}
 		]
 	},
@@ -205,17 +285,23 @@ var realm_enemies = {
 		"exp" : 2000,
 		"behavior" : 1,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
-		"attack_pattern" : [
+		"phases" : [
 			{
-			"projectile" : "GreySlash",
-			"formula" : "0",
-			"damage" : 10,
-			"piercing" : false,
-			"wait" : 1,
-			"speed" : 10,
-			"tile_range" : 8,
-			"direction" : Vector2(0,1),
-			"size" : 20
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-99,-99),
+						"size" : 20
+					}
+				]
 			}
 		]
 	},
@@ -225,17 +311,23 @@ var realm_enemies = {
 		"exp" : 20000,
 		"behavior" : 1,
 		"loot_pool" :  basic_loot_pools["lowlands_2"],
-		"attack_pattern" : [
+		"phases" : [
 			{
-			"projectile" : "GreySlash",
-			"formula" : "0",
-			"damage" : 22,
-			"piercing" : true,
-			"wait" : 1,
-			"speed" : 10,
-			"tile_range" : 8,
-			"direction" : Vector2(1,0),
-			"size" : 20
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-99,-99),
+						"size" : 20
+					}
+				]
 			}
 		]
 	}
@@ -247,17 +339,23 @@ var overgrown_temple_enemies = {
 		"exp" : 20,
 		"behavior" : 1,
 		"loot_pool" :  basic_loot_pools["lowlands_2"],
-		"attack_pattern" : [
+		"phases" : [
 			{
-			"projectile" : "GreySlash",
-			"formula" : "x",
-			"damage" : 10,
-			"piercing" : true,
-			"wait" : 1,
-			"speed" : 10,
-			"tile_range" : 8,
-			"direction" : Vector2(0,1),
-			"size" : 20
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreySlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-99,-99),
+						"size" : 20
+					}
+				]
 			}
 		]
 	},
@@ -406,21 +504,27 @@ var projectiles = {
 		"speed" : 50,
 		"tile_range" : 8,
 		"piercing" : false,
-		"formula" : "0"
+		"formula" : "0",
+		"rect" : Rect2(20,0,10,10),
+		"rotation" : 0,
 	},
 	"GoldenArrow" : {
 		"damage" : 50,
 		"speed" : 100,
 		"tile_range" : 8,
 		"piercing" : true,
-		"formula" : "0"
+		"formula" : "0",
+		"rect" : Rect2(0,0,10,10),
+		"rotation" : -45,
 	},
 	"FlameBlast" : {
 		"damage" : 200,
 		"speed" : 100,
 		"tile_range" : 8,
 		"piercing" : true,
-		"formula" : "sin(x)"
+		"formula" : "sin(x)",
+		"rect" : Rect2(40,0,10,10),
+		"rotation" : 45,
 	}
 }
 

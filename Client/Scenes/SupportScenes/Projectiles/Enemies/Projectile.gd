@@ -38,7 +38,9 @@ func Activate():
 	time = 0
 	delta_counter = 0
 	look_at(projectile_data.direction+projectile_data.position)
-	rotation_degrees += 90
+	rotation_degrees += 90 + ClientData.GetProjectile(projectile_data.name).rotation
+	texture = texture.duplicate()
+	texture.region = ClientData.GetProjectile(projectile_data.name).rect
 
 func DeActivate():
 	is_active = false

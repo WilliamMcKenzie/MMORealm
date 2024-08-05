@@ -34,7 +34,8 @@ func _ready():
 		#PlayerVerification.CreateFakePlayerContainer()
 	
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO)
-	#get_node("Instances/nexus").OpenPortal("overgrown_temple", ["nexus"], Vector2.ZERO)
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints())
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints())
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
 			{
@@ -356,7 +357,9 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"target": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"anchor_position": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"pattern_index" : 0,
-			"timer" : 0
+			"pattern_timer" : 0,
+			"phase_index" : 0,
+			"phase_timer" : 0,
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 
