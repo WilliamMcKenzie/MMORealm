@@ -367,6 +367,8 @@ remote func SendPlayerProjectile(projectile_data):
 	
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
 	rpc("RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
+func RemoveEnemyProjectile(projectile_id, instance_tree):
+	rpc("RemoveEnemyProjectile", projectile_id, instance_tree)
 
 remote func NPCHit(enemy_id, damage):
 	var player_id = get_tree().get_rpc_sender_id()

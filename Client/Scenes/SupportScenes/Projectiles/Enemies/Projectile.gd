@@ -27,40 +27,6 @@ func _physics_process(delta):
 			position = theoretical_position
 		elif self.visible:
 			self.visible = false
-		
-		#Check if colliding
-		var space_state = get_world_2d().direct_space_state
-		var result = true
-		var spots_to_check = [Vector2(0,0)]
-		for spot in spots_to_check:
-			var collision1 = space_state.intersect_point(position+spot, 1, [], 9, true, true)
-			var collision17 = space_state.intersect_point(position+spot, 17, [], 9, true, true)
-			var colliding = collision1.size() > 0 or collision17.size() > 0
-			if colliding:
-				var enviornment = false
-				var player = false
-				var other_player = false
-				
-				for collision in collision1:
-					if collision.collider.name == "TileMap" or collision.collider.name == "Obstacle":
-						enviornment = true
-					if collision.collider.name == "Axis" or collision.collider.name == "player":
-						player = true
-				
-				for collision in collision17:
-					if collision.collider.name == "PlayerTemplate":
-						other_player = true
-				
-				if enviornment:
-					result = false
-				if (other_player or player) and not projectile_data.piercing:
-					result = false
-		
-		#Check if done
-		if not result or projectile_data.start_position.distance_to(projectile_data.path) >= projectile_data.tile_range*8:
-			is_active = false
-			self.visible = false
-			return
 
 #Rotating the sprite an extra 90deg to make it look correct
 func Activate():
@@ -73,3 +39,7 @@ func Activate():
 	delta_counter = 0
 	look_at(projectile_data.direction+projectile_data.position)
 	rotation_degrees += 90
+
+func DeActivate():
+	is_active = false
+	self.visible = false

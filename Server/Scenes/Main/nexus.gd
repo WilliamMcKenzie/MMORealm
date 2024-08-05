@@ -58,6 +58,7 @@ func _physics_process(delta):
 				if not projectile_list[projectile_id].piercing:
 					valid_collision = true
 		if valid_collision or max_range:
+			get_node("/root/Server").RemoveEnemyProjectile(projectile_id, instance_tree)
 			projectile_list.erase(projectile_id)
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
@@ -66,6 +67,7 @@ func _physics_process(delta):
 				var attack_pattern = ServerData.GetEnemy(enemy_list[enemy_id]["name"])["attack_pattern"]
 				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
 				var projectile_data = {
+					"id" : projectile_id_counter,
 					"position" : enemy_list[enemy_id]["position"],
 					"direction" : current_attack["direction"],
 					"tile_range" : current_attack["tile_range"],
@@ -79,7 +81,7 @@ func _physics_process(delta):
 					"hit_players" : {},
 					"size" : 4,
 				}
-				SpawnEnemyProjectile(projectile_data,instance_tree, enemy_id, enemy_list[enemy_id]["name"])
+				SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_list[enemy_id]["name"])
 				enemy_list[enemy_id]["timer"] = current_attack["wait"]
 				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
 					enemy_list[enemy_id]["pattern_index"] = 0

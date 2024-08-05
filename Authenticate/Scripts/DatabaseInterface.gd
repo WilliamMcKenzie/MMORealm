@@ -111,11 +111,9 @@ func _ready():
 	timer.start()
 	yield(timer, "timeout")
 	
-	#AddUser("Jonavin", "Schizo")
-	
-	#weekly_leaderboard = GetLeaderboard(7)
-	#monthly_leaderboard = GetLeaderboard(30)
-	#all_time_leaderboard = GetLeaderboard(OS.get_system_time_secs())
+	weekly_leaderboard = GetLeaderboard(7)
+	monthly_leaderboard = GetLeaderboard(30)
+	all_time_leaderboard = GetLeaderboard(OS.get_system_time_secs())
 	
 func _physics_process(delta):
 	database.poll()

@@ -281,6 +281,15 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 		else:
 			CreatePool(projectile_pool_amount)
 
+remote func RemoveEnemyProjectile(id, instance_tree):
+	if instance_tree != current_instance_tree:
+		pass
+	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").has_node("Pool"):
+		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_children():
+			if child.projectile_data and child.projectile_data.id == id:
+				child.DeActivate()
+				break
+
 func SendPlayerState(player_state):
 	rpc_unreliable_id(1, "RecievePlayerState", player_state)
 
