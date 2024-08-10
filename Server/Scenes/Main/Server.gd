@@ -97,6 +97,7 @@ func _Peer_Disconnected(id):
 
 #TUTORIAL
 func StartTutorial(player_id):
+	return
 	var instance_tree = player_state_collection[player_id]["I"].duplicate()
 	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 	var player_container = current_instance_node.get_node("YSort/Players/"+str(player_id))
@@ -138,11 +139,13 @@ remote func ChooseUsername(username):
 	
 func ConfirmUsername(result, username, player_id):
 	var instance_tree = player_state_collection[player_id]["I"]
+	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
 	if result:
 		player_name_by_id[player_id] = username
 		player_id_by_name[username] = player_id
 		player_container.account_data.username = username
+		current_instance_node.player_list[str(player_id)].name = username
 		
 		player_container.tutorial_step = 1
 		player_container.in_tutorial = true
@@ -360,12 +363,27 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"pattern_timer" : 0,
 			"phase_index" : 0,
 			"phase_timer" : 0,
+			"used_phases" : {},
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 
 remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	if not player_container:
+		return
+	
+	var weapon = player_container.gear.weapon
+	projectile_data.merge({
+		"Projectile":weapon.projectile,
+		"TileRange":weapon.tile_range,
+		"Piercing":weapon.piercing,
+		"Formula":weapon.formula,
+		"Speed":weapon.speed,
+		"Size":weapon.size,
+	})
+	
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
@@ -485,7 +503,6 @@ remote func RecieveChatMessage(message):
 			if message_words[0] == "/invincible":
 				player_container.GiveEffect("invincible", 99999)
 			if message_words[0] == "/trade":
-				print(message)
 				var selected_player_name = message.substr(7,-1)
 				if player_id_by_name.has(selected_player_name):
 					var selected_player_id = player_id_by_name[selected_player_name]

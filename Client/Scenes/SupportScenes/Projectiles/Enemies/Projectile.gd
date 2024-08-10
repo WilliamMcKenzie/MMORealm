@@ -11,6 +11,9 @@ onready var expression = Expression.new()
 var delta_counter = 0
 func _physics_process(delta):
 	if is_active:
+		if ClientData.GetProjectile(projectile_data.name).spin:
+			rotation_degrees += 5
+		
 		time += delta
 		expression.parse(projectile_data.formula,["x"])
 		
@@ -28,19 +31,20 @@ func _physics_process(delta):
 		elif self.visible:
 			self.visible = false
 
-#Rotating the sprite an extra 90deg to make it look correct
 func Activate():
 	self.visible = true
 	self.position = projectile_data.position
 	self.velocity = projectile_data.direction.normalized()*projectile_data.speed
+	
 	projectile_data.start_position = self.position
 	theoretical_position = self.position
 	time = 0
 	delta_counter = 0
+	
 	look_at(projectile_data.direction+projectile_data.position)
-	rotation_degrees += 90 + ClientData.GetProjectile(projectile_data.name).rotation
 	texture = texture.duplicate()
 	texture.region = ClientData.GetProjectile(projectile_data.name).rect
+	rotation_degrees += ClientData.GetProjectile(projectile_data.name).rotation
 
 func DeActivate():
 	is_active = false

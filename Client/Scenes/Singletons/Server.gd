@@ -252,6 +252,7 @@ func IncreaseStat(stat):
 
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
+	return
 	get_node("../SceneHandler/"+GetCurrentInstance()).SpawnNewPlayer(player_id, spawn_position)
 remote func DespawnPlayer(player_id):
 	get_node("../SceneHandler/"+GetCurrentInstance()).DespawnPlayer(player_id)
@@ -284,7 +285,7 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 remote func RemoveEnemyProjectile(id, instance_tree):
 	if instance_tree != current_instance_tree:
 		pass
-	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").has_node("Pool"):
+	if has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort") and get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").has_node("Pool"):
 		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_children():
 			if child.projectile_data and child.projectile_data.id == id:
 				child.DeActivate()
@@ -320,10 +321,7 @@ remote func ConfirmNexus():
 	yield(get_tree().create_timer(0.3), "timeout")
 	var nexus_instance = nexus.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
-	
-	nexus_instance.get_node("YSort/player").character = map_instance.get_node("YSort/player").character
-	nexus_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
-	nexus_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	nexus_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
 	
 	nexus_instance.name = "nexus"
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
@@ -341,9 +339,7 @@ remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	
-	dungeon_instance.get_node("YSort/player").character = map_instance.get_node("YSort/player").character
-	dungeon_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
-	dungeon_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	dungeon_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
 	dungeon_instance.get_node("YSort/player").global_position = instance_data["Position"]
 	dungeon_instance.name = instance_data["Id"]
 	dungeon_instance.PopulateDungeon(instance_data)
@@ -357,9 +353,7 @@ remote func ReturnIslandData(instance_data):
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 
 	#island_instance.GenerateIslandMap(map_data["Tiles"], map_data["Objects"])
-	island_instance.get_node("YSort/player").character = map_instance.get_node("YSort/player").character
-	island_instance.get_node("YSort/player").stats = map_instance.get_node("YSort/player").stats
-	island_instance.get_node("YSort/player").gear = map_instance.get_node("YSort/player").gear
+	island_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
 	island_instance.get_node("YSort/player").global_position = instance_data["Position"]
 	island_instance.name = instance_data["Id"]
 	

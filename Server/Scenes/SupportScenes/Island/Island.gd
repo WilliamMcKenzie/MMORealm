@@ -1,8 +1,9 @@
 extends "res://Scenes/Main/Nexus.gd"
 
-export var map_size = Vector2(300,300)
-export var ruler = "rat_king"
+export var map_size = Vector2(500,500)
+export var ruler = "crypt_guardian"
 var ruler_id
+var ruler_spawned = false
 
 var noise
 var chunk_size = 16
@@ -19,10 +20,10 @@ var enemy_spawn_points = {}
 
 #Enemy variety
 var beach_enemies = ["crab"]
-var forest_enemies = ["goblin_warrior", "goblin_cannon"]
-var plains_enemies = ["troll_warrior", "troll_brute"]
-var badlands_enemies = ["troll_warrior", "troll_brute"]
-var mountain_enemies = ["rock_golem"]
+var forest_enemies = ["goblin_cannon", "slime", "slime", "slime", "slime"]
+var plains_enemies = ["troll_king", "troll_warrior", "troll_brute", "blue_slime", "blue_slime", "blue_slime"]
+var badlands_enemies = ["rat_king", "viking_king", "yellow_slime", "rat_mage", "rat_warrior"]
+var mountain_enemies = ["yellow_slime", "blue_slime", "slime"]
 
 #Chunks
 var chunk_sensor = preload("res://Scenes/SupportScenes/Island/ChunkSensor.tscn")
@@ -50,15 +51,16 @@ func _process(delta):
 				ruler_id = enemy_id
 				ruler_alive = true
 	
-		if not ruler_alive and not ServerData.GetEnemy(ruler).has("dungeon"):
+		if not ruler_alive and not ruler_spawned:
+			ruler_spawned = true
 			var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
 			instance_tree.append(name)
 			if instance_tree:
 				get_node("/root/Server").SpawnNPC(ruler, instance_tree, map_size/2*8-position)
-		elif not ruler_alive:
+		elif not ruler_alive and ruler_spawned:
 			island_close_timer -= delta
 		
-	if island_close_timer <= 0 and not island_closed:
+	if island_close_timer <= 0 and not island_closed and ServerData.GetEnemy(ruler).has("dungeon"):
 		island_closed = true
 		var dungeon = ServerData.GetEnemy(ruler).dungeon.name
 		#Send everyone to dungeon
@@ -159,8 +161,6 @@ func GetIslandChunk(chunk):
 			else:
 				print("x,y: " + str(Vector2(x,y)))
 				print("Map as array size:" + str(map_as_array.size()))
-				print("Map as array y size:" + str(map_as_array[x].size()))
-				print("Map as array value: " + str(map_as_array[x][y]))
 	return {
 		"Tiles" : result,
 		"Objects" : objects
@@ -179,6 +179,10 @@ func GetChunkData(chunk):
 		"O" : object_list
 	}
 
+func SetRuler():
+	randomize()
+	var possible_rulers = ["crypt_guardian"]
+	ruler = possible_rulers[randi() % len(possible_rulers)]
 func GenerateIslandMap():
 	noise = OpenSimplexNoise.new()
 	noise.octaves = 1.0
@@ -192,22 +196,20 @@ func PopulateTiles():
 	var plains_distance = center.length() * 1
 	var badlands_distance = center.length() * 0.8
 	var mountains_distance = center.length() * 0.5
+	
+	#For wavy edges of island
+	var noise_scale = 0.6
+	var noise_intensity = 0.05
+	
 	for x in range(map_size.x):
 		map_as_array.append([])
 		for y in range(map_size.y):
-			map_as_array[x].append([])
+			#map_as_array[x].append([])
 			var distance = (Vector2(x, y) - center).length()
 
 			#Base value for a perfect circle
 			var ocean_value = 1.0 - (distance / ocean_distance)
-			
-			#For wavy edges of island
-			var noise_scale = 0.6
-			var noise_intensity = 0.05
-			
 			var noise_value = noise.get_noise_2d(x * noise_scale, y * noise_scale) * noise_intensity
-			
-			var river_value = (1.0 - (distance / 1.5)) + noise_value/3
 			
 			var beach_value = (1.0 - (distance / beach_distance)) + noise_value/3
 			var forest_value = (1.0 - (distance / forest_distance)) + noise_value/3
@@ -216,19 +218,30 @@ func PopulateTiles():
 			var mountains_value = (1.0 - (distance / mountains_distance)) + noise_value*2 + rand_range(0,0.03)
 
 			if mountains_value > tile_cap:
-				map_as_array[x][y] = 6
+				map_as_array[x].append(6)
 			elif badlands_value > tile_cap:
-				map_as_array[x][y] = 5
+				map_as_array[x].append(5)
 			elif plains_value > tile_cap:
-				map_as_array[x][y] = 4
+				map_as_array[x].append(4)
 			elif forest_value > tile_cap:
-				map_as_array[x][y] = 3
+				map_as_array[x].append(3)
 			elif beach_value > tile_cap:
-				map_as_array[x][y] = 2
+				map_as_array[x].append(2)
 			elif ocean_value > tile_cap:
-				map_as_array[x][y] = 1
+				map_as_array[x].append(1)
 			else:
-				map_as_array[x][y] = 0
+				map_as_array[x].append(0)
+	
+	var setpiece = load("res://Scenes/SupportScenes/Island/" + ruler + ".tscn").instance()
+	for x in range(-32, 32*2):
+		for y in range(-32, 32*2):
+			var current_tile = setpiece.get_cell(x,y)
+			
+			if current_tile > -1:
+				var pos = Vector2(x + round(map_size.x/2), y + round(map_size.y/2))
+				map_as_array[pos.x][pos.y] = current_tile
+				$TileMap.set_cell(pos.x, pos.y, map_as_array[pos.x][pos.y])
+				
 
 func _ready():
 	PopulateChunkSensors()
@@ -295,7 +308,7 @@ func ArrayToTiles():
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": plains_enemies[enemy_index]}
 				spawn_point_index += 1
 			if map_tile == 5 and enemy_seed > 29.8:
-				var enemy_index = round(rand_range(0, mountain_enemies.size()-1))
+				var enemy_index = round(rand_range(0, badlands_enemies.size()-1))
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": badlands_enemies[enemy_index]}
 				spawn_point_index += 1
 			if map_tile == 6 and enemy_seed > 29.8:

@@ -15,7 +15,7 @@ var indicators = {
 }
 
 #Sub variables (Will set these based on key variables onready)
-var projectile
+var projectile = load("res://Scenes/SupportScenes/Projectiles/Players/Projectile.tscn")
 
 var x = 0
 var y = 0
@@ -38,11 +38,6 @@ onready var CharacterSpriteEle = $Control/CharacterSprite
 onready var animation_tree = $AnimationTree
 
 func _ready():
-	if gear.has("weapon") and gear.weapon.has("projectile"):
-		var projectile_type = gear.weapon.projectile
-		var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
-		projectile = load(projectile_path)
-
 	SetCharacterSprite()
 
 #Dealing with the characters sprite
@@ -61,11 +56,6 @@ func SetCharacter(_character):
 			gear[slot] = ClientData.GetItem(int(character.gear[slot].item), true)
 			for stat in gear[slot].stats.keys():
 				stats[stat] += gear[slot].stats[stat]
-	
-	if gear.has("weapon"):
-		var projectile_type = gear.weapon.projectile
-		var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/" + str(projectile_type) + ".tscn"
-		projectile = load(projectile_path)
 	
 	if gear.has("weapon"):
 		time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100)
@@ -174,10 +164,15 @@ func MovePlayer(delta):
 	
 	var current_time = OS.get_ticks_msec() / 1000.0
 	
-	if gear.has("weapon"):
-		if current_time - last_shot_time >= time_between_shots and shoot == true and not GameUI.is_in_menu:
-			ShootProjectile()
-			last_shot_time = current_time
+	current_time - last_shot_time >= time_between_shots and shoot == true and not GameUI.is_in_menu
+	
+	var timing = current_time - last_shot_time >= time_between_shots
+	var weapon = gear.has("weapon")
+	var menu = not GameUI.is_in_menu
+	
+	if timing and weapon and shoot and menu:
+		ShootProjectile()
+		last_shot_time = current_time
 		
 	#Animations
 	var shoot_direction = (get_global_mouse_position() - position).normalized()
@@ -239,20 +234,21 @@ func ShootProjectile():
 	#Send projectile to server
 	var projectile_data = {
 		"Damage" : damage,
-		"Projectile":gear.weapon.projectile,
 		"Position":$Axis.global_position,
 		"MousePosition":mouse_position,
 		"Direction":direction,
-		"TileRange":gear.weapon.range
 	}
 	Server.SendProjectile(projectile_data)
 	
-	projectile_instance.position = $Axis.global_position + direction*3
-	
 	#Set projectile data
+	projectile_instance.position = $Axis.global_position + direction*3
 	projectile_instance.projectile = gear.weapon.projectile
+	projectile_instance.tile_range = gear.weapon.tile_range
+	projectile_instance.piercing = gear.weapon.piercing
+	projectile_instance.formula = gear.weapon.formula
+	projectile_instance.speed = gear.weapon.speed
+	projectile_instance.size = gear.weapon.size
 	projectile_instance.damage = damage
-	projectile_instance.tile_range = gear.weapon.range
 	
 	projectile_instance.set_direction(direction)
 	get_parent().add_child(projectile_instance)

@@ -6,7 +6,8 @@
 
 [sub_resource type="Animation" id=2]
 resource_name = "Attack"
-length = 0.6
+length = 0.3
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
@@ -14,10 +15,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0, 1 ]
+"values": [ 1 ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -31,10 +32,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0, 1 ]
+"values": [ 0 ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -57,7 +58,7 @@ extents = Vector2( 5, 5 )
 
 [node name="enemy" type="Node2D"]
 script = ExtResource( 1 )
-enemy_type = "shadow_mage"
+enemy_type = "goblin_warrior"
 
 [node name="Control" type="Control" parent="."]
 margin_left = -10.0
@@ -74,7 +75,7 @@ scale = Vector2( 1.00334, 1 )
 texture = ExtResource( 2 )
 hframes = 4
 region_enabled = true
-region_rect = Rect2( 0, 110, 40, 10 )
+region_rect = Rect2( 90, 30, 40, 10 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
@@ -93,6 +94,6 @@ position = Vector2( 5, 5 )
 shape = SubResource( 1 )
 
 [node name="IndicatorPlaceholder" type="Node2D" parent="."]
-position = Vector2( -0.5, -10 )
+position = Vector2( 0, -10 )
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

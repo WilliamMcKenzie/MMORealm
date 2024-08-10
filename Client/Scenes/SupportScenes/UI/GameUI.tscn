@@ -228,7 +228,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ) ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=38]
@@ -953,6 +953,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 
+[node name="Nametags" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+
 [node name="ChatControl" parent="." instance=ExtResource( 2 )]
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -1042,8 +1048,8 @@ z_index = 22
 normal = SubResource( 13 )
 
 [node name="Column1" type="VBoxContainer" parent="UtilityButtons"]
-margin_left = 86.0
-margin_right = 124.0
+margin_left = 43.0
+margin_right = 81.0
 margin_bottom = 122.0
 
 [node name="BackpackButton" type="PanelContainer" parent="UtilityButtons/Column1"]
@@ -1295,11 +1301,11 @@ margin_right = 90.0
 margin_bottom = 54.0
 
 [node name="QuestMarker" parent="." instance=ExtResource( 30 )]
-margin_left = 603.0
-margin_top = 12.0
-margin_right = 683.0
-margin_bottom = 92.0
-mouse_filter = 2
+visible = false
+margin_left = 669.0
+margin_top = 9.0
+margin_right = 749.0
+margin_bottom = 89.0
 
 [node name="Inventory" parent="." instance=ExtResource( 1 )]
 

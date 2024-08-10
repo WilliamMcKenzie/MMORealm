@@ -73,6 +73,14 @@ func UpdateChatBubbles(id, text):
 		chat_bubble_instance.name = id
 		base_node.add_child(chat_bubble_instance)
 	base_node.get_node(id).Update(id, text)
+	
+func UpdateNametags(id, classname, username):
+	var base_node = get_node("Nametags")
+	if not base_node.has_node(id):
+		var nametag_instance = load("res://Scenes/SupportScenes/UI/PlayerNametag.tscn").instance()
+		nametag_instance.name = id
+		base_node.add_child(nametag_instance)
+	base_node.get_node(id).Update(id, classname, username)
 
 func GoHome():
 	LoadingScreen.Transition("")

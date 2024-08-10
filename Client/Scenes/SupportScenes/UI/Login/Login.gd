@@ -11,6 +11,8 @@ func _ready():
 	signupButton.connect("pressed", self, "SignupAttempt")
 	
 func SignupAttempt():
+	password = $VBoxContainer/PasswordContainer/Password/MarginContainer/Password.text
+	email = $VBoxContainer/EmailContainer/Email/MarginContainer/Email.text
 	if email == "" or password == "":
 		ErrorPopup.OpenPopup("Invalid credentials: Email/password cannot be blank")
 	if password.length() < 7:
@@ -19,6 +21,8 @@ func SignupAttempt():
 		Gateway.ConnectToServer(email, password, 1)
 
 func LoginAttempt():
+	password = $VBoxContainer/PasswordContainer/Password/MarginContainer/Password.text
+	email = $VBoxContainer/EmailContainer/Email/MarginContainer/Email.text
 	if email == "" or password == "":
 		ErrorPopup.OpenPopup("Invalid credentials: Email/password cannot be blank")
 	else:

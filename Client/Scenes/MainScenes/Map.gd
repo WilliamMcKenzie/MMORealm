@@ -39,7 +39,7 @@ func _physics_process(delta):
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players2[player]["animation"], players2[player]["sprite"])
 					get_node("YSort/OtherPlayers/" + str(player)).UpdateStatusEffects(players2[player]["status_effects"])
 				else:
-					SpawnNewPlayer(player, players2[player]["position"])
+					SpawnNewPlayer(player, players2[player]["position"], players2[player]["sprite"]["C"], players2[player]["name"])
 			RefreshPlayers(world_state_buffer[2]["P"])
 			
 			#Update enemies
@@ -81,7 +81,7 @@ func _physics_process(delta):
 					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players1[player]["animation"], players1[player]["sprite"])
 					get_node("YSort/OtherPlayers/" + str(player)).UpdateStatusEffects(players1[player]["status_effects"])
 				else:
-					SpawnNewPlayer(player, players1[player]["position"])
+					SpawnNewPlayer(player, players1[player]["position"], players1[player]["sprite"]["C"], players1[player]["name"])
 			
 			#Update enemies
 			for enemy in world_state_buffer[1]["E"].keys():
@@ -121,6 +121,11 @@ func UpdateWorldState(world_state):
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
 		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+".tscn")
+		if not enemy_scene:
+			for enemy in ClientData.enemies.keys():
+				var enemy_data = ClientData.enemies[enemy]
+				if enemy_data.has("variations") and enemy_data.variations.has(enemy_name):
+					enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy+".tscn")
 		var enemy_instance = enemy_scene.instance()
 		enemy_instance.name = enemy_id
 		enemy_instance.position = enemy_position
@@ -167,11 +172,12 @@ func RefreshObjects(objects):
 				object_node.UpdateLoot(objects[object_node.name]["loot"])
 
 #Player nodes
-func SpawnNewPlayer(player_id, spawn_position):
+func SpawnNewPlayer(player_id, spawn_position, username, classname):
 	if str(get_tree().get_network_unique_id()) == str(player_id):
 		pass
 	else:
 		if not get_node("YSort/OtherPlayers").has_node(str(player_id)):
+			GameUI.UpdateNametags(str(player_id), classname, username)
 			var player_instance = player_spawn.instance()
 			player_instance.name = str(player_id)
 			player_instance.position = spawn_position

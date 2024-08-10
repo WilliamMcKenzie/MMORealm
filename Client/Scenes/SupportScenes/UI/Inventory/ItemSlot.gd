@@ -55,7 +55,7 @@ func get_drag_data(position):
 	drag_texture.texture = AtlasTexture.new()
 	drag_texture.texture.atlas = get_node("ItemIcon").texture.atlas.duplicate(true)
 	drag_texture.texture.region = get_node("ItemIcon").texture.region
-	drag_texture.material = load("res://Resources/Renderer.tres").duplicate()
+	drag_texture.material = get_node("ItemIcon").material.duplicate()
 	drag_texture.rect_size = Vector2(40,40)
 	
 	var preview = Control.new()
@@ -114,6 +114,21 @@ func SetItem(_item, _quantity):
 		$ItemIcon.visible = true
 		$ItemBackground.visible = false
 		SetSpriteData($ItemIcon, ClientData.GetItem(item.item).path)
+		
+		#Outline
+		var starting_colour = Color(0,0,0)
+		var ending_colour = Color(0,0,0)
+		starting_colour.a = 2.0
+		ending_colour.a = 0.0
+		
+		if ClientData.GetItem(item.item).has("outline"):
+			ending_colour = ClientData.GetItem(item.item).outline
+			starting_colour.a = 3.0
+			ending_colour.a = 0.0
+		
+		$ItemIcon.material = $ItemIcon.material.duplicate()
+		$ItemIcon.material.set_shader_param("starting_colour", starting_colour)
+		$ItemIcon.material.set_shader_param("ending_colour", ending_colour)
 
 func GetItem():
 	return {

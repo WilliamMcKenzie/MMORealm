@@ -17,9 +17,6 @@ func _ready():
 func InspectItem(_item):
 	if not _item:
 		return
-	if inspecting_item == _item:
-		DeInspectItem(_item)
-		return
 	
 	var bonus_color = ClientData.GetCharacter(ClientData.current_class).color
 	var item = ClientData.GetItem(_item.item)
@@ -39,6 +36,21 @@ func InspectItem(_item):
 	item_name.text = item.name
 	item_sprite.texture.region = Rect2(item.path[3]*10, Vector2(10, 10))
 	item_description.text = item.description + "\n"
+	
+	#Outline
+	var starting_colour = Color(0,0,0)
+	var ending_colour = Color(0,0,0)
+	starting_colour.a = 2.0
+	ending_colour.a = 0.0
+	
+	if item.has("outline"):
+		ending_colour = item.outline
+		starting_colour.a = 3.0
+		ending_colour.a = 0.0
+	
+	item_sprite.material = item_sprite.material.duplicate()
+	item_sprite.material.set_shader_param("starting_colour", starting_colour)
+	item_sprite.material.set_shader_param("ending_colour", ending_colour)
 	
 	if item.type == "Consumable":
 		item_use.visible = true

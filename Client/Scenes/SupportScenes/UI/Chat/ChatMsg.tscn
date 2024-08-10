@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=2]
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=3]
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 210, 10, 10 )
 
@@ -50,7 +50,7 @@ material = ExtResource( 3 )
 margin_right = 20.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 20, 20 )
-texture = SubResource( 3 )
+texture = SubResource( 5 )
 stretch_mode = 5
 
 [node name="From" type="Label" parent="."]

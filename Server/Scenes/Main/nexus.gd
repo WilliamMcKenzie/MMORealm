@@ -60,41 +60,70 @@ func _physics_process(delta):
 		if valid_collision or max_range:
 			get_node("/root/Server").RemoveEnemyProjectile(projectile_id, instance_tree)
 			projectile_list.erase(projectile_id)
+	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
+			#Check if we need to switch phase
+			var _phases = ServerData.GetEnemy(enemy_list[enemy_id]["name"]).phases
+			var __phase_index = enemy_list[enemy_id]["phase_index"]
+			var _phase = _phases[__phase_index]
+			
+			var _health_ratio = (enemy_list[enemy_id].health/enemy_list[enemy_id].max_health)*100
+			var _health = _health_ratio >= _phase.health[0] and _health_ratio <= _phase.health[1] 
+			
+			if not _health:
+				enemy_list[enemy_id]["phase_timer"] = 0
+			
 			enemy_list[enemy_id]["pattern_timer"] -= tick_rate
 			enemy_list[enemy_id]["phase_timer"] -= tick_rate
+			
 			if enemy_list[enemy_id]["pattern_timer"] <= 0:
 				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
 				var phase_index = enemy_list[enemy_id]["phase_index"]
 				
 				var attack_pattern = enemy_data["phases"][phase_index].attack_pattern
 				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
-				var direction = current_attack["direction"]
-				if direction == Vector2(-99,-99):
-					var closest = 9999999
-					direction = Vector2(0,0)
-					for player_id in player_list.keys():
-						if player_list[player_id]["position"].distance_to(enemy_list[enemy_id]["position"]) <= closest:
-							direction = enemy_list[enemy_id]["position"].direction_to(player_list[player_id]["position"])
 				
-				var projectile_data = {
-					"id" : projectile_id_counter,
-					"name" : current_attack["projectile"],
-					"position" : enemy_list[enemy_id]["position"],
-					"direction" : direction,
-					"tile_range" : current_attack["tile_range"],
-					"start_position" : enemy_list[enemy_id]["position"],
-					"start_time" : OS.get_system_time_msecs()/1000,
-					"damage" : current_attack["damage"],
-					"piercing" : current_attack["piercing"],
-					"speed" : current_attack["speed"],	
-					"formula" : current_attack["formula"],
-					"path" : enemy_list[enemy_id]["position"],
-					"hit_players" : {},
-					"size" : 4,
-				}
-				SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_list[enemy_id]["name"])
+				var is_projectile = current_attack.has("projectile")
+				var is_summon = current_attack.has("summon")
+				
+				if is_projectile:
+					#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
+					var direction = current_attack["direction"]
+					if not current_attack.has("targeter"):
+						pass
+					elif current_attack["targeter"] == "nearest":
+						var closest = 9999999
+						for player_id in player_list.keys():
+							if player_list[player_id]["position"].distance_to(enemy_list[enemy_id]["position"]) <= closest:
+								closest = player_list[player_id]["position"].distance_to(enemy_list[enemy_id]["position"])
+								direction = enemy_list[enemy_id]["position"].direction_to((player_list[player_id]["position"]) + direction)
+						if closest == 9999999:
+							enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
+							return
+					
+					var projectile_data = {
+						"id" : projectile_id_counter,
+						"name" : current_attack["projectile"],
+						"position" : enemy_list[enemy_id]["position"],
+						"direction" : direction,
+						"tile_range" : current_attack["tile_range"],
+						"start_position" : enemy_list[enemy_id]["position"],
+						"start_time" : OS.get_system_time_msecs()/1000,
+						"damage" : current_attack["damage"],
+						"piercing" : current_attack["piercing"],
+						"speed" : current_attack["speed"],	
+						"formula" : current_attack["formula"],
+						"path" : enemy_list[enemy_id]["position"],
+						"hit_players" : {},
+						"size" : current_attack["size"],
+					}
+					SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_list[enemy_id]["name"])
+				
+				elif is_summon:
+					var summon_position = current_attack["summon_position"] + enemy_list[enemy_id]["position"]
+					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position)
+				
 				enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
 				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
 					enemy_list[enemy_id]["pattern_index"] = 0
@@ -111,11 +140,25 @@ func _physics_process(delta):
 					_phase_index += 1
 					var health_ratio = (enemy_list[enemy_id].health/enemy_list[enemy_id].max_health)*100
 					var health = health_ratio >= phase.health[0] and health_ratio <= phase.health[1] 
-					if health:
+					
+					var used_before = enemy_list[enemy_id]["used_phases"].has(_phase_index)
+					var use_limit = phase.has("max_uses")
+					var possible = not use_limit or not used_before or (used_before and phase.max_uses > enemy_list[enemy_id]["used_phases"][_phase_index])
+					if health and possible:
 						possible_phases.append(_phase_index)
-						
+						if used_before:
+							enemy_list[enemy_id]["used_phases"][_phase_index] += 1
+						else:
+							enemy_list[enemy_id]["used_phases"][_phase_index] = 1
+						if use_limit:
+							possible_phases = [_phase_index]
+							break;
+				
 				if len(possible_phases) > 0:
 					var chosen_index = randi() % len(possible_phases)
+					if enemy_list[enemy_id]["phase_index"] != possible_phases[chosen_index]:
+						enemy_list[enemy_id]["pattern_index"] = 0
+					
 					enemy_list[enemy_id]["phase_index"] = possible_phases[chosen_index]
 					enemy_list[enemy_id]["phase_timer"] = phases[possible_phases[chosen_index]].duration
 				
@@ -124,40 +167,15 @@ func _physics_process(delta):
 				CalculateLootPool(enemy_list[enemy_id])
 				enemy_list.erase(enemy_id)
 				continue
-				
+			
 			if (enemy_list[enemy_id]["behavior"] == 1):
-				
-				var target = enemy_list[enemy_id]["target"]
-				var pos = enemy_list[enemy_id]["position"]
-				
-				var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)
-				var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)
-				
-				enemy_list[enemy_id]["position"] += Vector2(x_move,y_move)
-				
-				if (target - pos).length() <= 4:
-					if (enemy_list[enemy_id]["anchor_position"]-pos).length() >= 20:
-						enemy_list[enemy_id]["target"] = enemy_list[enemy_id]["anchor_position"]
-					else:
-						enemy_list[enemy_id]["target"] = DetermineCollisionSafePoint(pos, pos + Vector2(rand_range(-7,7),rand_range(-7,7)))
-				
+				enemy_list[enemy_id] = Behaviours.Wander(enemy_list[enemy_id], tick_rate, self)
+			
+			elif (enemy_list[enemy_id]["behavior"] == 2):
+				enemy_list[enemy_id] = Behaviours.Chase(enemy_list[enemy_id], tick_rate, self)
+			
 		if use_chunks == false:
 			last_tick = running_time
-
-func DetermineCollisionSafePoint(pos, point):
-	var space_state = get_world_2d().direct_space_state
-	var result = true
-	var spots_to_check = [Vector2(-4,0), Vector2(4,0), Vector2(-4,-8), Vector2(4,-8)]
-	for spot in spots_to_check:
-		var collisions = space_state.intersect_point(point+position+spot, 1, [], 1, true, true)
-		if collisions.size() > 0:
-			for collision in collisions:
-				if collision.collider.name == "TileMap":
-					result = false
-	
-	if result:
-		return point
-	return pos
 
 func UpdatePlayer(player_id, player_state):
 	if player_list.has(str(player_id)):
@@ -179,7 +197,7 @@ func UpdatePlayer(player_id, player_state):
 func SpawnPlayer(player_container):
 	if player_container:
 		player_list[player_container.name] = {
-				"name": player_container.name,
+				"name": "[unset]",
 				"status_effects" : [],
 				"position": player_container.position,
 				"animation": { "A" : "Idle", "C" : Vector2.ZERO },
@@ -398,6 +416,7 @@ func OpenPortal(portal_name, instance_tree, position):
 		
 		island_instance.GenerateIslandMap()
 		island_instance.position = Instances.GetFreeInstancePosition()
+		island_instance.SetRuler()
 		add_child(island_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 	else:

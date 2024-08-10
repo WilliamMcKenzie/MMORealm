@@ -44,7 +44,10 @@ func _ready():
 	PopulateObstacles()
 
 func TutorialInit():
-	ruler = "rat_king"
+	ruler = "tutorial_troll_king"
 
-	beach_enemies = ["crab"]
-	forest_enemies = ["goblin_warrior", "goblin_cannon"]
+	var beach_enemies = ["tutorial_crab"]
+	var forest_enemies = []
+	var plains_enemies = []
+	var badlands_enemies = []
+	var mountain_enemies = []

@@ -463,7 +463,7 @@ func SetCharacter(characters):
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func AddExp(exp_amount, enemy_name):
-	if in_tutorial and tutorial_step == 4 and enemy_name == "rat_king":
+	if in_tutorial and tutorial_step == 4 and enemy_name == "troll_king":
 		tutorial_step += 1
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 	if in_tutorial and tutorial_step == 1:

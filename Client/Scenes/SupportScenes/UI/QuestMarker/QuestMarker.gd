@@ -4,12 +4,25 @@ var current_quest = null
 var direction = Vector2(4,0)
 
 func _process(delta):
+	
 	rect_position = Vector2(400,180)
 	while(not OutsideScreen(self)):
 		rect_position += direction
 
 func VisibleByCamera(node, camera):
 	var screen_size = OS.window_size
+	var base_screen_size = Vector2(800,360)
+	
+	var screen_ratio = screen_size.x/screen_size.y
+	var base_screen_ratio = base_screen_size.x/base_screen_size.y
+	
+	if screen_ratio > base_screen_ratio:
+		screen_size.x = (screen_size.x/screen_size.y)*base_screen_size.y
+		screen_size.y = base_screen_size.y
+	else:
+		screen_size.y = (screen_size.y/screen_size.x)*base_screen_size.x
+		screen_size.x = base_screen_size.x
+	
 	var screen_rect = Rect2(Vector2(-400, -200), screen_size)
 	var scene = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance())
 	
@@ -24,8 +37,19 @@ func VisibleByCamera(node, camera):
 
 func OutsideScreen(ui_node):
 	var screen_size = OS.window_size
-	var screen_rect = Rect2(Vector2(0, 0), screen_size)
+	var base_screen_size = Vector2(800,360)
 	
+	var screen_ratio = screen_size.x/screen_size.y
+	var base_screen_ratio = base_screen_size.x/base_screen_size.y
+	
+	if screen_ratio > base_screen_ratio:
+		screen_size.x = (screen_size.x/screen_size.y)*base_screen_size.y
+		screen_size.y = base_screen_size.y
+	else:
+		screen_size.y = (screen_size.y/screen_size.x)*base_screen_size.x
+		screen_size.x = base_screen_size.x
+		
+	var screen_rect = Rect2(Vector2(0, 0), screen_size)
 	var node_pos = ui_node.rect_global_position
 	var node_size = ui_node.rect_size
 	var node_rect = Rect2(node_pos, node_size)
@@ -34,6 +58,7 @@ func OutsideScreen(ui_node):
 		return false
 	if screen_rect.intersects(node_rect):
 		return true
+	return false
 
 func SetQuest(quest):
 	visible = true
@@ -47,6 +72,11 @@ func SetQuest(quest):
 		current_quest = quest
 		var quest_name = quest.name
 		var quest_node = load("res://Scenes/SupportScenes/Npcs/" + quest_name + ".tscn").instance()
+		if not quest_node:
+			for enemy in ClientData.enemies.keys():
+				var enemy_data = ClientData.enemies[enemy]
+				if enemy_data.has("variations") and enemy_data.variations.has(quest.name):
+					quest_node = load("res://Scenes/SupportScenes/Npcs/" + enemy + ".tscn").instance()
 		var quest_sprite = quest_node.get_node("Control/Sprite")
 		var quest_texture = quest_sprite.texture
 		var quest_region = quest_sprite.region_rect

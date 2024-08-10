@@ -4,7 +4,7 @@ var current_class = "Apprentice"
 
 #Tile data
 var unique_tiles = {
-	0 : 0.1,
+	0 : 0.01,
 	1 : 0.5,
 }
 
@@ -20,11 +20,6 @@ var basic_loot_pools = {
 				"item" : 5,
 				"chance" : 0.23,
 				"threshold" : 0.23,
-			},
-			{
-				"item" : 4,
-				"chance" : 0.15,
-				"threshold" : 0.15,
 			},
 			{
 				"item" : 0,
@@ -47,17 +42,7 @@ var basic_loot_pools = {
 					"threshold" : 0.23,
 				},
 				{
-				"item" : 4,
-				"chance" : 0.2,
-				"threshold" : 0.15,
-				},
-				{
 					"item" : 2,
-					"chance" : 0.5,
-					"threshold" : 0.15,
-				},
-				{
-					"item" : 3,
 					"chance" : 0.5,
 					"threshold" : 0.15,
 				},
@@ -76,11 +61,316 @@ var basic_loot_pools = {
 	}
 }
 
-var realm_enemies = {
-	"rat_king" : {
-		"health" : 600,
+var rulers = {
+	"crypt_guardian" : {
+		"health" : 200,
+		"defense" : 30,
+		"exp" : 4000,
+		"behavior" : 1,
+		"dungeon" : {
+			"name" : "overgrown_temple",
+			"rate" : 0
+		},
+		"loot_pool" :  {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [50,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Dart",
+						"formula" : "sin(x)",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "sin(x)",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(10,0),
+						"size" : 5
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "sin(x)",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 4,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(-10,0),
+						"size" : 5
+					},
+				]
+			},
+			{
+				"duration" : 7,
+				"max_uses" : 1,
+				"health" : [50,100],
+				"attack_pattern" : [
+					{
+						"summon" : "crypt_guardian_summon",
+						"summon_position" : Vector2(0,0),
+						"wait" : 1,
+					},
+					{
+						"projectile" : "Spinner",
+						"formula" : "sin(x)",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 20,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					},
+					{
+						"projectile" : "Spinner",
+						"formula" : "sin(x)",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 20,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					},
+					{
+						"summon" : "crypt_guardian_summon",
+						"summon_position" : Vector2(0,0),
+						"wait" : 1,
+					},
+					{
+						"projectile" : "Spinner",
+						"formula" : "sin(x)",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 20,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					},
+					{
+						"projectile" : "Spinner",
+						"formula" : "sin(x)",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 20,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					},
+					{
+						"summon" : "crypt_guardian_summon",
+						"summon_position" : Vector2(0,0),
+						"wait" : 1,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(1,0),
+						"size" : 20
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(-1,0),
+						"size" : 20
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(0,1),
+						"size" : 20
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(0,-1),
+						"size" : 20
+					},
+				]
+			}
+		]
+	},
+	"crypt_guardian_summon" : {
+		"health" : 100,
+		"defense" : 20,
+		"exp" : 2000,
+		"behavior" : 2,
+		"loot_pool" :  {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 50,
+						"tile_range" : 1,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			}
+		]
+	}
+}
+var tutorial_enemies = {
+	"tutorial_crab" : {
+		"health" : 20,
 		"defense" : 1,
-		"exp" : 20,
+		"exp" : 10,
+		"behavior" : 1,
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 5,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : true,
+						"wait" : 10,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 200
+					}
+				]
+			},
+		]
+	},
+	"tutorial_troll_warrior" : {
+		"health" : 70,
+		"defense" : 1,
+		"exp" : 200,
+		"behavior" : 2,
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 5,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 10,
+						"tile_range" : 3,
+						"direction" : Vector2(0,1),
+						"size" : 20
+					},
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 10,
+						"tile_range" : 3,
+						"direction" : Vector2(1,0),
+						"size" : 20
+					},
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 10,
+						"tile_range" : 3,
+						"direction" : Vector2(0,-1),
+						"size" : 20
+					},
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 10,
+						"tile_range" : 3,
+						"direction" : Vector2(-1,0),
+						"size" : 20
+					}
+				]
+			}
+		]
+	},
+	"tutorial_troll_king" : {
+		"health" : 300,
+		"defense" : 10,
+		"exp" : 200,
 		"behavior" : 1,
 		"loot_pool" :  {
 			"soulbound_loot" : [
@@ -98,24 +388,37 @@ var realm_enemies = {
 				"health" : [50,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "GoldenArrow",
+						"projectile" : "Stack",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 5,
 						"piercing" : false,
 						"wait" : 1,
 						"speed" : 10,
 						"tile_range" : 8,
-						"direction" : Vector2(-99,-99),
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
 						"size" : 20
 					}
 				]
 			},
 			{
 				"duration" : 4,
-				"health" : [50,100],
+				"max_uses" : 1,
+				"health" : [0,50],
 				"attack_pattern" : [
 					{
-						"projectile" : "GreySlash",
+						"summon" : "troll_warrior",
+						"summon_position" : Vector2(0,0),
+						"wait" : 6,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
@@ -126,7 +429,7 @@ var realm_enemies = {
 						"size" : 20
 					},
 					{
-						"projectile" : "GreySlash",
+						"projectile" : "Wave",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
@@ -137,7 +440,7 @@ var realm_enemies = {
 						"size" : 20
 					},
 					{
-						"projectile" : "GreySlash",
+						"projectile" : "Wave",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
@@ -148,11 +451,11 @@ var realm_enemies = {
 						"size" : 20
 					},
 					{
-						"projectile" : "GreySlash",
+						"projectile" : "Wave",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
-						"wait" : 1,
+						"wait" : 2,
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(0,-1),
@@ -162,15 +465,381 @@ var realm_enemies = {
 			}
 		]
 	},
+}
+var realm_enemies = {
 	"crab" : {
+		"variations" : ["tutorial_crab"],
 		"health" : 60,
 		"defense" : 1,
 		"exp" : 20,
 		"behavior" : 1,
-		"loot_pool" : {
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 10,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					},
+				]
+			}
+		]
+	},
+	"slime" : {
+		"health" : 60,
+		"defense" : 1,
+		"exp" : 30,
+		"behavior" : 1,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 10,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			}
+		]
+	},
+	"nature_druid" : {
+		"health" : 200,
+		"defense" : 3,
+		"exp" : 250,
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [50,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Nature2",
+						"formula" : "sin(x)",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 30,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			},
+			{
+				"duration" : 4,
+				"max_uses" : 1,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"summon" : "nature_sprite",
+						"summon_position" : Vector2(10,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "nature_sprite",
+						"summon_position" : Vector2(0,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "nature_sprite",
+						"summon_position" : Vector2(-10,5),
+						"wait" : 5,
+					},
+				]
+			},
+			{
+				"duration" : 2,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"projectile" : "Nature2",
+						"formula" : "sin(x)",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 30,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			},
+		]
+	},
+	"nature_sprite" : {
+		"health" : 10,
+		"defense" : 0,
+		"exp" : 20,
+		"behavior" : 2,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Nature1",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			}
+		]
+	},
+	"goblin_warrior" : {
+		"health" : 60,
+		"defense" : 3,
+		"exp" : 40,
+		"behavior" : 2,
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "SteelSlash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 5,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			}
+		]
+	},
+	"goblin_cannon" : {
+		"health" : 20,
+		"defense" : 1000,
+		"exp" : 250,
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 7,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "CannonBall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 8,
+						"speed" : 6,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					}
+				]
+			},
+			{
+				"duration" : 2,
+				"max_uses" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "goblin_warrior",
+						"summon_position" : Vector2(10,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "goblin_archer",
+						"summon_position" : Vector2(0,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "goblin_warrior",
+						"summon_position" : Vector2(-10,5),
+						"wait" : 600000,
+					},
+				]
+			},
+		]
+	},
+	"blue_slime" : {
+		"health" : 120,
+		"defense" : 1,
+		"exp" : 30,
+		"behavior" : 1,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Water2",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : true,
+						"wait" : 3,
+						"speed" : 10,
+						"tile_range" : 4,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					},
+					{
+						"projectile" : "Water1",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : true,
+						"wait" : 3,
+						"speed" : 8,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 3
+					}
+				]
+			}
+		]
+	},
+	"troll_warrior" : {
+		"variations" : ["tutorial_troll_warrior"],
+		"health" : 100,
+		"defense" : 1,
+		"exp" : 300,
+		"behavior" : 2,
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 10,
+						"tile_range" : 3,
+						"direction" : Vector2(0,1),
+						"size" : 4
+					},
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 10,
+						"tile_range" : 3,
+						"direction" : Vector2(1,0),
+						"size" : 4
+					},
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 10,
+						"tile_range" : 3,
+						"direction" : Vector2(0,-1),
+						"size" : 4
+					},
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 10,
+						"tile_range" : 3,
+						"direction" : Vector2(-1,0),
+						"size" : 4
+					}
+				]
+			}
+		]
+	},
+	"troll_brute" : {
+		"health" : 300,
+		"defense" : 10,
+		"exp" : 450,
+		"behavior" : 1,
+		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					}
+				]
+			}
+		]
+	},
+	"troll_king" : {
+		"variations" : ["tutorial_troll_king"],
+		"health" : 700,
+		"defense" : 10,
+		"exp" : 1000,
+		"behavior" : 1,
+		"loot_pool" :  {
 			"soulbound_loot" : [
 				{
-					"item" : 5,
+					"item" : 0,
 					"chance" : 1,
 					"threshold" : 1,
 				},
@@ -179,158 +848,318 @@ var realm_enemies = {
 		},
 		"phases" : [
 			{
-				"duration" : 10,
-				"health" : [0,100],
+				"duration" : 6,
+				"health" : [50,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "GreySlash",
+						"projectile" : "Ball",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 50,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 5,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 6
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 20,
 						"piercing" : false,
-						"wait" : 1,
+						"wait" : 0.5,
 						"speed" : 10,
 						"tile_range" : 8,
-						"direction" : Vector2(-99,-99),
-						"size" : 20
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 5,
+						"speed" : 10,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 5
 					}
 				]
-			}
-		]
-	},
-	"goblin_warrior" : {
-		"health" : 60,
-		"defense" : 1,
-		"exp" : 40,
-		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
-		"dungeon" : {
-			"name" : "overgrown_temple",
-			"rate" : 0.3
-		},
-		"phases" : [
+			},
 			{
-				"duration" : 10,
-				"health" : [0,100],
+				"duration" : 4,
+				"max_uses" : 1,
+				"health" : [0,50],
 				"attack_pattern" : [
 					{
-						"projectile" : "GreySlash",
-						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 10,
-						"tile_range" : 8,
-						"direction" : Vector2(-99,-99),
-						"size" : 20
-					}
+						"summon" : "troll_warrior",
+						"summon_position" : Vector2(0,0),
+						"wait" : 6,
+					},
 				]
-			}
-		]
-	},
-	"goblin_cannon" : {
-		"health" : 60,
-		"defense" : 1000,
-		"exp" : 250,
-		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
-		"phases" : [
+			},
 			{
-				"duration" : 10,
-				"health" : [0,100],
+				"duration" : 4,
+				"health" : [0,50],
 				"attack_pattern" : [
 					{
-						"projectile" : "GreySlash",
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(1,0),
+						"size" : 20
+					},
+					{
+						"projectile" : "Wave",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
 						"wait" : 1,
 						"speed" : 10,
 						"tile_range" : 8,
-						"direction" : Vector2(-99,-99),
+						"direction" : Vector2(-1,0),
 						"size" : 20
-					}
-				]
-			}
-		]
-	},
-	"troll_warrior" : {
-		"health" : 200,
-		"defense" : 1,
-		"exp" : 200,
-		"behavior" : 10,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
-		"phases" : [
-			{
-				"duration" : 10,
-				"health" : [0,100],
-				"attack_pattern" : [
+					},
 					{
-						"projectile" : "GreySlash",
+						"projectile" : "Wave",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
-						"wait" : 1,
+						"wait" : 0,
 						"speed" : 10,
 						"tile_range" : 8,
-						"direction" : Vector2(-99,-99),
+						"direction" : Vector2(0,1),
 						"size" : 20
-					}
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 10,
+						"tile_range" : 8,
+						"direction" : Vector2(0,-1),
+						"size" : 20
+					},
 				]
 			}
 		]
 	},
-	"troll_brute" : {
-		"health" : 400,
+	"rat_warrior" : {
+		"health" : 500,
 		"defense" : 20,
+		"exp" : 1000,
+		"behavior" : 2,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 10,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					},
+				]
+			}
+		]
+	},
+	"rat_mage" : {
+		"health" : 250,
+		"defense" : 10,
+		"exp" : 1000,
+		"behavior" : 1,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 10,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					},
+				]
+			}
+		]
+	},
+	"rat_king" : {
+		"health" : 100,
+		"defense" : 100,
+		"exp" : 3000,
+		"behavior" : 1,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10000,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "rat_warrior",
+						"summon_position" : Vector2(-10,0),
+						"wait" : 1,
+					},
+					{
+						"summon" : "rat_warrior",
+						"summon_position" : Vector2(10,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "rat_mage",
+						"summon_position" : Vector2(0,0),
+						"wait" : 6000,
+					},
+				]
+			}
+		]
+	},
+	"viking_king" : {
+		"health" : 3000,
+		"defense" : 0,
+		"exp" : 3000,
+		"behavior" : 2,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10000,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "viking_assasin",
+						"summon_position" : Vector2(-10,0),
+						"wait" : 1,
+					},
+					{
+						"summon" : "viking_warrior",
+						"summon_position" : Vector2(10,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "viking_assasin",
+						"summon_position" : Vector2(0,0),
+						"wait" : 6000,
+					},
+				]
+			}
+		]
+	},
+	"viking_assasin" : {
+		"health" : 500,
+		"defense" : 0,
+		"exp" : 500,
+		"behavior" : 2,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 10,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					},
+				]
+			}
+		]
+	},
+	"viking_warrior" : {
+		"health" : 500,
+		"defense" : 0,
+		"exp" : 500,
+		"behavior" : 2,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 10,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					},
+				]
+			}
+		]
+	},
+	"yellow_slime" : {
+		"health" : 3000,
+		"defense" : -100,
 		"exp" : 2000,
 		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "GreySlash",
+						"projectile" : "Fire2",
 						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 1,
+						"damage" : 20,
+						"piercing" : true,
+						"wait" : 3,
 						"speed" : 10,
-						"tile_range" : 8,
-						"direction" : Vector2(-99,-99),
-						"size" : 20
+						"tile_range" : 4,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					},
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : true,
+						"wait" : 3,
+						"speed" : 8,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 3
 					}
 				]
 			}
 		]
 	},
-	"rock_golem" : {
-		"health" : 200,
-		"defense" : 60,
-		"exp" : 20000,
-		"behavior" : 1,
-		"loot_pool" :  basic_loot_pools["lowlands_2"],
-		"phases" : [
-			{
-				"duration" : 10,
-				"health" : [0,100],
-				"attack_pattern" : [
-					{
-						"projectile" : "GreySlash",
-						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 10,
-						"tile_range" : 8,
-						"direction" : Vector2(-99,-99),
-						"size" : 20
-					}
-				]
-			}
-		]
-	}
 }
 var overgrown_temple_enemies = {
 	"shadow_mage" : {
@@ -345,14 +1174,15 @@ var overgrown_temple_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "GreySlash",
+						"projectile" : "Slash",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
 						"wait" : 1,
 						"speed" : 10,
 						"tile_range" : 8,
-						"direction" : Vector2(-99,-99),
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
 						"size" : 20
 					}
 				]
@@ -363,6 +1193,8 @@ var overgrown_temple_enemies = {
 var enemies = CompileEnemies()
 func CompileEnemies():
 	var res = {}
+	res.merge(rulers)
+	res.merge(tutorial_enemies)
 	res.merge(realm_enemies)
 	res.merge(overgrown_temple_enemies)
 	return res
@@ -383,15 +1215,18 @@ var items = {
 		"description" : "A simple yet effective weapon.",
 		"type" : "Sword",
 		"slot" : "weapon",
+		"tier" : "0",
 		
 		"damage" : [15,25],
 		"rof" : 100,
-		"stats" : {
-			"vitality" : 12
-		},
-		"range" : 3,
-		"tier" : "0",
-		"projectile" : "GreySlash",
+		"stats" : {},
+		
+		"projectile" : "Slash",
+		"formula" : "0",
+		"piercing" : false,
+		"speed" : 50,
+		"tile_range" : 3,
+		"size" : 4,
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,0)],
 		"colors" : {
@@ -421,70 +1256,73 @@ var items = {
 			
 		}
 	},
-	3 : {
-		"name": "Shadowbringer Bow",
-		"description" : "A ominous bow, forged from the very essence of darkness.",
-		"type" : "Bow",
-		"slot" : "weapon",
-		
-		"damage" : [15,25],
-		"rof" : 100,
-		"stats" : {
-					
-		},
-		"range" : 6,
-		"tier" : "5",
-		"projectile" : "GoldenArrow",
-		
-		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)],
-		"colors" : {
-			"weaponSecondaryNew" : RgbToColor(125.0, 30.0, 156.0),
-			"weaponNew" : RgbToColor(74.0, 33.0, 4.0),
-		},
-		"textures" : {
-			
-		}
-	},
-	4 : {
-		"name": "Flamespitter",
-		"description" : "The remnants of the great calamity bahamut.",
-		"type" : "Staff",
-		"slot" : "weapon",
-		
-		"damage" : [200,300],
-		"rof" : 500,
-		"stats" : {
-					
-		},
-		"range" : 8,
-		"tier" : "UT",
-		"projectile" : "FlameBlast",
-		
-		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,1)],
-		"colors" : {
-			"weaponSecondaryNew" : RgbToColor(251.0, 255.0, 145.0)
-		},
-		"textures" : {
-			"weaponTexture" : "flame",
-		}
-	},
-	5 : {
-		"name": "Royal Helmet",
-		"description" : "The helmet of the royal guard, adorned with golden trims.",
+		3 : {
+		"name": "Steel Helmet",
+		"description" : "A basic helmet that has seen many battles.",
 		"type" : "Helmet",
 		"slot" : "helmet",
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"healing" : { "duration" : 4, "range" : 5},
-			"damaging" : { "duration" : 4, "range" : 5},
-			"berserk" : { "duration" : 4, "range" : 5},
+			"armored" : { "duration" : 4, "range" : 5},
 		},
 		"stats" : {
 			"defense" : 5,
 			"vitality" : 5,
 		},
-		"tier" : "2",
+		"tier" : "0",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,8)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(213.0, 190.0, 65.0),
+			"helmetMediumNew" : RgbToColor(139.0, 129.0, 125.0),
+			"helmetDarkNew" : RgbToColor(126.0, 118.0, 115.0),
+		},
+		"textures" : {
+			
+		}
+	},
+		4 : {
+		"name": "Steel Helmet",
+		"description" : "A basic helmet that has seen many battles.",
+		"type" : "Helmet",
+		"slot" : "helmet",
+		
+		"cooldown" : 6,
+		"buffs" : {
+			"armored" : { "duration" : 4, "range" : 5},
+		},
+		"stats" : {
+			"defense" : 5,
+			"vitality" : 5,
+		},
+		"tier" : "0",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,8)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(213.0, 190.0, 65.0),
+			"helmetMediumNew" : RgbToColor(139.0, 129.0, 125.0),
+			"helmetDarkNew" : RgbToColor(126.0, 118.0, 115.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	5 : {
+		"name": "Steel Helmet",
+		"description" : "A basic helmet that has seen many battles.",
+		"type" : "Helmet",
+		"slot" : "helmet",
+		
+		"cooldown" : 6,
+		"buffs" : {
+			"armored" : { "duration" : 4, "range" : 5},
+		},
+		"stats" : {
+			"defense" : 5,
+			"vitality" : 5,
+		},
+		"tier" : "0",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,8)],
 		"colors" : {
@@ -499,33 +1337,151 @@ var items = {
 }
 
 var projectiles = {
-	"GreySlash" : {
-		"damage" : 10,
-		"speed" : 50,
-		"tile_range" : 8,
-		"piercing" : false,
-		"formula" : "0",
-		"rect" : Rect2(20,0,10,10),
-		"rotation" : 0,
-	},
-	"GoldenArrow" : {
-		"damage" : 50,
-		"speed" : 100,
-		"tile_range" : 8,
-		"piercing" : true,
-		"formula" : "0",
+	"Slash" : {
 		"rect" : Rect2(0,0,10,10),
-		"rotation" : -45,
+		"rotation" : 90,
+		"spin" : false,
 	},
-	"FlameBlast" : {
-		"damage" : 200,
-		"speed" : 100,
-		"tile_range" : 8,
-		"piercing" : true,
-		"formula" : "sin(x)",
+	"Wave" : {
+		"rect" : Rect2(10,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Ball" : {
+		"rect" : Rect2(20,0,10,10),
+		"rotation" : 90,
+		"spin" : false,
+	},
+	"Stack" : {
+		"rect" : Rect2(30,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"CannonBall" : {
 		"rect" : Rect2(40,0,10,10),
 		"rotation" : 45,
-	}
+		"spin" : false,
+	},
+	"Ring" : {
+		"rect" : Rect2(50,0,10,10),
+		"rotation" : 90,
+		"spin" : false,
+	},
+	"Dart" : {
+		"rect" : Rect2(60,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Spinner" : {
+		"rect" : Rect2(70,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+	},
+	"Star" : {
+		"rect" : Rect2(80,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+	},
+	"SteelSlash" : {
+		"rect" : Rect2(0,10,10,10),
+		"rotation" : 90,
+		"spin" : false,
+	},
+	"GoldenSlash" : {
+		"rect" : Rect2(10,10,10,10),
+		"rotation" : 90,
+		"spin" : false,
+	},
+	"PlatinumSlash" : {
+		"rect" : Rect2(20,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"CobaltSlash" : {
+		"rect" : Rect2(30,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"RexiumSlash" : {
+		"rect" : Rect2(40,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"SteelArrow" : {
+		"rect" : Rect2(0,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"GoldenArrow" : {
+		"rect" : Rect2(10,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"CobaltArrow" : {
+		"rect" : Rect2(20,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"BloodArrow" : {
+		"rect" : Rect2(30,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"RexiumArrow" : {
+		"rect" : Rect2(40,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Nature1" : {
+		"rect" : Rect2(0,30,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Water1" : {
+		"rect" : Rect2(10,30,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Fire1" : {
+		"rect" : Rect2(20,30,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Nature2" : {
+		"rect" : Rect2(30,30,10,10),
+		"rotation" : 90,
+		"spin" : true,
+	},
+	"Water2" : {
+		"rect" : Rect2(40,30,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Fire2" : {
+		"rect" : Rect2(50,30,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Nature3" : {
+		"rect" : Rect2(60,30,10,10),
+		"rotation" : 90,
+		"spin" : true,
+	},
+	"Water3" : {
+		"rect" : Rect2(70,30,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Fire3" : {
+		"rect" : Rect2(80,30,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Void1" : {
+		"rect" : Rect2(90,30,10,10),
+		"rotation" : 90,
+		"spin" : true,
+	},
 }
 
 var achievement_catagories = {
@@ -768,6 +1724,9 @@ var characters = {
 }
 
 func RgbToColor(r, g, b):
+	r = r*1.0
+	g = g*1.0
+	b = b*1.0
 	return Color(r/255, g/255, b/255)
 
 func GetMultiplier(item):
@@ -817,7 +1776,7 @@ func GetCharacter(character):
 		return characters[character]
 	else:
 		return null
-
+		
 func GetEnemy(enemy):
 	if enemies.has(enemy):
 		return enemies[enemy]
