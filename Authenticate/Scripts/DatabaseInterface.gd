@@ -29,6 +29,27 @@ var default_account_data = {
 		"sword_projectiles" : 0,
 		"projectiles_landed" : 0,
 	},
+	"home" : {
+		"whitelist" : [],
+		"open_mode" : "open",
+		"objects" : [
+			{
+				"type" : "storage",
+				"position" : Vector2(32*8,32*8),
+				"loot" : [
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+				],
+			}
+		],
+		"tiles" : []
+	},
 	"classes": {
 		"Apprentice": true,
 		
@@ -103,6 +124,20 @@ func _ready():
 		db_username, db_password, host, port, database_name
 	]
 	database.connect_to_host(connection_string, true)
+	
+	var default_home_tiles = []
+	
+	#Grass
+	for x in range(64):
+		default_home_tiles.append([])
+		for y in range(64):
+			default_home_tiles[x].append(3)
+	
+	#Floor
+	for x in range(16):
+		for y in range(16):
+			default_home_tiles[x+16][y+16]
+	default_account_data.home.tiles = default_home_tiles
 	
 	var timer = Timer.new()
 	timer.wait_time = 1

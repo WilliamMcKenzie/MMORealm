@@ -26,8 +26,9 @@ var expression = Expression.new()
 
 func _ready():
 	if name != "nexus":
-		instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
-		instance_tree.append(name)
+		if get_parent().object_list.has(name):
+			instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
+			instance_tree.append(name)
 	else:
 		instance_tree = ["nexus"]
 
@@ -73,9 +74,12 @@ func _physics_process(delta):
 			
 			if not _health:
 				enemy_list[enemy_id]["phase_timer"] = 0
+			if _phase.has("behavior"):
+				enemy_list[enemy_id]["behavior"] = _phase["behavior"]
 			
 			enemy_list[enemy_id]["pattern_timer"] -= tick_rate
 			enemy_list[enemy_id]["phase_timer"] -= tick_rate
+			
 			
 			if enemy_list[enemy_id]["pattern_timer"] <= 0:
 				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
@@ -112,7 +116,7 @@ func _physics_process(delta):
 						"start_time" : OS.get_system_time_msecs()/1000,
 						"damage" : current_attack["damage"],
 						"piercing" : current_attack["piercing"],
-						"speed" : current_attack["speed"],	
+						"speed" : current_attack["speed"],
 						"formula" : current_attack["formula"],
 						"path" : enemy_list[enemy_id]["position"],
 						"hit_players" : {},
@@ -168,10 +172,10 @@ func _physics_process(delta):
 				enemy_list.erase(enemy_id)
 				continue
 			
-			if (enemy_list[enemy_id]["behavior"] == 1):
+			if (enemy_list[enemy_id]["behaviour"] == 1):
 				enemy_list[enemy_id] = Behaviours.Wander(enemy_list[enemy_id], tick_rate, self)
 			
-			elif (enemy_list[enemy_id]["behavior"] == 2):
+			elif (enemy_list[enemy_id]["behaviour"] == 2):
 				enemy_list[enemy_id] = Behaviours.Chase(enemy_list[enemy_id], tick_rate, self)
 			
 		if use_chunks == false:
@@ -196,8 +200,11 @@ func UpdatePlayer(player_id, player_state):
 
 func SpawnPlayer(player_container):
 	if player_container:
+		var username = "[unset]"
+		if player_container.account_data:
+			username = player_container.account_data.username
 		player_list[player_container.name] = {
-				"name": "[unset]",
+				"name": username,
 				"status_effects" : [],
 				"position": player_container.position,
 				"animation": { "A" : "Idle", "C" : Vector2.ZERO },
@@ -409,7 +416,7 @@ func OpenPortal(portal_name, instance_tree, position):
 		object_list[instance_id] = {
 			"name": portal_name,
 			"type":"DungeonPortals",
-			"end_time": OS.get_system_time_msecs()+99999999999999,
+			"end_time": OS.get_system_time_msecs()+OS.get_system_time_msecs(),
 			"position": position,
 			"instance_tree": instance_tree
 		}

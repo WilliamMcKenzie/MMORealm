@@ -147,12 +147,16 @@ func RefreshObjects(objects):
 		var scene_name = objects[object]["name"]+".tscn"
 		
 		#Loot bags
-		if type == "LootBags" and objects[object]["soulbound"] == true and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
+		if type == "LootBags" and objects[object]["soulbound"] == true and objects[object]["name"] != "Storage" and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
 			continue
 		
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
+			
+			if objects[object]["position"] is String:
+				var xy = (objects[object]["position"].replace("(","").replace(")","")).split(",")
+				objects[object]["position"] = Vector2(int(xy[0]), int(xy[1]))
 			
 			object_instance.name = str(object)
 			object_instance.object_id = str(object)
@@ -172,15 +176,15 @@ func RefreshObjects(objects):
 				object_node.UpdateLoot(objects[object_node.name]["loot"])
 
 #Player nodes
-func SpawnNewPlayer(player_id, spawn_position, username, classname):
+func SpawnNewPlayer(player_id, spawn_position, classname, username):
 	if str(get_tree().get_network_unique_id()) == str(player_id):
 		pass
 	else:
 		if not get_node("YSort/OtherPlayers").has_node(str(player_id)):
-			GameUI.UpdateNametags(str(player_id), classname, username)
 			var player_instance = player_spawn.instance()
 			player_instance.name = str(player_id)
 			player_instance.position = spawn_position
+			player_instance.get_node("Nametag").Update(player_id, classname, username)
 			get_node("YSort/OtherPlayers").add_child(player_instance)
 func RefreshPlayers(players):
 	for player_node in get_node("YSort/OtherPlayers").get_children():

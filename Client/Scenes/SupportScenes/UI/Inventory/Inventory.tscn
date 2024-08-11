@@ -842,7 +842,7 @@ expand = true
 stretch_mode = 4
 
 [node name="CloseButton" type="TouchScreenButton" parent="BackpackContainer"]
-position = Vector2( 1, 0 )
+position = Vector2( 1, 4 )
 scale = Vector2( 4, 4 )
 normal = SubResource( 20 )
 
@@ -964,7 +964,7 @@ expand = true
 stretch_mode = 4
 
 [node name="CloseButton" type="TouchScreenButton" parent="LootContainer"]
-position = Vector2( 56, 0 )
+position = Vector2( 60, 3 )
 scale = Vector2( 4, 4 )
 normal = SubResource( 21 )
 

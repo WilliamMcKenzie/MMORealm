@@ -58,7 +58,7 @@ func SendIslandData(instance_tree):
 				get_node("/root/Server").SendWorldState(id, world_state)
 
 func CleanObjects(objects):
-	for k in objects.keys():
-		if OS.get_system_time_msecs() > objects[k]["end_time"]:
-			objects.erase(k)
+	for objects_id in objects.keys():
+		if OS.get_system_time_msecs() > objects[objects_id]["end_time"]:
+			objects.erase(objects_id)
 	return objects

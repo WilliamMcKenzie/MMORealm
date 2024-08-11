@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/PlayerTemplate.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Resources/Outline.gdshader" type="Shader" id=5]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=6]
+[ext_resource path="res://Scenes/SupportScenes/UI/PlayerNametag.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=108]
 extents = Vector2( 4, 4 )
@@ -518,3 +519,6 @@ anims/walk_down = SubResource( 104 )
 anims/walk_left = SubResource( 105 )
 anims/walk_right = SubResource( 106 )
 anims/walk_up = SubResource( 107 )
+
+[node name="Nametag" parent="." instance=ExtResource( 7 )]
+scale = Vector2( 0.18, 0.18 )

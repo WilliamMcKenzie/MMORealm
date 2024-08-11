@@ -19,9 +19,10 @@ func DetermineCollisionSafePoint(pos, point, root):
 func Wander(enemy, tick_rate, root):
 	var target = enemy["target"]
 	var pos = enemy["position"]
+	var speed = enemy["speed"]
 	
-	var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)
-	var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)
+	var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
+	var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
 	
 	enemy["position"] += Vector2(x_move,y_move)
 	
@@ -37,15 +38,16 @@ func Chase(enemy, tick_rate, root):
 	var player_list = root.player_list
 	var target = enemy["target"]
 	var pos = enemy["position"]
+	var speed = enemy["speed"]
 	
 	var closest = 9999999
 	for player_id in player_list.keys():
 		if player_list[player_id]["position"].distance_to(enemy["position"]) <= closest:
 			target = player_list[player_id]["position"]
-			
-	var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)
-	var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)
-			
+	
+	var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
+	var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
+	
 	enemy["position"] += Vector2(x_move,y_move)
 	return enemy
 

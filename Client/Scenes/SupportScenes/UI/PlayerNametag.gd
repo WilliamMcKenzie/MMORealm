@@ -3,6 +3,7 @@ var id
 var classname
 
 func _process(delta):
+	return
 	if id and Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()):
 		var scene = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance())
 		var camera = scene.get_node("YSort/player/Camera2D")
@@ -15,7 +16,8 @@ func _process(delta):
 		else:
 			queue_free()
 
-func Update(_id, username, _classname):
+func Update(_id, _classname, username):
+	print(username)
 	$PlayerName/Name.text = username
 	if _classname != classname:
 		classname = _classname

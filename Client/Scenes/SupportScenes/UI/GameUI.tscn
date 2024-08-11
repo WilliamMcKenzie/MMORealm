@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=68 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/Inventory.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=2]
@@ -836,6 +836,10 @@ region = Rect2( 80, 220, 10, 10 )
 atlas = ExtResource( 9 )
 region = Rect2( 80, 230, 10, 10 )
 
+[sub_resource type="AtlasTexture" id=41]
+atlas = ExtResource( 9 )
+region = Rect2( 130, 230, 10, 10 )
+
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 9 )
 region = Rect2( 110, 220, 10, 10 )
@@ -1013,9 +1017,42 @@ size_flags_horizontal = 9
 custom_constants/separation = 5
 alignment = 2
 
-[node name="LootButton" type="PanelContainer" parent="UtilityButtons"]
-visible = false
+[node name="BuildButton" type="PanelContainer" parent="UtilityButtons"]
 margin_right = 38.0
+margin_bottom = 38.0
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 17 )
+script = ExtResource( 24 )
+
+[node name="MarginContainer" type="MarginContainer" parent="UtilityButtons/BuildButton"]
+margin_right = 38.0
+margin_bottom = 38.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="TextureButton" type="TextureButton" parent="UtilityButtons/BuildButton/MarginContainer"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 4 )
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 34.0
+margin_bottom = 34.0
+rect_min_size = Vector2( 30, 30 )
+texture_normal = SubResource( 7 )
+texture_hover = SubResource( 8 )
+expand = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="UtilityButtons/BuildButton/MarginContainer"]
+position = Vector2( 5, 4 )
+scale = Vector2( 3, 3 )
+z_index = 22
+normal = SubResource( 41 )
+
+[node name="LootButton" type="PanelContainer" parent="UtilityButtons"]
+margin_left = 43.0
+margin_right = 81.0
 margin_bottom = 38.0
 size_flags_vertical = 0
 custom_styles/panel = SubResource( 17 )
@@ -1048,8 +1085,8 @@ z_index = 22
 normal = SubResource( 13 )
 
 [node name="Column1" type="VBoxContainer" parent="UtilityButtons"]
-margin_left = 43.0
-margin_right = 81.0
+margin_left = 86.0
+margin_right = 124.0
 margin_bottom = 122.0
 
 [node name="BackpackButton" type="PanelContainer" parent="UtilityButtons/Column1"]
@@ -1156,8 +1193,8 @@ z_index = 22
 normal = SubResource( 29 )
 
 [node name="Column2" type="VBoxContainer" parent="UtilityButtons"]
-margin_left = 86.0
-margin_right = 124.0
+margin_left = 129.0
+margin_right = 167.0
 margin_bottom = 122.0
 rect_pivot_offset = Vector2( 19, 61 )
 

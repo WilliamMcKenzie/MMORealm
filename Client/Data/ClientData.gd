@@ -67,6 +67,7 @@ var rulers = {
 		"defense" : 30,
 		"exp" : 4000,
 		"behavior" : 1,
+		"speed" : 10,
 		"dungeon" : {
 			"name" : "overgrown_temple",
 			"rate" : 0
@@ -122,6 +123,7 @@ var rulers = {
 				"duration" : 7,
 				"max_uses" : 1,
 				"health" : [50,100],
+				"behavior" : 2,
 				"attack_pattern" : [
 					{
 						"summon" : "crypt_guardian_summon",
@@ -201,7 +203,7 @@ var rulers = {
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(1,0),
-						"size" : 20
+						"size" : 5
 					},
 					{
 						"projectile" : "Wave",
@@ -212,7 +214,7 @@ var rulers = {
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(-1,0),
-						"size" : 20
+						"size" : 5
 					},
 					{
 						"projectile" : "Wave",
@@ -223,18 +225,18 @@ var rulers = {
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(0,1),
-						"size" : 20
+						"size" : 5
 					},
 					{
 						"projectile" : "Wave",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
-						"wait" : 2,
+						"wait" : 1,
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(0,-1),
-						"size" : 20
+						"size" : 5
 					},
 				]
 			}
@@ -245,6 +247,7 @@ var rulers = {
 		"defense" : 20,
 		"exp" : 2000,
 		"behavior" : 2,
+		"speed" : 20,
 		"loot_pool" :  {
 			"soulbound_loot" : [],
 			"loot" : []
@@ -277,6 +280,7 @@ var tutorial_enemies = {
 		"defense" : 1,
 		"exp" : 10,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" : {
 			"soulbound_loot" : [
 				{
@@ -302,7 +306,7 @@ var tutorial_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 200
+						"size" : 4
 					}
 				]
 			},
@@ -313,6 +317,7 @@ var tutorial_enemies = {
 		"defense" : 1,
 		"exp" : 200,
 		"behavior" : 2,
+		"speed" : 5,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -328,7 +333,7 @@ var tutorial_enemies = {
 						"speed" : 10,
 						"tile_range" : 3,
 						"direction" : Vector2(0,1),
-						"size" : 20
+						"size" : 4
 					},
 					{
 						"projectile" : "Slash",
@@ -339,7 +344,7 @@ var tutorial_enemies = {
 						"speed" : 10,
 						"tile_range" : 3,
 						"direction" : Vector2(1,0),
-						"size" : 20
+						"size" : 4
 					},
 					{
 						"projectile" : "Slash",
@@ -350,7 +355,7 @@ var tutorial_enemies = {
 						"speed" : 10,
 						"tile_range" : 3,
 						"direction" : Vector2(0,-1),
-						"size" : 20
+						"size" : 4
 					},
 					{
 						"projectile" : "Slash",
@@ -361,7 +366,7 @@ var tutorial_enemies = {
 						"speed" : 10,
 						"tile_range" : 3,
 						"direction" : Vector2(-1,0),
-						"size" : 20
+						"size" : 4
 					}
 				]
 			}
@@ -372,6 +377,7 @@ var tutorial_enemies = {
 		"defense" : 10,
 		"exp" : 200,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" :  {
 			"soulbound_loot" : [
 				{
@@ -397,7 +403,7 @@ var tutorial_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 20
+						"size" : 4
 					}
 				]
 			},
@@ -426,7 +432,7 @@ var tutorial_enemies = {
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(1,0),
-						"size" : 20
+						"size" : 4
 					},
 					{
 						"projectile" : "Wave",
@@ -437,7 +443,7 @@ var tutorial_enemies = {
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(-1,0),
-						"size" : 20
+						"size" : 4
 					},
 					{
 						"projectile" : "Wave",
@@ -448,7 +454,7 @@ var tutorial_enemies = {
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(0,1),
-						"size" : 20
+						"size" : 4
 					},
 					{
 						"projectile" : "Wave",
@@ -459,7 +465,7 @@ var tutorial_enemies = {
 						"speed" : 10,
 						"tile_range" : 8,
 						"direction" : Vector2(0,-1),
-						"size" : 20
+						"size" : 4
 					},
 				]
 			}
@@ -473,6 +479,7 @@ var realm_enemies = {
 		"defense" : 1,
 		"exp" : 20,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -500,6 +507,7 @@ var realm_enemies = {
 		"defense" : 1,
 		"exp" : 30,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -527,6 +535,7 @@ var realm_enemies = {
 		"defense" : 3,
 		"exp" : 250,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -594,6 +603,7 @@ var realm_enemies = {
 		"defense" : 0,
 		"exp" : 20,
 		"behavior" : 2,
+		"speed" : 20,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -621,6 +631,7 @@ var realm_enemies = {
 		"defense" : 3,
 		"exp" : 40,
 		"behavior" : 2,
+		"speed" : 20,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -648,6 +659,7 @@ var realm_enemies = {
 		"defense" : 1000,
 		"exp" : 250,
 		"behavior" : 1,
+		"speed" : 5,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -697,6 +709,7 @@ var realm_enemies = {
 		"defense" : 1,
 		"exp" : 30,
 		"behavior" : 1,
+		"speed" : 5,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -737,6 +750,7 @@ var realm_enemies = {
 		"defense" : 1,
 		"exp" : 300,
 		"behavior" : 2,
+		"speed" : 20,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -796,6 +810,7 @@ var realm_enemies = {
 		"defense" : 10,
 		"exp" : 450,
 		"behavior" : 1,
+		"speed" : 10,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -836,6 +851,7 @@ var realm_enemies = {
 		"defense" : 10,
 		"exp" : 1000,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" :  {
 			"soulbound_loot" : [
 				{
@@ -958,6 +974,7 @@ var realm_enemies = {
 		"defense" : 20,
 		"exp" : 1000,
 		"behavior" : 2,
+		"speed" : 20,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -985,6 +1002,7 @@ var realm_enemies = {
 		"defense" : 10,
 		"exp" : 1000,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1012,6 +1030,7 @@ var realm_enemies = {
 		"defense" : 100,
 		"exp" : 3000,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1042,6 +1061,7 @@ var realm_enemies = {
 		"defense" : 0,
 		"exp" : 3000,
 		"behavior" : 2,
+		"speed" : 20,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1049,7 +1069,7 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"summon" : "viking_assasin",
+						"summon" : "viking_warrior",
 						"summon_position" : Vector2(-10,0),
 						"wait" : 1,
 					},
@@ -1059,36 +1079,9 @@ var realm_enemies = {
 						"wait" : 0,
 					},
 					{
-						"summon" : "viking_assasin",
+						"summon" : "viking_warrior",
 						"summon_position" : Vector2(0,0),
 						"wait" : 6000,
-					},
-				]
-			}
-		]
-	},
-	"viking_assasin" : {
-		"health" : 500,
-		"defense" : 0,
-		"exp" : 500,
-		"behavior" : 2,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
-		"phases" : [
-			{
-				"duration" : 10,
-				"health" : [0,100],
-				"attack_pattern" : [
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 3,
-						"speed" : 10,
-						"tile_range" : 3,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
 					},
 				]
 			}
@@ -1099,6 +1092,7 @@ var realm_enemies = {
 		"defense" : 0,
 		"exp" : 500,
 		"behavior" : 2,
+		
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1126,6 +1120,7 @@ var realm_enemies = {
 		"defense" : -100,
 		"exp" : 2000,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1167,6 +1162,7 @@ var overgrown_temple_enemies = {
 		"defense" : 1,
 		"exp" : 20,
 		"behavior" : 1,
+		"speed" : 20,
 		"loot_pool" :  basic_loot_pools["lowlands_2"],
 		"phases" : [
 			{
@@ -1776,7 +1772,7 @@ func GetCharacter(character):
 		return characters[character]
 	else:
 		return null
-		
+
 func GetEnemy(enemy):
 	if enemies.has(enemy):
 		return enemies[enemy]

@@ -379,10 +379,13 @@ func LootItem(to_data, from_data):
 	#Check if it is soulbound, if so make sure the right player is requesting
 	if not get_parent().get_parent().get_parent().object_list.has(loot_id):
 		return
-	if get_parent().get_parent().get_parent().object_list[loot_id].soulbound == true and get_parent().get_parent().get_parent().object_list[loot_id].player_id != name:
+	if get_parent().get_parent().get_parent().object_list[loot_id].soulbound == true and str(get_parent().get_parent().get_parent().object_list[loot_id].player_id) != name:
 		return
-	var loot = get_parent().get_parent().get_parent().object_list[loot_id].loot
-	get_parent().get_parent().get_parent().object_list[loot_id].end_time = OS.get_system_time_msecs()+40000
+	
+	var object_reference = get_parent().get_parent().get_parent().object_list[loot_id]
+	var loot = object_reference.loot
+	if not "Storage" in object_reference.name:
+		object_reference.end_time = OS.get_system_time_msecs()+40000
 	
 	#Identifying items
 	var selected_item_raw
@@ -445,7 +448,7 @@ func LootItem(to_data, from_data):
 		loot[to_data.index] = selected_item_raw
 		loot[from_data.index] = replaced_item_raw
 		
-	if loot == [null,null,null,null,null,null,null,null]:
+	if loot == [null,null,null,null,null,null,null,null] and object_reference.name != "Storage":
 		get_parent().get_parent().get_parent().object_list.erase(loot_id)
 
 	get_node("/root/Server").SendCharacterData(name, character)

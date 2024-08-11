@@ -71,12 +71,13 @@ func SetQuest(quest):
 	if quest != current_quest:
 		current_quest = quest
 		var quest_name = quest.name
-		var quest_node = load("res://Scenes/SupportScenes/Npcs/" + quest_name + ".tscn").instance()
+		var quest_node = load("res://Scenes/SupportScenes/Npcs/" + quest_name + ".tscn")
 		if not quest_node:
 			for enemy in ClientData.enemies.keys():
 				var enemy_data = ClientData.enemies[enemy]
 				if enemy_data.has("variations") and enemy_data.variations.has(quest.name):
-					quest_node = load("res://Scenes/SupportScenes/Npcs/" + enemy + ".tscn").instance()
+					quest_node = load("res://Scenes/SupportScenes/Npcs/" + enemy + ".tscn")
+		quest_node = quest_node.instance()
 		var quest_sprite = quest_node.get_node("Control/Sprite")
 		var quest_texture = quest_sprite.texture
 		var quest_region = quest_sprite.region_rect

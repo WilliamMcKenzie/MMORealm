@@ -1,7 +1,7 @@
 extends Node
 
-var ip = "138.197.146.70"
-#var ip = "localhost"
+#var ip = "138.197.146.70"
+var ip = "localhost"
 var port = 1912
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
@@ -51,6 +51,7 @@ remote func ReturnAccountData(player_id, account_data):
 	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)).player_list[str(player_id)].name = account_data.username
 	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).account_data = account_data
 	get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).SetCharacter(account_data.characters)
+	get_node("/root/Server/Instances/nexus/house " + str(player_id)).SetHouseData(account_data)
 	if not account_data.finished_tutorial:
 		get_node("/root/Server").StartTutorial(player_id)
 

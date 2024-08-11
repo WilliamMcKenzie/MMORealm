@@ -42,6 +42,7 @@ func CreatePlayerContainer(player_id, email, character_index):
 	new_player_container.character_index = character_index
 	get_node("/root/Server/Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(new_player_container)
 	FillPlayerContainer(player_id, email)
+	get_node("/root/Server").CreateHouse(player_id)
 
 func CreateFakePlayerContainer():
 	var instance_tree = ["nexus"]
@@ -126,7 +127,7 @@ func CreateFakePlayerContainer():
 			null,
 		]
 	}]
-}
+	}
 	new_player_container.position = Vector2(rand_range(-25,25), rand_range(-25,25))
 	new_player_container.email = str(rand_range(0,5)).sha256_text()
 	new_player_container.name =  str(rand_range(0,5)).sha256_text()

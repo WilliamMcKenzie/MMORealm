@@ -17,7 +17,6 @@ var velocity = Vector2(1000, 1000)
 func _ready():
 	initial_position = position
 	target = position
-	
 
 func DealDamage(damage, player_id):
 	get_parent().get_parent().get_parent().enemy_list[name]["Health"] -= damage

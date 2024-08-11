@@ -31,6 +31,7 @@ var current_instance_tree = ["nexus"]
 var nexus = preload("res://Scenes/MainScenes/Nexus/Nexus.tscn")
 var island_container = preload("res://Scenes/MainScenes/Island/Island.tscn")
 var dungeon_container = preload("res://Scenes/MainScenes/Dungeon/Dungeon.tscn")
+var house_container = preload("res://Scenes/MainScenes/House/House.tscn")
 
 #Projectile preload
 var projectile = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Projectile.tscn")
@@ -334,7 +335,21 @@ func EnterInstance(instance_id):
 	if instance_id == GetCurrentInstance():
 		return
 	rpc_id(1, "EnterInstance", instance_id)
+
+remote func ReturnHouseData(instance_data):
+	LoadingScreen.Transition(instance_data.Name + "'s House")
+	var house_instance = house_container.instance()
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	
+	house_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
+	house_instance.get_node("YSort/player").global_position = instance_data["Position"]
+	house_instance.name = instance_data["Id"]
+	house_instance.PopulateHouse(instance_data)
+	
+	get_node("../SceneHandler").remove_child(get_node("../SceneHandler/"+GetCurrentInstance()))
+	get_node("../SceneHandler").add_child(house_instance)
+	current_instance_tree = ["nexus", instance_data["Id"]]
+
 remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())

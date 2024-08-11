@@ -158,9 +158,6 @@ func GetIslandChunk(chunk):
 					var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
 					instance_tree.append(name)
 					get_node("/root/Server").SpawnNPC(enemy_spawn_points[Vector2(x,y)]["Enemy"], instance_tree, Vector2(x*8, y*8)-self.position)
-			else:
-				print("x,y: " + str(Vector2(x,y)))
-				print("Map as array size:" + str(map_as_array.size()))
 	return {
 		"Tiles" : result,
 		"Objects" : objects
@@ -294,24 +291,24 @@ func ArrayToTiles():
 			
 			if map_tile == 2:
 				spawn_points.append(Vector2(x*8, y*8))
-
-			if map_tile == 2 and enemy_seed > 29.8:
+			
+			if map_tile == 2 and enemy_seed > 29.8 and beach_enemies.size() > 0:
 				var enemy_index = round(rand_range(0, beach_enemies.size()-1))
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": beach_enemies[0]}
 				spawn_point_index += 1
-			if map_tile == 3 and enemy_seed > 29.8:
+			if map_tile == 3 and enemy_seed > 29.8 and forest_enemies.size() > 0:
 				var enemy_index = round(rand_range(0, forest_enemies.size()-1))
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": forest_enemies[enemy_index]}
 				spawn_point_index += 1
-			if map_tile == 4 and enemy_seed > 29.8:
+			if map_tile == 4 and enemy_seed > 29.8 and plains_enemies.size() > 0:
 				var enemy_index = round(rand_range(0, plains_enemies.size()-1))
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": plains_enemies[enemy_index]}
 				spawn_point_index += 1
-			if map_tile == 5 and enemy_seed > 29.8:
+			if map_tile == 5 and enemy_seed > 29.8 and badlands_enemies.size() > 0:
 				var enemy_index = round(rand_range(0, badlands_enemies.size()-1))
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": badlands_enemies[enemy_index]}
 				spawn_point_index += 1
-			if map_tile == 6 and enemy_seed > 29.8:
+			if map_tile == 6 and enemy_seed > 29.8 and mountain_enemies.size() > 0:
 				var enemy_index = round(rand_range(0, mountain_enemies.size()-1))
 				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Enemy": mountain_enemies[enemy_index]}
 				spawn_point_index += 1

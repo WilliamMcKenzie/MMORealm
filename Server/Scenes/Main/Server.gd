@@ -88,6 +88,7 @@ func _Peer_Disconnected(id):
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
 		
+		DeleteHouse(id)
 		PlayerVerification.verified_emails.erase(player_container.email)
 		HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])).RemovePlayer(player_container)
@@ -97,7 +98,6 @@ func _Peer_Disconnected(id):
 
 #TUTORIAL
 func StartTutorial(player_id):
-	return
 	var instance_tree = player_state_collection[player_id]["I"].duplicate()
 	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 	var player_container = current_instance_node.get_node("YSort/Players/"+str(player_id))
@@ -145,7 +145,8 @@ func ConfirmUsername(result, username, player_id):
 		player_name_by_id[player_id] = username
 		player_id_by_name[username] = player_id
 		player_container.account_data.username = username
-		current_instance_node.player_list[str(player_id)].name = username
+		current_instance_node.player_list[str(player_id)]["name"] = username
+		get_node("/root/Server/Instances/nexus/house " + str(player_id)).SetHouseData(player_container.account_data)
 		
 		player_container.tutorial_step = 1
 		player_container.in_tutorial = true
@@ -257,7 +258,9 @@ remote func ChangeItem(to_data, from_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
 	
-	if to_data.parent.split(" ")[0] == "loot" or from_data.parent.split(" ")[0] == "loot":
+	var loot = to_data.parent.split(" ")[0] == "loot" or from_data.parent.split(" ")[0] == "loot"
+	var storage = to_data.parent.split(" ")[0] == "storage" or from_data.parent.split(" ")[0] == "storage"
+	if loot or storage:
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).LootItem(to_data, from_data)
 	else:
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(to_data, from_data)
@@ -292,7 +295,8 @@ remote func RecievePlayerState(player_state):
 		if(player_state_collection[player_id]["T"] <  player_state["T"]):
 			player_state["I"] = player_state_collection[player_id]["I"]
 			player_state_collection[player_id] = player_state
-			if get_node("Instances/"+StringifyInstanceTree(player_state["I"])+"/YSort/Players").has_node(str(player_id)):
+			var players = get_node("Instances/"+StringifyInstanceTree(player_state["I"])+"/YSort/Players")
+			if players and players.has_node(str(player_id)):
 				get_node("Instances/"+StringifyInstanceTree(player_state["I"])).UpdatePlayer(player_id, player_state)
 	else:
 		player_instance_tracker[["nexus"]].append(player_id)
@@ -354,11 +358,13 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"max_health":enemy_data.health,
 			"defense":enemy_data.defense,
 			"state":"Idle",
-			"behavior":enemy_data.behavior,
+			"behaviour": 1,
+			"speed":enemy_data.speed,
 			"exp": enemy_data.exp,
 			"damage_tracker": {},
 			"target": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"anchor_position": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			
 			"pattern_index" : 0,
 			"pattern_timer" : 0,
 			"phase_index" : 0,
@@ -431,12 +437,67 @@ remote func Nexus():
 	if not player_container.in_tutorial:
 		rpc_id(player_id, "ConfirmNexus")
 	
+		player_instance_tracker[instance_tree].erase(player_id)
+		player_instance_tracker[["nexus"]].append(player_id)
+		get_node("Instances/"+StringifyInstanceTree(instance_tree)).RemovePlayer(player_container)
+		get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnPlayer(player_container)
+		
+		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
+
+func ForcedNexus(player_id):
+	var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
+	var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
+	
+	rpc_id(player_id, "ConfirmNexus")
+	
 	player_instance_tracker[instance_tree].erase(player_id)
 	player_instance_tracker[["nexus"]].append(player_id)
 	get_node("Instances/"+StringifyInstanceTree(instance_tree)).RemovePlayer(player_container)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnPlayer(player_container)
 	
 	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
+
+func EnterHouse(player_id, house_player_id):
+	var house_id = "house " + str(house_player_id)
+	var house_node = get_node("Instances/nexus/"+house_id)
+	
+	if not house_node.RequestEntry(player_name_by_id[player_id]):
+		SendMessage(player_id, "error", "Access not permitted by owner!")
+		return
+	
+	var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
+	var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
+	
+	player_instance_tracker[instance_tree].erase(player_id)
+	player_instance_tracker[["nexus", house_id]].append(player_id)
+	get_node("Instances/"+StringifyInstanceTree(instance_tree)).RemovePlayer(player_container)
+	get_node("Instances/"+StringifyInstanceTree(["nexus", house_id])).SpawnPlayer(player_container)
+	
+	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus", house_id]}
+	rpc_id(player_id, "ReturnHouseData", {"Name": player_name_by_id[house_player_id], "Id":house_id, "Tiles" : house_node.tiles, "Position": Vector2(32*8,32*8)})
+
+func CreateHouse(player_id):
+	var house_id = "house " + str(player_id)
+	var house_instance = load("res://Scenes/SupportScenes/Housing/House.tscn").instance()
+	house_instance.name = house_id
+	house_instance.player_id = player_id
+	house_instance.instance_tree = ["nexus", house_id]
+	house_instance.position = Instances.GetFreeInstancePosition()
+	
+	get_node("Instances/nexus").add_child(house_instance)
+	Instances.AddInstanceToTracker(["nexus"], house_id)
+
+func DeleteHouse(player_id):
+	var house_id = "house " + str(player_id)
+	var instance_tree = ["nexus", house_id]
+	
+	for _player_id in player_instance_tracker[instance_tree].duplicate():
+		ForcedNexus(_player_id)
+		SendMessage(_player_id, "warning", player_name_by_id[player_id] + "'s house has been closed.")
+	
+	player_instance_tracker.erase(instance_tree)
+	get_node("Instances/nexus/"+house_id).SaveData()
+	get_node("Instances/nexus/"+house_id).queue_free()
 
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -502,6 +563,15 @@ remote func RecieveChatMessage(message):
 		if message[0] == "/":
 			if message_words[0] == "/invincible":
 				player_container.GiveEffect("invincible", 99999)
+			if message_words[0] == "/home" and message_words.size() == 1:
+				EnterHouse(player_id, player_id)
+			elif message_words[0] == "/home":
+				var selected_player_name = message.substr(6,-1)
+				if player_id_by_name.has(selected_player_name):
+					var selected_player_id = player_id_by_name[selected_player_name]
+					EnterHouse(player_id, selected_player_id)
+				else:
+					rpc_id(player_id, "RecieveChat", "Invalid username: " + selected_player_name, "SystemERROR")
 			if message_words[0] == "/trade":
 				var selected_player_name = message.substr(7,-1)
 				if player_id_by_name.has(selected_player_name):
