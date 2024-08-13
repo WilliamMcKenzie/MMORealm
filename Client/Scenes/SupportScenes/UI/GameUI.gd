@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+var scrolling = false
 var in_chat = false
 var is_in_ui = false
 var is_in_menu = false
@@ -136,6 +137,7 @@ func SetAccountData(_account_data):
 			$Achievements.Open()
 	else:
 		account_data = _account_data
+	get_node("Building").SetHouseData(_account_data.home)
 
 func SetCharacterData(character):
 	
@@ -216,7 +218,8 @@ func Toggle(which):
 		"achievements" : get_node("Achievements"),
 		"death" : get_node("DeathScreen"),
 		"nearby" : get_node("Nearby"),
-		"trade" : get_node("TradingMenu")
+		"trade" : get_node("TradingMenu"),
+		"building" : get_node("Building")
 	}
 	
 	var node

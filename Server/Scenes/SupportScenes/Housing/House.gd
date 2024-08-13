@@ -5,7 +5,6 @@ var open_mode = "closed"
 var whitelist = []
 var tiles = []
 
-
 func SetHouseData(account_data):
 	var house_data = account_data.home
 	whitelist = []
@@ -19,8 +18,55 @@ func SetHouseData(account_data):
 	var index = -1
 	for object in house_data.objects:
 		index += 1
-		if object.type == "storage":
+		if ServerData.GetBuilding(object.type).catagory == "storage":
 			CreateStorage(object, index)
+		if ServerData.GetBuilding(object.type).catagory == "statue":
+			pass
+			#CreateStatue(object, index)
+
+func PlaceBuilding(_type, _position):
+	var building_data = ServerData.GetBuilding(_type)
+	var house_data = get_node("YSort/Players/"+str(player_id)).account_data.home
+	if not building_data:
+		return
+	elif building_data.type == "building" and house_data.inventory.objects[_type] > 0:
+		if building_data.catagory == "storage":
+			var new_storage = {
+				"type" : _type,
+				"position" : _position,
+				"loot" : [
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+				],
+			}
+			house_data.objects.append(new_storage)
+			house_data.inventory.objects[_type] -= 1
+			CreateStorage(new_storage, house_data.objects.size()-1)
+	elif building_data.type == "tile" and house_data.tiles.size() > _position.x and house_data.tiles[_position.x].size() > _position.y:
+		var previous_tile_type
+		var previous_tile = house_data.tiles[_position.x][_position.y]
+		var new_tile = building_data.tile
+		
+		for building in ServerData.buildings.keys():
+			var tile_data = ServerData.buildings[building]
+			if tile_data.has("tile") and tile_data.tile == previous_tile:
+				previous_tile_type = building
+				break;
+		
+		if house_data.inventory.tiles[_type] > 0:
+			house_data.inventory.tiles[previous_tile_type] += 1
+			house_data.inventory.tiles[_type] -= 1
+			house_data.tiles[_position.x][_position.y] = new_tile
+	var server = get_node("/root/Server")
+	server.rpc_id(player_id, "UpdateHouseData", house_data)
+	for _player_id in server.player_instance_tracker[["nexus", name]]:
+		server.rpc_id(_player_id, "UpdateHouseTiles", house_data.tiles)
 
 func CreateStorage(object, index):
 	var storage_id = "loot "+get_node("/root/Server").generate_unique_id()+" "+str(index)

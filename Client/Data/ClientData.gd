@@ -280,7 +280,7 @@ var tutorial_enemies = {
 		"defense" : 1,
 		"exp" : 10,
 		"behavior" : 1,
-		"speed" : 20,
+		"speed" : 10,
 		"loot_pool" : {
 			"soulbound_loot" : [
 				{
@@ -377,7 +377,7 @@ var tutorial_enemies = {
 		"defense" : 10,
 		"exp" : 200,
 		"behavior" : 1,
-		"speed" : 20,
+		"speed" : 10,
 		"loot_pool" :  {
 			"soulbound_loot" : [
 				{
@@ -479,7 +479,7 @@ var realm_enemies = {
 		"defense" : 1,
 		"exp" : 20,
 		"behavior" : 1,
-		"speed" : 20,
+		"speed" : 10,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -507,7 +507,7 @@ var realm_enemies = {
 		"defense" : 1,
 		"exp" : 30,
 		"behavior" : 1,
-		"speed" : 20,
+		"speed" : 5,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -535,7 +535,7 @@ var realm_enemies = {
 		"defense" : 3,
 		"exp" : 250,
 		"behavior" : 1,
-		"speed" : 20,
+		"speed" : 10,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -631,7 +631,7 @@ var realm_enemies = {
 		"defense" : 3,
 		"exp" : 40,
 		"behavior" : 2,
-		"speed" : 20,
+		"speed" : 5,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -851,7 +851,7 @@ var realm_enemies = {
 		"defense" : 10,
 		"exp" : 1000,
 		"behavior" : 1,
-		"speed" : 20,
+		"speed" : 5,
 		"loot_pool" :  {
 			"soulbound_loot" : [
 				{
@@ -1002,7 +1002,7 @@ var realm_enemies = {
 		"defense" : 10,
 		"exp" : 1000,
 		"behavior" : 1,
-		"speed" : 20,
+		"speed" : 5,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1030,7 +1030,7 @@ var realm_enemies = {
 		"defense" : 100,
 		"exp" : 3000,
 		"behavior" : 1,
-		"speed" : 20,
+		"speed" : 10,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1061,7 +1061,7 @@ var realm_enemies = {
 		"defense" : 0,
 		"exp" : 3000,
 		"behavior" : 2,
-		"speed" : 20,
+		"speed" : 5,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1092,7 +1092,7 @@ var realm_enemies = {
 		"defense" : 0,
 		"exp" : 500,
 		"behavior" : 2,
-		
+		"speed" : 10,
 		"loot_pool" : basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -1329,6 +1329,50 @@ var items = {
 		"textures" : {
 			
 		}
+	},
+}
+
+var buildings = {
+	"storage" : {
+		"name" : "Storage Chest",
+		"type" : "building",
+		"catagory" : "storage",
+		"description" : "For storing up to 8 items.",
+		
+		"craftable" : true,
+		"materials" : [0,0,1],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(50,40)],
+	},
+	"grass" : {
+		"name" : "Grass Tile",
+		"type" : "tile",
+		"description" : "Don't forget to water.",
+		
+		"craftable" : false,
+		"materials" : [],
+		"path" : ["tiles/tileset.png", 26, 26, Vector2(80,0)],
+		"tile" : 3,
+	},
+	"wooden_planks" : {
+		"name" : "Wooden Planks",
+		"type" : "tile",
+		"description" : "Straight from the docks.",
+		
+		"craftable" : true,
+		"materials" : [0,0,0],
+		"path" : ["tiles/tileset.png", 26, 26, Vector2(170,20)],
+		"tile" : 10,
+	},
+	"knight_statue" : {
+		"name" : "Knight Statue",
+		"type" : "tile",
+		"catagory" : "statue",
+		"description" : "Gives nearby players a defense boost (2m).",
+		
+		"craftable" : false,
+		"materials" : [],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(60,40)],
+		"achievement" : "Trial By Fire",
 	},
 }
 
@@ -1748,16 +1792,20 @@ func GetItem(item, include_class_boost = false):
 						_item[subject][0] = floor(_item[subject][0]*multipliers[subject])
 						_item[subject][1] = floor(_item[subject][1]*multipliers[subject])
 					elif subject == "stats":
-						print(_item[subject])
 						for stat in _item[subject]:
 							_item[subject][stat] = floor(_item[subject][stat]*multipliers[subject])
-						print(_item[subject])
 					else:
 						_item[subject] = floor(_item[subject]*multipliers[subject])
 		
 		return _item
 	elif items.has(int(item)):
 		return items[int(item)]
+	else:
+		return null
+
+func GetBuilding(type):
+	if buildings.has(type):
+		return buildings[type]
 	else:
 		return null
 

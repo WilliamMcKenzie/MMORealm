@@ -48,7 +48,17 @@ var default_account_data = {
 				],
 			}
 		],
-		"tiles" : []
+		"tiles" : [],
+		"inventory" : {
+			"objects" : {
+				"storage" : 12444,
+				"knight_statue" : 122,
+			},
+			"tiles" : {
+				"grass" : 12,
+				"wooden_planks" : 25,
+			},
+		}
 	},
 	"classes": {
 		"Apprentice": true,

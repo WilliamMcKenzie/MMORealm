@@ -39,22 +39,22 @@ size = 24
 outline_size = 1
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxEmpty" id=10]
+[sub_resource type="StyleBoxEmpty" id=21]
 
-[sub_resource type="StyleBoxEmpty" id=11]
+[sub_resource type="StyleBoxEmpty" id=22]
 
-[sub_resource type="StyleBoxEmpty" id=12]
+[sub_resource type="StyleBoxEmpty" id=23]
 
-[sub_resource type="StyleBoxEmpty" id=13]
+[sub_resource type="StyleBoxEmpty" id=24]
 
-[sub_resource type="StyleBoxEmpty" id=14]
+[sub_resource type="StyleBoxEmpty" id=25]
 
 [sub_resource type="Theme" id=15]
-VScrollBar/styles/grabber = SubResource( 10 )
-VScrollBar/styles/grabber_highlight = SubResource( 11 )
-VScrollBar/styles/grabber_pressed = SubResource( 12 )
-VScrollBar/styles/scroll = SubResource( 13 )
-VScrollBar/styles/scroll_focus = SubResource( 14 )
+VScrollBar/styles/grabber = SubResource( 21 )
+VScrollBar/styles/grabber_highlight = SubResource( 22 )
+VScrollBar/styles/grabber_pressed = SubResource( 23 )
+VScrollBar/styles/scroll = SubResource( 24 )
+VScrollBar/styles/scroll_focus = SubResource( 25 )
 
 [sub_resource type="StyleBoxEmpty" id=9]
 

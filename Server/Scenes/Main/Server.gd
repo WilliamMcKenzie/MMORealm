@@ -98,6 +98,7 @@ func _Peer_Disconnected(id):
 
 #TUTORIAL
 func StartTutorial(player_id):
+	return
 	var instance_tree = player_state_collection[player_id]["I"].duplicate()
 	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 	var player_container = current_instance_node.get_node("YSort/Players/"+str(player_id))
@@ -153,6 +154,17 @@ func ConfirmUsername(result, username, player_id):
 		TutorialStep("Controls", player_id)
 	
 	rpc_id(player_id, "ConfirmUsername", result, username)
+
+#BUILDING
+remote func PlaceBuilding(type, position):
+	var player_id = get_tree().get_rpc_sender_id()
+	var house_id = "house " + str(player_id)
+	var house_node = get_node("Instances/nexus/"+house_id)
+	
+	if player_state_collection[player_id]["I"] != ["nexus", house_id]:
+		return
+	
+	house_node.PlaceBuilding(type, position)
 
 #TRADE
 remote func AcceptTrade(player1_name):
@@ -264,7 +276,7 @@ remote func ChangeItem(to_data, from_data):
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).LootItem(to_data, from_data)
 	else:
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id)).ChangeItem(to_data, from_data)
-	
+
 remote func DropItem(data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]

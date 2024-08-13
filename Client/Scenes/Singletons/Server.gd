@@ -336,6 +336,13 @@ func EnterInstance(instance_id):
 		return
 	rpc_id(1, "EnterInstance", instance_id)
 
+remote func UpdateHouseData(house_data):
+	GameUI.get_node("Building").SetHouseData(house_data)
+
+remote func UpdateHouseTiles(tiles):
+	var house_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	house_instance.UpdateTiles(tiles)
+	
 remote func ReturnHouseData(instance_data):
 	LoadingScreen.Transition(instance_data.Name + "'s House")
 	var house_instance = house_container.instance()
@@ -375,6 +382,9 @@ remote func ReturnIslandData(instance_data):
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
+
+remote func PlaceBuilding(type, position):
+	rpc_id(1, "PlaceBuilding", type, position)
 
 #For tiles and stuff
 #One time call
