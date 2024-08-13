@@ -1335,12 +1335,13 @@ var items = {
 var buildings = {
 	"storage" : {
 		"name" : "Storage Chest",
-		"type" : "building",
+		"type" : "object",
 		"catagory" : "storage",
 		"description" : "For storing up to 8 items.",
 		
 		"craftable" : true,
 		"materials" : [0,0,1],
+		"max" : 20,
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(50,40)],
 	},
 	"grass" : {
@@ -1360,12 +1361,13 @@ var buildings = {
 		
 		"craftable" : true,
 		"materials" : [0,0,0],
+		"max" : 20,
 		"path" : ["tiles/tileset.png", 26, 26, Vector2(170,20)],
 		"tile" : 10,
 	},
 	"knight_statue" : {
 		"name" : "Knight Statue",
-		"type" : "tile",
+		"type" : "object",
 		"catagory" : "statue",
 		"description" : "Gives nearby players a defense boost (2m).",
 		

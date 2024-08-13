@@ -99,6 +99,10 @@ func _physics_process(delta):
 					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
 				else:
 					SpawnNewEnemy(enemy, enemies1[enemy]["position"], enemies1[enemy]["name"])
+			
+			#Refresh Objects
+			RefreshObjects(world_state_buffer[1]["O"])
+	
 	for i in active_projectiles:
 		if get_node("YSort/Pool")[i].visible == true:
 			if Server.client_clock - get_node("YSort/Pool")[i].projectile_data["start_time"] < get_node("YSort/Pool")[i].projectile_data["lifespan"]:
@@ -147,7 +151,7 @@ func RefreshObjects(objects):
 		var scene_name = objects[object]["name"]+".tscn"
 		
 		#Loot bags
-		if type == "LootBags" and objects[object]["soulbound"] == true and objects[object]["name"] != "Storage" and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
+		if type == "LootBags" and objects[object]["soulbound"] == true and objects[object]["name"] != "storage" and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
 			continue
 		
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):

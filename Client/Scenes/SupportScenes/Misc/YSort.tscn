@@ -16,4 +16,6 @@
 
 [node name="LootBags" type="YSort" parent="Objects"]
 
+[node name="Buildings" type="YSort" parent="Objects"]
+
 [node name="Obstacles" type="YSort" parent="Objects"]

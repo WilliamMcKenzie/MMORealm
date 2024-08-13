@@ -1,9 +1,5 @@
 extends "../Map.gd"
 
-var generating = false
-var chunk_size = 16
-var loaded_chunks = {}
-
 func UpdateTiles(tiles):
 	var tile_variations = {
 		0 : [1,0,0],

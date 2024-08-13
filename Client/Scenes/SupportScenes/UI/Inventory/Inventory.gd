@@ -163,6 +163,7 @@ func DeInspectItem(item):
 		$InspectItem.visible = false
 
 func ToggleInventory():
+	print("dwqdqw")
 	get_parent().Toggle("inventory")
 
 func Open():

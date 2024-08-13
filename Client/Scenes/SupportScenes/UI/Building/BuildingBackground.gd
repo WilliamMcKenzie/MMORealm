@@ -4,6 +4,7 @@ func can_drop_data(position, data):
 	return true
 	
 func drop_data(position, type):
+	last_placement = OS.get_system_time_msecs()
 	position = CalculateGamePosition(position, type)
 	GameUI.get_node("Building").PlaceBuilding(position, type)
 

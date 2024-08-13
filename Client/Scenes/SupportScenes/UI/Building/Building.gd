@@ -21,8 +21,12 @@ func InspectBuilding(_type):
 	var building_name = $InspectBuilding/MarginContainer/VBoxContainer/BuildingName
 	var building_sprite = $InspectBuilding/MarginContainer/VBoxContainer/BuildingSpriteContainer/BuildingSprite
 	var building_description = $InspectBuilding/MarginContainer/VBoxContainer/BuildingDescription
-	var building_craftable = $InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/Craftable
+	
+	var materials_tag = $InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/Tag
 	var building_materials = $InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer
+	var uncraftable_tag = $InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/Uncraftable
+	var craft_tag = $InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/Craftable
+	var max_tag = $InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/Max
 	
 	building_name.text = building.name
 	building_sprite.texture.region = Rect2(building.path[3], Vector2(10, 10))
@@ -38,19 +42,60 @@ func InspectBuilding(_type):
 		building_sprite.material = load("res://Resources/Renderer.tres")
 	
 	if not building.craftable:
-		building_craftable.visible = true
+		uncraftable_tag.visible = true
+		craft_tag.visible = false
+		building_materials.visible = false
+		materials_tag.visible = false
 	else:
-		building_craftable.visible = false
-	
+		uncraftable_tag.visible = false
+		craft_tag.visible = true
+		building_materials.visible = true
+		materials_tag.visible = true
+	if building.has("max"):
+		var total = GameUI.account_data.home.inventory[building.type+"s"][_type]
+		for _building in GameUI.account_data.home[building.type+"s"]:
+			if not "tileset" in building.path[0] and _building.type == "object" and _building.type == _type:
+				total += 1
+			elif "tileset" in building.path[0]:
+				var row = _building
+				for tile in row:
+					if tile == building.tile:
+						total += 1
+		
+		max_tag.visible = true
+		max_tag.text = "[" + str(total) + "/" + str(building.max) + "]"
+	else:
+		max_tag.visible = false
+
 	if building.craftable:
 		var materials = building.materials
+		var index = -1
 		
 		building_materials.visible = true
 		for child in building_materials.get_children():
 			building_materials.remove_child(child)
+		
+		var inventory = GameUI.last_character.inventory
+		var material_pile = {}
+		for item in inventory:
+			if item and material_pile.has(int(item.item)):
+				material_pile[int(item.item)] += 1
+			elif item:
+				material_pile[int(item.item)] = 1
 		for material in materials:
+			index += 1
 			var material_instance = load("res://Scenes/SupportScenes/UI/Building/Material/Material.tscn").instance()
 			material_instance.SetMaterial(material)
+			material_instance.name = str(material) + "#" + str(index)
+			
+			if material_pile.has(material):
+				material_pile[material] -=1
+				material_instance.HasMaterial()
+				if material_pile[material] == 0:
+					material_pile.erase(material)
+			else:
+				material_instance.MissingMaterial()
+			
 			building_materials.add_child(material_instance)
 	else:
 		building_materials.visible = false
@@ -117,6 +162,8 @@ func Close():
 	active = false
 
 func SetHouseData(house_data):
+	if inspecting_building:
+		InspectBuilding(inspecting_building)
 	var whitelist = house_data.whitelist
 	var open_mode = house_data.open_mode
 	var state_container = $PanelContainer/MarginContainer/VBoxContainer/OpenContainer
@@ -176,3 +223,5 @@ func SelectBuilding(type):
 
 func PlaceBuilding(position, type=brush):
 	Server.PlaceBuilding(type, position)
+func BuildBuilding(type):
+	Server.BuildBuilding(type)

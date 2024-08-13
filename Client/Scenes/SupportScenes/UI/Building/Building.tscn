@@ -209,6 +209,7 @@ expand = true
 script = ExtResource( 6 )
 
 [node name="InspectBuilding" type="PanelContainer" parent="."]
+visible = false
 modulate = Color( 1, 1, 1, 0 )
 anchor_left = 0.5
 anchor_right = 0.5
@@ -221,7 +222,7 @@ custom_styles/panel = SubResource( 2 )
 
 [node name="MarginContainer" type="MarginContainer" parent="InspectBuilding"]
 margin_right = 204.0
-margin_bottom = 200.0
+margin_bottom = 270.0
 custom_constants/margin_right = 16
 custom_constants/margin_top = 16
 custom_constants/margin_left = 16
@@ -231,7 +232,7 @@ custom_constants/margin_bottom = 16
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 188.0
-margin_bottom = 184.0
+margin_bottom = 254.0
 
 [node name="BuildingName" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer"]
 margin_right = 172.0
@@ -267,10 +268,11 @@ autowrap = true
 [node name="BuildingMaterials" type="VBoxContainer" parent="InspectBuilding/MarginContainer/VBoxContainer"]
 margin_top = 70.0
 margin_right = 172.0
-margin_bottom = 168.0
+margin_bottom = 238.0
 theme = SubResource( 32 )
 
-[node name="Craftable" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+[node name="Uncraftable" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+visible = false
 margin_right = 172.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 0, 28 )
@@ -278,24 +280,63 @@ text = "[Uncraftable]"
 align = 1
 valign = 2
 
-[node name="Tag" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+[node name="Craftable" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+margin_right = 172.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 0, 28 )
+text = "[Double Click To Craft]"
+align = 1
+valign = 2
+
+[node name="Max" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
 margin_top = 32.0
 margin_right = 172.0
 margin_bottom = 60.0
+rect_min_size = Vector2( 0, 28 )
+text = "[1/20]"
+align = 1
+valign = 2
+
+[node name="Tag" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+margin_top = 64.0
+margin_right = 172.0
+margin_bottom = 92.0
 rect_min_size = Vector2( 0, 28 )
 text = "Materials required:"
 align = 1
 valign = 2
 
 [node name="MaterialsContainer" type="GridContainer" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
-margin_left = 69.0
-margin_top = 64.0
-margin_right = 103.0
-margin_bottom = 98.0
+margin_left = 12.0
+margin_top = 96.0
+margin_right = 160.0
+margin_bottom = 168.0
 size_flags_horizontal = 4
 columns = 4
 
 [node name="Material" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+
+[node name="Material2" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_left = 38.0
+margin_right = 72.0
+
+[node name="Material3" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_left = 76.0
+margin_right = 110.0
+
+[node name="Material4" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_left = 114.0
+margin_right = 148.0
+
+[node name="Material5" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_top = 38.0
+margin_bottom = 72.0
+
+[node name="Material6" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_left = 38.0
+margin_top = 38.0
+margin_right = 72.0
+margin_bottom = 72.0
 
 [node name="StorageContainer" type="HBoxContainer" parent="."]
 anchor_top = 1.0

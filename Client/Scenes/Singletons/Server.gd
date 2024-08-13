@@ -383,8 +383,10 @@ remote func ReturnIslandData(instance_data):
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
 
-remote func PlaceBuilding(type, position):
+func PlaceBuilding(type, position):
 	rpc_id(1, "PlaceBuilding", type, position)
+func BuildBuilding(type):
+	rpc_id(1, "BuildBuilding", type)
 
 #For tiles and stuff
 #One time call

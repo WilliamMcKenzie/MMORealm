@@ -51,12 +51,12 @@ var default_account_data = {
 		"tiles" : [],
 		"inventory" : {
 			"objects" : {
-				"storage" : 12444,
-				"knight_statue" : 122,
+				"storage" : 0,
+				"knight_statue" : 0,
 			},
 			"tiles" : {
-				"grass" : 12,
-				"wooden_planks" : 25,
+				"grass" : 0,
+				"wooden_planks" : 10,
 			},
 		}
 	},

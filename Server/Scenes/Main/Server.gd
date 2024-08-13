@@ -166,6 +166,16 @@ remote func PlaceBuilding(type, position):
 	
 	house_node.PlaceBuilding(type, position)
 
+remote func BuildBuilding(type):
+	var player_id = get_tree().get_rpc_sender_id()
+	var house_id = "house " + str(player_id)
+	var house_node = get_node("Instances/nexus/"+house_id)
+	
+	if player_state_collection[player_id]["I"] != ["nexus", house_id]:
+		return
+	
+	house_node.BuildBuilding(type)
+
 #TRADE
 remote func AcceptTrade(player1_name):
 	if not player_id_by_name.has(player1_name) or not player_name_by_id[get_tree().get_rpc_sender_id()]:

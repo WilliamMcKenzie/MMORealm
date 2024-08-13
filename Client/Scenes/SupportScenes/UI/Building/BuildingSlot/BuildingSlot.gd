@@ -4,6 +4,10 @@ var dragging = false
 var type = null
 var quantity = 0
 
+var last_click = 10000
+func _physics_process(delta):
+	last_click += delta
+
 func _ready():
 	$TouchScreenButton.connect("pressed", self, "InspectBuilding")
 	connect("pressed", self, "InspectBuilding")
@@ -52,6 +56,12 @@ func can_drop_data(position, data):
 	return false
 	
 func InspectBuilding():
+	if last_click < 1:
+		last_click = 1
+		GameUI.get_node("Building").BuildBuilding(type)
+	else:
+		last_click = 0
+	
 	GameUI.get_node("Building").SelectBuilding(type)
 	GameUI.get_node("Building").InspectBuilding(type)
 func DeInspectBuilding():

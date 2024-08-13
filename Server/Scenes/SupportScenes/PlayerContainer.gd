@@ -582,6 +582,13 @@ func GetAchievement(achievement_name):
 	account_data.achievements[achievement_name] = true
 	get_node("/root/Server").SendMessage(int(name), "success", "You recieved " + str(achievement_data.gold) + " gold!")
 	
+	#Check if unlocked new furntiure
+	for building_id in ServerData.buildings.keys():
+		var building = ServerData.GetBuilding(building_id)
+		if building.has("achievement") and building.achievement == achievement_name:
+			account_data.home.inventory[building.type+"s"][building_id] += 1
+	
+	#Check if unlocked new char
 	if character_data.quests.has(achievement_name):
 		character.class = character_data.quests[achievement_name]
 		account_data.classes[character_data.quests[achievement_name]] = true
