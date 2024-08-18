@@ -88,6 +88,9 @@ func _Peer_Disconnected(id):
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
 		
+		for stat in ["health", "attack", "defense", "speed", "dexterity", "vitality"]:
+			if player_container.stat_buffs.has(stat):
+				player_container.GiveBuff(0, stat, 0)
 		DeleteHouse(id)
 		PlayerVerification.verified_emails.erase(player_container.email)
 		HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
@@ -156,6 +159,16 @@ func ConfirmUsername(result, username, player_id):
 	rpc_id(player_id, "ConfirmUsername", result, username)
 
 #BUILDING
+remote func RemoveBuilding(position):
+	var player_id = get_tree().get_rpc_sender_id()
+	var house_id = "house " + str(player_id)
+	var house_node = get_node("Instances/nexus/"+house_id)
+	
+	if player_state_collection[player_id]["I"] != ["nexus", house_id]:
+		return
+	
+	house_node.RemoveBuilding(position)
+
 remote func PlaceBuilding(type, position):
 	var player_id = get_tree().get_rpc_sender_id()
 	var house_id = "house " + str(player_id)

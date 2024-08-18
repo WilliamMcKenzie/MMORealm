@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Resources/overgrown_temple_tilemap.tres" type="TileSet" id=1]
+[ext_resource path="res://Scenes/SupportScenes/Dungeons/RoomData.gd" type="Script" id=2]
+
+[node name="Hallway" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 8, 8 )
+cell_custom_transform = Transform2D( 8, 0, 0, 8, 0, 0 )
+centered_textures = true
+collision_layer = 15
+collision_mask = 31
+format = 1
+tile_data = PoolIntArray( 655359, 4, 0, 589824, 4, 1, 589825, 4, 1, 589826, 4, 2, 720895, 0, 0, 655360, 0, 0, 655361, 0, 2, 655362, 0, 3, 786431, 0, 2, 720896, 0, 2, 720897, 0, 1, 720898, 0, 0, 851967, 4, 2, 786432, 4, 0, 786433, 4, 1, 786434, 4, 1 )

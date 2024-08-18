@@ -1,6 +1,14 @@
 extends TextureButton
 
 var dragging = false
+var modulation = Color(1,1,1)
+
+var last_click = 10000
+func _physics_process(delta):
+	last_click += delta
+
+func _ready():
+	connect("pressed", self, "Select")
 
 func _input(event):
 	# Check if the event is a mouse button release
@@ -14,7 +22,7 @@ func _input(event):
 
 func StopDragging():
 	dragging = false
-	modulate = Color(1,1,1,1)
+	modulate.a = 1
 
 func get_drag_data(position):
 	dragging = true
@@ -33,10 +41,12 @@ func get_drag_data(position):
 	drag_texture.rect_position = -0.5 * drag_texture.rect_size	
 	set_drag_preview(preview)
 	
-	modulate = Color(1,1,1,0)
-	
+	modulate.a = 0
 	return "remover"
 	
 func can_drop_data(position, data):
 	return false
+	
+func Select():
+	GameUI.get_node("Building").SelectBuilding("remover")
 	

@@ -204,7 +204,6 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 400, 180 )
-mouse_filter = 2
 expand = true
 script = ExtResource( 6 )
 
@@ -372,7 +371,8 @@ margin_bottom = 60.0
 rect_min_size = Vector2( 0, 60 )
 custom_constants/separation = 16
 
-[node name="Remover" type="TextureButton" parent="StorageContainer/PanelContainer2/MarginContainer/ScrollContainer/ResizeContainer"]
+[node name="remover" type="TextureButton" parent="StorageContainer/PanelContainer2/MarginContainer/ScrollContainer/ResizeContainer"]
+modulate = Color( 0.509804, 0.509804, 0.509804, 1 )
 material = ExtResource( 13 )
 margin_top = 10.0
 margin_right = 40.0

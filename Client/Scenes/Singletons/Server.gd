@@ -337,6 +337,7 @@ func EnterInstance(instance_id):
 	rpc_id(1, "EnterInstance", instance_id)
 
 remote func UpdateHouseData(house_data):
+	GameUI.account_data.home = house_data
 	GameUI.get_node("Building").SetHouseData(house_data)
 
 remote func UpdateHouseTiles(tiles):
@@ -383,6 +384,8 @@ remote func ReturnIslandData(instance_data):
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
 
+func RemoveBuilding(position):
+	rpc_id(1, "RemoveBuilding", position)
 func PlaceBuilding(type, position):
 	rpc_id(1, "PlaceBuilding", type, position)
 func BuildBuilding(type):

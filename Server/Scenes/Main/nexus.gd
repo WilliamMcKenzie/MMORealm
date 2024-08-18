@@ -53,7 +53,7 @@ func _physics_process(delta):
 		var max_range = projectile_list[projectile_id]["start_position"].distance_to(projectile_list[projectile_id]["path"]) >= projectile_list[projectile_id]["tile_range"]*8
 		
 		for player_id in player_list.keys():
-			if not projectile_list[projectile_id]["hit_players"].has(player_id) and player_list[player_id]["position"].distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
+			if not projectile_list[projectile_id]["hit_players"].has(player_id) and (player_list[player_id]["position"]+Vector2(0,-4)).distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
 				projectile_list[projectile_id]["hit_players"][player_id] = true
 				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_name"])
 				if not projectile_list[projectile_id].piercing:
@@ -99,9 +99,10 @@ func _physics_process(delta):
 					elif current_attack["targeter"] == "nearest":
 						var closest = 9999999
 						for player_id in player_list.keys():
-							if player_list[player_id]["position"].distance_to(enemy_list[enemy_id]["position"]) <= closest:
-								closest = player_list[player_id]["position"].distance_to(enemy_list[enemy_id]["position"])
-								direction = enemy_list[enemy_id]["position"].direction_to((player_list[player_id]["position"]) + direction)
+							var player_position = player_list[player_id]["position"]+Vector2(0,-4)
+							if player_position.distance_to(enemy_list[enemy_id]["position"]) <= closest:
+								closest = player_position.distance_to(enemy_list[enemy_id]["position"])
+								direction = enemy_list[enemy_id]["position"].direction_to((player_position) + direction)
 						if closest == 9999999:
 							enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
 							return
@@ -288,6 +289,7 @@ func SpawnLootBag(_loot, player_id, instance_tree, position):
 			loot[i] = raw_item
 			i += 1
 			var item = ServerData.GetItem(raw_item.item)
+			print(raw_item.item)
 			if int(item.tier) > highest_loot_tier:
 				highest_loot_tier = int(item.tier)
 			elif item.tier == "UT":

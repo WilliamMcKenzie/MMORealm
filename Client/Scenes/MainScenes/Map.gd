@@ -144,6 +144,7 @@ func RefreshObjects(objects):
 	var expiring_types = [
 		"DungeonPortals",
 		"LootBags",
+		"Buildings",
 	]
 	
 	for object in objects.keys():

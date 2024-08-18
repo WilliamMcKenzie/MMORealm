@@ -45,6 +45,9 @@ func Activate():
 	texture = texture.duplicate()
 	texture.region = ClientData.GetProjectile(projectile_data.name).rect
 	rotation_degrees += ClientData.GetProjectile(projectile_data.name).rotation
+	if ClientData.GetProjectile(projectile_data.name).has("scale"):
+		var _scale = ClientData.GetProjectile(projectile_data.name).scale
+		scale = Vector2(_scale,_scale)
 
 func DeActivate():
 	is_active = false

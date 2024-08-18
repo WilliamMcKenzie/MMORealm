@@ -15,10 +15,29 @@ func _physics_process(delta):
 			node.object_list = CleanObjects(node.object_list).duplicate(true)
 			
 			world_state = {}
-			world_state["P"] = node.player_list
-			world_state["E"] = node.enemy_list
-			world_state["O"] = node.object_list
+			world_state["P"] = node.player_list.duplicate()
+			world_state["E"] = node.enemy_list.duplicate()
+			world_state["O"] = node.object_list.duplicate()
 			world_state["T"] = OS.get_system_time_msecs()
+			
+			for enemy_id in world_state["E"].keys():
+				var enemy = world_state["E"][enemy_id].duplicate()
+				enemy.erase("health")
+				enemy.erase("max_health")
+				enemy.erase("defense")
+				enemy.erase("state")
+				enemy.erase("behaviour")
+				enemy.erase("speed")
+				enemy.erase("exp")
+				enemy.erase("damage_tracker")
+				enemy.erase("target")
+				enemy.erase("anchor_position")
+				enemy.erase("pattern_index")
+				enemy.erase("pattern_timer")
+				enemy.erase("phase_index")
+				enemy.erase("phase_timer")
+				enemy.erase("used_phases")
+				world_state["E"][enemy_id] = enemy
 			
 			for id in get_node("/root/Server").player_instance_tracker[instance_tree]:
 				get_node("/root/Server").SendWorldState(id, world_state)

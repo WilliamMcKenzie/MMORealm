@@ -62,6 +62,9 @@ func SetStats(character):
 			gear[slot] = ClientData.GetItem(int(character.gear[slot].item), true)
 			for stat in gear[slot].stats.keys():
 				base_stats[stat] -= gear[slot].stats[stat]
+	for stat in character.stat_buffs.keys():
+		if character.stat_buffs.has(stat):
+			base_stats[stat] -= character.stat_buffs[stat]
 	
 	var info = "Level " + str(character.level) + " " + character.class
 	$StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/Info.text = info
@@ -121,3 +124,6 @@ func SetStats(character):
 			bar_node.max_value = stats[stat].threshold
 			bar_node.add_stylebox_override("fg", blue)
 			bar_node.add_stylebox_override("bg", orange)
+		
+		if character.stat_buffs.has(stat):
+			stat_node.add_color_override("font_color", Color(207.0/255, 255.0/255, 204.0/255))

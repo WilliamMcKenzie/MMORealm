@@ -20,7 +20,7 @@ var enemy_spawn_points = {}
 
 #Enemy variety
 var beach_enemies = ["crab"]
-var forest_enemies = ["goblin_cannon", "slime", "slime", "slime", "slime"]
+var forest_enemies = ["goblin_cannon", "nature_druid", "slime", "slime", "slime"]
 var plains_enemies = ["troll_king", "troll_warrior", "troll_brute", "blue_slime", "blue_slime", "blue_slime"]
 var badlands_enemies = ["rat_king", "viking_king", "yellow_slime", "rat_mage", "rat_warrior"]
 var mountain_enemies = ["yellow_slime", "blue_slime", "slime"]

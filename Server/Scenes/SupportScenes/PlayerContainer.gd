@@ -12,6 +12,14 @@ var gear = {}
 var current_quest
 
 #Ability Stuff
+var stat_buffs = {
+	"health" : {"add" : 0, "timer" : 0},
+	"attack" : {"add" : 0, "timer" : 0},
+	"defense" : {"add" : 0, "timer" : 0},
+	"speed" : {"add" : 0, "timer" : 0},
+	"dexterity" : {"add" : 0, "timer" : 0},
+	"vitality" : {"add" : 0, "timer" : 0},
+}
 var status_effects = {
 	"damaging" : 0,
 	"berserk" : 0,
@@ -65,6 +73,8 @@ func _physics_process(delta):
 		if health < character.stats.health:
 			health += 1
 			get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
+		if health > character.stats.health:
+			health = character.stats.health
 		
 	for effect in status_effects.keys():
 		status_effects[effect] -= delta
@@ -77,7 +87,14 @@ func _physics_process(delta):
 				instance_node.player_list[name].status_effects.erase(effect)
 				get_node("/root/Server").SendCharacterData(name, character)
 			status_effects.erase(effect)
-
+	for stat in stat_buffs.keys():
+		stat_buffs[stat].timer -= delta
+		if stat_buffs[stat].timer <= 0:
+			if character.stat_buffs.has(stat):
+				character.stat_buffs.erase(stat)
+				character.stats[stat] -= stat_buffs[stat].add
+				get_node("/root/Server").SendCharacterData(name, character)
+			stat_buffs.erase(stat)
 #TRADE
 var accepted = false
 var other_player_accepted = false
@@ -238,7 +255,7 @@ func UseAbility():
 			if player_list[player_id].position.distance_to(player_position) <= buff_range*5:
 				var player_container = instance_node.get_node("YSort/Players/"+str(player_id))
 				player_container.GiveEffect(buff, buffs[buff].duration)
-		
+
 func GiveEffect(effect, duration):
 	var server_node = get_node("/root/Server")
 	var instance_tree = server_node.player_state_collection[int(name)]["I"]
@@ -252,6 +269,15 @@ func GiveEffect(effect, duration):
 	if not instance_node.player_list[name].has(effect):
 		instance_node.player_list[name].status_effects.append(effect)
 	
+	get_node("/root/Server").SendCharacterData(name, character)
+
+func GiveBuff(amount, stat, duration):
+	if stat_buffs.has(stat):
+		character.stats[stat] -= stat_buffs[stat].add
+	
+	stat_buffs[stat] = {"add" : amount, "timer" : duration}
+	character.stat_buffs[stat] = amount
+	character.stats[stat] += stat_buffs[stat].add
 	get_node("/root/Server").SendCharacterData(name, character)
 
 #Items
@@ -462,7 +488,7 @@ func SetCharacter(characters):
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
 			gear[slot] = ServerData.GetItem(character.gear[slot].item)
-			
+	
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func AddExp(exp_amount, enemy_name):

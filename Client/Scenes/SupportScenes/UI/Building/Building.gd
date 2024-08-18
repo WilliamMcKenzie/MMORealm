@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 var active = false
-var brush = null
+var brush = ""
 var inspecting_building = null
 
 func _ready():
@@ -36,6 +36,9 @@ func InspectBuilding(_type):
 	building_sprite.texture.atlas = spriteTexture
 	building_sprite.texture.region = Rect2(building.path[3], Vector2(10,10))
 	
+	if building.has("wall"):
+		building_sprite.texture.region = Rect2(building.path[3], Vector2(10,20))
+	
 	if "tileset" in building.path[0]:
 		building_sprite.material = null
 	else:
@@ -53,10 +56,11 @@ func InspectBuilding(_type):
 		materials_tag.visible = true
 	if building.has("max"):
 		var total = GameUI.account_data.home.inventory[building.type+"s"][_type]
+		
 		for _building in GameUI.account_data.home[building.type+"s"]:
-			if not "tileset" in building.path[0] and _building.type == "object" and _building.type == _type:
+			if building.type == "object" and _building.type == _type:
 				total += 1
-			elif "tileset" in building.path[0]:
+			elif building.type == "tile":
 				var row = _building
 				for tile in row:
 					if tile == building.tile:
@@ -214,7 +218,11 @@ func SetHouseData(house_data):
 
 func SelectBuilding(type):
 	for slot in $StorageContainer/PanelContainer2/MarginContainer/ScrollContainer/ResizeContainer.get_children():
-		if slot.name == type:
+		if slot.name == "remover" and type == "remover":
+			slot.modulate = Color(1,1,1)
+		elif slot.name == "remover" and brush == "remover":
+			slot.modulate = Color(0.51,0.51,0.51)
+		elif slot.name == type:
 			slot.get_node("SelectedBg").visible = true
 		elif slot.name == brush:
 			slot.get_node("SelectedBg").visible = false
@@ -222,6 +230,9 @@ func SelectBuilding(type):
 	$BuildingBackground.dragging = false
 
 func PlaceBuilding(position, type=brush):
-	Server.PlaceBuilding(type, position)
+	if type == "remover":
+		Server.RemoveBuilding(position)
+	else:
+		Server.PlaceBuilding(type, position)
 func BuildBuilding(type):
 	Server.BuildBuilding(type)

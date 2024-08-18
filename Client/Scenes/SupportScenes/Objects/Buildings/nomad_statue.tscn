@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=1]
-[ext_resource path="res://Scenes/SupportScenes/Objects/Obstacles/Obstacle.gd" type="Script" id=2]
-[ext_resource path="res://Assets/objects/objects_8x8.png" type="Texture" id=3]
+[ext_resource path="res://Assets/objects/objects_8x8.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/SupportScenes/Objects/Obstacles/Obstacle.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 4 )
@@ -11,15 +11,15 @@ extents = Vector2( 4, 4 )
 extents = Vector2( 4, 4 )
 
 [node name="Statue" type="Node2D"]
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 material = ExtResource( 1 )
 position = Vector2( 0, -4 )
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 hframes = 26
 vframes = 26
-frame = 110
+frame = 112
 
 [node name="Obstacle" type="Area2D" parent="."]
 position = Vector2( -4, -8 )

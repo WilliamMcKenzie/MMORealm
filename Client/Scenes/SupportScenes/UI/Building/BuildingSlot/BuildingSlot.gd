@@ -29,8 +29,6 @@ func StopDragging():
 	get_node("BuildingIcon").visible = true
 
 func get_drag_data(position):
-	if type == null:
-		return
 	dragging = true
 	
 	var drag_texture = TextureRect.new()
@@ -73,14 +71,17 @@ func SetBuilding(_type, _quantity):
 	
 	$ResizeContainer/BuildingQuantity.text = "x" + str(quantity)
 	$BuildingIcon.texture = $BuildingIcon.texture.duplicate()
-	SetSpriteData($BuildingIcon, ClientData.GetBuilding(type).path)
+	SetSpriteData($BuildingIcon, ClientData.GetBuilding(type).path, ClientData.GetBuilding(type).has("wall"))
 
-func SetSpriteData(sprite, path):
+func SetSpriteData(sprite, path, wall):
 	var spriteTexture = load("res://Assets/"+path[0])
 	sprite.texture = AtlasTexture.new()
 	
 	sprite.texture.atlas = spriteTexture
 	sprite.texture.region = Rect2(path[3], Vector2(10,10))
+	
+	if wall:
+		sprite.texture.region = Rect2(path[3], Vector2(10,20))
 	
 	if "tileset" in path[0]:
 		sprite.material = null

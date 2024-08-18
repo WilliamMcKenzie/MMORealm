@@ -13,9 +13,20 @@ func _process(delta):
 		sync_clock_counter = 0
 		for object_id in object_list.keys():
 			var object = object_list[object_id]
-			if object.name == "Statue":
-				if object.building_id == "knight_statue":
-					print("Knight spotted")
+			if object.name == "apprentice_statue":
+				GiveStatueBuff(object, "health")
+			if object.name == "noble_statue":
+				GiveStatueBuff(object, "defense")
+			if object.name == "nomad_statue":
+				GiveStatueBuff(object, "dexterity")
+			if object.name == "scholar_statue":
+				GiveStatueBuff(object, "vitality")
+
+func GiveStatueBuff(object, buff):
+	for player_id in player_list.keys():
+		if player_list[player_id]["position"].distance_to(object["position"]) <= 30:
+			var player_container = get_node("YSort/Players/"+str(player_id))
+			player_container.GiveBuff(10, buff, 120)
 
 func SetHouseData(account_data):
 	var house_data = account_data.home
@@ -30,13 +41,21 @@ func SetHouseData(account_data):
 	var index = -1
 	for object in house_data.objects:
 		index += 1
-		if ServerData.GetBuilding(object.type).catagory == "storage":
+		if not ServerData.GetBuilding(object.type):
+			pass
+		elif ServerData.GetBuilding(object.type).catagory == "storage":
 			CreateStorage(object, index)
-		if ServerData.GetBuilding(object.type).catagory == "statue":
+		elif ServerData.GetBuilding(object.type).catagory == "statue":
 			CreateStatue(object, index)
 
 func CreateStorage(object, index):
 	var storage_id = "loot "+get_node("/root/Server").generate_unique_id()+" "+str(index)
+	if object.position is String:
+		var vector2_position = Vector2.ZERO
+		object.position = object.position.replace("(","").replace(")","").replace(",","").split(" ")
+		vector2_position.x = float(object.position[0])
+		vector2_position.y = float(object.position[1])
+		object.position = vector2_position
 	object_list[storage_id] = {
 		"name": object.type,
 		"index" : index,
@@ -53,6 +72,12 @@ func CreateStorage(object, index):
 
 func CreateStatue(object, index):
 	var statue_id = "statue "+get_node("/root/Server").generate_unique_id()+" "+str(index)
+	if object.position is String:
+		var vector2_position = Vector2.ZERO
+		object.position = object.position.replace("(","").replace(")","").replace(",","").split(" ")
+		vector2_position.x = float(object.position[0])
+		vector2_position.y = float(object.position[1])
+		object.position = vector2_position
 	object_list[statue_id] = {
 		"name": object.type,
 		"index" : index,
@@ -62,6 +87,32 @@ func CreateStatue(object, index):
 		"position": object.position,
 		"instance_tree": instance_tree
 	}
+
+func RemoveBuilding(_position):
+	var server = get_node("/root/Server")
+	var instance_tree = server.player_state_collection[player_id]["I"]
+	var player_container = server.get_node("Instances/"+server.StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	
+	var house_data = player_container.account_data.home
+	house_data.whitelist = whitelist
+	house_data.tiles = tiles
+	
+	for object_id in object_list.duplicate().keys():
+		var object = object_list[object_id]
+		#Update the accountdata to save it to the database
+		if ServerData.buildings.has(object.name):
+			var items = object.type == "LootBags" and object.loot != [null,null,null,null,null,null,null,null]
+			
+			if (object.position.distance_to(_position) < 5) and not items:
+				var type = object.name
+				var building = ServerData.GetBuilding(type)
+				player_container.account_data.home.inventory[building.type+"s"][type] += 1
+				object_list.erase(object_id)
+			elif object.position.distance_to(_position) < 5:
+				server.SendMessage(int(player_id), "error", "Empty storage first!")
+	
+	SaveData()
+	server.rpc_id(player_id, "UpdateHouseData", house_data)
 
 func PlaceBuilding(_type, _position):
 	var building_data = ServerData.GetBuilding(_type)
@@ -132,9 +183,9 @@ func BuildBuilding(type):
 	if building.has("max"):
 		var total = house_data.inventory[building.type+"s"][type]
 		for _building in house_data[building.type+"s"]:
-			if not "tileset" in building.path[0] and _building.type == "object" and _building.type == type:
+			if building.type == "object" and _building.type == type:
 				total += 1
-			elif "tileset" in building.path[0]:
+			elif building.type == "tile":
 				var row = _building
 				for tile in row:
 					if tile == building.tile:
@@ -170,7 +221,11 @@ func BuildBuilding(type):
 			materials.erase(int(item.item))
 			player_container.character.inventory[index] = null
 	
-	house_data.inventory[building.type+"s"][type] += 1
+	if building.type == "object":
+		house_data.inventory[building.type+"s"][type] += 1
+	if building.type == "tile":
+		house_data.inventory[building.type+"s"][type] += 10
+	
 	server.SendCharacterData(player_container.name, player_container.character)
 	server.rpc_id(player_id, "UpdateHouseData", house_data)
 
@@ -191,14 +246,17 @@ func SaveData():
 	house_data.whitelist = whitelist
 	house_data.tiles = tiles
 	
+	var house_objects_list = player_container.account_data.home.objects
+	house_objects_list = []
 	for object_id in object_list.keys():
 		var object = object_list[object_id]
 		
 		#Update the accountdata to save it to the database
 		if ServerData.buildings.has(object.name):
-			player_container.account_data.home.objects[object.index] = {
+			house_objects_list.append({
 				"type" : object.name,
 				"position" : object.position,
-			}
+			})
 			if ServerData.GetBuilding(object.name).catagory == "storage":
-				player_container.account_data.home.objects[object.index]["loot"] = object.loot
+				house_objects_list[house_objects_list.size()-1]["loot"] = object.loot
+	player_container.account_data.home.objects = house_objects_list

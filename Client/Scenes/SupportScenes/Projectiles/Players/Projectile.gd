@@ -24,8 +24,12 @@ func _ready():
 	
 	$Area2D/Hitbox.shape.radius = size 
 	$Sprite.texture = $Sprite.texture.duplicate()
+	print(projectile)
 	$Sprite.texture.region = ClientData.GetProjectile(projectile).rect
 	$Sprite.rotation_degrees = ClientData.GetProjectile(projectile).rotation
+	if ClientData.GetProjectile(projectile).has("scale"):
+		var _scale = ClientData.GetProjectile(projectile).scale
+		$Sprite.scale = Vector2(_scale,_scale)
 
 func WallCollision(area):
 	if area.name == "TileMap" or "object_id" in area.get_parent():

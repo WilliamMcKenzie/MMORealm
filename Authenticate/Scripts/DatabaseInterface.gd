@@ -52,11 +52,17 @@ var default_account_data = {
 		"inventory" : {
 			"objects" : {
 				"storage" : 0,
-				"knight_statue" : 0,
+				"apprentice_statue" : 1,
+				"noble_statue" : 0,
+				"nomad_statue" : 0,
+				"scholar_statue" : 0,
 			},
 			"tiles" : {
 				"grass" : 0,
-				"wooden_planks" : 10,
+				"stone" : 0,
+				"stone_wall" : 0,
+				"wooden_planks" : 0,
+				"wooden_wall" : 0,
 			},
 		}
 	},
@@ -97,6 +103,7 @@ var new_character = {
 		"ascension_stones" : 0,
 		"used_ascension_stones" : 0,
 		
+		"stat_buffs" : {},
 		"status_effects" : [],
 		"ability_cooldown" : 0,
 		
@@ -111,7 +118,7 @@ var new_character = {
 		},
 		"gear" : {
 			"weapon" : {
-				"item" : 1,
+				"item" : 100,
 				"id" : generate_unique_id()
 			},
 			"helmet" : null,
@@ -141,7 +148,7 @@ func _ready():
 	for x in range(64):
 		default_home_tiles.append([])
 		for y in range(64):
-			default_home_tiles[x].append(3)
+			default_home_tiles[x].append(2)
 	
 	#Floor
 	for x in range(16):

@@ -9,6 +9,8 @@ func drop_data(position, type):
 	GameUI.get_node("Building").PlaceBuilding(position, type)
 
 func CalculateGamePosition(mouse_position, type):
+	if not ClientData.GetBuilding(type):
+		type = "storage"
 	var is_tile = ClientData.GetBuilding(type).has("tile")
 	
 	var scene = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance())
@@ -45,15 +47,19 @@ func _physics_process(delta):
 		last_placement = OS.get_system_time_msecs()
 		GameUI.get_node("Building").PlaceBuilding(CalculateGamePosition(get_global_mouse_position(), brush))
 
-func _unhandled_input(event):
+func _ready():
+	connect("button_down", self, "Event")
+	connect("button_up", self, "StopDrag")
+
+func StopDrag():
+	dragging = false
+func Event():
+	var position = get_global_mouse_position()
+	var brush = GameUI.get_node("Building").brush
 	if not visible:
 		return
-	var brush = GameUI.get_node("Building").brush
-	if event is InputEventMouseButton:
-		if dragging:
-			dragging = false
-		else:
-			dragging = true
-	if event is InputEventMouseButton and OS.get_system_time_msecs() - last_placement > 200 and brush:
+	
+	dragging = true
+	if OS.get_system_time_msecs() - last_placement > 200 and brush:
 		last_placement = OS.get_system_time_msecs()
-		GameUI.get_node("Building").PlaceBuilding(CalculateGamePosition(event.position, brush))
+		GameUI.get_node("Building").PlaceBuilding(CalculateGamePosition(position, brush))
