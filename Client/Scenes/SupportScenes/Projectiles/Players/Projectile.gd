@@ -24,7 +24,6 @@ func _ready():
 	
 	$Area2D/Hitbox.shape.radius = size 
 	$Sprite.texture = $Sprite.texture.duplicate()
-	print(projectile)
 	$Sprite.texture.region = ClientData.GetProjectile(projectile).rect
 	$Sprite.rotation_degrees = ClientData.GetProjectile(projectile).rotation
 	if ClientData.GetProjectile(projectile).has("scale"):

@@ -7,7 +7,6 @@
 [sub_resource type="Animation" id=2]
 resource_name = "Attack"
 length = 0.6
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1

@@ -26,16 +26,15 @@ var player_id_by_name = {}
 
 func _ready():
 	StartHTMLServer()
-	OS.get_system_time_msecs()
-	SpawnNPC("crab", ["nexus"], Vector2.ZERO)
 	
 	#Open realm
-	#for i in range(100):
-		#PlayerVerification.CreateFakePlayerContainer()
+	for i in range(100):
+		PlayerVerification.CreateFakePlayerContainer()
 	
-	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO)
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints())
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints())
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
+	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
 	
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
 			{
@@ -393,7 +392,7 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"max_health":enemy_data.health,
 			"defense":enemy_data.defense,
 			"state":"Idle",
-			"behaviour": 1,
+			"behavior": enemy_data.behavior,
 			"speed":enemy_data.speed,
 			"exp": enemy_data.exp,
 			"damage_tracker": {},
@@ -533,6 +532,41 @@ func DeleteHouse(player_id):
 	player_instance_tracker.erase(instance_tree)
 	get_node("Instances/nexus/"+house_id).SaveData()
 	get_node("Instances/nexus/"+house_id).queue_free()
+
+func ForcedEnterInstance(instance_id, player_id):
+	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"]))
+	
+	if current_instance_node.has_node(instance_id):
+		var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
+		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+		player_container.GiveEffect("invincible", 5)
+		
+		player_instance_tracker[instance_tree].erase(player_id)
+		instance_tree.append(str(instance_id))
+		
+		#For dungeons
+		if not current_instance_node.object_list[instance_id]["name"] == "island":	
+			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+			var spawnpoint = dungeon_node.GetMapSpawnpoint()
+			
+			rpc_id(player_id, "ReturnDungeonData", { "Map": dungeon_node.map, "Name": current_instance_node.object_list[instance_id]["name"], "Id": instance_id, "RoomSize" : dungeon_node.room_size, "Position": spawnpoint})
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
+			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
+			
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": { "A" : "Idle", "C" : Vector2.ZERO }, "I": instance_tree}
+			player_instance_tracker[instance_tree].append(player_id)
+		#For islands (Map is a node instead of array here)
+		else:
+			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+			var spawnpoint = island_node.GetMapSpawnpoint()
+			
+			rpc_id(player_id, "ReturnIslandData", { "Name": current_instance_node.object_list[instance_id]["name"], "Id":instance_id, "Position": spawnpoint})
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
+			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
+			
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
+			player_instance_tracker[instance_tree].append(player_id)
+		SendCharacterData(player_id, player_container.character)
 
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()

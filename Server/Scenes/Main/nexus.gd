@@ -39,8 +39,9 @@ func _physics_process(delta):
 		var alive_time = OS.get_system_time_msecs()/1000-projectile["start_time"]
 		expression.parse(projectile["formula"],["x"])
 		
+		var velocity = projectile.direction.normalized()*projectile.speed
 		var vertical_move_vector = projectile["speed"] * projectile["direction"] * delta
-		var perpendicular_vector = Vector2(-projectile["position"].y, projectile["position"].x)
+		var perpendicular_vector = Vector2(-velocity.y, velocity.x)
 		var horizontal_move_vector = perpendicular_vector * expression.execute([alive_time * 50]) * 0.05
 		
 		projectile_list[projectile_id]["path"] += vertical_move_vector
@@ -80,60 +81,6 @@ func _physics_process(delta):
 			enemy_list[enemy_id]["pattern_timer"] -= tick_rate
 			enemy_list[enemy_id]["phase_timer"] -= tick_rate
 			
-			
-			if enemy_list[enemy_id]["pattern_timer"] <= 0:
-				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
-				var phase_index = enemy_list[enemy_id]["phase_index"]
-				
-				var attack_pattern = enemy_data["phases"][phase_index].attack_pattern
-				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
-				
-				var is_projectile = current_attack.has("projectile")
-				var is_summon = current_attack.has("summon")
-				
-				if is_projectile:
-					#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
-					var direction = current_attack["direction"]
-					if not current_attack.has("targeter"):
-						pass
-					elif current_attack["targeter"] == "nearest":
-						var closest = 9999999
-						for player_id in player_list.keys():
-							var player_position = player_list[player_id]["position"]+Vector2(0,-4)
-							if player_position.distance_to(enemy_list[enemy_id]["position"]) <= closest:
-								closest = player_position.distance_to(enemy_list[enemy_id]["position"])
-								direction = enemy_list[enemy_id]["position"].direction_to((player_position) + direction)
-						if closest == 9999999:
-							enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
-							return
-					
-					var projectile_data = {
-						"id" : projectile_id_counter,
-						"name" : current_attack["projectile"],
-						"position" : enemy_list[enemy_id]["position"],
-						"direction" : direction,
-						"tile_range" : current_attack["tile_range"],
-						"start_position" : enemy_list[enemy_id]["position"],
-						"start_time" : OS.get_system_time_msecs()/1000,
-						"damage" : current_attack["damage"],
-						"piercing" : current_attack["piercing"],
-						"speed" : current_attack["speed"],
-						"formula" : current_attack["formula"],
-						"path" : enemy_list[enemy_id]["position"],
-						"hit_players" : {},
-						"size" : current_attack["size"],
-					}
-					SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_list[enemy_id]["name"])
-				
-				elif is_summon:
-					var summon_position = current_attack["summon_position"] + enemy_list[enemy_id]["position"]
-					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position)
-				
-				enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
-				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
-					enemy_list[enemy_id]["pattern_index"] = 0
-				else:
-					enemy_list[enemy_id]["pattern_index"] += 1
 			if enemy_list[enemy_id]["phase_timer"] <= 0:
 				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
 				var phases = enemy_data.phases
@@ -148,36 +95,103 @@ func _physics_process(delta):
 					
 					var used_before = enemy_list[enemy_id]["used_phases"].has(_phase_index)
 					var use_limit = phase.has("max_uses")
+					var on_spawn = phase.has("on_spawn")
 					var possible = not use_limit or not used_before or (used_before and phase.max_uses > enemy_list[enemy_id]["used_phases"][_phase_index])
+					
+					if on_spawn and enemy_list[enemy_id]["used_phases"].size() == 0:
+						possible_phases = [_phase_index]
+						break;
 					if health and possible:
 						possible_phases.append(_phase_index)
-						if used_before:
-							enemy_list[enemy_id]["used_phases"][_phase_index] += 1
-						else:
-							enemy_list[enemy_id]["used_phases"][_phase_index] = 1
-						if use_limit:
-							possible_phases = [_phase_index]
-							break;
 				
 				if len(possible_phases) > 0:
 					var chosen_index = randi() % len(possible_phases)
+					
+					#Check if used before
+					var used_before = enemy_list[enemy_id]["used_phases"].has(chosen_index)
+					if used_before:
+						enemy_list[enemy_id]["used_phases"][chosen_index] += 1
+					else:
+						enemy_list[enemy_id]["used_phases"][chosen_index] = 1
+					
 					if enemy_list[enemy_id]["phase_index"] != possible_phases[chosen_index]:
 						enemy_list[enemy_id]["pattern_index"] = 0
 					
 					enemy_list[enemy_id]["phase_index"] = possible_phases[chosen_index]
 					enemy_list[enemy_id]["phase_timer"] = phases[possible_phases[chosen_index]].duration
+			
+			while enemy_list[enemy_id]["pattern_timer"] <= 0:
+				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
+				var phase_index = enemy_list[enemy_id]["phase_index"]
 				
+				var attack_pattern = enemy_data["phases"][phase_index].attack_pattern
+				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
+				
+				var is_projectile = current_attack.has("projectile")
+				var is_summon = current_attack.has("summon")
+				
+				if is_projectile:
+					#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
+					var direction = current_attack["direction"].normalized()
+					var no_projectile = false
+					if not current_attack.has("targeter"):
+						pass
+					elif current_attack["targeter"] == "nearest":
+						var closest = 9999999
+						for player_id in player_list.keys():
+							var player_position = player_list[player_id]["position"]+Vector2(0,-4)
+							if player_position.distance_to(enemy_list[enemy_id]["position"]) <= closest:
+								closest = player_position.distance_to(enemy_list[enemy_id]["position"])
+								var direction_offset = current_attack["direction"].x*enemy_list[enemy_id]["position"].direction_to(player_position)
+								direction = enemy_list[enemy_id]["position"].direction_to((player_position) + direction_offset)
+						if closest == 9999999 or closest > 8*8:
+							no_projectile = true
+							enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
+					
+					if not no_projectile:
+						var projectile_data = {
+							"id" : projectile_id_counter,
+							"name" : current_attack["projectile"],
+							"position" : enemy_list[enemy_id]["position"],
+							"direction" : direction,
+							"tile_range" : current_attack["tile_range"],
+							"start_position" : enemy_list[enemy_id]["position"],
+							"start_time" : OS.get_system_time_msecs()/1000,
+							"damage" : current_attack["damage"],
+							"piercing" : current_attack["piercing"],
+							"speed" : current_attack["speed"],
+							"formula" : current_attack["formula"],
+							"path" : enemy_list[enemy_id]["position"],
+							"hit_players" : {},
+							"size" : current_attack["size"],
+						}
+						SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_list[enemy_id]["name"])
+				
+				elif is_summon:
+					var summon_position = current_attack["summon_position"] + enemy_list[enemy_id]["position"]
+					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position)
+				
+				enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
+				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
+					enemy_list[enemy_id]["pattern_index"] = 0
+				else:
+					enemy_list[enemy_id]["pattern_index"] += 1
+			
+			
 			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
 				CalculateLootPool(enemy_list[enemy_id])
 				enemy_list.erase(enemy_id)
 				continue
 			
-			if (enemy_list[enemy_id]["behaviour"] == 1):
-				enemy_list[enemy_id] = Behaviours.Wander(enemy_list[enemy_id], tick_rate, self)
-			
-			elif (enemy_list[enemy_id]["behaviour"] == 2):
-				enemy_list[enemy_id] = Behaviours.Chase(enemy_list[enemy_id], tick_rate, self)
+			if enemy_list[enemy_id].has("dead"):
+				pass
+			elif (enemy_list[enemy_id]["behavior"] == 0):
+				enemy_list[enemy_id] = Behaviors.Stationary(enemy_list[enemy_id], tick_rate, self)
+			elif (enemy_list[enemy_id]["behavior"] == 1):
+				enemy_list[enemy_id] = Behaviors.Wander(enemy_list[enemy_id], tick_rate, self)
+			elif (enemy_list[enemy_id]["behavior"] == 2):
+				enemy_list[enemy_id] = Behaviors.Chase(enemy_list[enemy_id], tick_rate, self)
 			
 		if use_chunks == false:
 			last_tick = running_time
@@ -289,7 +303,6 @@ func SpawnLootBag(_loot, player_id, instance_tree, position):
 			loot[i] = raw_item
 			i += 1
 			var item = ServerData.GetItem(raw_item.item)
-			print(raw_item.item)
 			if int(item.tier) > highest_loot_tier:
 				highest_loot_tier = int(item.tier)
 			elif item.tier == "UT":
@@ -405,7 +418,7 @@ func GetBoatSpawnpoints():
 	taken_points.append(index)
 	return res[index]
 	
-func OpenPortal(portal_name, instance_tree, position):
+func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750), ruler = "salazar_the_red"):
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if "island" in portal_name:
 		instance_id = portal_name + " " + instance_id
@@ -414,6 +427,8 @@ func OpenPortal(portal_name, instance_tree, position):
 		if portal_name == "tutorial_island":
 			island_instance = load("res://Scenes/SupportScenes/Island/TutorialIsland.tscn").instance()
 		island_instance.name = instance_id
+		island_instance.map_size = map_size
+		island_instance.ruler = ruler
 		
 		object_list[instance_id] = {
 			"name": portal_name,
@@ -425,9 +440,9 @@ func OpenPortal(portal_name, instance_tree, position):
 		
 		island_instance.GenerateIslandMap()
 		island_instance.position = Instances.GetFreeInstancePosition()
-		island_instance.SetRuler()
 		add_child(island_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
+		return instance_id
 	else:
 		var instance_map = Dungeons.GenerateDungeon(portal_name)
 		var enemy_translation = Dungeons.GetEnemyTranslation(portal_name)
@@ -447,3 +462,4 @@ func OpenPortal(portal_name, instance_tree, position):
 		
 		add_child(dungeon_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
+		return instance_id

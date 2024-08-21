@@ -37,16 +37,21 @@ var theoretical_position = position
 func MoveEnemy(new_position):
 	theoretical_position = new_position
 	if Server.IsWithinRange(new_position):
-		self.visible = true
+		if not self.visible:
+				self.visible = true
 		var old_position = position
 		set_position(theoretical_position)
 		
-		if new_position.x-old_position.x > 0:
+		if new_position.x-old_position.x > 0 and $Control/Sprite.flip_h:
 			$Control/Sprite.flip_h = false
-		elif new_position.x-old_position.x < 0:
+		elif new_position.x-old_position.x < 0 and not $Control/Sprite.flip_h:
 			$Control/Sprite.flip_h = true
 	else:
-		self.visible = false
+		if self.visible:
+				self.visible = false
+
+func DeathStance():
+	$AnimationPlayer.play("Death")
 
 func ShootProjectile():
 	$AnimationPlayer.play("Attack")

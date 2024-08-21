@@ -48,6 +48,8 @@ func Activate():
 	if ClientData.GetProjectile(projectile_data.name).has("scale"):
 		var _scale = ClientData.GetProjectile(projectile_data.name).scale
 		scale = Vector2(_scale,_scale)
+	else:
+		scale = Vector2(1,1)
 
 func DeActivate():
 	is_active = false

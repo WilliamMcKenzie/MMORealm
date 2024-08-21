@@ -50,7 +50,7 @@ func CalculateRanking(reputation):
 	
 	for catagory in leaderboard_catagories:
 		var leaderboard = leaderboards[catagory]
-		if reputation > leaderboard[leaderboards.size()-1].reputation:
+		if reputation > leaderboard[len(leaderboard)-1].reputation:
 			position = leaderboard.size()+1
 			which = catagory
 			for character in leaderboard:

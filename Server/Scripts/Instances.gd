@@ -1,5 +1,7 @@
 extends Node
 
+var chunk_sensors = {}
+
 func GetFreeInstancePosition():
 	var free_position = Vector2.ZERO
 	

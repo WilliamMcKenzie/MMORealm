@@ -4,7 +4,6 @@ var current_quest = null
 var direction = Vector2(4,0)
 
 func _process(delta):
-	
 	rect_position = Vector2(400,180)
 	while(not OutsideScreen(self)):
 		rect_position += direction

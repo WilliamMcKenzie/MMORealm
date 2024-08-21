@@ -15,8 +15,13 @@ func DetermineCollisionSafePoint(pos, point, root):
 		return point
 	return pos
 
+#Stationary
+func Stationary(enemy, tick_rate, root):
+	return enemy
+
 #Wander
 func Wander(enemy, tick_rate, root):
+	
 	var target = enemy["target"]
 	var pos = enemy["position"]
 	var speed = enemy["speed"]
@@ -35,6 +40,7 @@ func Wander(enemy, tick_rate, root):
 
 #Chase
 func Chase(enemy, tick_rate, root):
+	
 	var player_list = root.player_list
 	var target = enemy["target"]
 	var pos = enemy["position"]
@@ -43,7 +49,11 @@ func Chase(enemy, tick_rate, root):
 	var closest = 9999999
 	for player_id in player_list.keys():
 		if player_list[player_id]["position"].distance_to(enemy["position"]) <= closest:
+			closest = player_list[player_id]["position"].distance_to(enemy["position"])
 			target = player_list[player_id]["position"]
+	
+	if closest > 8*8:
+		return enemy
 	
 	var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
 	var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)

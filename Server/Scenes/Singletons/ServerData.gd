@@ -9,265 +9,322 @@ var unique_tiles = {
 }
 
 var basic_loot_pools = {
+	"none" : {
+		"soulbound_loot" : [],
+		"loot" : []
+	},
 	"lowlands_1" : {
-		"soulbound_loot" : [
-			{
-				"item" : 533,
-				"chance" : 0.23,
-				"threshold" : 0.23,
-			},
-			{
-				"item" : 0,
-				"chance" : 0.3,
-				"threshold" : 0.3,
-			}
-		],
+		"soulbound_loot" : [],
 		"loot" : [
 			{
 				"item" : 100,
-				"chance" : 0.25,
-			}
+				"chance" : 0.05,
+			},
+			{
+				"item" : 400,
+				"chance" : 0.05,
+			},
+			{
+				"item" : 500,
+				"chance" : 0.05,
+			},
 		]
 	},
 	"lowlands_2" : {
-		"soulbound_loot" : [
-				{
-					"item" : 400,
-					"chance" : 0.23,
-					"threshold" : 0.23,
-				},
-				{
-					"item" : 101,
-					"chance" : 0.5,
-					"threshold" : 0.15,
-				},
-			{
-				"item" : 0,
-				"chance" : 0.1,
-				"threshold" : 0.5,
-			}
-		],
+		"soulbound_loot" : [],
 		"loot" : [
 			{
 				"item" : 100,
-				"chance" : 0.25,
-			}
+				"chance" : 0.15,
+			},
+			{
+				"item" : 400,
+				"chance" : 0.15,
+			},
+			{
+				"item" : 500,
+				"chance" : 0.15,
+			},
 		]
-	}
+	},
+	"midlands_1" : {
+		"soulbound_loot" : [],
+		"loot" : [
+			{
+				"item" : 101,
+				"chance" : 0.05,
+			},
+			{
+				"item" : 401,
+				"chance" : 0.05,
+			},
+			{
+				"item" : 501,
+				"chance" : 0.05,
+			},
+		]
+	},
+	"midlands_2" : {
+		"soulbound_loot" : [],
+		"loot" : [
+			{
+				"item" : 101,
+				"chance" : 0.2,
+			},
+			{
+				"item" : 401,
+				"chance" : 0.2,
+			},
+			{
+				"item" : 501,
+				"chance" : 0.2,
+			},
+		]
+	},
+	"highlands_1" : {
+		"soulbound_loot" : [],
+		"loot" : [
+			{
+				"item" : 101,
+				"chance" : 0.03,
+			},
+			{
+				"item" : 401,
+				"chance" : 0.03,
+			},
+			{
+				"item" : 501,
+				"chance" : 0.03,
+			},
+		]
+	},
+	"highlands_2" : {
+		"soulbound_loot" : [
+				{
+					"item" : 102,
+					"chance" : 0.1,
+					"threshold" : 0.2,
+				},
+				{
+					"item" : 402,
+					"chance" : 0.1,
+					"threshold" : 0.2,
+				},
+				{
+					"item" : 502,
+					"chance" : 0.1,
+					"threshold" : 0.2,
+				}
+		],
+		"loot" : []
+	},
+	"godlands_1" : {
+		"soulbound_loot" : [
+				{
+					"item" : 103,
+					"chance" : 0.05,
+					"threshold" : 0.2,
+				},
+				{
+					"item" : 403,
+					"chance" : 0.05,
+					"threshold" : 0.2,
+				},
+				{
+					"item" : 503,
+					"chance" : 0.05,
+					"threshold" : 0.2,
+				},
+				{
+					"item" : 102,
+					"chance" : 0.1,
+					"threshold" : 0.2,
+				},
+				{
+					"item" : 402,
+					"chance" : 0.1,
+					"threshold" : 0.2,
+				},
+				{
+					"item" : 502,
+					"chance" : 0.1,
+					"threshold" : 0.2,
+				},
+				{
+					"item" : 0,
+					"chance" : 0.01,
+					"threshold" : 0.2,
+				}
+		],
+		"loot" : []
+	},
 }
 
 var rulers = {
-	"crypt_guardian" : {
-		"health" : 200,
-		"defense" : 30,
-		"exp" : 4000,
+	"oranix" : {
+		"health" : 20,
+		"defense" : 1,
+		"exp" : 10,
 		"behavior" : 1,
 		"speed" : 10,
 		"dungeon" : {
-			"name" : "overgrown_temple",
-			"rate" : 0
+			"rate" : 0,
+			"name" : "overgrown_temple"
 		},
-		"loot_pool" :  {
-			"soulbound_loot" : [],
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 0,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
 			"loot" : []
 		},
 		"phases" : [
-			{
-				"duration" : 10,
-				"health" : [50,100],
-				"attack_pattern" : [
-					{
-						"projectile" : "Dart",
-						"formula" : "sin(x)",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 10,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 5
-					},
-					{
-						"projectile" : "Dart",
-						"formula" : "sin(x)",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 10,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : Vector2(10,0),
-						"size" : 5
-					},
-					{
-						"projectile" : "Dart",
-						"formula" : "sin(x)",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 4,
-						"speed" : 10,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : Vector2(-10,0),
-						"size" : 5
-					},
-				]
-			},
-			{
-				"duration" : 7,
-				"max_uses" : 1,
-				"health" : [50,100],
-				"behavior" : 2,
-				"attack_pattern" : [
-					{
-						"summon" : "crypt_guardian_summon",
-						"summon_position" : Vector2(0,0),
-						"wait" : 1,
-					},
-					{
-						"projectile" : "Spinner",
-						"formula" : "sin(x)",
-						"damage" : 200,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 20,
-						"tile_range" : 5,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 5
-					},
-					{
-						"projectile" : "Spinner",
-						"formula" : "sin(x)",
-						"damage" : 200,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 20,
-						"tile_range" : 5,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 5
-					},
-					{
-						"summon" : "crypt_guardian_summon",
-						"summon_position" : Vector2(0,0),
-						"wait" : 1,
-					},
-					{
-						"projectile" : "Spinner",
-						"formula" : "sin(x)",
-						"damage" : 200,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 20,
-						"tile_range" : 5,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 5
-					},
-					{
-						"projectile" : "Spinner",
-						"formula" : "sin(x)",
-						"damage" : 200,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 20,
-						"tile_range" : 5,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 5
-					},
-					{
-						"summon" : "crypt_guardian_summon",
-						"summon_position" : Vector2(0,0),
-						"wait" : 1,
-					},
-				]
-			},
 			{
 				"duration" : 4,
-				"health" : [0,50],
-				"attack_pattern" : [
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 10,
-						"tile_range" : 8,
-						"direction" : Vector2(1,0),
-						"size" : 5
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 10,
-						"tile_range" : 8,
-						"direction" : Vector2(-1,0),
-						"size" : 5
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 10,
-						"tile_range" : 8,
-						"direction" : Vector2(0,1),
-						"size" : 5
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 10,
-						"tile_range" : 8,
-						"direction" : Vector2(0,-1),
-						"size" : 5
-					},
-				]
-			}
-		]
-	},
-	"crypt_guardian_summon" : {
-		"health" : 100,
-		"defense" : 20,
-		"exp" : 2000,
-		"behavior" : 2,
-		"speed" : 20,
-		"loot_pool" :  {
-			"soulbound_loot" : [],
-			"loot" : []
-		},
-		"phases" : [
-			{
-				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Wave",
+						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 50,
-						"tile_range" : 1,
+						"damage" : 0,
+						"piercing" : true,
+						"wait" : 1000,
+						"speed" : 0,
+						"tile_range" : 0,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
 						"size" : 4
 					}
 				]
-			}
+			},
 		]
-	}
+	},
+	"vajira" : {
+		"health" : 20,
+		"defense" : 1,
+		"exp" : 10,
+		"behavior" : 1,
+		"speed" : 10,
+		"dungeon" : {
+			"rate" : 0,
+			"name" : "overgrown_temple"
+		},
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 0,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 0,
+						"piercing" : true,
+						"wait" : 1000,
+						"speed" : 0,
+						"tile_range" : 0,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			},
+		]
+	},
+	"raa'sloth" : {
+		"health" : 20,
+		"defense" : 1,
+		"exp" : 10,
+		"behavior" : 1,
+		"speed" : 10,
+		"dungeon" : {
+			"rate" : 0,
+			"name" : "overgrown_temple"
+		},
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 0,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 0,
+						"piercing" : true,
+						"wait" : 1000,
+						"speed" : 0,
+						"tile_range" : 0,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			},
+		]
+	},
+	"salazar_the_red" : {
+		"health" : 20,
+		"defense" : 1,
+		"exp" : 10,
+		"behavior" : 1,
+		"speed" : 10,
+		"dungeon" : {
+			"rate" : 0,
+			"name" : "overgrown_temple"
+		},
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 0,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 0,
+						"piercing" : true,
+						"wait" : 1000,
+						"speed" : 0,
+						"tile_range" : 0,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+					}
+				]
+			},
+		]
+	},
 }
 var tutorial_enemies = {
 	"tutorial_crab" : {
@@ -470,7 +527,7 @@ var tutorial_enemies = {
 var realm_enemies = {
 	"crab" : {
 		"variations" : ["tutorial_crab"],
-		"health" : 10,
+		"health" : 50,
 		"defense" : 1,
 		"exp" : 10,
 		"behavior" : 1,
@@ -510,15 +567,27 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Wave",
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 4,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : Vector2(-10,0),
+						"size" : 8
+					},
+					{
+						"projectile" : "GreenBlast",
 						"formula" : "0",
 						"damage" : 4,
 						"piercing" : false,
 						"wait" : 3,
-						"speed" : 10,
+						"speed" : 20,
 						"tile_range" : 3,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
+						"direction" : Vector2(10,0),
 						"size" : 8
 					}
 				]
@@ -531,10 +600,33 @@ var realm_enemies = {
 		"exp" : 43,
 		"behavior" : 1,
 		"speed" : 10,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"loot_pool" :  basic_loot_pools["lowlands_2"],
 		"phases" : [
 			{
-				"duration" : 1,
+				"duration" : 4,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "nature_sprite_stationary",
+						"summon_position" : Vector2(10,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "nature_sprite_stationary",
+						"summon_position" : Vector2(0,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "nature_sprite_stationary",
+						"summon_position" : Vector2(-10,5),
+						"wait" : 5,
+					},
+				]
+			},
+			{
+				"duration" : 3,
 				"health" : [50,100],
 				"attack_pattern" : [
 					{
@@ -542,13 +634,101 @@ var realm_enemies = {
 						"formula" : "sin(x)",
 						"damage" : 7,
 						"piercing" : false,
-						"wait" : 1,
-						"speed" : 30,
-						"tile_range" : 10,
+						"wait" : 2,
+						"speed" : 10,
+						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 4
-					}
+						"size" : 7
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "sin(x)",
+						"damage" : 2,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"direction" : Vector2(0,1),
+						"size" : 7
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "sin(x)",
+						"damage" : 2,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"direction" : Vector2(0.707,0.707),
+						"size" : 7
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "sin(x)",
+						"damage" : 2,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"direction" : Vector2(1,0),
+						"size" : 7
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "sin(x)",
+						"damage" : 2,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"direction" : Vector2(0.707,-0.707),
+						"size" : 7
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "sin(x)",
+						"damage" : 2,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"direction" : Vector2(0,-1),
+						"size" : 7
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "sin(x)",
+						"damage" : 2,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"direction" : Vector2(-0.707,-0.707),
+						"size" : 7
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "sin(x)",
+						"damage" : 2,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"direction" : Vector2(-1,0),
+						"size" : 7
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "sin(x)",
+						"damage" : 2,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"direction" : Vector2(-0.707,0.707),
+						"size" : 7
+					},
 				]
 			},
 			{
@@ -587,19 +767,48 @@ var realm_enemies = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 4
+						"size" : 7
 					}
 				]
 			},
 		]
 	},
+	"nature_sprite_stationary" : {
+		"health" : 40,
+		"defense" : 0,
+		"exp" : 10,
+		"behavior" : 1,
+		"speed" : 6,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Nature1",
+						"formula" : "0",
+						"damage" : 3,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 30,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 7
+					}
+				]
+			}
+		]
+	},
 	"nature_sprite" : {
+		"variations" : ["nature_sprite_stationary"],
 		"health" : 10,
 		"defense" : 0,
 		"exp" : 10,
 		"behavior" : 2,
-		"speed" : 20,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"speed" : 35,
+		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -626,7 +835,7 @@ var realm_enemies = {
 		"defense" : 3,
 		"exp" : 10,
 		"behavior" : 2,
-		"speed" : 5,
+		"speed" : 6,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -634,7 +843,7 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "SteelSlash",
+						"projectile" : "IronSlash",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
@@ -653,7 +862,7 @@ var realm_enemies = {
 		"health" : 30,
 		"defense" : 0,
 		"exp" : 10,
-		"behavior" : 2,
+		"behavior" : 1,
 		"speed" : 5,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
@@ -680,22 +889,22 @@ var realm_enemies = {
 	"goblin_cannon" : {
 		"health" : 20,
 		"defense" : 1000,
-		"exp" : 250,
+		"exp" : 45,
 		"behavior" : 1,
 		"speed" : 5,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"loot_pool" :  basic_loot_pools["lowlands_2"],
 		"phases" : [
 			{
 				"duration" : 7,
-				"health" : [0,99],
+				"health" : [0,100],
 				"attack_pattern" : [
 					{
 						"projectile" : "CannonBall",
 						"formula" : "0",
-						"damage" : 100,
+						"damage" : 30,
 						"piercing" : true,
-						"wait" : 8,
-						"speed" : 6,
+						"wait" : 7,
+						"speed" : 12,
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
@@ -704,8 +913,9 @@ var realm_enemies = {
 				]
 			},
 			{
-				"duration" : 2,
+				"duration" : 1,
 				"max_uses" : 1,
+				"on_spawn" : true,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
@@ -738,7 +948,7 @@ var realm_enemies = {
 		"exp" : 12,
 		"behavior" : 1,
 		"speed" : 5,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"loot_pool" : basic_loot_pools["midlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -779,7 +989,7 @@ var realm_enemies = {
 		"exp" : 6,
 		"behavior" : 2,
 		"speed" : 20,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"loot_pool" :  basic_loot_pools["midlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -839,7 +1049,7 @@ var realm_enemies = {
 		"exp" : 12,
 		"behavior" : 1,
 		"speed" : 10,
-		"loot_pool" :  basic_loot_pools["lowlands_1"],
+		"loot_pool" :  basic_loot_pools["midlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -880,20 +1090,11 @@ var realm_enemies = {
 		"exp" : 64,
 		"behavior" : 1,
 		"speed" : 5,
-		"loot_pool" :  {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
+		"loot_pool" :  basic_loot_pools["midlands_2"],
 		"phases" : [
 			{
 				"duration" : 6,
-				"health" : [50,99],
+				"health" : [50,100],
 				"attack_pattern" : [
 					{
 						"projectile" : "Ball",
@@ -935,6 +1136,7 @@ var realm_enemies = {
 			},
 			{
 				"duration" : 4,
+				"on_spawn" : true,
 				"max_uses" : 1,
 				"health" : [0,100],
 				"attack_pattern" : [
@@ -1018,7 +1220,7 @@ var realm_enemies = {
 		"exp" : 24,
 		"behavior" : 2,
 		"speed" : 20,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"loot_pool" :  basic_loot_pools["highlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -1046,7 +1248,7 @@ var realm_enemies = {
 		"exp" : 24,
 		"behavior" : 1,
 		"speed" : 5,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"loot_pool" : basic_loot_pools["highlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -1074,12 +1276,13 @@ var realm_enemies = {
 		"exp" : 200,
 		"behavior" : 1,
 		"speed" : 10,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"loot_pool" : basic_loot_pools["highlands_2"],
 		"phases" : [
 			{
 				"duration" : 2,
 				"health" : [0,100],
-				"max_use" : 1,
+				"on_spawn" : true,
+				"max_uses" : 1,
 				"attack_pattern" : [
 					{
 						"summon" : "rat_warrior",
@@ -1104,11 +1307,29 @@ var realm_enemies = {
 				]
 			},
 			{
-				"duration" : 10,
-				"health" : [0,99],
+				"duration" : 5,
+				"health" : [0,100],
 				"attack_pattern" : [
 					{
 						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 7,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 7
+					}
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "SmallBlast",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
@@ -1120,7 +1341,7 @@ var realm_enemies = {
 						"size" : 5
 					},
 					{
-						"projectile" : "Blast",
+						"projectile" : "SmallBlast",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
@@ -1141,11 +1362,12 @@ var realm_enemies = {
 		"exp" : 340,
 		"behavior" : 2,
 		"speed" : 5,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"loot_pool" : basic_loot_pools["highlands_2"],
 		"phases" : [
 			{
 				"duration" : 2,
-				"max_use" : 1,
+				"on_spawn" : true,
+				"max_uses" : 1,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
@@ -1166,8 +1388,58 @@ var realm_enemies = {
 				]
 			},
 			{
-				"duration" : 10,
-				"health" : [0,99],
+				"duration" : 5,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 5,
+						"direction" : Vector2(0,1),
+						"size" : 4
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 5,
+						"direction" : Vector2(1,0),
+						"size" : 4
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 10,
+						"tile_range" : 5,
+						"direction" : Vector2(0,-1),
+						"size" : 4
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 10,
+						"tile_range" : 5,
+						"direction" : Vector2(-1,0),
+						"size" : 4
+					}
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [0,100],
 				"attack_pattern" : [
 					{
 						"projectile" : "Spinner",
@@ -1186,23 +1458,11 @@ var realm_enemies = {
 						"formula" : "0",
 						"damage" : 40,
 						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 7,
-						"tile_range" : 3,
-						"targeter" : "nearest",
-						"direction" : Vector2(10,0),
-						"size" : 4
-					},
-					{
-						"projectile" : "Dart",
-						"formula" : "0",
-						"damage" : 30,
-						"piercing" : false,
 						"wait" : 3,
 						"speed" : 7,
 						"tile_range" : 3,
 						"targeter" : "nearest",
-						"direction" : Vector2(-10,0),
+						"direction" : Vector2(10,0),
 						"size" : 4
 					},
 				]
@@ -1214,8 +1474,8 @@ var realm_enemies = {
 		"defense" : 0,
 		"exp" : 140,
 		"behavior" : 2,
-		"speed" : 10,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"speed" : 20,
+		"loot_pool" : basic_loot_pools["highlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -1243,7 +1503,7 @@ var realm_enemies = {
 		"exp" : 62,
 		"behavior" : 1,
 		"speed" : 20,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"loot_pool" : basic_loot_pools["highlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -1278,40 +1538,112 @@ var realm_enemies = {
 		]
 	},
 	"rock_golem" : {
-		"health" : 1000,
-		"defense" : 18,
+		"health" : 1500,
+		"defense" : 25,
 		"exp" : 200,
-		"behavior" : 1,
-		"speed" : 7,
-		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"behavior" : 2,
+		"speed" : 5,
+		"loot_pool" : basic_loot_pools["godlands_1"],
 		"phases" : [
 			{
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Fire2",
+						"projectile" : "PlatinumSlash",
 						"formula" : "0",
-						"damage" : 40,
+						"damage" : 100,
 						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 10,
+						"wait" : 3,
+						"speed" : 20,
 						"tile_range" : 4,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 4
-					},
+						"size" : 8
+					}
+				]
+			}
+		]
+	},
+	"mummified_ghoul" : {
+		"health" : 1500,
+		"defense" : 25,
+		"exp" : 200,
+		"behavior" : 2,
+		"speed" : 5,
+		"loot_pool" : basic_loot_pools["godlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
 					{
-						"projectile" : "Fire1",
+						"projectile" : "PlatinumSlash",
 						"formula" : "0",
-						"damage" : 20,
+						"damage" : 100,
 						"piercing" : false,
 						"wait" : 3,
-						"speed" : 8,
-						"tile_range" : 3,
+						"speed" : 20,
+						"tile_range" : 4,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 3
+						"size" : 8
+					}
+				]
+			}
+		]
+	},
+	"shadow_spider" : {
+		"health" : 1500,
+		"defense" : 25,
+		"exp" : 200,
+		"behavior" : 2,
+		"speed" : 5,
+		"loot_pool" : basic_loot_pools["godlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 20,
+						"tile_range" : 4,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 8
+					}
+				]
+			}
+		]
+	},
+	"slime_god" : {
+		"health" : 1500,
+		"defense" : 25,
+		"exp" : 200,
+		"behavior" : 2,
+		"speed" : 5,
+		"loot_pool" : basic_loot_pools["godlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 20,
+						"tile_range" : 4,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 8
 					}
 				]
 			}
@@ -1319,34 +1651,6 @@ var realm_enemies = {
 	},
 }
 var overgrown_temple_enemies = {
-	"shadow_mage" : {
-		"health" : 200,
-		"defense" : 1,
-		"exp" : 20,
-		"behavior" : 1,
-		"speed" : 20,
-		"loot_pool" :  basic_loot_pools["lowlands_2"],
-		"phases" : [
-			{
-				"duration" : 10,
-				"health" : [0,100],
-				"attack_pattern" : [
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 10,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 20
-					}
-				]
-			}
-		]
-	},
 }
 var enemies = CompileEnemies()
 func CompileEnemies():
@@ -1910,6 +2214,36 @@ var projectiles = {
 		"rect" : Rect2(90,0,10,10),
 		"rotation" : 45,
 		"spin" : false,
+	},
+	"SmallBlast" : {
+		"rect" : Rect2(100,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 0.8,
+	},
+	"GreenBlast" : {
+		"rect" : Rect2(110,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 0.8,
+	},
+	"BrownBlast" : {
+		"rect" : Rect2(120,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 0.8,
+	},
+	"BlueBlast" : {
+		"rect" : Rect2(130,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 0.8,
+	},
+	"RedBlast" : {
+		"rect" : Rect2(140,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 0.8,
 	},
 	"IronSlash" : {
 		"rect" : Rect2(0,10,10,10),

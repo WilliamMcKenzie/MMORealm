@@ -7,6 +7,11 @@ func PopulateTiles():
 	var ocean_distance = center.length() * 1.5
 	var beach_distance = center.length() * 1.2
 	var forest_distance = center.length() * 1
+	
+	#For wavy edges of island
+	var noise_scale = 0.6
+	var noise_intensity = 0.05
+	
 	for x in range(map_size.x):
 		map_as_array.append([])
 		for y in range(map_size.y):
@@ -16,12 +21,7 @@ func PopulateTiles():
 			#Base value for a perfect circle
 			var ocean_value = 1.0 - (distance / ocean_distance)
 			
-			#For wavy edges of island
-			var noise_scale = 0.6
-			var noise_intensity = 0.05
-			
 			var noise_value = noise.get_noise_2d(x * noise_scale, y * noise_scale) * noise_intensity
-			
 			var river_value = (1.0 - (distance / 1.5)) + noise_value/3
 			
 			var beach_value = (1.0 - (distance / beach_distance)) + noise_value/3
@@ -38,8 +38,6 @@ func PopulateTiles():
 
 func _ready():
 	TutorialInit()
-	
-	PopulateChunkSensors()
 	ArrayToTiles()
 	PopulateObstacles()
 

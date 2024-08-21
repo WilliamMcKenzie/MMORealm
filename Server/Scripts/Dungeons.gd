@@ -5,7 +5,7 @@ var valid_names = ["island","overgrown_temple"]
 func GetEnemyTranslation(instance_name):
 	if instance_name == "overgrown_temple":
 		return {
-			5 : "shadow_mage"
+		
 		}
 	
 	return {}

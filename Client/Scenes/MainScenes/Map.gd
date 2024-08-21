@@ -55,6 +55,8 @@ func _physics_process(delta):
 				elif get_node("YSort/Enemies").has_node(str(enemy)):
 					var new_position = lerp(enemies1[enemy]["position"], enemies2[enemy]["position"], interpolation_factor)
 					get_node("YSort/Enemies/"+str(enemy)).MoveEnemy(new_position)
+					if enemies2[enemy].has("dead"):
+						get_node("YSort/Enemies/"+str(enemy)).DeathStance()
 				else:
 					SpawnNewEnemy(enemy, enemies2[enemy]["position"], enemies2[enemy]["name"])
 			RefreshEnemies(world_state_buffer[2]["E"])
@@ -137,7 +139,7 @@ func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 func RefreshEnemies(enemies):
 	for enemy_node in get_node("YSort/Enemies").get_children():
 		if not enemies.has(enemy_node.name):
-			get_node("YSort/Enemies/"+enemy_node.name).queue_free()
+			get_node("YSort/Enemies").remove_child(get_node("YSort/Enemies/"+enemy_node.name))
  
 #Object nodes
 func RefreshObjects(objects):

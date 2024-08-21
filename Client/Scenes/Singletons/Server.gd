@@ -273,8 +273,8 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 		pass
 	elif get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)).ShootProjectile()
-		if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").has_node("Pool"):
-			for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_children():
+		if get_node("../SceneHandler/"+GetCurrentInstance()).has_node("Pool"):
+			for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
 				if child.is_active == false:
 					child.projectile_data = projectile_data
 					child.is_active = true
@@ -286,8 +286,8 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 remote func RemoveEnemyProjectile(id, instance_tree):
 	if instance_tree != current_instance_tree:
 		pass
-	if has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort") and get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").has_node("Pool"):
-		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Pool").get_children():
+	if has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort") and get_node("../SceneHandler/"+GetCurrentInstance()).has_node("Pool"):
+		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
 			if child.projectile_data and child.projectile_data.id == id:
 				child.DeActivate()
 				break
@@ -422,6 +422,7 @@ func NPCHit(enemy_id, damage):
 	
 func CreatePool(amount):
 	var new_pool = projectile_pool.instance()
-	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort").add_child(new_pool)
+	get_node("../SceneHandler/"+GetCurrentInstance()).add_child(new_pool)
+	get_node("../SceneHandler/"+GetCurrentInstance()).move_child(new_pool, 0)
 	for i in range(amount):
 		new_pool.add_child(projectile.instance())

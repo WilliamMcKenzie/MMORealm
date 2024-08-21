@@ -71,7 +71,26 @@ func SendIslandData(instance_tree):
 			world_state["E"] = result["E"]
 			world_state["O"] = result["O"]
 			world_state["T"] = OS.get_system_time_msecs()
-						
+			
+			for enemy_id in world_state["E"].keys():
+				var enemy = world_state["E"][enemy_id].duplicate()
+				enemy.erase("health")
+				enemy.erase("max_health")
+				enemy.erase("defense")
+				enemy.erase("state")
+				enemy.erase("behaviour")
+				enemy.erase("speed")
+				enemy.erase("exp")
+				enemy.erase("damage_tracker")
+				enemy.erase("target")
+				enemy.erase("anchor_position")
+				enemy.erase("pattern_index")
+				enemy.erase("pattern_timer")
+				enemy.erase("phase_index")
+				enemy.erase("phase_timer")
+				enemy.erase("used_phases")
+				world_state["E"][enemy_id] = enemy
+			
 			#We add speed checks here
 			for id in node.chunks[chunk]["P"]:
 				get_node("/root/Server").SendWorldState(id, world_state)
