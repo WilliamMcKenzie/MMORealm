@@ -56,6 +56,7 @@ tracks/0/keys = {
 extents = Vector2( 5, 5 )
 
 [node name="enemy" type="Node2D"]
+scale = Vector2( 0.9, 0.9 )
 script = ExtResource( 1 )
 enemy_type = "goblin_warrior"
 

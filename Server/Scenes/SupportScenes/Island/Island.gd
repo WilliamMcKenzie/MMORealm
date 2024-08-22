@@ -257,7 +257,6 @@ func PopulateTiles():
 					map_as_array[pos.x][pos.y] = current_tile
 					$TileMap.set_cell(pos.x, pos.y, map_as_array[pos.x][pos.y])
 
-
 func _ready():
 	ArrayToTiles()
 	PopulateObstacles()
@@ -268,27 +267,38 @@ func CheckChunks():
 	if chunk_sync_clock_counter >= 30:
 		chunk_sync_clock_counter = 0
 		chunks = {}
-		for enemy_id in enemy_list.keys():
-			var chunk = CalculateChunk(enemy_list[enemy_id].position)
-			if not chunks.has(chunk):
-				chunks[chunk] = {}
-				chunks[chunk]["P"] = {}
-				chunks[chunk]["E"] = {}
-			chunks[chunk]["E"][enemy_id] = enemy_list[enemy_id]
 		for player_id in player_list.keys():
 			var chunk = CalculateChunk(player_list[player_id].position)
 			if not chunks.has(chunk):
 				chunks[chunk] = {}
 				chunks[chunk]["P"] = {}
 				chunks[chunk]["E"] = {}
+				chunks[chunk]["O"] = {}
 			chunks[chunk]["P"][player_id] = player_list[player_id]
+		for enemy_id in enemy_list.keys():
+			var chunk = CalculateChunk(enemy_list[enemy_id].position)
+			if not chunks.has(chunk):
+				chunks[chunk] = {}
+				chunks[chunk]["P"] = {}
+				chunks[chunk]["E"] = {}
+				chunks[chunk]["O"] = {}
+			chunks[chunk]["E"][enemy_id] = enemy_list[enemy_id]
+		for object_id in object_list.keys():
+			var chunk = CalculateChunk(object_list[object_id].position)
+			if not chunks.has(chunk):
+				chunks[chunk] = {}
+				chunks[chunk]["P"] = {}
+				chunks[chunk]["E"] = {}
+				chunks[chunk]["O"] = {}
+			chunks[chunk]["O"][object_id] = object_list[object_id]
 
 func ArrayToTiles():
 	var spawn_point_index = 0
 	for x in range(map_size.x):
 		for y in range(map_size.y):
 			var map_tile = map_as_array[x][y]
-			var spawnpoint_tile = x%8 == 0 and y%8 == 0
+			var spawnpoint_tile = x%12 == 0 and y%12 == 0
+			var spawnpoint_position = Vector2(x+round(rand_range(-4, 4)), y+round(rand_range(-4, 4)))
 			
 			if map_tile == 2:
 				spawn_points.append(Vector2(x*8, y*8))
@@ -296,25 +306,26 @@ func ArrayToTiles():
 			if not spawnpoint_tile:
 				continue
 			elif map_tile == 2:
-				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Selection":beach_enemies}
+				enemy_spawn_points[spawnpoint_position] = { "Index": spawn_point_index, "Alive":false, "Selection":beach_enemies}
 				spawn_point_index += 1
 			elif map_tile == 3:
-				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Selection":forest_enemies}
+				enemy_spawn_points[spawnpoint_position] = { "Index": spawn_point_index, "Alive":false, "Selection":forest_enemies}
 				spawn_point_index += 1
 			elif map_tile == 4:
-				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Selection":plains_enemies}
+				enemy_spawn_points[spawnpoint_position] = { "Index": spawn_point_index, "Alive":false, "Selection":plains_enemies}
 				spawn_point_index += 1
 			elif map_tile == 5:
-				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Selection":badlands_enemies}
+				enemy_spawn_points[spawnpoint_position] = { "Index": spawn_point_index, "Alive":false, "Selection":badlands_enemies}
 				spawn_point_index += 1
 			elif map_tile == 6:
-				enemy_spawn_points[Vector2(x, y)] = { "Index": spawn_point_index, "Alive":false, "Selection":mountain_enemies}
+				enemy_spawn_points[spawnpoint_position] = { "Index": spawn_point_index, "Alive":false, "Selection":mountain_enemies}
 				spawn_point_index += 1
 			#For visualizing realms
 			#$TileMap.set_cell(x, y, map_as_array[x][y])
 func PopulateObstacles():
+	randomize()
 	var obstacle_small = load("res://Scenes/SupportScenes/Obstacles/Small.tscn").instance()
-	var chance = 4
+	var chance = 1.0
 	var obstacles = {
 		3 : [
 			"tree1",
@@ -343,7 +354,6 @@ func PopulateObstacles():
 			
 			if obstacles.has(map_tile):
 				var obstacle_list = obstacles[map_tile]
-				chance = chance/obstacle_list.size()
 				
 				var i = 0
 				for obstacle in obstacle_list:

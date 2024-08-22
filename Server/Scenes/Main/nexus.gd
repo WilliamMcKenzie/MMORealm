@@ -142,8 +142,8 @@ func _physics_process(delta):
 							var player_position = player_list[player_id]["position"]+Vector2(0,-4)
 							if player_position.distance_to(enemy_list[enemy_id]["position"]) <= closest:
 								closest = player_position.distance_to(enemy_list[enemy_id]["position"])
-								var direction_offset = current_attack["direction"].x*enemy_list[enemy_id]["position"].direction_to(player_position)
-								direction = enemy_list[enemy_id]["position"].direction_to((player_position) + direction_offset)
+								direction = enemy_list[enemy_id]["position"].direction_to((player_position))
+								direction = OffsetProjectileAngle(direction, current_attack["direction"])
 						if closest == 9999999 or closest > 8*8:
 							no_projectile = true
 							enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
@@ -270,6 +270,14 @@ func SpawnEnemyProjectile(projectile_data, instance, enemy_id, enemy_name):
 		projectile_id_counter = "0"
 		
 	get_node("/root/Server").SendEnemyProjectile(projectile_data, instance_tree, enemy_id)
+
+func OffsetProjectileAngle(base_direction, offset_vector):
+	var base_angle = base_direction.angle()
+	var offset_angle = offset_vector.angle()
+	var new_angle = base_angle + offset_angle
+	var new_direction = Vector2(cos(new_angle), sin(new_angle))
+	
+	return new_direction
 
 func SpawnLootBag(_loot, player_id, instance_tree, position):
 	var loot_id = "loot "+get_node("/root/Server").generate_unique_id()

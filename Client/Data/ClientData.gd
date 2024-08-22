@@ -568,26 +568,26 @@ var realm_enemies = {
 				"attack_pattern" : [
 					{
 						"projectile" : "GreenBlast",
-						"formula" : "0",
+						"formula" : "2",
 						"damage" : 4,
 						"piercing" : false,
 						"wait" : 0,
 						"speed" : 20,
 						"tile_range" : 3,
 						"targeter" : "nearest",
-						"direction" : Vector2(-10,0),
+						"direction" : Vector2(10,0),
 						"size" : 8
 					},
 					{
 						"projectile" : "GreenBlast",
-						"formula" : "0",
+						"formula" : "(-2)",
 						"damage" : 4,
 						"piercing" : false,
 						"wait" : 3,
 						"speed" : 20,
 						"tile_range" : 3,
 						"targeter" : "nearest",
-						"direction" : Vector2(10,0),
+						"direction" : Vector2(-10,0),
 						"size" : 8
 					}
 				]
@@ -778,7 +778,7 @@ var realm_enemies = {
 		"defense" : 0,
 		"exp" : 10,
 		"behavior" : 1,
-		"speed" : 1,
+		"speed" : 6,
 		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
 			{
@@ -788,7 +788,7 @@ var realm_enemies = {
 					{
 						"projectile" : "Nature1",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 3,
 						"piercing" : false,
 						"wait" : 3,
 						"speed" : 30,
@@ -1679,16 +1679,21 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "0",
 		
-		"damage" : [15,25],
 		"rof" : 100,
 		"stats" : {},
 		
-		"projectile" : "IronSlash",
-		"formula" : "0",
-		"piercing" : false,
-		"speed" : 50,
-		"tile_range" : 3,
-		"size" : 4,
+		"projectiles" : [
+			{
+				"damage" : [15,25],
+				"projectile" : "IronSlash",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			}
+		],
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,0)],
 		"colors" : {
@@ -1704,16 +1709,21 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "1",
 		
-		"damage" : [25,35],
 		"rof" : 100,
 		"stats" : {},
 		
-		"projectile" : "GoldSlash",
-		"formula" : "0",
-		"piercing" : false,
-		"speed" : 50,
-		"tile_range" : 3,
-		"size" : 4,
+		"projectiles" : [
+			{
+				"damage" : [25,35],
+				"projectile" : "GoldSlash",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			}
+		],
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,0)],
 		"colors" : {
@@ -1729,16 +1739,21 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "2",
 		
-		"damage" : [40,55],
 		"rof" : 100,
 		"stats" : {},
 		
-		"projectile" : "PlatinumSlash",
-		"formula" : "0",
-		"piercing" : false,
-		"speed" : 50,
-		"tile_range" : 3,
-		"size" : 4,
+		"projectiles" : [
+			{
+				"damage" : [40,55],
+				"projectile" : "PlatinumSlash",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			}
+		],
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,0)],
 		"colors" : {
@@ -1754,16 +1769,21 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "3",
 		
-		"damage" : [65,90],
 		"rof" : 100,
 		"stats" : {},
 		
-		"projectile" : "MithrilSlash",
-		"formula" : "0",
-		"piercing" : false,
-		"speed" : 50,
-		"tile_range" : 3,
-		"size" : 4,
+		"projectiles" : [
+			{
+				"damage" : [65,90],
+				"projectile" : "MithrilSlash",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			}
+		],
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,0)],
 		"colors" : {
@@ -1779,18 +1799,73 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "4",
 		
-		"damage" : [80,110],
 		"rof" : 100,
 		"stats" : {},
 		
-		"projectile" : "RexiumSlash",
-		"formula" : "0",
-		"piercing" : false,
-		"speed" : 50,
-		"tile_range" : 3,
-		"size" : 4,
+		"projectiles" : [
+			{
+				"damage" : [80,110],
+				"projectile" : "RexiumSlash",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			}
+		],
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,0)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(231.0, 211.0, 61.0),
+			"weaponNew" : RgbToColor(134.0, 2.0, 141.0)
+		},
+		"textures" : {}
+	},
+	105 : {
+		"name": "Warlords Vigil",
+		"description" : "An axe unbeknownst to mankind",
+		"type" : "Sword",
+		"slot" : "weapon",
+		"tier" : "UT",
+		
+		"rof" : 150,
+		"stats" : {},
+		
+		"projectiles" : [
+			{
+				"damage" : [80,110],
+				"projectile" : "Dart",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [80,110],
+				"projectile" : "Dart",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(25),
+			},
+			{
+				"damage" : [80,110],
+				"projectile" : "Dart",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(-25),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,0)],
 		"colors" : {
 			"weaponSecondaryNew" : RgbToColor(231.0, 211.0, 61.0),
 			"weaponNew" : RgbToColor(134.0, 2.0, 141.0)
@@ -2591,6 +2666,11 @@ var characters = {
 	},
 }
 
+func DegreesToVector(degrees):
+	var radians = deg2rad(degrees)
+	var vector = Vector2(cos(radians), sin(radians))
+	return vector
+
 func RgbToColor(r, g, b):
 	r = r*1.0
 	g = g*1.0
@@ -2617,8 +2697,11 @@ func GetItem(item, include_class_boost = false):
 			if _item.type == type:
 				for subject in multipliers.keys():
 					if subject == "damage":
-						_item[subject][0] = floor(_item[subject][0]*multipliers[subject])
-						_item[subject][1] = floor(_item[subject][1]*multipliers[subject])
+						var index = -1
+						for projectile in _item.projectiles:
+							index += 1
+							_item.projectiles[index][subject][0] = floor(projectile.damage[0]*multipliers[subject])
+							_item.projectiles[index][subject][1] = floor(projectile.damage[1]*multipliers[subject])
 					elif subject == "stats":
 						for stat in _item[subject]:
 							_item[subject][stat] = floor(_item[subject][stat]*multipliers[subject])

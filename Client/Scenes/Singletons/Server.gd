@@ -263,10 +263,13 @@ func SendProjectile(projectile_data):
 	rpc_id(1, "SendPlayerProjectile", projectile_data)
 
 remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
-	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree or not get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)):
+	var node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id))
+	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree or not node:
 		pass
+	elif node.projectile_dict.has(OS.get_system_time_msecs()):
+		node.projectile_dict[OS.get_system_time_msecs()].append(projectile_data)
 	else:
-		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id)).projectile_dict[OS.get_system_time_msecs()] = projectile_data
+		node.projectile_dict[OS.get_system_time_msecs()] = [projectile_data]
 
 remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 	if instance_tree != current_instance_tree:

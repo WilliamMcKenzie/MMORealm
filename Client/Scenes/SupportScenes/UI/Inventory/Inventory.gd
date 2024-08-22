@@ -68,11 +68,22 @@ func InspectItem(_item):
 	else:
 		item_on_use.visible = false
 	
-	if item.has("damage"):
+	if item.has("projectiles"):
 		var item_damage = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Damage
 		var item_rof = $InspectItem/MarginContainer/VBoxContainer/ItemStats/Rof
+		var projectiles = item.projectiles
+		var max_damage = 0
+		var min_damage = OS.get_system_time_msecs()
 		
-		item_damage.get_node("Amount").text = "Damage: " + str(item.damage[0]) + "-" + str(item.damage[1])
+		for projectile_data in projectiles:
+			if projectile_data.damage[0] < min_damage:
+				min_damage = projectile_data.damage[0]
+			if projectile_data.damage[1] > max_damage:
+				max_damage = projectile_data.damage[1]
+		
+		item_damage.get_node("Amount").text = "Damage: " + str(min_damage) + "-" + str(max_damage)
+		if projectiles.size() > 1:
+			item_damage.get_node("Amount").text = "Damage: " + str(min_damage) + "-" + str(max_damage) + " (x"+str(projectiles.size())+")"
 		item_damage.visible = true
 		
 		if multipliers.has("damage"):

@@ -28,8 +28,8 @@ func _ready():
 	StartHTMLServer()
 	
 	#Open realm
-	for i in range(100):
-		PlayerVerification.CreateFakePlayerContainer()
+	#for i in range(100):
+		#PlayerVerification.CreateFakePlayerContainer()
 	
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
@@ -407,6 +407,13 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 
+func OffsetProjectileAngle(base_direction, offset_vector):
+	var base_angle = base_direction.angle()
+	var offset_angle = offset_vector.angle()
+	var new_angle = base_angle + offset_angle
+	var new_direction = Vector2(cos(new_angle), sin(new_angle))
+	
+	return new_direction
 remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -415,13 +422,15 @@ remote func SendPlayerProjectile(projectile_data):
 		return
 	
 	var weapon = player_container.gear.weapon
+	var projectile = weapon.projectiles[projectile_data.ProjectileIndex]
+	projectile_data.Direction = OffsetProjectileAngle(projectile_data.Direction, projectile.offset)
 	projectile_data.merge({
-		"Projectile":weapon.projectile,
-		"TileRange":weapon.tile_range,
-		"Piercing":weapon.piercing,
-		"Formula":weapon.formula,
-		"Speed":weapon.speed,
-		"Size":weapon.size,
+		"Projectile":projectile.projectile,
+		"TileRange":projectile.tile_range,
+		"Piercing":projectile.piercing,
+		"Formula":projectile.formula,
+		"Speed":projectile.speed,
+		"Size":projectile.size,
 	})
 	
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)

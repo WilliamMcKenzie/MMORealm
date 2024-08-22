@@ -12,7 +12,7 @@ var last_sprite_data = {
 
 func _physics_process(delta):
 	SpeedModifiers()
-	if projectile_dict != {}:
+	if projectile_dict.size() > 0:
 		ShootProjectile()
 
 func SpeedModifiers():
@@ -80,26 +80,26 @@ func MovePlayer(new_position, animation, sprite_data):
 func ShootProjectile():
 	for projectile_time in projectile_dict.keys():
 		if projectile_time <= OS.get_system_time_msecs():
-			var projectile_data = projectile_dict[projectile_time]
-			var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/Projectile.tscn"
-			var projectile = load(projectile_path)
-			var projectile_instance = projectile.instance()
-			
-			#Set projectile data
-			projectile_instance.position = $Axis.global_position + projectile_data["Direction"]*3
-			projectile_instance.original = false
-			projectile_instance.damage = round(CalculateDamageWithMultiplier(projectile_data["Damage"]))
-			projectile_instance.set_direction(projectile_data["Direction"])
-			projectile_instance.projectile = projectile_data["Projectile"]
-			projectile_instance.tile_range = projectile_data["TileRange"]
-			projectile_instance.piercing = projectile_data["Piercing"]
-			projectile_instance.formula = projectile_data["Formula"]
-			projectile_instance.speed = projectile_data["Speed"]
-			projectile_instance.size = projectile_data["Size"]
-			
-			projectile_dict.erase(projectile_time)
-			get_parent().get_parent().add_child(projectile_instance)
-			get_parent().get_parent().get_node(projectile_instance.name).look_at(projectile_data["MousePosition"])
+			for projectile_data in projectile_dict[projectile_time]:
+				var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/Projectile.tscn"
+				var projectile = load(projectile_path)
+				var projectile_instance = projectile.instance()
+				
+				#Set projectile data
+				projectile_instance.position = $Axis.global_position + projectile_data["Direction"]*3
+				projectile_instance.original = false
+				projectile_instance.damage = round(CalculateDamageWithMultiplier(projectile_data["Damage"]))
+				projectile_instance.set_direction(projectile_data["Direction"])
+				projectile_instance.projectile = projectile_data["Projectile"]
+				projectile_instance.tile_range = projectile_data["TileRange"]
+				projectile_instance.piercing = projectile_data["Piercing"]
+				projectile_instance.formula = projectile_data["Formula"]
+				projectile_instance.speed = projectile_data["Speed"]
+				projectile_instance.size = projectile_data["Size"]
+				
+				projectile_dict.erase(projectile_time)
+				get_parent().get_parent().add_child(projectile_instance)
+				get_parent().get_parent().get_node(projectile_instance.name).look_at(projectile_data["MousePosition"])
 
 func CalculateDamageWithMultiplier(damage):
 	if last_status_effects.has("damaging"):

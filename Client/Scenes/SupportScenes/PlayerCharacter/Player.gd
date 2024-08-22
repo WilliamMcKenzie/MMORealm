@@ -15,7 +15,7 @@ var indicators = {
 }
 
 #Sub variables (Will set these based on key variables onready)
-var projectile = load("res://Scenes/SupportScenes/Projectiles/Players/Projectile.tscn")
+var projectile = preload("res://Scenes/SupportScenes/Projectiles/Players/Projectile.tscn")
 
 var x = 0
 var y = 0
@@ -171,7 +171,10 @@ func MovePlayer(delta):
 	var menu = not GameUI.is_in_menu
 	
 	if timing and weapon and shoot and menu:
-		ShootProjectile()
+		var i = -1
+		for projectile_data in gear.weapon.projectiles:
+			i += 1
+			ShootProjectile(projectile_data, i)
 		last_shot_time = current_time
 		
 	#Animations
@@ -219,11 +222,19 @@ func DefinePlayerState():
 	var player_state = {"T":OS.get_system_time_msecs(), "P":get_global_position(), "A":lastAnimation, "S":lastSprite}
 	Server.SendPlayerState(player_state)
 
-func ShootProjectile():
+func OffsetProjectileAngle(base_direction, offset_vector):
+	var base_angle = base_direction.angle()
+	var offset_angle = offset_vector.angle()
+	var new_angle = base_angle + offset_angle
+	var new_direction = Vector2(cos(new_angle), sin(new_angle))
+	
+	return new_direction
+
+func ShootProjectile(projectile_data, projectile_index):
 	var mouse_position = get_global_mouse_position()
 	var direction = (mouse_position - position).normalized()
 	var projectile_instance = projectile.instance()
-	var damage = round(CalculateDamageWithMultiplier((rand_range(gear.weapon.damage[0], gear.weapon.damage[1]))))
+	var damage = round(CalculateDamageWithMultiplier((rand_range(projectile_data.damage[0], projectile_data.damage[1]))))
 	
 	if right_joystick_output != Vector2.ZERO:
 		mouse_position = right_joystick_output*100 + position
@@ -232,27 +243,28 @@ func ShootProjectile():
 		mouse_position = direction*100 + position
 	
 	#Send projectile to server
-	var projectile_data = {
+	var _projectile_data = {
+		"ProjectileIndex" : projectile_index,
 		"Damage" : damage,
-		"Position":$Axis.global_position,
-		"MousePosition":mouse_position,
-		"Direction":direction,
+		"Position": $Axis.global_position,
+		"MousePosition": position+100*OffsetProjectileAngle(direction, projectile_data.offset),
+		"Direction": direction,
 	}
-	Server.SendProjectile(projectile_data)
+	Server.SendProjectile(_projectile_data)
 	
 	#Set projectile data
 	projectile_instance.position = $Axis.global_position + direction*3
-	projectile_instance.projectile = gear.weapon.projectile
-	projectile_instance.tile_range = gear.weapon.tile_range
-	projectile_instance.piercing = gear.weapon.piercing
-	projectile_instance.formula = gear.weapon.formula
-	projectile_instance.speed = gear.weapon.speed
-	projectile_instance.size = gear.weapon.size
+	projectile_instance.projectile = projectile_data.projectile
+	projectile_instance.tile_range = projectile_data.tile_range
+	projectile_instance.piercing = projectile_data.piercing
+	projectile_instance.formula = projectile_data.formula
+	projectile_instance.speed = projectile_data.speed
+	projectile_instance.size = projectile_data.size
 	projectile_instance.damage = damage
 	
-	projectile_instance.set_direction(direction)
+	projectile_instance.set_direction(OffsetProjectileAngle(direction, projectile_data.offset))
 	get_parent().add_child(projectile_instance)
-	get_parent().get_node(projectile_instance.name).look_at(mouse_position)
+	get_parent().get_node(projectile_instance.name).look_at(position+100*OffsetProjectileAngle(direction, projectile_data.offset))
 
 func CalculateDamageWithMultiplier(damage):
 	var base_damage = (damage*(0.5 + (float(stats.attack)/float(50))))
