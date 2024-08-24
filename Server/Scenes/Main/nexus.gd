@@ -67,6 +67,9 @@ func _physics_process(delta):
 		for enemy_id in enemy_list.keys():
 			#Check if we need to switch phase
 			var _phases = ServerData.GetEnemy(enemy_list[enemy_id]["name"]).phases
+			if _phases.size() == 0:
+				return
+			
 			var __phase_index = enemy_list[enemy_id]["phase_index"]
 			var _phase = _phases[__phase_index]
 			

@@ -284,7 +284,7 @@ var rulers = {
 			},
 		]
 	},
-	"salazar_the_red" : {
+	"salazar" : {
 		"health" : 20,
 		"defense" : 1,
 		"exp" : 10,
@@ -306,6 +306,24 @@ var rulers = {
 		},
 		"phases" : [
 			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "salazar_left_wing",
+						"summon_position" : Vector2(-10,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "salazar_right_wing",
+						"summon_position" : Vector2(10,0),
+						"wait" : 1,
+					},
+				]
+			},
+			{
 				"duration" : 4,
 				"health" : [0,100],
 				"attack_pattern" : [
@@ -324,6 +342,50 @@ var rulers = {
 				]
 			},
 		]
+	},
+	"salazar_left_wing" : {
+		"health" : 20,
+		"defense" : 1,
+		"exp" : 10,
+		"behavior" : 0,
+		"speed" : 10,
+		"dungeon" : {
+			"rate" : 0,
+			"name" : "overgrown_temple"
+		},
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 0,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
+			"loot" : []
+		},
+		"phases" : []
+	},
+	"salazar_right_wing" : {
+		"health" : 20,
+		"defense" : 1,
+		"exp" : 10,
+		"behavior" : 0,
+		"speed" : 10,
+		"dungeon" : {
+			"rate" : 0,
+			"name" : "overgrown_temple"
+		},
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 0,
+					"chance" : 1,
+					"threshold" : 1,
+				},
+			],
+			"loot" : []
+		},
+		"phases" : []
 	},
 }
 var tutorial_enemies = {
@@ -1896,6 +1958,101 @@ var items = {
 		},
 		"textures" : {}
 	},
+	133 : {
+		"name": "Wand of Fire",
+		"description" : "A wooden wand with a fire spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "0",
+		
+		"rof" : 150,
+		"stats" : {
+		
+		},
+		"projectiles" : [
+			{
+				"damage" : [10,15],
+				"projectile" : "Fire1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 7,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(9,3)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(105.0, 51.0, 10.0)
+		},
+		"textures" : {
+		}
+	},
+	134 : {
+		"name": "Staff of Fire",
+		"description" : "A  with a fire spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "1",
+		
+		"rof" : 150,
+		"stats" : {
+		
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [25,30],
+				"projectile" : "Fire2",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 7,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(10,3)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0)
+		},
+		"textures" : {
+		}
+	},
+	135 : {
+		"name": "Sceptre of Fire",
+		"description" : "A powerful sceptre with a fire spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "2",
+		
+		"rof" : 150,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [50,60],
+				"projectile" : "Fire3",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 7,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(11,3)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0)
+		},
+		"textures" : {
+		}
+	},
 	500 : {
 		"name": "Iron Platebody",
 		"description" : "A beginner warriors only protection from death",
@@ -2017,6 +2174,204 @@ var items = {
 			"bodyMediumNew" : RgbToColor(0.0, 106.0, 138.0),
 			"bodyLightNew" : RgbToColor(0.0, 125.0, 163.0),
 			"bandNew" : RgbToColor(225.0, 179.0, 36.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	534 : {
+		"name": "Leather robe",
+		"description" : "a fine leather robe",
+		"type" : "Robe",
+		"slot" : "armor",
+		"tier" : "1",
+		
+		"stats" : {
+			"defense" : 2,
+			"attack" : 2
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,5)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(161.0, 87.0, 8.0),
+			"bodyLightNew" : RgbToColor(184.0, 99.0, 8.0),
+			"bandNew" : RgbToColor(190.0, 168.0, 48.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	535 : {
+		"name": "Magic robe",
+		"description" : "a wizard's robe imbued with a magic spell",
+		"type" : "Robe",
+		"slot" : "armor",
+		"tier" : "2",
+		
+		"stats" : {
+			"defense" : 3,
+			"attack" : 4
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,5)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(23.0, 163.0, 163.0),
+			"bodyLightNew" : RgbToColor(25.0, 182.0, 182.0),
+			"bandNew" : RgbToColor(225.0, 222.0, 213.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	536 : {
+		"name": "Dragonhide robe",
+		"description" : "a powerful robe made from the skin of a dragon",
+		"type" : "Robe",
+		"slot" : "armor",
+		"tier" : "3",
+		
+		"stats" : {
+			"defense" : 5,
+			"attack" : 7
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,5)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(160.0, 18.0, 0.0),
+			"bodyLightNew" : RgbToColor(25.0, 182.0, 182.0),
+			"bandNew" : RgbToColor(188.0, 21.0, 0.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	537 : {
+		"name": "Master's robe",
+		"description" : "a robe made for master wizards and magicians",
+		"type" : "Robe",
+		"slot" : "armor",
+		"tier" : "4",
+		
+		"stats" : {
+			"defense" : 6,
+			"attack" : 10
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,5)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(0.0, 106.0, 138.0),
+			"bodyLightNew" : RgbToColor(0.0, 125.0, 163.0),
+			"bandNew" : RgbToColor(231.0, 211.0, 61.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	566 : {
+		"name": "Worn tunic",
+		"description" : "An old tunic not worth its weight in fabric",
+		"type" : "Hide",
+		"slot" : "armor",
+		"tier" : "0",
+		
+		"stats" : {
+			"speed" : 2,
+			"defense" : 1 
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,6)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(105, 51.0, 10.0),
+			"bodyLightNew" : RgbToColor(123.0, 72.0, 17.0),
+			"bandNew" : RgbToColor(83.0, 39.0, 6.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	567 : {
+		"name": "Leather tunic",
+		"description" : "A simple leather tunic",
+		"type" : "Hide",
+		"slot" : "armor",
+		"tier" : "1",
+		
+		"stats" : {
+			"speed" : 3,
+			"defense" : 3 
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,6)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(161, 87.0, 8.0),
+			"bodyLightNew" : RgbToColor(184.0, 99.0, 8.0),
+			"bandNew" : RgbToColor(207.0, 189.0, 56.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	568 : {
+		"name": "Magic tunic",
+		"description" : "A tunic imbued with magical properties",
+		"type" : "Hide",
+		"slot" : "armor",
+		"tier" : "2",
+		
+		"stats" : {
+			"speed" : 4,
+			"defense" : 5
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,6)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(23.0, 163.0, 163.0),
+			"bodyLightNew" : RgbToColor(25.0, 182.0, 182.0),
+			"bandNew" : RgbToColor(225.0, 222.0, 213.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	569 : {
+		"name": "Dragonhide tunic",
+		"description" : "A powerful tunic made from the hide of a powerful dragon",
+		"type" : "Hide",
+		"slot" : "armor",
+		"tier" : "3",
+		
+		"stats" : {
+			"speed" : 5,
+			"defense" : 7
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,6)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(114.0, 12.0, 0.0),
+			"bodyLightNew" : RgbToColor(160.0, 18.0, 0.0),
+			"bandNew" : RgbToColor(213.0, 213.0, 148.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	570 : {
+		"name": "Master's tunic",
+		"description" : "A tunic made for a master archer",
+		"type" : "Hide",
+		"slot" : "armor",
+		"tier" : "4",
+		
+		"stats" : {
+			"speed" : 6,
+			"defense" : 10
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,6)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(231.0, 211.0, 61.0),
+			"bodyLightNew" : RgbToColor(2.0, 131.0, 116.0),
+			"bandNew" : RgbToColor(2.0, 131.0, 116.0),
 		},
 		"textures" : {
 			

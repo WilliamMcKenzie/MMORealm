@@ -6,7 +6,7 @@
 
 [sub_resource type="Animation" id=10]
 resource_name = "Attack"
-length = 0.6
+length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
@@ -88,9 +88,10 @@ material = ExtResource( 1 )
 position = Vector2( 10, 10 )
 scale = Vector2( 1.00334, 1 )
 texture = ExtResource( 2 )
+flip_h = true
 hframes = 4
 region_enabled = true
-region_rect = Rect2( 54, 36, 72, 18 )
+region_rect = Rect2( 72, 36.5, 72, 18 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
