@@ -68,7 +68,7 @@ func _physics_process(delta):
 			#Check if we need to switch phase
 			var _phases = ServerData.GetEnemy(enemy_list[enemy_id]["name"]).phases
 			if _phases.size() == 0:
-				return
+				continue
 			
 			var __phase_index = enemy_list[enemy_id]["phase_index"]
 			var _phase = _phases[__phase_index]
@@ -101,14 +101,14 @@ func _physics_process(delta):
 					var on_spawn = phase.has("on_spawn")
 					var possible = not use_limit or not used_before or (used_before and phase.max_uses > enemy_list[enemy_id]["used_phases"][_phase_index])
 					
-					if on_spawn and enemy_list[enemy_id]["used_phases"].size() == 0:
+					if on_spawn and health and possible:
 						possible_phases = [_phase_index]
 						break;
 					if health and possible:
 						possible_phases.append(_phase_index)
 				
 				if len(possible_phases) > 0:
-					var chosen_index = randi() % len(possible_phases)
+					var chosen_index = possible_phases[randi() % len(possible_phases)]
 					
 					#Check if used before
 					var used_before = enemy_list[enemy_id]["used_phases"].has(chosen_index)
@@ -117,11 +117,11 @@ func _physics_process(delta):
 					else:
 						enemy_list[enemy_id]["used_phases"][chosen_index] = 1
 					
-					if enemy_list[enemy_id]["phase_index"] != possible_phases[chosen_index]:
+					if enemy_list[enemy_id]["phase_index"] != chosen_index:
 						enemy_list[enemy_id]["pattern_index"] = 0
 					
-					enemy_list[enemy_id]["phase_index"] = possible_phases[chosen_index]
-					enemy_list[enemy_id]["phase_timer"] = phases[possible_phases[chosen_index]].duration
+					enemy_list[enemy_id]["phase_index"] = chosen_index
+					enemy_list[enemy_id]["phase_timer"] = phases[chosen_index].duration
 			
 			while enemy_list[enemy_id]["pattern_timer"] <= 0:
 				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
@@ -172,7 +172,7 @@ func _physics_process(delta):
 				
 				elif is_summon:
 					var summon_position = current_attack["summon_position"] + enemy_list[enemy_id]["position"]
-					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position)
+					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_list[enemy_id]["name"])
 				
 				enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
 				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
@@ -183,7 +183,7 @@ func _physics_process(delta):
 			
 			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
-				CalculateLootPool(enemy_list[enemy_id])
+				CalculateLootPool(enemy_list[enemy_id], enemy_id)
 				enemy_list.erase(enemy_id)
 				continue
 			
@@ -345,7 +345,7 @@ class SortByValue:
 		if a[1] < b[1]:
 			return true
 		return false
-func CalculateLootPool(enemy):
+func CalculateLootPool(enemy, enemy_id):
 	randomize()
 	if ServerData.GetEnemy(enemy.name).has("dungeon") and randf() < ServerData.GetEnemy(enemy.name).dungeon.rate:
 		OpenPortal(ServerData.GetEnemy(enemy.name).dungeon.name, instance_tree, enemy.position)
@@ -360,7 +360,7 @@ func CalculateLootPool(enemy):
 		if not player_container:
 			player_pool.erase(player_id)
 		else:
-			player_container.AddExp(exp_amount, enemy["name"])
+			player_container.AddExp(exp_amount, enemy["name"], enemy_id)
 	
 	#Handle loot drops
 	var ordered_pairs = []

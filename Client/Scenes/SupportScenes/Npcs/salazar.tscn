@@ -72,7 +72,7 @@ script = ExtResource( 3 )
 enemy_type = "troll_king"
 rect_size1 = Vector2( 38, 38 )
 rect_size2 = Vector2( 38, 38 )
-rect_position1 = Vector2( -10, -14 )
+rect_position1 = Vector2( -19, -37 )
 rect_position2 = Vector2( -19, -37 )
 
 [node name="Control" type="Control" parent="."]

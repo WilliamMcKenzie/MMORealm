@@ -95,9 +95,9 @@ func _physics_process(delta):
 	if GameUI.is_dead:
 		return
 	
-	SpeedModifiers()
 	UpdateStatusEffects()
 	MovePlayer(delta)
+	SpeedModifiers()
 	DefinePlayerState()
 
 func _unhandled_input(event):
@@ -114,6 +114,24 @@ func SpeedModifiers():
 		$Control.rect_size = Vector2(20,7)
 		$Control.rect_position = Vector2(-10,-6)
 		practical_speed = stats.speed * ClientData.unique_tiles[tile_index]
+		if ClientData.unique_tiles[tile_index] == 0:
+			$Control.rect_size = Vector2(20,10)
+			$Control.rect_position = Vector2(-10,-9)
+			practical_speed = stats.speed
+			var motion = Vector2.ZERO
+			if(Input.is_action_pressed("up")):
+				motion.y -= 1
+			if(Input.is_action_pressed("down")):
+				motion.y += 1
+			if(Input.is_action_pressed("left")):
+				motion.x -= 1
+			if(Input.is_action_pressed("right")):
+				motion.x += 1
+			if left_joystick_output != Vector2.ZERO:
+				motion = left_joystick_output
+			
+			motion = motion.normalized()
+			move_and_slide(motion * -practical_speed)
 	else:
 		$Control.rect_size = Vector2(20,10)
 		$Control.rect_position = Vector2(-10,-9)

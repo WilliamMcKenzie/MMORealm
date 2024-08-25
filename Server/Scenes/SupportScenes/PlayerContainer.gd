@@ -44,21 +44,60 @@ func _physics_process(delta):
 	clock_sync_timer += 1
 	if not character:
 		return
-		
-	if clock_sync_timer >= 3:
+	
+	if clock_sync_timer >= 3 and "island" in get_parent().get_parent().get_parent().name:
 		clock_sync_timer = 0
+		
+		
 		var server_node = get_node("/root/Server")
 		var instance_tree = server_node.player_state_collection[int(name)]["I"]
 		var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
+		var nearby_enemies = {}
 		
-		if "ruler_id" in instance_node and instance_node.ruler_id and instance_node.enemy_list.has(instance_node.ruler_id):
+		var quest_enemies = []
+		var tile
+		if character.level < 2:
+			quest_enemies = instance_node.beach_enemies
+			tile = 2
+		elif character.level < 6:
+			quest_enemies = instance_node.forest_enemies
+			tile = 3
+		elif character.level < 10:
+			quest_enemies = instance_node.plains_enemies
+			tile = 4
+		elif character.level < 16:
+			quest_enemies = instance_node.badlands_enemies
+			tile = 5
+		
+		var closest = OS.get_system_time_msecs()
+		var current_quest_data = null
+		
+		for enemy_id in instance_node.enemy_list.keys():
+			var enemy = instance_node.enemy_list[enemy_id]
+			if quest_enemies.has(enemy.name) and enemy.position.distance_to(self.position) < closest:
+				closest = enemy.position.distance_to(self.position)
+				current_quest = enemy_id 
+		
+		if character.level >= 16 and "ruler_id" in instance_node and instance_node.ruler_id and instance_node.enemy_list.has(instance_node.ruler_id):
 			current_quest = instance_node.ruler_id
-			var current_quest_data = instance_node.enemy_list[current_quest].duplicate()
+			current_quest_data = instance_node.enemy_list[current_quest].duplicate()
 			current_quest_data.id = current_quest
-			server_node.SendQuestData(name, current_quest_data)
-		else:
-			current_quest = null
-			server_node.SendQuestData(name, null)
+		elif current_quest and instance_node.enemy_list.has(current_quest):
+			current_quest_data = instance_node.enemy_list[current_quest].duplicate()
+			current_quest_data.id = current_quest
+		elif tile:
+			var tile_list = instance_node.tile_points[tile]
+			current_quest_data = {
+			"name":quest_enemies[0],
+			"position":tile_list[0],
+			"id" : "null"
+		}
+			
+		server_node.SendQuestData(name, current_quest_data)
+		
+	elif clock_sync_timer >= 3:
+		current_quest = null
+		get_node("/root/Server").SendQuestData(name, null)
 	
 	character.ability_cooldown -= delta
 	running_time += delta
@@ -491,7 +530,7 @@ func SetCharacter(characters):
 	
 	get_node("/root/Server").SendCharacterData(name, character)
 
-func AddExp(exp_amount, enemy_name):
+func AddExp(exp_amount, enemy_name, enemy_id):
 	if in_tutorial and tutorial_step == 4 and enemy_name == "troll_king":
 		tutorial_step += 1
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
@@ -500,6 +539,9 @@ func AddExp(exp_amount, enemy_name):
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 	
 	character.exp += exp_amount
+	if enemy_id == current_quest:
+		character.exp += exp_amount*2
+	
 	var exp_to_level = 100*pow(1.1962,character.level)
 	
 	if character.level >= 20 and character.exp >= 3600:
@@ -513,7 +555,7 @@ func AddExp(exp_amount, enemy_name):
 		var stat_rolls = {
 			"health" : 20,
 			"attack" : 1,
-			"defense" : 1,
+			"defense" : 0,
 			"speed" : 1,
 			"dexterity" : 1,
 			"vitality" : 1,
@@ -530,12 +572,18 @@ func DealDamage(damage, enemy_name):
 	if not character:
 		return
 	
-	var total_damage = floor(damage - character.stats.defense)
+	var practical_defense = character.stats.defense
+	for slot in gear.keys():
+		var item = gear[slot]
+		if item.stats.has("defense"):
+			practical_defense += item.stats.defense
+	
+	var total_damage = floor(damage - practical_defense)
 	if status_effects.has("armored"):
-		total_damage = floor(damage - (character.stats.defense*2))
+		total_damage = floor(damage - (practical_defense*2))
 	
 	if total_damage < damage - damage*0.9:
-		total_damage = floor(damage - damage*0.9)
+		total_damage = ceil(damage - damage*0.9)
 	
 	if status_effects.has("invincible"):
 		total_damage = 0

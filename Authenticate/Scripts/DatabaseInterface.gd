@@ -91,11 +91,11 @@ var default_account_data = {
 var new_character = {
 		"stats" : {
 			"health" : 100,
-			"attack" : 30,
+			"attack" : 20,
 			"defense" : 0,
-			"speed" : 30,
-			"dexterity" : 30,
-			"vitality" : 30
+			"speed" : 20,
+			"dexterity" : 20,
+			"vitality" : 20
 		},
 		"level" : 1,
 		"exp" : 0,

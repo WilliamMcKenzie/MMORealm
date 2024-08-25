@@ -16,15 +16,16 @@ var map_objects = {}
 
 #Players spawn points
 var spawn_points = []
+var tile_points = {}
 #Enemies spawn points
 var enemy_spawn_points = {}
 
 #Enemy variety
 var beach_enemies = ["crab", "slime"]
 var forest_enemies = ["goblin_cannon", "nature_druid", "slime"]
-var plains_enemies = ["troll_king", "troll_warrior", "troll_brute", "blue_slime", "blue_slime", "blue_slime"]
-var badlands_enemies = ["rat_king", "viking_king", "yellow_slime", "rat_mage", "rat_warrior"]
-var mountain_enemies = ["rock_golem","mummified_ghoul","shadow_spider","slime_god"]
+var plains_enemies = ["troll_king", "cyclops_leader", "imp_warrior", "blue_slime", "fire_druid"]
+var badlands_enemies = ["rat_king", "viking_king", "yellow_slime", "shadow_druid"]
+var mountain_enemies = ["cacodemon", "basalisk", "phoenix", "archmage"]
 
 #Chunks
 var chunks = {}
@@ -96,7 +97,7 @@ func _physics_process(delta):
 					if GameplayLoop.bosses_status.has(ruler):
 						GameplayLoop.bosses_status[ruler] = false
 				else:
-					CalculateLootPool(enemy_list[enemy_id])
+					CalculateLootPool(enemy_list[enemy_id], enemy_id)
 					var chunk = CalculateChunk(enemy["position"])
 					
 					if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):
@@ -104,14 +105,15 @@ func _physics_process(delta):
 					enemy_list.erase(enemy_id)
 				continue
 		last_tick = running_time
-			
+	
 	sync_clock_counter += 1
 	if sync_clock_counter ==  60*5:
 		sync_clock_counter = 0
 		for chunk in chunks:
 			if IsChunkRadiusEmpty(chunk):
 				for id in chunks[chunk]["E"].keys():
-					if enemy_list[id].name != ruler:
+					var is_ruler = enemy_list[id].origin == ruler or enemy_list[id].name == ruler
+					if not is_ruler:
 						enemy_list.erase(id)
 						chunks[chunk]["E"].erase(id)
 func SpawnEnemy(enemy, enemy_id):
@@ -246,16 +248,30 @@ func PopulateTiles():
 			else:
 				map_as_array[x].append(0)
 	
-	if load("res://Scenes/SupportScenes/Island/" + ruler + ".tscn"):
-		var setpiece = load("res://Scenes/SupportScenes/Island/" + ruler + ".tscn").instance()
-		for x in range(-32, 32*2):
-			for y in range(-32, 32*2):
-				var current_tile = setpiece.get_cell(x,y)
-				
-				if current_tile > -1:
-					var pos = Vector2(x + round(map_size.x/2), y + round(map_size.y/2))
-					map_as_array[pos.x][pos.y] = current_tile
-					$TileMap.set_cell(pos.x, pos.y, map_as_array[pos.x][pos.y])
+	var structures = ["ruins_0", "ruins_1", "ruins_2"]
+	for x in range(0, map_size.x, chunk_size):
+		for y in range(0, map_size.y, chunk_size):
+			var tile = map_as_array[x][y]
+			var structure_seed = randf()
+			var structure_index = round(rand_range(0, structures.size()-1))
+			if tile == 6 and structure_seed < 0.3:
+				var structure = load("res://Scenes/SupportScenes/Island/Structures/" + structures[structure_index] + ".tscn").instance()
+				CreateStructure(structure, Vector2(x,y))
+		
+	
+	if load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn"):
+		var setpiece = load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn").instance()
+		CreateStructure(setpiece, Vector2(round(map_size.x/2), round(map_size.y/2)))
+
+func CreateStructure(structure, placement):
+	for x in range(-32, 32*2):
+		for y in range(-32, 32*2):
+			var current_tile = structure.get_cell(x,y)
+			
+			if current_tile > -1:
+				var pos = Vector2(x + placement.x, y + placement.y)
+				map_as_array[pos.x][pos.y] = current_tile
+				$TileMap.set_cell(pos.x, pos.y, map_as_array[pos.x][pos.y])
 
 func _ready():
 	ArrayToTiles()
@@ -300,6 +316,10 @@ func ArrayToTiles():
 			var spawnpoint_tile = x%12 == 0 and y%12 == 0
 			var spawnpoint_position = Vector2(x+round(rand_range(-4, 4)), y+round(rand_range(-4, 4)))
 			
+			if tile_points.has(map_tile):
+				tile_points[map_tile].append(Vector2(x*8, y*8))
+			else:
+				tile_points[map_tile] = [Vector2(x*8, y*8)]
 			if map_tile == 2:
 				spawn_points.append(Vector2(x*8, y*8))
 			

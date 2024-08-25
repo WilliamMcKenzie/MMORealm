@@ -15,150 +15,74 @@ var basic_loot_pools = {
 	},
 	"lowlands_1" : {
 		"soulbound_loot" : [],
-		"loot" : [
-			{
-				"item" : 100,
-				"chance" : 0.05,
-			},
-			{
-				"item" : 400,
-				"chance" : 0.05,
-			},
-			{
-				"item" : 500,
-				"chance" : 0.05,
-			},
-		]
+		"loot" : []
 	},
 	"lowlands_2" : {
 		"soulbound_loot" : [],
-		"loot" : [
-			{
-				"item" : 100,
-				"chance" : 0.15,
-			},
-			{
-				"item" : 400,
-				"chance" : 0.15,
-			},
-			{
-				"item" : 500,
-				"chance" : 0.15,
-			},
-		]
+		"loot" : []
 	},
 	"midlands_1" : {
 		"soulbound_loot" : [],
-		"loot" : [
-			{
-				"item" : 101,
-				"chance" : 0.05,
-			},
-			{
-				"item" : 401,
-				"chance" : 0.05,
-			},
-			{
-				"item" : 501,
-				"chance" : 0.05,
-			},
-		]
+		"loot" : []
 	},
 	"midlands_2" : {
 		"soulbound_loot" : [],
-		"loot" : [
-			{
-				"item" : 101,
-				"chance" : 0.2,
-			},
-			{
-				"item" : 401,
-				"chance" : 0.2,
-			},
-			{
-				"item" : 501,
-				"chance" : 0.2,
-			},
-		]
+		"loot" : []
 	},
 	"highlands_1" : {
 		"soulbound_loot" : [],
-		"loot" : [
-			{
-				"item" : 101,
-				"chance" : 0.03,
-			},
-			{
-				"item" : 401,
-				"chance" : 0.03,
-			},
-			{
-				"item" : 501,
-				"chance" : 0.03,
-			},
-		]
+		"loot" : []
 	},
 	"highlands_2" : {
-		"soulbound_loot" : [
-				{
-					"item" : 102,
-					"chance" : 0.1,
-					"threshold" : 0.2,
-				},
-				{
-					"item" : 402,
-					"chance" : 0.1,
-					"threshold" : 0.2,
-				},
-				{
-					"item" : 502,
-					"chance" : 0.1,
-					"threshold" : 0.2,
-				}
-		],
+		"soulbound_loot" : [],
 		"loot" : []
 	},
 	"godlands_1" : {
-		"soulbound_loot" : [
-				{
-					"item" : 103,
-					"chance" : 0.05,
-					"threshold" : 0.2,
-				},
-				{
-					"item" : 403,
-					"chance" : 0.05,
-					"threshold" : 0.2,
-				},
-				{
-					"item" : 503,
-					"chance" : 0.05,
-					"threshold" : 0.2,
-				},
-				{
-					"item" : 102,
-					"chance" : 0.1,
-					"threshold" : 0.2,
-				},
-				{
-					"item" : 402,
-					"chance" : 0.1,
-					"threshold" : 0.2,
-				},
-				{
-					"item" : 502,
-					"chance" : 0.1,
-					"threshold" : 0.2,
-				},
-				{
-					"item" : 0,
-					"chance" : 0.01,
-					"threshold" : 0.2,
-				}
-		],
+		"soulbound_loot" : [],
 		"loot" : []
 	},
 }
+
+func _ready():
+	for item_id in items.keys():
+		var item = items[item_id]
+		if item.tier == "0":
+			basic_loot_pools["lowlands_1"].loot.append({
+				"item" : item_id,
+				"chance" : 0.05,
+			})
+			basic_loot_pools["lowlands_2"].loot.append({
+				"item" : item_id,
+				"chance" : 0.15,
+			})
+		if item.tier == "1":
+			basic_loot_pools["midlands_1"].loot.append({
+				"item" : item_id,
+				"chance" : 0.05,
+			})
+			basic_loot_pools["midlands_2"].loot.append({
+				"item" : item_id,
+				"chance" : 0.15,
+			})
+			basic_loot_pools["highlands_1"].loot.append({
+				"item" : item_id,
+				"chance" : 0.05,
+			})
+			basic_loot_pools["highlands_2"].loot.append({
+				"item" : item_id,
+				"chance" : 0.15,
+			})
+		if item.tier == "2":
+			basic_loot_pools["highlands_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : 0.01,
+				"threshold" : 0.2,
+			})
+			basic_loot_pools["highlands_2"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : 0.1,
+				"threshold" : 0.2,
+			})
 
 var rulers = {
 	"oranix" : {
@@ -288,7 +212,7 @@ var rulers = {
 		"health" : 20,
 		"defense" : 1,
 		"exp" : 10,
-		"behavior" : 1,
+		"behavior" : 0,
 		"speed" : 10,
 		"dungeon" : {
 			"rate" : 0,
@@ -313,12 +237,12 @@ var rulers = {
 				"attack_pattern" : [
 					{
 						"summon" : "salazar_left_wing",
-						"summon_position" : Vector2(-10,0),
+						"summon_position" : Vector2(-14,-1),
 						"wait" : 0,
 					},
 					{
 						"summon" : "salazar_right_wing",
-						"summon_position" : Vector2(10,0),
+						"summon_position" : Vector2(15,-1),
 						"wait" : 1,
 					},
 				]
@@ -344,7 +268,7 @@ var rulers = {
 		]
 	},
 	"salazar_left_wing" : {
-		"health" : 20,
+		"health" : 200000,
 		"defense" : 1,
 		"exp" : 10,
 		"behavior" : 0,
@@ -366,7 +290,7 @@ var rulers = {
 		"phases" : []
 	},
 	"salazar_right_wing" : {
-		"health" : 20,
+		"health" : 200000,
 		"defense" : 1,
 		"exp" : 10,
 		"behavior" : 0,
@@ -488,7 +412,7 @@ var tutorial_enemies = {
 	},
 	"tutorial_troll_king" : {
 		"health" : 300,
-		"defense" : 10,
+		"defense" : 2,
 		"exp" : 10,
 		"behavior" : 1,
 		"speed" : 10,
@@ -665,7 +589,7 @@ var realm_enemies = {
 		"loot_pool" :  basic_loot_pools["lowlands_2"],
 		"phases" : [
 			{
-				"duration" : 4,
+				"duration" : 1,
 				"max_uses" : 1,
 				"on_spawn" : true,
 				"health" : [0,100],
@@ -683,7 +607,7 @@ var realm_enemies = {
 					{
 						"summon" : "nature_sprite_stationary",
 						"summon_position" : Vector2(-10,5),
-						"wait" : 5,
+						"wait" : 2,
 					},
 				]
 			},
@@ -794,7 +718,7 @@ var realm_enemies = {
 				]
 			},
 			{
-				"duration" : 4,
+				"duration" : 1,
 				"max_uses" : 1,
 				"health" : [0,50],
 				"attack_pattern" : [
@@ -811,7 +735,7 @@ var realm_enemies = {
 					{
 						"summon" : "nature_sprite",
 						"summon_position" : Vector2(-10,5),
-						"wait" : 5,
+						"wait" : 2,
 					},
 				]
 			},
@@ -822,9 +746,9 @@ var realm_enemies = {
 					{
 						"projectile" : "Nature2",
 						"formula" : "sin(x)",
-						"damage" : 20,
+						"damage" : 7,
 						"piercing" : false,
-						"wait" : 1,
+						"wait" : 0.3,
 						"speed" : 30,
 						"tile_range" : 10,
 						"targeter" : "nearest",
@@ -897,7 +821,7 @@ var realm_enemies = {
 		"defense" : 3,
 		"exp" : 10,
 		"behavior" : 2,
-		"speed" : 6,
+		"speed" : 15,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
 			{
@@ -924,7 +848,7 @@ var realm_enemies = {
 		"health" : 30,
 		"defense" : 0,
 		"exp" : 10,
-		"behavior" : 1,
+		"behavior" : 2,
 		"speed" : 5,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
 		"phases" : [
@@ -981,24 +905,6 @@ var realm_enemies = {
 		"loot_pool" :  basic_loot_pools["lowlands_2"],
 		"phases" : [
 			{
-				"duration" : 7,
-				"health" : [0,100],
-				"attack_pattern" : [
-					{
-						"projectile" : "CannonBall",
-						"formula" : "0",
-						"damage" : 30,
-						"piercing" : true,
-						"wait" : 7,
-						"speed" : 12,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 5
-					}
-				]
-			},
-			{
 				"duration" : 1,
 				"max_uses" : 1,
 				"on_spawn" : true,
@@ -1022,20 +928,56 @@ var realm_enemies = {
 					{
 						"summon" : "goblin_warrior",
 						"summon_position" : Vector2(-10,0),
-						"wait" : 600000,
+						"wait" : 2,
 					},
+				]
+			},
+			{
+				"duration" : 7,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "CannonBall",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : true,
+						"wait" : 7,
+						"speed" : 12,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 5
+					}
 				]
 			},
 		]
 	},
 	"blue_slime" : {
-		"health" : 400,
+		"health" : 700,
 		"defense" : 1,
-		"exp" : 12,
+		"exp" : 45,
 		"behavior" : 1,
 		"speed" : 5,
 		"loot_pool" : basic_loot_pools["midlands_1"],
 		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "slime",
+						"summon_position" : Vector2(10,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "slime",
+						"summon_position" : Vector2(0,-10),
+						"wait" : 2,
+					},
+				]
+			},
 			{
 				"duration" : 10,
 				"health" : [0,100],
@@ -1043,11 +985,11 @@ var realm_enemies = {
 					{
 						"projectile" : "Water2",
 						"formula" : "0",
-						"damage" : 5,
-						"piercing" : true,
-						"wait" : 1,
-						"speed" : 10,
-						"tile_range" : 4,
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 70,
+						"tile_range" : 7,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
 						"size" : 4
@@ -1056,26 +998,464 @@ var realm_enemies = {
 						"projectile" : "Water1",
 						"formula" : "0",
 						"damage" : 5,
-						"piercing" : true,
-						"wait" : 3,
-						"speed" : 8,
-						"tile_range" : 3,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 70,
+						"tile_range" : 7,
 						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
+						"direction" : DegreesToVector(-25),
+						"size" : 3
+					},
+					{
+						"projectile" : "Water1",
+						"formula" : "0",
+						"damage" : 5,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 70,
+						"tile_range" : 7,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
 						"size" : 3
 					}
 				]
 			}
 		]
 	},
+	"cyclops_underling" : {
+		"health" : 50,
+		"defense" : 0,
+		"exp" : 13,
+		"behavior" : 1,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 3,
+						"speed" : 20,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 4
+					},
+				]
+			}
+		]
+	},
+	"cyclops_leader" : {
+		"health" : 300,
+		"defense" : 5,
+		"exp" : 89,
+		"behavior" : 1,
+		"speed" : 6,
+		"loot_pool" : basic_loot_pools["midlands_2"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "cyclops_underling",
+						"summon_position" : Vector2(10,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "cyclops_underling",
+						"summon_position" : Vector2(0,-10),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 15,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 4
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 40,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 4
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 7,
+						"direction" : Vector2(0,1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 7,
+						"direction" : Vector2(0.866,0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 7,
+						"direction" : Vector2(0.866,-0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 7,
+						"direction" : Vector2(0,-1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 7,
+						"direction" : Vector2(-0.866,-0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Stack",
+						"formula" : "0",
+						"damage" : 10,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 7,
+						"direction" : Vector2(-0.866,0.5),
+						"size" : 7
+					},
+				]
+			}
+		]
+	},
+	"imp_warrior" : {
+		"health" : 200,
+		"defense" : 5,
+		"exp" : 35,
+		"behavior" : 2,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["midlands_1"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "imp_archer",
+						"summon_position" : Vector2(10,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "imp_mage",
+						"summon_position" : Vector2(0,-10),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 70,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 6
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 25,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 50,
+						"tile_range" : 4,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 6
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 35,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 6
+					},
+				]
+			}
+		]
+	},
+	"imp_archer" : {
+		"health" : 100,
+		"defense" : 0,
+		"exp" : 35,
+		"behavior" : 2,
+		"speed" : 8,
+		"loot_pool" : basic_loot_pools["midlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 4
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 4
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : true,
+						"wait" : 6,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 4
+					},
+				]
+			}
+		]
+	},
+	"imp_mage" : {
+		"health" : 100,
+		"defense" : 0,
+		"exp" : 35,
+		"behavior" : 2,
+		"speed" : 7,
+		"loot_pool" : basic_loot_pools["midlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "BlueBlast",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 4
+					},
+					{
+						"projectile" : "BlueBlast",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 4
+					},
+				]
+			}
+		]
+	},
+	"fire_druid" : {
+		"health" : 200,
+		"defense" : 0,
+		"exp" : 43,
+		"behavior" : 1,
+		"speed" : 10,
+		"loot_pool" :  basic_loot_pools["midlands_2"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 12,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 12,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 12,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(15),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 12,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-15),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 24,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 24,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire3",
+						"formula" : "0",
+						"damage" : 32,
+						"piercing" : false,
+						"wait" : 6,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+				]
+			}
+		]
+	},
 	"troll_warrior" : {
 		"variations" : ["tutorial_troll_warrior"],
-		"health" : 300,
+		"health" : 100,
 		"defense" : 1,
 		"exp" : 6,
 		"behavior" : 2,
 		"speed" : 20,
-		"loot_pool" :  basic_loot_pools["midlands_1"],
+		"loot_pool" :  basic_loot_pools["none"],
 		"phases" : [
 			{
 				"duration" : 10,
@@ -1130,8 +1510,8 @@ var realm_enemies = {
 		]
 	},
 	"troll_brute" : {
-		"health" : 400,
-		"defense" : 10,
+		"health" : 200,
+		"defense" : 5,
 		"exp" : 12,
 		"behavior" : 1,
 		"speed" : 10,
@@ -1171,8 +1551,8 @@ var realm_enemies = {
 	},
 	"troll_king" : {
 		"variations" : ["tutorial_troll_king"],
-		"health" : 700,
-		"defense" : 10,
+		"health" : 300,
+		"defense" : 5,
 		"exp" : 64,
 		"behavior" : 1,
 		"speed" : 5,
@@ -1301,11 +1681,11 @@ var realm_enemies = {
 		]
 	},
 	"rat_warrior" : {
-		"health" : 500,
+		"health" : 100,
 		"defense" : 6,
 		"exp" : 24,
 		"behavior" : 2,
-		"speed" : 20,
+		"speed" : 40,
 		"loot_pool" :  basic_loot_pools["highlands_1"],
 		"phases" : [
 			{
@@ -1313,16 +1693,40 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Slash",
+						"projectile" : "Wave",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 30,
 						"piercing" : false,
-						"wait" : 3,
-						"speed" : 10,
-						"tile_range" : 3,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 5,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "IronSlash",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(15),
+						"size" : 7
+					},
+					{
+						"projectile" : "IronSlash",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : false,
+						"wait" : 2.5,
+						"speed" : 25,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-15),
+						"size" : 7
 					},
 				]
 			}
@@ -1341,23 +1745,47 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Fire1",
+						"projectile" : "BrownBlast",
+						"formula" : "0",
+						"damage" : 25,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-15),
+						"size" : 5
+					},
+					{
+						"projectile" : "BrownBlast",
+						"formula" : "0",
+						"damage" : 25,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(15),
+						"size" : 5
+					},
+					{
+						"projectile" : "BrownBlast",
 						"formula" : "0",
 						"damage" : 10,
 						"piercing" : false,
-						"wait" : 3,
-						"speed" : 10,
-						"tile_range" : 3,
+						"wait" : 2,
+						"speed" : 40,
+						"tile_range" : 8,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
+						"direction" : DegreesToVector(0),
+						"size" : 5
 					},
 				]
 			}
 		]
 	},
 	"rat_king" : {
-		"health" : 1000,
+		"health" : 600,
 		"defense" : 4,
 		"exp" : 200,
 		"behavior" : 1,
@@ -1365,7 +1793,7 @@ var realm_enemies = {
 		"loot_pool" : basic_loot_pools["highlands_2"],
 		"phases" : [
 			{
-				"duration" : 2,
+				"duration" : 1,
 				"health" : [0,100],
 				"on_spawn" : true,
 				"max_uses" : 1,
@@ -1376,11 +1804,6 @@ var realm_enemies = {
 						"wait" : 0.1,
 					},
 					{
-						"summon" : "rat_warrior",
-						"summon_position" : Vector2(10,0),
-						"wait" : 0.1,
-					},
-					{
 						"summon" : "rat_mage",
 						"summon_position" : Vector2(0,10),
 						"wait" : 0.1,
@@ -1388,7 +1811,7 @@ var realm_enemies = {
 					{
 						"summon" : "rat_mage",
 						"summon_position" : Vector2(0,-10),
-						"wait" : 6000,
+						"wait" : 2,
 					},
 				]
 			},
@@ -1397,17 +1820,41 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Blast",
+						"projectile" : "GoldSlash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 35,
 						"piercing" : false,
-						"wait" : 1,
-						"speed" : 7,
+						"wait" : 0.5,
+						"speed" : 25,
 						"tile_range" : 5,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
+						"direction" : DegreesToVector(-15),
 						"size" : 7
-					}
+					},
+					{
+						"projectile" : "GoldSlash",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 25,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "GoldSlash",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 25,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(15),
+						"size" : 7
+					},
 				]
 			},
 			{
@@ -1415,28 +1862,40 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "SmallBlast",
+						"projectile" : "Wave",
 						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
+						"damage" : 35,
+						"piercing" : true,
 						"wait" : 0,
-						"speed" : 10,
+						"speed" : 50,
 						"tile_range" : 5,
 						"targeter" : "nearest",
-						"direction" : Vector2(2,0),
-						"size" : 5
+						"direction" : DegreesToVector(0),
+						"size" : 7
 					},
 					{
-						"projectile" : "SmallBlast",
+						"projectile" : "GoldSlash",
 						"formula" : "0",
-						"damage" : 10,
-						"piercing" : false,
-						"wait" : 3,
-						"speed" : 10,
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 50,
 						"tile_range" : 5,
 						"targeter" : "nearest",
-						"direction" : Vector2(-2,0),
-						"size" : 5
+						"direction" : DegreesToVector(15),
+						"size" : 7
+					},
+					{
+						"projectile" : "GoldSlash",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 2.5,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-15),
+						"size" : 7
 					},
 				]
 			}
@@ -1480,79 +1939,153 @@ var realm_enemies = {
 					{
 						"projectile" : "Wave",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 20,
 						"piercing" : false,
 						"wait" : 0,
-						"speed" : 10,
-						"tile_range" : 5,
+						"speed" : 44,
+						"tile_range" : 6,
 						"direction" : Vector2(0,1),
-						"size" : 4
+						"size" : 7
 					},
 					{
 						"projectile" : "Wave",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 20,
 						"piercing" : false,
 						"wait" : 0,
-						"speed" : 10,
-						"tile_range" : 5,
+						"speed" : 44,
+						"tile_range" : 6,
+						"direction" : Vector2(0.707,0.707),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 44,
+						"tile_range" : 6,
 						"direction" : Vector2(1,0),
-						"size" : 4
+						"size" : 7
 					},
 					{
 						"projectile" : "Wave",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 20,
 						"piercing" : false,
 						"wait" : 0,
-						"speed" : 10,
-						"tile_range" : 5,
-						"direction" : Vector2(0,-1),
-						"size" : 4
+						"speed" : 44,
+						"tile_range" : 6,
+						"direction" : Vector2(0.707,-0.707),
+						"size" : 7
 					},
 					{
 						"projectile" : "Wave",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 20,
 						"piercing" : false,
-						"wait" : 1,
-						"speed" : 10,
-						"tile_range" : 5,
+						"wait" : 0,
+						"speed" : 44,
+						"tile_range" : 6,
+						"direction" : Vector2(0,-1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 44,
+						"tile_range" : 6,
+						"direction" : Vector2(-0.707,-0.707),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 44,
+						"tile_range" : 6,
 						"direction" : Vector2(-1,0),
-						"size" : 4
-					}
-				]
-			},
-			{
-				"duration" : 6,
-				"health" : [0,100],
-				"attack_pattern" : [
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 44,
+						"tile_range" : 6,
+						"direction" : Vector2(-0.707,0.707),
+						"size" : 7
+					},
 					{
 						"projectile" : "Spinner",
 						"formula" : "0",
 						"damage" : 50,
 						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 7,
+						"wait" : 0,
+						"speed" : 20,
 						"tile_range" : 3,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
+						"direction" : DegreesToVector(-17),
+						"size" : 7
 					},
 					{
-						"projectile" : "Star",
+						"projectile" : "Spinner",
 						"formula" : "0",
-						"damage" : 40,
+						"damage" : 50,
 						"piercing" : false,
-						"wait" : 3,
-						"speed" : 7,
+						"wait" : 0,
+						"speed" : 20,
 						"tile_range" : 3,
 						"targeter" : "nearest",
-						"direction" : Vector2(10,0),
-						"size" : 4
+						"direction" : DegreesToVector(17),
+						"size" : 7
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 5
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(35),
+						"size" : 5
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-35),
+						"size" : 5
 					},
 				]
-			}
+			},
 		]
 	},
 	"viking_warrior" : {
@@ -1572,11 +2105,35 @@ var realm_enemies = {
 						"formula" : "0",
 						"damage" : 20,
 						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 20,
+						"tile_range" : 2,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 4
+					},
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 20,
+						"tile_range" : 2,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 4
+					},
+					{
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
 						"wait" : 3,
 						"speed" : 20,
 						"tile_range" : 2,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
+						"direction" : DegreesToVector(0),
 						"size" : 4
 					},
 				]
@@ -1584,10 +2141,341 @@ var realm_enemies = {
 		]
 	},
 	"yellow_slime" : {
-		"health" : 350,
+		"health" : 1000,
 		"defense" : 0,
-		"exp" : 62,
+		"exp" : 150,
 		"behavior" : 1,
+		"speed" : 20,
+		"loot_pool" : basic_loot_pools["highlands_2"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [50,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 6
+					},
+					{
+						"projectile" : "Fire3",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 6
+					},
+				]
+			},
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "blue_slime",
+						"summon_position" : Vector2(10,10),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : false,
+						"wait" : 0.25,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0.25,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 6
+					},
+					{
+						"projectile" : "Fire3",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0.25,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 30,
+						"piercing" : false,
+						"wait" : 0.25,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire1",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0.25,
+						"speed" : 25,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 6
+					},
+				]
+			},
+		]
+	},
+	"shadow_druid" : {
+		"health" : 300,
+		"defense" : 22,
+		"exp" : 200,
+		"behavior" : 1,
+		"speed" : 10,
+		"loot_pool" :  basic_loot_pools["highlands_2"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "skeletal_warrior",
+						"summon_position" : Vector2(10,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "skeletal_archer",
+						"summon_position" : Vector2(0,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "skeletal_archer",
+						"summon_position" : Vector2(-10,5),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"summon" : "skeletal_warrior",
+						"summon_position" : Vector2(10,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "skeletal_archer",
+						"summon_position" : Vector2(0,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "skeletal_archer",
+						"summon_position" : Vector2(-10,5),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [50,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Void1",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(35),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 3,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-35),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 3,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(35),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 35,
+						"piercing" : true,
+						"wait" : 1,
+						"speed" : 20,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-35),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-35),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(35),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+				]
+			},
+		]
+	},
+	"skeletal_warrior" : {
+		"health" : 180,
+		"defense" : 22,
+		"exp" : 35,
+		"behavior" : 2,
 		"speed" : 20,
 		"loot_pool" : basic_loot_pools["highlands_1"],
 		"phases" : [
@@ -1596,39 +2484,227 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Fire2",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 10,
-						"tile_range" : 4,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
-					},
-					{
-						"projectile" : "Fire1",
+						"projectile" : "RexiumSlash",
 						"formula" : "0",
 						"damage" : 20,
 						"piercing" : false,
-						"wait" : 3,
-						"speed" : 8,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 6
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0.8,
+						"speed" : 35,
+						"tile_range" : 4,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 6
+					},
+				]
+			}
+		]
+	},
+	"skeletal_archer" : {
+		"health" : 90,
+		"defense" : 10,
+		"exp" : 35,
+		"behavior" : 1,
+		"speed" : 5,
+		"loot_pool" : basic_loot_pools["highlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "RexiumArrow",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 45,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 6
+					},
+					{
+						"projectile" : "RexiumArrow",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : true,
+						"wait" : 4,
+						"speed" : 35,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 6
+					},
+				]
+			}
+		]
+	},
+	"cacodemon" : {
+		"health" : 1200,
+		"defense" : 12,
+		"exp" : 200,
+		"behavior" : 2,
+		"speed" : 20,
+		"loot_pool" : basic_loot_pools["godlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Void1",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 9,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Void1",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 9,
+						"targeter" : "nearest",
+						"direction" : Vector2(0.866,0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Void1",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 9,
+						"targeter" : "nearest",
+						"direction" : Vector2(0.866,-0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Void1",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 9,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,-1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Void1",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 9,
+						"targeter" : "nearest",
+						"direction" : Vector2(-0.866,-0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Void1",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 9,
+						"targeter" : "nearest",
+						"direction" : Vector2(-0.866,0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "RexiumSlash",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 40,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "RexiumSlash",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 4,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(7),
+						"size" : 7
+					},
+					{
+						"projectile" : "RexiumSlash",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 60,
 						"tile_range" : 3,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 3
-					}
+						"direction" : DegreesToVector(15),
+						"size" : 7
+					},
+					{
+						"projectile" : "RexiumSlash",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 4,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-7),
+						"size" : 7
+					},
+					{
+						"projectile" : "RexiumSlash",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 60,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-15),
+						"size" : 7
+					},
 				]
-			}
+			},
 		]
 	},
-	"rock_golem" : {
-		"health" : 1500,
-		"defense" : 25,
-		"exp" : 200,
+	"basalisk" : {
+		"health" : 1000,
+		"defense" : 18,
+		"exp" : 250,
 		"behavior" : 2,
-		"speed" : 5,
+		"speed" : 10,
 		"loot_pool" : basic_loot_pools["godlands_1"],
 		"phases" : [
 			{
@@ -1636,27 +2712,111 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "PlatinumSlash",
+						"projectile" : "MithrilSlash",
 						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 3,
-						"speed" : 20,
-						"tile_range" : 4,
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 8,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 8
-					}
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Water2",
+						"formula" : "0",
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Water2",
+						"formula" : "0",
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 1.4,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Water2",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "MithrilSlash",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Water2",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "MithrilSlash",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Water2",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 1.4,
+						"speed" : 40,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
 				]
-			}
+			},
 		]
 	},
-	"mummified_ghoul" : {
-		"health" : 1500,
-		"defense" : 25,
-		"exp" : 200,
+	"phoenix" : {
+		"health" : 800,
+		"defense" : 15,
+		"exp" : 180,
 		"behavior" : 2,
-		"speed" : 5,
+		"speed" : 10,
 		"loot_pool" : basic_loot_pools["godlands_1"],
 		"phases" : [
 			{
@@ -1664,75 +2824,314 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "PlatinumSlash",
+						"projectile" : "Fire2",
 						"formula" : "0",
-						"damage" : 100,
+						"damage" : 90,
 						"piercing" : false,
-						"wait" : 3,
-						"speed" : 20,
-						"tile_range" : 4,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 8
-					}
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(40),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(60),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(40),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-40),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-60),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-40),
+						"size" : 7
+					},
+					{
+						"projectile" : "Fire2",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : 60,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
 				]
-			}
+			},
 		]
 	},
-	"shadow_spider" : {
-		"health" : 1500,
-		"defense" : 25,
-		"exp" : 200,
-		"behavior" : 2,
+	"ice_druid" : {
+		"health" : 90,
+		"defense" : 10,
+		"exp" : 55,
+		"behavior" : 1,
 		"speed" : 5,
-		"loot_pool" : basic_loot_pools["godlands_1"],
+		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
 			{
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "PlatinumSlash",
+						"projectile" : "RedBlast",
 						"formula" : "0",
-						"damage" : 100,
+						"damage" : 20,
 						"piercing" : false,
-						"wait" : 3,
-						"speed" : 20,
-						"tile_range" : 4,
+						"wait" : 0,
+						"speed" : 45,
+						"tile_range" : 3,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 8
-					}
+						"direction" : DegreesToVector(0),
+						"size" : 6
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 45,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 6
+					},
+					{
+						"projectile" : "BlueBlast",
+						"formula" : "0",
+						"damage" : 20,
+						"piercing" : false,
+						"wait" : 4,
+						"speed" : 45,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 6
+					},
 				]
 			}
 		]
 	},
-	"slime_god" : {
-		"health" : 1500,
-		"defense" : 25,
-		"exp" : 200,
-		"behavior" : 2,
-		"speed" : 5,
+	"archmage" : {
+		"health" : 700,
+		"defense" : 15,
+		"exp" : 225,
+		"behavior" : 1,
+		"speed" : 7,
 		"loot_pool" : basic_loot_pools["godlands_1"],
 		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "ice_druid",
+						"summon_position" : Vector2(10,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "ice_druid",
+						"summon_position" : Vector2(0,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "ice_druid",
+						"summon_position" : Vector2(-10,5),
+						"wait" : 2,
+					},
+				]
+			},
 			{
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "PlatinumSlash",
+						"projectile" : "BlueBlast",
 						"formula" : "0",
-						"damage" : 100,
+						"damage" : 60,
 						"piercing" : false,
-						"wait" : 3,
-						"speed" : 20,
-						"tile_range" : 4,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 8
-					}
+						"direction" : DegreesToVector(60),
+						"size" : 5
+					},
+					{
+						"projectile" : "RedBlast",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 5
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 1.5,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(300),
+						"size" : 5
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 120,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 120,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(120),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 120,
+						"piercing" : false,
+						"wait" : 1.5,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(240),
+						"size" : 7
+					},
 				]
-			}
+			},
 		]
 	},
 }
@@ -1994,7 +3393,7 @@ var items = {
 		"description" : "A  with a fire spell",
 		"type" : "Staff",
 		"slot" : "weapon",
-		"tier" : "1",
+		"tier" : "2",
 		
 		"rof" : 150,
 		"stats" : {
@@ -2026,7 +3425,7 @@ var items = {
 		"description" : "A powerful sceptre with a fire spell",
 		"type" : "Staff",
 		"slot" : "weapon",
-		"tier" : "2",
+		"tier" : "4",
 		
 		"rof" : 150,
 		"stats" : {
@@ -2159,21 +3558,22 @@ var items = {
 		}
 	},
 	533 : {
-		"name": "Running real fast robes",
-		"description" : "A testers first line of defense",
+		"name": "Worn robe",
+		"description" : "A flimsy robe",
 		"type" : "Robe",
 		"slot" : "armor",
-		"tier" : "5",
+		"tier" : "0",
 		
 		"stats" : {
-			"speed" : 100
+			"defense" : 1,
+			"attack" : 1
 		},
 		
-		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,5)],
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,5)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(0.0, 106.0, 138.0),
-			"bodyLightNew" : RgbToColor(0.0, 125.0, 163.0),
-			"bandNew" : RgbToColor(225.0, 179.0, 36.0),
+			"bodyMediumNew" : RgbToColor(105, 51.0, 10.0),
+			"bodyLightNew" : RgbToColor(123.0, 72.0, 17.0),
+			"bandNew" : RgbToColor(83.0, 39.0, 6.0),
 		},
 		"textures" : {
 			

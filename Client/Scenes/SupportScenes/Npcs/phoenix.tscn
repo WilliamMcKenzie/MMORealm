@@ -6,7 +6,7 @@
 
 [sub_resource type="Animation" id=10]
 resource_name = "Attack"
-length = 0.3
+length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
@@ -17,7 +17,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 2 ]
+"values": [ 1 ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -40,24 +40,12 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=6]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Control/Sprite:frame_coords")
+tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 0, 2 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Control/Sprite:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
@@ -90,7 +78,7 @@ scale = Vector2( 1.00334, 1 )
 texture = ExtResource( 2 )
 hframes = 4
 region_enabled = true
-region_rect = Rect2( 216, 0, 72, 18 )
+region_rect = Rect2( 126, 18, 72, 18 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Idle"

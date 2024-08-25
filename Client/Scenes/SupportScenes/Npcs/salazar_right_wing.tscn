@@ -70,9 +70,9 @@ extents = Vector2( 9, 9 )
 [node name="enemy" type="Node2D"]
 script = ExtResource( 3 )
 enemy_type = "troll_king"
-rect_size1 = Vector2( 20, 15 )
+rect_size1 = Vector2( 20, 19 )
 rect_size2 = Vector2( 20, 19 )
-rect_position1 = Vector2( -10, -14 )
+rect_position1 = Vector2( -10, -18 )
 rect_position2 = Vector2( -10, -18 )
 
 [node name="Control" type="Control" parent="."]

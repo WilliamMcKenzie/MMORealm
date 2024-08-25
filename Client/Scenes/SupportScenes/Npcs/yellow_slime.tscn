@@ -58,10 +58,14 @@ extents = Vector2( 5, 4 )
 [node name="enemy" type="Node2D"]
 script = ExtResource( 1 )
 enemy_type = "slime"
+rect_size1 = Vector2( 20, 15 )
+rect_size2 = Vector2( 20, 18 )
+rect_position1 = Vector2( -10, -14 )
+rect_position2 = Vector2( -10, -17 )
 
 [node name="Control" type="Control" parent="."]
 margin_left = -10.0
-margin_top = -9.0
+margin_top = -17.0
 margin_right = 10.0
 margin_bottom = 1.0
 rect_clip_content = true
@@ -69,8 +73,8 @@ mouse_filter = 2
 
 [node name="Sprite" type="Sprite" parent="Control"]
 material = ExtResource( 3 )
-position = Vector2( 10, 4.5 )
-scale = Vector2( 1.00334, 1 )
+position = Vector2( 10, 10 )
+scale = Vector2( 1.6, 1.6 )
 texture = ExtResource( 2 )
 hframes = 2
 region_enabled = true

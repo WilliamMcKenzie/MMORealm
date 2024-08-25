@@ -31,29 +31,12 @@ func _ready():
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
+	#SpawnNPC("archmage", ["nexus"], Vector2(50,50))
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
-	
-	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
-			{
-				"item" : 1,
-				"id" : generate_unique_id()
-			}], null, ["nexus"], Vector2(50, 50))
-	
-	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
-			{
-				"item" : 2,
-				"id" : generate_unique_id()
-			}], null, ["nexus"], Vector2(80, 50))
-	
-	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnLootBag([ 
-			{
-				"item" : 4,
-				"id" : generate_unique_id()
-			}], null, ["nexus"], Vector2(120, 50))
 
 func _process(delta):
 	if html_network.is_listening():
@@ -381,7 +364,7 @@ func SendAccountData(player_id, account_data):
 	rpc_id(int(player_id), "RecieveAccountData", account_data)
 
 #NPCS/ENEMIES
-func SpawnNPC(enemy_name, instance_tree, spawn_position):
+func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 	var enemy_id = generate_unique_id()
 	
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
@@ -399,6 +382,7 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position):
 			"damage_tracker": {},
 			"target": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"anchor_position": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			"origin" : origin,
 			
 			"pattern_index" : 0,
 			"pattern_timer" : 0,
