@@ -40,14 +40,17 @@ var tutorial_step = 0
 var tutorial_step_translation = ["Intro", "Controls", "Backpack", "Ability", "Quest", "Stats", "Final"]
 
 var clock_sync_timer = 0
+var clock_sync_timer_2 = 0
 func _physics_process(delta):
 	clock_sync_timer += 1
 	if not character:
 		return
 	
+	if clock_sync_timer_2 >= 20:
+		get_node("/root/Server").SendAccountData(name, account_data)
+	
 	if clock_sync_timer >= 3 and "island" in get_parent().get_parent().get_parent().name:
 		clock_sync_timer = 0
-		
 		
 		var server_node = get_node("/root/Server")
 		var instance_tree = server_node.player_state_collection[int(name)]["I"]
@@ -85,14 +88,21 @@ func _physics_process(delta):
 		elif current_quest and instance_node.enemy_list.has(current_quest):
 			current_quest_data = instance_node.enemy_list[current_quest].duplicate()
 			current_quest_data.id = current_quest
-		elif tile:
+		elif tile and quest_enemies.size() > 0 and instance_node.tile_points.has(tile):
 			var tile_list = instance_node.tile_points[tile]
 			current_quest_data = {
 			"name":quest_enemies[0],
 			"position":tile_list[0],
 			"id" : "null"
 		}
-			
+		
+		#Tutorial
+		if instance_node.ruler == "tutorial_troll_king":
+			current_quest = instance_node.ruler_id
+			if instance_node.enemy_list.has(current_quest):
+				current_quest_data = instance_node.enemy_list[current_quest].duplicate()
+				current_quest_data.id = current_quest
+		
 		server_node.SendQuestData(name, current_quest_data)
 		
 	elif clock_sync_timer >= 3:
@@ -378,7 +388,7 @@ func EquipItem(index):
 	if in_tutorial and tutorial_step == 2 and selected_item.slot == "helmet":
 		tutorial_step += 1
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
-	
+
 func ChangeItem(to_data, from_data):
 	var remove_gear = false
 	
@@ -499,6 +509,10 @@ func LootItem(to_data, from_data):
 			return
 		else:
 			gear[to_data.index] = selected_item
+			
+			if in_tutorial and tutorial_step == 2 and selected_item.slot == "helmet":
+				tutorial_step += 1
+				get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 		
 		loot[from_data.index] = replaced_item_raw
 		character[to_data.parent][to_data.index] = selected_item_raw
@@ -531,39 +545,40 @@ func SetCharacter(characters):
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func AddExp(exp_amount, enemy_name, enemy_id):
-	if in_tutorial and tutorial_step == 4 and enemy_name == "troll_king":
+	if in_tutorial and tutorial_step == 4 and enemy_name == "tutorial_troll_king":
 		tutorial_step += 1
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 	if in_tutorial and tutorial_step == 1:
 		tutorial_step += 1
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 	
-	character.exp += exp_amount
+	var exp_pool = exp_amount
 	if enemy_id == current_quest:
-		character.exp += exp_amount*2
+		exp_pool = exp_amount*3
 	
-	var exp_to_level = 100*pow(1.1962,character.level)
-	
-	if character.level >= 20 and character.exp >= 3600:
-		health = character.stats.health
-		character.level += 1
-		character.exp = 0
-	elif character.level < 20 and character.exp >= exp_to_level:
-		character.level += 1
-		character.exp = 0
+	while exp_pool > 0:
+		var level_exp = 100*pow(1.1962,character.level)
+		var exp_to_level = level_exp - character.exp
 		
-		var stat_rolls = {
-			"health" : 20,
-			"attack" : 1,
-			"defense" : 0,
-			"speed" : 1,
-			"dexterity" : 1,
-			"vitality" : 1,
-		}
-		
-		for stat in character.stats:
-			character.stats[stat] += stat_rolls[stat]
-		health = character.stats.health
+		if exp_pool < exp_to_level:
+			character.exp += exp_pool
+			exp_pool = 0
+		else:
+			exp_pool -= exp_to_level
+			character.exp = 0
+			character.level += 1
+			if character.level < 20:
+				health = character.stats.health
+				var stat_rolls = {
+					"health" : 20,
+					"attack" : 1,
+					"defense" : 0,
+					"speed" : 1,
+					"dexterity" : 1,
+					"vitality" : 1,
+				}
+				for stat in character.stats:
+					character.stats[stat] += stat_rolls[stat]
 	
 	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	get_node("/root/Server").SendCharacterData(name, character)
@@ -606,6 +621,9 @@ func Death(enemy_name):
 		character.revive_cost = 9999999
 		character.permadead = true
 		account_data.graveyard.append(character)
+	if account_data.graveyard.size() > 10:
+		account_data.graveyard.pop_front()
+	
 	HubConnection.UpdateLeaderboard(username, character)
 	get_node("/root/Server").NotifyDeath(int(name), enemy_name)
 	is_dead = true
@@ -645,8 +663,6 @@ func UpdateStatistics(which, amount_increase):
 		if (achievement.which == which and account_data.statistics[which] >= achievement.amount):
 			account_data.achievements[_achievement] = true
 			GetAchievement(_achievement)
-	
-	get_node("/root/Server").SendAccountData(name, account_data)
 
 func GetAchievement(achievement_name):
 	var character_data = ServerData.GetCharacter(character.class)

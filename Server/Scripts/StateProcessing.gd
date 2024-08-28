@@ -99,6 +99,6 @@ func SendIslandData(instance_tree):
 
 func CleanObjects(objects):
 	for objects_id in objects.keys():
-		if OS.get_system_time_msecs() > objects[objects_id]["end_time"]:
+		if objects[objects_id].has("end_time") and OS.get_system_time_msecs() > objects[objects_id]["end_time"]:
 			objects.erase(objects_id)
 	return objects

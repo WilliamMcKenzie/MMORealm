@@ -77,8 +77,6 @@ func _process(delta):
 		var dungeon = ServerData.GetEnemy(ruler).dungeon.name
 		var instance_id = OpenPortal(dungeon, instance_tree, ruler_death_position)
 		
-		yield(get_tree().create_timer(1), "timeout")
-		
 		for player_id in player_list.keys():
 			get_node("/root/Server").ForcedEnterInstance(instance_id, int(player_id))
 
@@ -90,7 +88,7 @@ func _physics_process(delta):
 		for enemy_id in enemy_list.keys():
 			var enemy = enemy_list[enemy_id]
 			if(enemy["health"] < 1):
-				if enemy_list[enemy_id]["name"] == ruler:
+				if enemy_list[enemy_id]["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon"):
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["dead"] = true
@@ -204,6 +202,7 @@ func GenerateIslandMap():
 	noise.octaves = 1.0
 	noise.period = 12
 	PopulateTiles()
+
 func PopulateTiles():
 	var center = map_size / 2
 	var ocean_distance = center.length() * 1.5
@@ -274,6 +273,9 @@ func CreateStructure(structure, placement):
 				$TileMap.set_cell(pos.x, pos.y, map_as_array[pos.x][pos.y])
 
 func _ready():
+	#To avoid calling ready twice for tutorial
+	if get_script().resource_path.get_file().get_basename() == "TutorialIsland":
+		return
 	ArrayToTiles()
 	PopulateObstacles()
 
@@ -344,7 +346,7 @@ func ArrayToTiles():
 			#$TileMap.set_cell(x, y, map_as_array[x][y])
 func PopulateObstacles():
 	randomize()
-	var obstacle_small = load("res://Scenes/SupportScenes/Obstacles/Small.tscn").instance()
+	var obstacle_small = load("res://Scenes/SupportScenes/Obstacles/Small.tscn")
 	var chance = 1.0
 	var obstacles = {
 		3 : [
@@ -379,7 +381,7 @@ func PopulateObstacles():
 				for obstacle in obstacle_list:
 					i += 1
 					if obstacle_seed < chance*i:
-						CreateObstacle(obstacle, get_parent().object_list[name]["instance_tree"], Vector2(x*8, y*8), obstacle_small, name)
+						CreateObstacle(obstacle, get_parent().object_list[name]["instance_tree"], Vector2(x*8, y*8), obstacle_small.instance(), name)
 						break
 	
 func CreateObstacle(obstacle_name, instance_tree, obstacle_position, obstacle, island_id):
@@ -387,7 +389,6 @@ func CreateObstacle(obstacle_name, instance_tree, obstacle_position, obstacle, i
 	var instance_tree_str = get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/"+str(island_id)
 	if get_node("/root/Server/Instances/"+instance_tree_str):
 		obstacle.name = obstacle_id
-		
 		obstacle.position = obstacle_position
 		get_node("/root/Server/Instances/"+instance_tree_str+"/YSort/Objects").add_child(obstacle)
 		map_objects[obstacle_position] = {"P": obstacle_position, "I": instance_tree, "N":obstacle_name, "Type":"Obstacles"}

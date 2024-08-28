@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=1]
 [ext_resource path="res://Assets/npcs/enemies_16x16.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/SupportScenes/Npcs/BasicEnemy.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Effects.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Animation" id=10]
 resource_name = "Attack"
@@ -98,3 +99,6 @@ shape = SubResource( 8 )
 
 [node name="IndicatorPlaceholder" type="Node2D" parent="."]
 position = Vector2( 0, -17 )
+
+[node name="ZContainer" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -8 )

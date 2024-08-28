@@ -1,18 +1,38 @@
 extends Node
 
-var valid_names = ["island","overgrown_temple"]
+var valid_names = ["island","orc_vigil","orc_vigil_sanctum"]
 
-func GetEnemyTranslation(instance_name):
-	if instance_name == "overgrown_temple":
+func GetTileTranslation(instance_name):
+	if instance_name == "orc_vigil":
 		return {
-		
+			5 : "vigil_guardian",
+			6 : "orc_monolith",
+			7 : ["rock3","rock4"],
+		}
+	if instance_name == "orc_vigil_sanctum":
+		return {
+			5 : "atlas",
+			7 : ["rock3","rock4"],
 		}
 	
 	return {}
 	
 func GenerateDungeon(instance_name):
-	if instance_name == "overgrown_temple":
-		return GenerateOvergrownTemple()
+	if instance_name == "orc_vigil":
+		return GenerateOrcVigil()
+	if instance_name == "orc_vigil_sanctum":
+		return GenerateOrcVigil()
+
+func GenerateOrcVigil():
+	var layout = {
+		Vector2.ZERO : { "room_type" : "Spawn" }
+	}
+	return layout
+func GenerateOrcVigilSanctum():
+	var layout = {
+		Vector2.ZERO : { "room_type" : "Spawn" }
+	}
+	return layout
 
 func GenerateOvergrownTemple():
 	randomize()

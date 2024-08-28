@@ -35,7 +35,7 @@ var default_account_data = {
 		"objects" : [
 			{
 				"type" : "storage",
-				"position" : Vector2(32*8,32*8),
+				"position" : Vector2(12*8,12*8),
 				"loot" : [
 					null,
 					null,
@@ -145,15 +145,11 @@ func _ready():
 	var default_home_tiles = []
 	
 	#Grass
-	for x in range(64):
+	for x in range(24):
 		default_home_tiles.append([])
-		for y in range(64):
+		for y in range(24):
 			default_home_tiles[x].append(2)
 	
-	#Floor
-	for x in range(16):
-		for y in range(16):
-			default_home_tiles[x+16][y+16]
 	default_account_data.home.tiles = default_home_tiles
 	
 	var timer = Timer.new()

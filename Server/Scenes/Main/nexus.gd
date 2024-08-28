@@ -49,8 +49,8 @@ func _physics_process(delta):
 		
 		var space_state = get_world_2d().direct_space_state
 		
-		var collision = space_state.intersect_point(projectile_list[projectile_id]["position"]+self.position, 1, [], 1, true, true)
-		var valid_collision = collision.size() > 0 and collision[0].collider.name != "PlayerHitbox" and not "ChunkArea" in collision[0].collider.name
+		var collision = space_state.intersect_point(projectile_list[projectile_id]["position"]+self.global_position, 1, [], 1, true, true)
+		var valid_collision = collision.size() > 0 and collision[0].collider.name != "PlayerHitbox"
 		var max_range = projectile_list[projectile_id]["start_position"].distance_to(projectile_list[projectile_id]["path"]) >= projectile_list[projectile_id]["tile_range"]*8
 		
 		for player_id in player_list.keys():
@@ -64,7 +64,13 @@ func _physics_process(delta):
 			projectile_list.erase(projectile_id)
 	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
+		
 		for enemy_id in enemy_list.keys():
+			for effect in enemy_list[enemy_id]["effects"].keys():
+				enemy_list[enemy_id]["effects"][effect] -= tick_rate
+				if enemy_list[enemy_id]["effects"][effect] <= 0:
+					enemy_list[enemy_id]["effects"].erase(effect)
+			
 			#Check if we need to switch phase
 			var _phases = ServerData.GetEnemy(enemy_list[enemy_id]["name"]).phases
 			if _phases.size() == 0:
@@ -80,6 +86,8 @@ func _physics_process(delta):
 				enemy_list[enemy_id]["phase_timer"] = 0
 			if _phase.has("behavior"):
 				enemy_list[enemy_id]["behavior"] = _phase["behavior"]
+			if _phase.has("speed"):
+				enemy_list[enemy_id]["speed"] = _phase["speed"]
 			
 			enemy_list[enemy_id]["pattern_timer"] -= tick_rate
 			enemy_list[enemy_id]["phase_timer"] -= tick_rate
@@ -132,6 +140,8 @@ func _physics_process(delta):
 				
 				var is_projectile = current_attack.has("projectile")
 				var is_summon = current_attack.has("summon")
+				var is_speech = current_attack.has("speech")
+				var is_effect = current_attack.has("effect")
 				
 				if is_projectile:
 					#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
@@ -174,12 +184,20 @@ func _physics_process(delta):
 					var summon_position = current_attack["summon_position"] + enemy_list[enemy_id]["position"]
 					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_list[enemy_id]["name"])
 				
+				elif is_speech:
+					var message = current_attack["speech"]
+					get_node("/root/Server").EnemySpeech(enemy_list[enemy_id]["name"], enemy_id, message)
+				
+				elif is_effect:
+					var effect = current_attack["effect"]
+					var duration = current_attack["duration"]
+					enemy_list[enemy_id]["effects"][effect] = duration
+				
 				enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
 				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
 					enemy_list[enemy_id]["pattern_index"] = 0
 				else:
 					enemy_list[enemy_id]["pattern_index"] += 1
-			
 			
 			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
@@ -209,8 +227,8 @@ func UpdatePlayer(player_id, player_state):
 		var space_state = get_world_2d().direct_space_state
 		var collision = space_state.intersect_point(player_list[str(player_id)]["position"]+position, 1, [], 1, true, true)
 		var colliding = collision.size() > 0
+		
 		if colliding:
-			colliding = false
 			for collision_data in collision:
 				if collision_data.collider.name == "TileMap":
 					get_node("/root/Server").network.disconnect_peer(player_id)
@@ -456,17 +474,18 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		return instance_id
 	else:
 		var instance_map = Dungeons.GenerateDungeon(portal_name)
-		var enemy_translation = Dungeons.GetEnemyTranslation(portal_name)
+		var tile_translation = Dungeons.GetTileTranslation(portal_name)
 		var dungeon_instance = load("res://Scenes/SupportScenes/Dungeons/Dungeon.tscn").instance()
 		dungeon_instance.name = instance_id
 		dungeon_instance.map = instance_map
-		dungeon_instance.enemy_translation = enemy_translation
+		dungeon_instance.tile_translation = tile_translation
 		dungeon_instance.position = Instances.GetFreeInstancePosition()
 		
 		object_list[instance_id] = {
 			"name":portal_name,
 			"type":"DungeonPortals",
-			"end_time": OS.get_system_time_msecs()+10000,
+			#"end_time": OS.get_system_time_msecs()+30000,
+			"end_time": OS.get_system_time_msecs()+OS.get_system_time_msecs(),
 			"position": position,
 			"instance_tree": instance_tree
 		}

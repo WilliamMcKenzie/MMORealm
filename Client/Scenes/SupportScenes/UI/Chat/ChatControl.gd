@@ -24,15 +24,32 @@ func EnterChat():
 func ExitChat():
 	GameUI.in_chat = false
 
+func IdentifierToString(identifier):
+	var words = identifier.split("_")
+	var proper_string = ""
+	for word in words:
+		proper_string += word.capitalize() + " "
+	
+	proper_string = proper_string.strip_edges()
+	return proper_string
+
 func AddChat(message,username,classname,id):
 	var chat_message = chat.instance()
 	
 	chat_message.get_node("From").text = "" + username + ":"
 	chat_message.get_node("Message").text = message
 	
-	if classname:
+	if username == "Enemy":
+		GameUI.UpdateEnemyChatBubbles(id, message)
+		var enemy_name = classname
+		var enemy_id = id
+		chat_message.get_node("Icon").visible = false
+		chat_message.get_node("From").add_color_override("font_color", Color(163.0/255,64.0/255,64.0/255))
+		chat_message.get_node("From").text = "" + IdentifierToString(enemy_name) + ":"
+		chat_message.get_node("Message").add_color_override("font_color", Color(255.0/255, 184.0/255, 184.0/255))
+		chat_message.get_node("Message").text = "" + chat_message.get_node("Message").text + ""
+	elif classname:
 		GameUI.UpdateChatBubbles(id, message)
-		
 		chat_message.get_node("Icon").visible = true
 		chat_message.get_node("Icon").texture = chat_message.get_node("Icon").texture.duplicate()
 		chat_message.get_node("Icon").texture.region = Rect2(ClientData.GetCharacter(classname).icon, Vector2(10,10))

@@ -3,7 +3,7 @@ extends "res://Scenes/Main/Nexus.gd"
 #Room size accounts for hallways in between
 var room_size = 20
 var map = {}
-var enemy_translation = {}
+var tile_translation = {}
 
 var sync_clock_counter = 1
 
@@ -54,6 +54,9 @@ func PopulateDungeon():
 		3 : Vector2(0,-1),
 	}
 	for _coordinate in range(4):
+		if not map.has(_coordinate):
+			continue
+		
 		var coordinate = coordinate_map[_coordinate]
 		var room_data = map[coordinate]
 		
@@ -66,7 +69,9 @@ func PopulateDungeon():
 	for room in map.keys():
 		var room_to_add = room_nodes[room].instance()
 		var room_data = map[room]
-			
+		
+		if map.size() == 1:
+			room_to_add.encounter = true
 		room_to_add.position = room*(room_size)*8
 		room_to_add.name = str(room)
 		add_child(room_to_add)

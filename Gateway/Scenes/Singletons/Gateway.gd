@@ -51,6 +51,7 @@ func _Peer_Disconnected(id):
 	print("User " + str(id) + " has disconnected!")
 
 remote func FetchAccountData(email, password):
+	print(custom_multiplayer.get_network_connected_peers())
 	var player_id = custom_multiplayer.get_rpc_sender_id()
 	Authenticate.GenericRequest(email.to_lower(), password, player_id, "FetchAccountData")
 func ReturnAccountData(account_data, player_id):

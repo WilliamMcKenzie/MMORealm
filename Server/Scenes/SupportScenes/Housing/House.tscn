@@ -24,7 +24,6 @@ format = 1
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 3149, 2341 )
 offset = Vector2( 1000, 0 )
-current = true
 zoom = Vector2( 8, 8 )
 
 [node name="ChunkSensors" type="Node2D" parent="."]

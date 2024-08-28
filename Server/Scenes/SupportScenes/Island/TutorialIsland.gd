@@ -45,7 +45,7 @@ func TutorialInit():
 	ruler = "tutorial_troll_king"
 	
 	beach_enemies = ["tutorial_crab"]
-	forest_enemies = []
+	forest_enemies = ["slime"]
 	plains_enemies = []
 	badlands_enemies = []
 	mountain_enemies = []

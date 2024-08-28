@@ -220,18 +220,6 @@ tracks/6/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
 }
-tracks/7/type = "value"
-tracks/7/path = NodePath("QuestMarker:modulate")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
-}
 
 [sub_resource type="Animation" id=38]
 resource_name = "ChooseName"
@@ -1020,7 +1008,8 @@ custom_constants/separation = 5
 alignment = 2
 
 [node name="BuildButton" type="PanelContainer" parent="UtilityButtons"]
-margin_right = 38.0
+margin_left = 43.0
+margin_right = 81.0
 margin_bottom = 38.0
 size_flags_vertical = 0
 custom_styles/panel = SubResource( 17 )
@@ -1088,8 +1077,8 @@ z_index = 22
 normal = SubResource( 13 )
 
 [node name="Column1" type="VBoxContainer" parent="UtilityButtons"]
-margin_left = 43.0
-margin_right = 81.0
+margin_left = 86.0
+margin_right = 124.0
 margin_bottom = 122.0
 
 [node name="BackpackButton" type="PanelContainer" parent="UtilityButtons/Column1"]

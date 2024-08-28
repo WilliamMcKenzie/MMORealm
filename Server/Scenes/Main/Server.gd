@@ -31,12 +31,13 @@ func _ready():
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	#SpawnNPC("archmage", ["nexus"], Vector2(50,50))
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
+	SpawnNPC("orc_monolith", ["nexus"], Vector2(50,50))
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
+	#get_node("Instances/nexus").OpenPortal("orc_vigil", ["nexus"], Vector2.ZERO, "oranix")
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
-	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
+	#get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
 
 func _process(delta):
 	if html_network.is_listening():
@@ -383,6 +384,7 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 			"target": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"anchor_position": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"origin" : origin,
+			"effects" : {},
 			
 			"pattern_index" : 0,
 			"pattern_timer" : 0,
@@ -444,6 +446,8 @@ remote func NPCHit(enemy_id, damage):
 		var total_damage = floor(damage - ServerData.GetEnemy(enemy_container.name).defense)
 		if total_damage < damage - damage*0.9:
 			total_damage = floor(damage - damage*0.9)
+		if enemy_container.effects.has("invincible"):
+			total_damage = 0
 		
 		enemy_container["health"] -= total_damage
 		var damage_tracker = get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]["damage_tracker"]
@@ -502,7 +506,7 @@ func EnterHouse(player_id, house_player_id):
 	get_node("Instances/"+StringifyInstanceTree(["nexus", house_id])).SpawnPlayer(player_container)
 	
 	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus", house_id]}
-	rpc_id(player_id, "ReturnHouseData", {"Name": player_name_by_id[house_player_id], "Id":house_id, "Tiles" : house_node.tiles, "Position": Vector2(32*8,32*8)})
+	rpc_id(player_id, "ReturnHouseData", {"Name": player_name_by_id[house_player_id], "Id":house_id, "Tiles" : house_node.tiles, "Position": Vector2(12*8,12*8)})
 
 func CreateHouse(player_id):
 	var house_id = "house " + str(player_id)
@@ -539,7 +543,7 @@ func ForcedEnterInstance(instance_id, player_id):
 		instance_tree.append(str(instance_id))
 		
 		#For dungeons
-		if not current_instance_node.object_list[instance_id]["name"] == "island":	
+		if not current_instance_node.object_list[instance_id]["name"] == "island":
 			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = dungeon_node.GetMapSpawnpoint()
 			
@@ -575,7 +579,7 @@ remote func EnterInstance(instance_id):
 		instance_tree.append(str(instance_id))
 		
 		#For dungeons
-		if not current_instance_node.object_list[instance_id]["name"] == "island":	
+		if not current_instance_node.object_list[instance_id]["name"] == "island":
 			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = dungeon_node.GetMapSpawnpoint()
 			
@@ -614,6 +618,9 @@ func SendMessage(player_id, type, message):
 	if type == "success":
 		rpc_id(player_id, "RecieveChat", message, "SystemSUCCESS")
 
+func EnemySpeech(enemy_name, enemy_id, message):
+	rpc("RecieveChat", message, "Enemy", enemy_name, enemy_id)
+
 remote func RecieveChatMessage(message):
 	var message_words = message.split(" ")
 	var player_id = get_tree().get_rpc_sender_id()
@@ -624,6 +631,8 @@ remote func RecieveChatMessage(message):
 	
 	if len(message) >= 1:
 		if message[0] == "/":
+			if message_words[0] == "/exp" and message_words.size() == 2 and int(message_words[1]):
+				player_container.AddExp(int(message_words[1]), "Ghoul", "123")
 			if message_words[0] == "/invincible":
 				player_container.GiveEffect("invincible", 99999)
 			if message_words[0] == "/home" and message_words.size() == 1:

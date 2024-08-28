@@ -38,92 +38,671 @@ var basic_loot_pools = {
 		"loot" : []
 	},
 	"godlands_1" : {
-		"soulbound_loot" : [],
+		"soulbound_loot" : [
+			{
+				"item" : 0,
+				"chance" : 0.05,
+				"threshold" : 0.5,
+			},
+		],
+		"loot" : []
+	},
+	"ruler_1" : {
+		"soulbound_loot" : [
+			{
+				"item" : 0,
+				"chance" : 0.3,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"encounter_1" : {
+		"soulbound_loot" : [
+			{
+				"item" : 0,
+				"chance" : 0.5,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"encounter_2" : {
+		"soulbound_loot" : [
+			{
+				"item" : 0,
+				"chance" : 1,
+				"threshold" : 0.1,
+			},
+		],
+		"loot" : []
+	},
+}
+var special_loot_pools = {
+	"oranix" : {
+		"override" : "ruler_1",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"vigil_guardian" : {
+		"override" : "encounter_1",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"atlas" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
 		"loot" : []
 	},
 }
 
 func _ready():
+	var high_chance = 0.15
+	var decent_chance = 0.1
+	var low_chance = 0.05
+	var rare_chance = 0.01
+	
 	for item_id in items.keys():
 		var item = items[item_id]
 		if item.tier == "0":
 			basic_loot_pools["lowlands_1"].loot.append({
 				"item" : item_id,
-				"chance" : 0.05,
+				"chance" : low_chance,
 			})
 			basic_loot_pools["lowlands_2"].loot.append({
 				"item" : item_id,
-				"chance" : 0.15,
+				"chance" : high_chance,
 			})
 		if item.tier == "1":
 			basic_loot_pools["midlands_1"].loot.append({
 				"item" : item_id,
-				"chance" : 0.05,
+				"chance" : low_chance,
 			})
 			basic_loot_pools["midlands_2"].loot.append({
 				"item" : item_id,
-				"chance" : 0.15,
+				"chance" : high_chance,
 			})
 			basic_loot_pools["highlands_1"].loot.append({
 				"item" : item_id,
-				"chance" : 0.05,
+				"chance" : low_chance,
 			})
 			basic_loot_pools["highlands_2"].loot.append({
 				"item" : item_id,
-				"chance" : 0.15,
+				"chance" : high_chance,
 			})
 		if item.tier == "2":
 			basic_loot_pools["highlands_1"].soulbound_loot.append({
 				"item" : item_id,
-				"chance" : 0.01,
+				"chance" : rare_chance,
 				"threshold" : 0.2,
 			})
 			basic_loot_pools["highlands_2"].soulbound_loot.append({
 				"item" : item_id,
-				"chance" : 0.1,
+				"chance" : decent_chance,
 				"threshold" : 0.2,
 			})
+			basic_loot_pools["godlands_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : decent_chance,
+				"threshold" : 0.2,
+			})
+		if item.tier == "3":
+			basic_loot_pools["godlands_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : 0.01,
+				"threshold" : 0.5,
+			})
+			basic_loot_pools["ruler_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : 0.05,
+				"threshold" : 0.05,
+			})
+	
+	for enemy_name in special_loot_pools.keys():
+		var pool = special_loot_pools[enemy_name]
+		pool.soulbound_loot += basic_loot_pools[pool.override].soulbound_loot
+		pool.loot += basic_loot_pools[pool.override].loot
 
 var rulers = {
 	"oranix" : {
-		"health" : 20,
-		"defense" : 1,
-		"exp" : 10,
-		"behavior" : 1,
+		"health" : 20000,
+		"defense" : 10,
+		"exp" : 2000,
+		"behavior" : 0,
 		"speed" : 10,
 		"dungeon" : {
 			"rate" : 0,
-			"name" : "overgrown_temple"
+			"name" : "orc_vigil"
 		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
+		"loot_pool" : special_loot_pools["oranix"],
 		"phases" : [
 			{
 				"duration" : 4,
-				"health" : [0,100],
+				"health" : [25,100],
+				"behavior" : 1,
 				"attack_pattern" : [
 					{
-						"projectile" : "Slash",
+						"projectile" : "GoldDart",
 						"formula" : "0",
-						"damage" : 0,
+						"damage" : 250,
 						"piercing" : true,
-						"wait" : 1000,
-						"speed" : 0,
-						"tile_range" : 0,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
-					}
+						"direction" : Vector2(0,1),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(0.707,0.707),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(1,0),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(0.707,-0.707),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,-1),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(-0.707,-0.707),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(-1,0),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(-0.707,0.707),
+						"size" : 9
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
 				]
 			},
+			{
+				"duration" : 6,
+				"health" : [25,100],
+				"behavior" : 1,
+				"attack_pattern" : [
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(15),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-15),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(30),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-30),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(120),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(240),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 13,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(60),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 13,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 40,
+						"tile_range" : 13,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(300),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [25,100],
+				"behavior" : 2,
+				"attack_pattern" : [
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(5),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 12,
+				"health" : [0,25],
+				"on_spawn" : true,
+				"behavior" : 2,
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 50,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 50,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 50,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 7
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 14,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(120),
+						"size" : 7
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 14,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 7
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 60,
+						"tile_range" : 14,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(240),
+						"size" : 7
+					},
+				]
+			}
 		]
 	},
 	"vajira" : {
@@ -320,14 +899,13 @@ var tutorial_enemies = {
 		"behavior" : 1,
 		"speed" : 10,
 		"loot_pool" : {
-			"soulbound_loot" : [
+			"soulbound_loot" : [],
+			"loot" : [
 				{
-					"item" : 0,
+					"item" : 400,
 					"chance" : 1,
-					"threshold" : 1,
 				},
-			],
-			"loot" : []
+			]
 		},
 		"phases" : [
 			{
@@ -365,7 +943,7 @@ var tutorial_enemies = {
 					{
 						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 2,
 						"piercing" : false,
 						"wait" : 0.5,
 						"speed" : 10,
@@ -376,7 +954,7 @@ var tutorial_enemies = {
 					{
 						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 2,
 						"piercing" : false,
 						"wait" : 0.5,
 						"speed" : 10,
@@ -387,7 +965,7 @@ var tutorial_enemies = {
 					{
 						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 2,
 						"piercing" : false,
 						"wait" : 0.5,
 						"speed" : 10,
@@ -398,7 +976,7 @@ var tutorial_enemies = {
 					{
 						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 2,
 						"piercing" : false,
 						"wait" : 0.5,
 						"speed" : 10,
@@ -413,7 +991,7 @@ var tutorial_enemies = {
 	"tutorial_troll_king" : {
 		"health" : 300,
 		"defense" : 2,
-		"exp" : 10,
+		"exp" : 30,
 		"behavior" : 1,
 		"speed" : 10,
 		"loot_pool" :  {
@@ -421,7 +999,7 @@ var tutorial_enemies = {
 				{
 					"item" : 0,
 					"chance" : 1,
-					"threshold" : 1,
+					"threshold" : 0.2,
 				},
 			],
 			"loot" : []
@@ -429,7 +1007,7 @@ var tutorial_enemies = {
 		"phases" : [
 			{
 				"duration" : 4,
-				"health" : [50,100],
+				"health" : [75,100],
 				"attack_pattern" : [
 					{
 						"projectile" : "Stack",
@@ -448,7 +1026,8 @@ var tutorial_enemies = {
 			{
 				"duration" : 4,
 				"max_uses" : 1,
-				"health" : [0,50],
+				"on_spawn" : true,
+				"health" : [0,75],
 				"attack_pattern" : [
 					{
 						"summon" : "troll_warrior",
@@ -459,7 +1038,7 @@ var tutorial_enemies = {
 			},
 			{
 				"duration" : 4,
-				"health" : [0,50],
+				"health" : [0,75],
 				"attack_pattern" : [
 					{
 						"projectile" : "Wave",
@@ -3135,7 +3714,1761 @@ var realm_enemies = {
 		]
 	},
 }
-var overgrown_temple_enemies = {
+var orc_vigil_enemies = {
+	"vigil_guardian" : {
+		"health" : 20000,
+		"defense" : 20,
+		"exp" : 6000,
+		"behavior" : 0,
+		"speed" : 15,
+		"dungeon" : {
+			"rate" : 1,
+			"name" : "orc_vigil_sanctum"
+		},
+		"loot_pool" : special_loot_pools["vigil_guardian"],
+		"phases" : [
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 16,
+						"wait" : 12,
+					},
+					{
+						"speech" : "So Oranix has fallen? The creator will be angry...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "No matter. Those who enter the vigil shall not return. Die usurper!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 12,
+				"health" : [90,100],
+				"behavior" : 1,
+				"speed" : 15,
+				"attack_pattern" : [
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(15),
+						"size" : 9
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-15),
+						"size" : 9
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 45,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 8,
+						"direction" : Vector2(0,1),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 45,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 8,
+						"direction" : Vector2(0.707,0.707),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 45,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 8,
+						"direction" : Vector2(1,0),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 45,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 8,
+						"direction" : Vector2(0.707,-0.707),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 45,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 8,
+						"direction" : Vector2(0,-1),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 45,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 8,
+						"direction" : Vector2(-0.707,-0.707),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 45,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 25,
+						"tile_range" : 8,
+						"direction" : Vector2(-1,0),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 45,
+						"piercing" : false,
+						"wait" : 1.5,
+						"speed" : 25,
+						"tile_range" : 8,
+						"direction" : Vector2(-0.707,0.707),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [50,90],
+				"behavior" : 2,
+				"speed" : 20,
+				"attack_pattern" : [
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(120),
+						"size" : 7
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(240),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 6,
+						"direction" : Vector2(0,1),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 6,
+						"direction" : Vector2(0.707,0.707),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 6,
+						"direction" : Vector2(1,0),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 6,
+						"direction" : Vector2(0.707,-0.707),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 6,
+						"direction" : Vector2(0,-1),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 6,
+						"direction" : Vector2(-0.707,-0.707),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 6,
+						"direction" : Vector2(-1,0),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0.7,
+						"speed" : 70,
+						"tile_range" : 6,
+						"direction" : Vector2(-0.707,0.707),
+						"size" : 6
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [50,90],
+				"behavior" : 0,
+				"speed" : 20,
+				"attack_pattern" : [
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(0,1),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(0.434,0.901),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(0.782,0.623),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(0.975,0.223),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(0.975,-0.223),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(0.782,-0.623),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(0.434,-0.901),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(0,-1),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(-0.434,-0.901),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(-0.782,-0.623),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(-0.975,-0.223),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(-0.975,0.223),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(-0.782,0.623),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 20,
+						"tile_range" : 12,
+						"direction" : Vector2(-0.434,0.901),
+						"size" : 6
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [20,50],
+				"behavior" : 0,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"speed" : 10,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 0,
+					},
+					{
+						"speech" : "I have stood guard of this vigil for a millenium...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "I will not fall to you lowly bottomfeeders!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [20,50],
+				"behavior" : 2,
+				"speed" : 10,
+				"attack_pattern" : [
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(0),
+						"size" : 9
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(30),
+						"size" : 5
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(30),
+						"size" : 9
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(60),
+						"size" : 9
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(90),
+						"size" : 9
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(120),
+						"size" : 5
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(120),
+						"size" : 9
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(150),
+						"size" : 9
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(180),
+						"size" : 9
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 5
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(210),
+						"size" : 9
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(240),
+						"size" : 9
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(270),
+						"size" : 9
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(90),
+						"size" : 5
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 30,
+						"tile_range" : 12,
+						"direction" : DegreesToVector(300),
+						"size" : 9
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(330),
+						"size" : 5
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(270),
+						"size" : 5
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(30),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 70,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-30),
+						"size" : 7
+					},
+				]
+			},
+		]
+	},
+	"orc_monolith" : {
+		"health" : 2000,
+		"defense" : 1,
+		"exp" : 2000,
+		"behavior" : 0,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 16,
+						"wait" : 17,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"direction" : DegreesToVector(0),
+						"size" : 5
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"direction" : DegreesToVector(90),
+						"size" : 5
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"direction" : DegreesToVector(180),
+						"size" : 5
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : true,
+						"wait" : 1,
+						"speed" : 20,
+						"tile_range" : 10,
+						"direction" : DegreesToVector(270),
+						"size" : 5
+					},
+				]
+			}
+		]
+	},
+	"atlas" : {
+		"health" : 20000,
+		"defense" : 10,
+		"exp" : 10000,
+		"behavior" : 0,
+		"speed" : 15,
+		"loot_pool" : special_loot_pools["atlas"],
+		"phases" : [
+			{
+				"duration" : 18,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 18,
+						"wait" : 12,
+					},
+					{
+						"speech" : "This vigil is the only remnant of the old orc empire...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "Do you really think it's treasures would lie undefended?",
+						"wait" : 2,
+					},
+					{
+						"speech" : "Prepare yourselves!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 3,
+				"max_uses" : 3,
+				"behavior" : 0,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"speech" : "Bare witness to the power of orc magicks!",
+						"wait" : 1,
+					},
+					{
+						"summon" : "vigil_construct",
+						"summon_position" : Vector2(10,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "vigil_construct",
+						"summon_position" : Vector2(0,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "vigil_construct",
+						"summon_position" : Vector2(-10,5),
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [75,100],
+				"behavior" : 1,
+				"attack_pattern" : [
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(30),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(60),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(90),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 2,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(120),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-30),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"direction" : DegreesToVector(-60),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-90),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : true,
+						"wait" : 2,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-120),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [75,100],
+				"behavior" : 2,
+				"speed" : 15,
+				"attack_pattern" : [
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 9
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 5
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 80,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-45),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 120,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-5),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(220),
+						"size" : 5
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 80,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 9
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(160),
+						"size" : 5
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 80,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(30),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(200),
+						"size" : 5
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 120,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [25,75],
+				"behavior" : 2,
+				"speed" : 5,
+				"attack_pattern" : [
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(90),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(270),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(45),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(45+90),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(45+180),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(45+270),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonArrow",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [0,25],
+				"behavior" : 2,
+				"speed" : 15,
+				"attack_pattern" : [
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(90),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0.2,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(270),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(45),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(45+90),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(45+180),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(45+270),
+						"size" : 7
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 9
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 5
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 80,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-45),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 120,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-5),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(220),
+						"size" : 5
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 80,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "GiantBlast",
+						"formula" : "0",
+						"damage" : 190,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 9
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(160),
+						"size" : 5
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 80,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(30),
+						"size" : 7
+					},
+					{
+						"projectile" : "NeonStar",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 12,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(200),
+						"size" : 5
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 120,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+				]
+			},
+		]
+	},
+	"vigil_construct" : {
+		"health" : 4000,
+		"defense" : 1,
+		"exp" : 10,
+		"behavior" : 2,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 5,
+						"direction" : Vector2(0,1),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 5,
+						"direction" : Vector2(0.951,0.309),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 5,
+						"direction" : Vector2(0.588,-0.809),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 5,
+						"direction" : Vector2(-0.588,-0.809),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlast",
+						"formula" : "0",
+						"damage" : 60,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 70,
+						"tile_range" : 5,
+						"direction" : Vector2(-0.951,0.309),
+						"size" : 7
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 7,
+						"direction" : Vector2(0,1),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 7,
+						"direction" : Vector2(0.707,0.707),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 7,
+						"direction" : Vector2(1,0),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 7,
+						"direction" : Vector2(0.707,-0.707),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 7,
+						"direction" : Vector2(0,-1),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 7,
+						"direction" : Vector2(-0.707,-0.707),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 7,
+						"direction" : Vector2(-1,0),
+						"size" : 6
+					},
+					{
+						"projectile" : "VigilBlastSmall",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 70,
+						"tile_range" : 7,
+						"direction" : Vector2(-0.707,0.707),
+						"size" : 6
+					},
+				]
+			},
+		]
+	},
 }
 var enemies = CompileEnemies()
 func CompileEnemies():
@@ -3143,7 +5476,7 @@ func CompileEnemies():
 	res.merge(rulers)
 	res.merge(tutorial_enemies)
 	res.merge(realm_enemies)
-	res.merge(overgrown_temple_enemies)
+	res.merge(orc_vigil_enemies)
 	return res
 
 var items = {
@@ -4054,6 +6387,36 @@ var projectiles = {
 		"rotation" : 45,
 		"spin" : false,
 	},
+	"GoldDart" : {
+		"rect" : Rect2(150,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.4,
+	},
+	"VigilBlast" : {
+		"rect" : Rect2(160,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.2,
+	},
+	"VigilBlastSmall" : {
+		"rect" : Rect2(170,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"NeonStar" : {
+		"rect" : Rect2(180,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1,
+	},
+	"NeonArrow" : {
+		"rect" : Rect2(190,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
 	"Spinner" : {
 		"rect" : Rect2(70,0,10,10),
 		"rotation" : 45,
@@ -4068,6 +6431,12 @@ var projectiles = {
 		"rect" : Rect2(90,0,10,10),
 		"rotation" : 45,
 		"spin" : false,
+	},
+	"GiantBlast" : {
+		"rect" : Rect2(90,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.6,
 	},
 	"SmallBlast" : {
 		"rect" : Rect2(100,0,10,10),

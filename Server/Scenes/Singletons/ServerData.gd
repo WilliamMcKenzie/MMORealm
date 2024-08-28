@@ -38,92 +38,925 @@ var basic_loot_pools = {
 		"loot" : []
 	},
 	"godlands_1" : {
-		"soulbound_loot" : [],
+		"soulbound_loot" : [
+			{
+				"item" : 0,
+				"chance" : 0.05,
+				"threshold" : 0.5,
+			},
+		],
+		"loot" : []
+	},
+	"ruler_1" : {
+		"soulbound_loot" : [
+			{
+				"item" : 0,
+				"chance" : 0.3,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"encounter_1" : {
+		"soulbound_loot" : [
+			{
+				"item" : 0,
+				"chance" : 0.5,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"encounter_2" : {
+		"soulbound_loot" : [
+			{
+				"item" : 0,
+				"chance" : 1,
+				"threshold" : 0.1,
+			},
+		],
+		"loot" : []
+	},
+}
+var special_loot_pools = {
+	"oranix" : {
+		"override" : "ruler_1",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"vigil_guardian" : {
+		"override" : "encounter_1",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"atlas" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"salazar" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
 		"loot" : []
 	},
 }
 
+var projectile_databank = {
+	"Slash_1" : {
+		"projectile" : "Slash",
+		"formula" : "0",
+		"damage" : 2,
+		"piercing" : false,
+		"wait" : 3,
+		"speed" : 10,
+		"tile_range" : 3,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 8
+	},
+	"GiantBlast_slow" : {
+		"projectile" : "GiantBlast",
+		"formula" : "0",
+		"damage" : 150,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 20,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 9
+	},
+	"GiantBlast_medium" : {
+		"inherit" : "GiantBlast_slow",
+		"speed" : 30,
+	},
+	"GiantBlast_fast" : {
+		"inherit" : "GiantBlast_slow",
+		"speed" : 60,
+	},
+	"SmallBlast_strong_fast" : {
+		"projectile" : "SmallBlast",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0.1,
+		"speed" : 60,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(-45),
+		"size" : 7
+	},
+	"Blast_strong_fast" : {
+		"projectile" : "Blast",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0.1,
+		"speed" : 50,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(-5),
+		"size" : 7
+	},
+	"VigilBlastSmall_1" : {
+		"projectile" : "VigilBlastSmall",
+		"formula" : "0",
+		"damage" : 45,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 25,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 7
+	},
+	"VigilBlastSmall_strong_fast" : {
+		"projectile" : "VigilBlastSmall",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 7
+	},
+	"VigilBlastSmall_slow" : {
+		"inherit" : "VigilBlastSmall_1",
+		"speed" : 15,
+	},
+	"VigilBlast_strong_fast" : {
+		"projectile" : "VigilBlast",
+		"formula" : "0",
+		"damage" : 190,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Wave_strong_fast" : {
+		"projectile" : "Wave",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Wave_mid_fast" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 70,
+	},
+	"Wave_weak_fast" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 30,
+	},
+	"Wave_strong_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 120,
+		"speed" : 30,
+	},
+	"Wave_mid_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 70,
+		"speed" : 30,
+	},
+	"Wave_weak_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 30,
+		"speed" : 30,
+	},
+	"NeonArrow_mid_slow" : {
+		"projectile" : "NeonArrow",
+		"formula" : "0",
+		"damage" : 40,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 10,
+		"direction" : DegreesToVector(0),
+		"size" : 5
+	},
+	"NeonArrow_mid_fast" : {
+		"projectile" : "NeonArrow",
+		"formula" : "0",
+		"damage" : 70,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 10,
+		"direction" : DegreesToVector(0),
+		"size" : 5
+	},
+	"NeonStar_strong_fast" : {
+		"projectile" : "NeonStar",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(30),
+		"size" : 5
+	},
+	"NeonStar_mid_fast" : {
+		"projectile" : "NeonStar",
+		"formula" : "0",
+		"damage" : 70,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(30),
+		"size" : 5
+	},
+	"NeonStar_weak_fast" : {
+		"projectile" : "NeonStar",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(30),
+		"size" : 5
+	},
+}
+
 func _ready():
+	
+	#Loot pools
+	
+	var high_chance = 0.15
+	var decent_chance = 0.1
+	var low_chance = 0.05
+	var rare_chance = 0.01
+	
 	for item_id in items.keys():
 		var item = items[item_id]
+		if item.type == "Consumable":
+			continue
 		if item.tier == "0":
 			basic_loot_pools["lowlands_1"].loot.append({
 				"item" : item_id,
-				"chance" : 0.05,
+				"chance" : low_chance,
 			})
 			basic_loot_pools["lowlands_2"].loot.append({
 				"item" : item_id,
-				"chance" : 0.15,
+				"chance" : high_chance,
 			})
 		if item.tier == "1":
 			basic_loot_pools["midlands_1"].loot.append({
 				"item" : item_id,
-				"chance" : 0.05,
+				"chance" : low_chance,
 			})
 			basic_loot_pools["midlands_2"].loot.append({
 				"item" : item_id,
-				"chance" : 0.15,
+				"chance" : high_chance,
 			})
 			basic_loot_pools["highlands_1"].loot.append({
 				"item" : item_id,
-				"chance" : 0.05,
+				"chance" : low_chance,
 			})
 			basic_loot_pools["highlands_2"].loot.append({
 				"item" : item_id,
-				"chance" : 0.15,
+				"chance" : high_chance,
 			})
 		if item.tier == "2":
 			basic_loot_pools["highlands_1"].soulbound_loot.append({
 				"item" : item_id,
-				"chance" : 0.01,
+				"chance" : rare_chance,
 				"threshold" : 0.2,
 			})
 			basic_loot_pools["highlands_2"].soulbound_loot.append({
 				"item" : item_id,
-				"chance" : 0.1,
+				"chance" : decent_chance,
 				"threshold" : 0.2,
 			})
+			basic_loot_pools["godlands_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : decent_chance,
+				"threshold" : 0.2,
+			})
+		if item.tier == "3":
+			basic_loot_pools["godlands_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : rare_chance,
+				"threshold" : 0.5,
+			})
+			basic_loot_pools["ruler_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : low_chance,
+				"threshold" : 0.05,
+			})
+			basic_loot_pools["encounter_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : low_chance,
+				"threshold" : 0.05,
+			})
+			basic_loot_pools["encounter_2"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : decent_chance,
+				"threshold" : 0.05,
+			})
+		if item.tier == "4":
+			basic_loot_pools["encounter_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : rare_chance,
+				"threshold" : 0.05,
+			})
+			basic_loot_pools["encounter_2"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : low_chance,
+				"threshold" : 0.05,
+			})
+	
+	for enemy_name in special_loot_pools.keys():
+		var pool = special_loot_pools[enemy_name]
+		pool.soulbound_loot += basic_loot_pools[pool.override].soulbound_loot
+		pool.loot += basic_loot_pools[pool.override].loot
+
+var databank_configured = false
+func ConfigureProjectileDatabank():
+	databank_configured = true
+	for projectile_type in projectile_databank.keys():
+		var projectile = projectile_databank[projectile_type]
+		
+		if projectile.has("inherit"):
+			projectile.merge(projectile_databank[projectile.inherit])
+
+func MakeProjectile(projectile_type, degrees, wait, targeter = null):
+	if not databank_configured:
+		ConfigureProjectileDatabank()
+	
+	var angle = DegreesToVector(degrees)
+	var projectile_data = projectile_databank[projectile_type].duplicate()
+	
+	projectile_data.direction = angle
+	projectile_data.wait = wait
+	if targeter:
+		projectile_data.targeter = targeter
+	elif projectile_data.has("targeter"):
+		projectile_data.erase("targeter")
+	
+	return projectile_data
 
 var rulers = {
 	"oranix" : {
-		"health" : 20,
-		"defense" : 1,
-		"exp" : 10,
-		"behavior" : 1,
+		"health" : 20000,
+		"defense" : 10,
+		"exp" : 2000,
+		"behavior" : 0,
 		"speed" : 10,
 		"dungeon" : {
-			"rate" : 0,
-			"name" : "overgrown_temple"
+			"rate" : 1,
+			"name" : "orc_vigil"
 		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
+		"loot_pool" : special_loot_pools["oranix"],
 		"phases" : [
 			{
 				"duration" : 4,
-				"health" : [0,100],
+				"health" : [25,100],
+				"behavior" : 1,
 				"attack_pattern" : [
 					{
-						"projectile" : "Slash",
+						"projectile" : "GoldDart",
 						"formula" : "0",
-						"damage" : 0,
+						"damage" : 250,
 						"piercing" : true,
-						"wait" : 1000,
-						"speed" : 0,
-						"tile_range" : 0,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
-					}
+						"direction" : Vector2(0,1),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(0.707,0.707),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(1,0),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(0.707,-0.707),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,-1),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(-0.707,-0.707),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(-1,0),
+						"size" : 9
+					},
+					{
+						"projectile" : "GoldDart",
+						"formula" : "0",
+						"damage" : 250,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 15,
+						"targeter" : "nearest",
+						"direction" : Vector2(-0.707,0.707),
+						"size" : 9
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 30,
+						"tile_range" : 20,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
 				]
 			},
+			{
+				"duration" : 6,
+				"health" : [25,100],
+				"behavior" : 1,
+				"attack_pattern" : [
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(15),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-15),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(30),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-30),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(120),
+						"size" : 7
+					},
+					{
+						"projectile" : "Ball",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(240),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 13,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(60),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 40,
+						"tile_range" : 13,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : 40,
+						"tile_range" : 13,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(300),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [25,100],
+				"behavior" : 2,
+				"attack_pattern" : [
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 150,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.2,
+						"speed" : 50,
+						"tile_range" : 5,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(5),
+						"size" : 7
+					},
+				]
+			},
+			{
+				"duration" : 12,
+				"health" : [0,25],
+				"on_spawn" : true,
+				"behavior" : 2,
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 70,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 50,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-25),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 50,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : 7
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 50,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(25),
+						"size" : 7
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 14,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(120),
+						"size" : 7
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.1,
+						"speed" : 60,
+						"tile_range" : 14,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(180),
+						"size" : 7
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : false,
+						"wait" : 0.5,
+						"speed" : 60,
+						"tile_range" : 14,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(240),
+						"size" : 7
+					},
+				]
+			}
 		]
 	},
 	"vajira" : {
@@ -209,25 +1042,16 @@ var rulers = {
 		]
 	},
 	"salazar" : {
-		"health" : 20,
-		"defense" : 1,
-		"exp" : 10,
+		"health" : 40000,
+		"defense" : 50,
+		"exp" : 10000,
 		"behavior" : 0,
 		"speed" : 10,
 		"dungeon" : {
 			"rate" : 0,
-			"name" : "overgrown_temple"
+			"name" : "flaming_abyss"
 		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
+		"loot_pool" : special_loot_pools["salazar"],
 		"phases" : [
 			{
 				"duration" : 1,
@@ -237,79 +1061,274 @@ var rulers = {
 				"attack_pattern" : [
 					{
 						"summon" : "salazar_left_wing",
-						"summon_position" : Vector2(-14,-1),
+						"summon_position" : Vector2(-19,-1),
 						"wait" : 0,
 					},
 					{
 						"summon" : "salazar_right_wing",
-						"summon_position" : Vector2(15,-1),
-						"wait" : 1,
+						"summon_position" : Vector2(20,-1),
+						"wait" : 2,
 					},
 				]
 			},
 			{
-				"duration" : 4,
-				"health" : [0,100],
+				"duration" : OS.get_system_time_secs(),
+				"health" : [99.99,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Slash",
+						"projectile" : "SmallBlast",
 						"formula" : "0",
 						"damage" : 0,
 						"piercing" : true,
-						"wait" : 1000,
-						"speed" : 0,
+						"wait" : 1,
+						"speed" : 20,
 						"tile_range" : 0,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
-					}
+						"direction" : Vector2(0,1),
+						"size" : 9
+					},
+				]
+			},
+			{
+				"duration" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,99.99],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "So all my vessels have fallen...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "You are not to be underestimated. The abyss awaits you!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [0,99.99],
+				"attack_pattern" : [
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : true,
+						"wait" : 1,
+						"speed" : 30,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-40),
+						"size" : 9
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : true,
+						"wait" : 1,
+						"speed" : 30,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-30),
+						"size" : 9
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : true,
+						"wait" : 1,
+						"speed" : 30,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : 9
+					},
+					{
+						"projectile" : "Dart",
+						"formula" : "0",
+						"damage" : 200,
+						"piercing" : true,
+						"wait" : 1,
+						"speed" : 30,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-30),
+						"size" : 9
+					},
 				]
 			},
 		]
 	},
 	"salazar_left_wing" : {
-		"health" : 200000,
-		"defense" : 1,
-		"exp" : 10,
+		"health" : 10000,
+		"defense" : 60,
+		"exp" : 3000,
 		"behavior" : 0,
-		"speed" : 10,
-		"dungeon" : {
-			"rate" : 0,
-			"name" : "overgrown_temple"
-		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
-		"phases" : []
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(0,1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(0.866,0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(0.866,-0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(0,-1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(-0.866,-0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(-0.866,0.5),
+						"size" : 7
+					},
+				]
+			},
+		]
 	},
 	"salazar_right_wing" : {
-		"health" : 200000,
-		"defense" : 1,
-		"exp" : 10,
+		"health" : 10000,
+		"defense" : 60,
+		"exp" : 3000,
 		"behavior" : 0,
-		"speed" : 10,
-		"dungeon" : {
-			"rate" : 0,
-			"name" : "overgrown_temple"
-		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
-		"phases" : []
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(0,1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(0.866,0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(0.866,-0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(0,-1),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(-0.866,-0.5),
+						"size" : 7
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 40,
+						"piercing" : false,
+						"wait" : 2,
+						"speed" : 60,
+						"tile_range" : 7,
+						"direction" : Vector2(-0.866,0.5),
+						"size" : 7
+					},
+				]
+			},
+		]
 	},
 }
 var tutorial_enemies = {
@@ -320,14 +1339,13 @@ var tutorial_enemies = {
 		"behavior" : 1,
 		"speed" : 10,
 		"loot_pool" : {
-			"soulbound_loot" : [
+			"soulbound_loot" : [],
+			"loot" : [
 				{
-					"item" : 0,
+					"item" : 400,
 					"chance" : 1,
-					"threshold" : 1,
 				},
-			],
-			"loot" : []
+			]
 		},
 		"phases" : [
 			{
@@ -365,7 +1383,7 @@ var tutorial_enemies = {
 					{
 						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 2,
 						"piercing" : false,
 						"wait" : 0.5,
 						"speed" : 10,
@@ -376,7 +1394,7 @@ var tutorial_enemies = {
 					{
 						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 2,
 						"piercing" : false,
 						"wait" : 0.5,
 						"speed" : 10,
@@ -387,7 +1405,7 @@ var tutorial_enemies = {
 					{
 						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 2,
 						"piercing" : false,
 						"wait" : 0.5,
 						"speed" : 10,
@@ -398,7 +1416,7 @@ var tutorial_enemies = {
 					{
 						"projectile" : "Slash",
 						"formula" : "0",
-						"damage" : 10,
+						"damage" : 2,
 						"piercing" : false,
 						"wait" : 0.5,
 						"speed" : 10,
@@ -413,7 +1431,7 @@ var tutorial_enemies = {
 	"tutorial_troll_king" : {
 		"health" : 300,
 		"defense" : 2,
-		"exp" : 10,
+		"exp" : 30,
 		"behavior" : 1,
 		"speed" : 10,
 		"loot_pool" :  {
@@ -421,7 +1439,7 @@ var tutorial_enemies = {
 				{
 					"item" : 0,
 					"chance" : 1,
-					"threshold" : 1,
+					"threshold" : 0.2,
 				},
 			],
 			"loot" : []
@@ -429,7 +1447,7 @@ var tutorial_enemies = {
 		"phases" : [
 			{
 				"duration" : 4,
-				"health" : [50,100],
+				"health" : [75,100],
 				"attack_pattern" : [
 					{
 						"projectile" : "Stack",
@@ -448,7 +1466,8 @@ var tutorial_enemies = {
 			{
 				"duration" : 4,
 				"max_uses" : 1,
-				"health" : [0,50],
+				"on_spawn" : true,
+				"health" : [0,75],
 				"attack_pattern" : [
 					{
 						"summon" : "troll_warrior",
@@ -459,7 +1478,7 @@ var tutorial_enemies = {
 			},
 			{
 				"duration" : 4,
-				"health" : [0,50],
+				"health" : [0,75],
 				"attack_pattern" : [
 					{
 						"projectile" : "Wave",
@@ -524,18 +1543,7 @@ var realm_enemies = {
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 3,
-						"speed" : 10,
-						"tile_range" : 3,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 8
-					},
+					MakeProjectile("Slash_1", 0, 0, "nearest"),
 				]
 			}
 		]
@@ -3135,15 +4143,382 @@ var realm_enemies = {
 		]
 	},
 }
-var overgrown_temple_enemies = {
+var orc_vigil_enemies = {
+	"vigil_guardian" : {
+		"health" : 20000,
+		"defense" : 20,
+		"exp" : 6000,
+		"behavior" : 0,
+		"speed" : 15,
+		"dungeon" : {
+			"rate" : 1,
+			"name" : "orc_vigil_sanctum"
+		},
+		"loot_pool" : special_loot_pools["vigil_guardian"],
+		"phases" : [
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 16,
+						"wait" : 12,
+					},
+					{
+						"speech" : "So Oranix has fallen? The creator will be angry...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "No matter. Those who enter the vigil shall not return. Die usurper!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 12,
+				"health" : [90,100],
+				"behavior" : 1,
+				"speed" : 15,
+				"attack_pattern" : [
+					MakeProjectile("GiantBlast_fast", 15, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", -15, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*8, 2, "nearest"),
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [50,90],
+				"behavior" : 2,
+				"speed" : 20,
+				"attack_pattern" : [
+					MakeProjectile("GiantBlast_medium", (360.0/3.0)*1, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", (360.0/3.0)*2, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", (360.0/3.0)*3, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*1)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*2)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*3)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*4)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*5)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*6)+30, 1, "nearest"),
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [50,90],
+				"behavior" : 0,
+				"speed" : 20,
+				"attack_pattern" : [
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*1), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*2), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*3), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*4), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*5), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*6), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*7), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*8), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*9), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*10), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*11), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*12), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*13), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*14), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*15), 0.5, "nearest"),
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [20,50],
+				"behavior" : 0,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"speed" : 10,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 0,
+					},
+					{
+						"speech" : "I have stood guard of this vigil for a millenium...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "I will not fall to you lowly bottomfeeders!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [20,50],
+				"behavior" : 2,
+				"speed" : 10,
+				"attack_pattern" : [
+					MakeProjectile("GiantBlast_medium", 0, 0.2),
+					MakeProjectile("NeonStar_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 30, 0.2),
+					MakeProjectile("GiantBlast_medium", 60, 0.2),
+					MakeProjectile("GiantBlast_medium", 90, 0.2),
+					MakeProjectile("NeonStar_strong_fast", 120, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 120, 0.2),
+					MakeProjectile("GiantBlast_medium", 150, 0.2),
+					MakeProjectile("GiantBlast_medium", 180, 0.2),
+					MakeProjectile("NeonStar_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 210, 0.2),
+					MakeProjectile("GiantBlast_medium", 240, 0.2),
+					MakeProjectile("GiantBlast_medium", 270, 0.2),
+					MakeProjectile("NeonStar_strong_fast", 90, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 300, 0.2),
+					MakeProjectile("Wave_mid_fast", 30, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 20, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 10, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -30, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -20, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -10, 0, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 330, 0, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 270, 0, "nearest"),
+				]
+			},
+		]
+	},
+	"orc_monolith" : {
+		"health" : 2000,
+		"defense" : 1,
+		"exp" : 2000,
+		"behavior" : 0,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 16,
+						"wait" : 17,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("NeonArrow_mid_slow", 0, 0),
+					MakeProjectile("NeonArrow_mid_slow", 90, 0),
+					MakeProjectile("NeonArrow_mid_slow", 180, 0),
+					MakeProjectile("NeonArrow_mid_slow", 270, 1),
+				]
+			}
+		]
+	},
+	"atlas" : {
+		"health" : 40000,
+		"defense" : 10,
+		"exp" : 10000,
+		"behavior" : 0,
+		"speed" : 15,
+		"loot_pool" : special_loot_pools["atlas"],
+		"phases" : [
+			{
+				"duration" : 18,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 18,
+						"wait" : 12,
+					},
+					{
+						"speech" : "This vigil is the only remnant of the old orc empire...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "Do you really think it's treasures would lie undefended?",
+						"wait" : 2,
+					},
+					{
+						"speech" : "Prepare yourselves!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"max_uses" : 1,
+				"behavior" : 0,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"speech" : "Bare witness to the power of orc magicks!",
+						"wait" : 1,
+					},
+					{
+						"summon" : "vigil_construct",
+						"summon_position" : Vector2(20,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "vigil_construct",
+						"summon_position" : Vector2(-20,-5),
+						"wait" : 5,
+					},
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [75,100],
+				"behavior" : 1,
+				"attack_pattern" : [
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*1, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*2, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*3, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*4, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*5, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*6, 2),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*7, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*8, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*9, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*10, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*11, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*12, 2),
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [75,100],
+				"behavior" : 2,
+				"speed" : 15,
+				"attack_pattern" : [
+					MakeProjectile("GiantBlast_fast", -25, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -45, 0.1, "nearest"),
+					MakeProjectile("Blast_strong_fast", -5, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 220, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("GiantBlast_fast", 25, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 160, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 30, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 200, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -10, 0.1, "nearest"),
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [25,75],
+				"behavior" : 2,
+				"speed" : 5,
+				"attack_pattern" : [
+					MakeProjectile("VigilBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 90, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 270, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+0, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+90, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+180, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+270, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [0,25],
+				"behavior" : 2,
+				"speed" : 10,
+				"attack_pattern" : [
+					MakeProjectile("VigilBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 90, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 270, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+0, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+90, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+180, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+270, 0, "nearest"),
+					
+					MakeProjectile("GiantBlast_fast", -25, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -45, 0.1, "nearest"),
+					MakeProjectile("Blast_strong_fast", -5, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 220, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("GiantBlast_fast", 25, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 160, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 30, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 200, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -10, 0.1, "nearest"),
+				]
+			},
+		]
+	},
+	"vigil_construct" : {
+		"health" : 2000,
+		"defense" : 1,
+		"exp" : 1000,
+		"behavior" : 1,
+		"speed" : 5,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"behavior" : 2,
+				"speed" : 30,
+				"attack_pattern" : [
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*8, 2, "nearest"),
+				]
+			},
+		]
+	},
 }
-var enemies = CompileEnemies()
+onready var enemies = CompileEnemies()
 func CompileEnemies():
 	var res = {}
 	res.merge(rulers)
 	res.merge(tutorial_enemies)
 	res.merge(realm_enemies)
-	res.merge(overgrown_temple_enemies)
+	res.merge(orc_vigil_enemies)
 	return res
 
 var items = {
@@ -4054,6 +5429,36 @@ var projectiles = {
 		"rotation" : 45,
 		"spin" : false,
 	},
+	"GoldDart" : {
+		"rect" : Rect2(150,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.4,
+	},
+	"VigilBlast" : {
+		"rect" : Rect2(160,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.2,
+	},
+	"VigilBlastSmall" : {
+		"rect" : Rect2(170,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"NeonStar" : {
+		"rect" : Rect2(180,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1,
+	},
+	"NeonArrow" : {
+		"rect" : Rect2(190,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
 	"Spinner" : {
 		"rect" : Rect2(70,0,10,10),
 		"rotation" : 45,
@@ -4068,6 +5473,12 @@ var projectiles = {
 		"rect" : Rect2(90,0,10,10),
 		"rotation" : 45,
 		"spin" : false,
+	},
+	"GiantBlast" : {
+		"rect" : Rect2(90,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.6,
 	},
 	"SmallBlast" : {
 		"rect" : Rect2(100,0,10,10),

@@ -52,7 +52,7 @@ func Chase(enemy, tick_rate, root):
 			closest = player_list[player_id]["position"].distance_to(enemy["position"])
 			target = player_list[player_id]["position"]
 	
-	if closest > 8*8:
+	if closest > 16*8:
 		return enemy
 	
 	var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)

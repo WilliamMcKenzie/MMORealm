@@ -11,8 +11,8 @@ func UpdateTiles(tiles):
 		6 : [1,0,0],
 	}
 	
-	for x in range(64):
-		for y in range(64):
+	for x in range(24):
+		for y in range(24):
 			if $TileMap.get_cell(x,y) == tiles[x][y]:
 				continue
 			
@@ -42,8 +42,8 @@ func PopulateHouse(house_data):
 		6 : [1,0,0],
 	}
 	
-	for x in range(64):
-		for y in range(64):
+	for x in range(24):
+		for y in range(24):
 			var tile = tiles[x][y]
 			var num_variations = tile_variations[int(tile)]
 			var random_index = 0

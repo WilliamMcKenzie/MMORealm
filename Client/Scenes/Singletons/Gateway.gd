@@ -30,9 +30,13 @@ func ConnectToServerHTML():
 	# Connect to WebSocket server
 	var connection_result = html_network.connect_to_url(url, PoolStringArray(), true)
 	if connection_result == OK:
-		print("Connected to WebSocket server successfully.")
+		pass
 	else:
-		print("Failed to connect to WebSocket server.")
+		LoadingScreen.StartWaiting()
+		while(connection_result != OK):
+			yield(get_tree().create_timer(1), "timeout")
+			connection_result = html_network.connect_to_url(url, PoolStringArray(), true)
+			print("Failed to connect to WebSocket server.")
 	gateway_api = MultiplayerAPI.new()
 	
 	set_custom_multiplayer(gateway_api)
@@ -87,7 +91,7 @@ func _onConnectionSucceeded():
 
 func FetchAccountData():
 	rpc_id(1, "FetchAccountData", email, password)
-	
+
 remote func ReturnAccountData(account_data):
 	get_node("../SceneHandler/Home").SelectionScreen(account_data)
 

@@ -14,10 +14,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [  ]
+"values": [ 1 ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -90,7 +90,7 @@ scale = Vector2( 1.00334, 1 )
 texture = ExtResource( 2 )
 hframes = 4
 region_enabled = true
-region_rect = Rect2( 72, 36.5, 72, 18 )
+region_rect = Rect2( 162, 54, 72, 18 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
@@ -99,7 +99,6 @@ anims/Idle = SubResource( 9 )
 anims/RESET = SubResource( 6 )
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 position = Vector2( -5, -12 )
 collision_layer = 2
 collision_mask = 4

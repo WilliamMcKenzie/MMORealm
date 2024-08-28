@@ -12,11 +12,33 @@ export var rect_position2 = Vector2(-10,-9)
 
 var damage_indicator_scene = preload("res://Scenes/SupportScenes/UI/Indicators/DamageIndicator.tscn")
 var projectile_dict = {}
+var effects = {}
+var effects_node = preload("res://Scenes/SupportScenes/PlayerCharacter/Effects.tscn")
 
+func _ready():
+	$Area2D.connect("area_entered", self, "OnHit")
+	if not has_node("ZContainer"):
+		add_child(effects_node.instance())
+
+var clock_sync_timer = 0
 func _physics_process(delta):
+	clock_sync_timer += 1
 	if not $AnimationPlayer.is_playing():
 		$AnimationPlayer.play("Idle")
 	SpeedModifiers()
+	if clock_sync_timer == 20:
+		clock_sync_timer = 0
+		UpdateStatusEffects(effects)
+
+func UpdateStatusEffects(status_effects):
+	for status_node in $ZContainer/HBoxContainer/HBoxContainer.get_children():
+		if status_effects.has(status_node.name):
+			status_node.visible = true
+			$ZContainer.visible = true
+		else:
+			status_node.visible = false
+	if status_effects.size() == 0:
+		$ZContainer.visible = false
 
 func SpeedModifiers():
 	var tilemap = get_parent().get_parent().get_parent().get_node("TileMap")
@@ -29,9 +51,6 @@ func SpeedModifiers():
 	else:
 		$Control.rect_size = rect_size2
 		$Control.rect_position = rect_position2
-
-func _ready():
-	$Area2D.connect("area_entered", self, "OnHit")
 
 var theoretical_position = position
 func MoveEnemy(new_position):
@@ -68,6 +87,8 @@ func ShowDamageIndicator(damage_amount):
 	var total_damage = floor(-damage_amount - ClientData.GetEnemy(enemy_type).defense)
 	if total_damage < damage_amount - damage_amount*0.9:
 		total_damage = floor(damage_amount - damage_amount*0.9)
+	if effects.has("invincible"):
+		total_damage = 0
 	
 	var sprite = get_node("Sprite")
 	var shape = get_node("Area2D/Hitbox").shape as RectangleShape2D

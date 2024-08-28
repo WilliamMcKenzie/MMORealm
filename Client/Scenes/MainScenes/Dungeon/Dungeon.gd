@@ -38,6 +38,9 @@ func PopulateDungeon(instance_data):
 		3 : Vector2(0,-1),
 	}
 	for _coordinate in range(4):
+		if not map.has(_coordinate):
+			continue
+		
 		var coordinate = coordinate_map[_coordinate]
 		var room_data = map[coordinate]
 		
@@ -46,11 +49,13 @@ func PopulateDungeon(instance_data):
 			hallway_to_add.room_data["start_room"] = Vector2.ZERO
 			hallway_to_add.room_data["target_room"] = coordinate
 			hallways_to_add.append(hallway_to_add)
-		
+	
 	for room in map.keys():
 		var room_to_add = room_nodes[room].instance()
 		var room_data = map[room]
-			
+		
+		if map.size() == 1:
+			room_to_add.encounter = true
 		room_to_add.position = room*(room_size)*8
 		room_to_add.name = str(room)
 		add_child(room_to_add)

@@ -24,15 +24,15 @@ var subject_data = {
 		"animation" : "Ability",
 	},
 	"Quest" : {
-		"text" : ["Good job! Now follow your quest to the center of the map and defeat the rat king!"],
+		"text" : ["Good job, I think you're ready to take on this island's ruler!", "By killing your quest monster, you get bonus EXP...", "Follow your quest to the center of the map and defeat the troll king!"],
 		"animation" : "Quest",
-	},
+	},  
 	"Stats" : {
-		"text" : ["Wow! You got an ascension stone, consuming it by double clicking gives you two things...", "First, it brings you closer to ascending, and when ascended you can evolve your class through quests.", "Second, it lets you increase your stats. To ascend might take a while...", "But you can level up your stats right now. Consume it then open your stats to see!"],
+		"text" : ["Wow! You got an ascension stone, consuming it by double clicking gives you two things...", "First, it brings you closer to ascending, and when ascended you can evolve your class through quests.", "Second, it lets you increase your stats. To ascend might take a while...", "But you can level up your stats right now. Consume it then open your stats menu and increase a stat!"],
 		"animation" : "Stats",
 	},
 	"Final" : {
-		"text" : ["Good job, this Kingdom will forever be grateful for your efforts.", "You have now unlocked achievements, ascension, and the port.", "Press [R] to return the safety of the port and start your adventure."],
+		"text" : ["Good job, this Kingdom will forever be grateful for your efforts.", "You have now unlocked achievements, ascension, and the port.", "Press [R] to return the safety of the port, and head up to the docks to start your adventure."],
 		"animation" : "Final",
 	},
 }

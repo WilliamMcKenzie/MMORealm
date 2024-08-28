@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=1]
 [ext_resource path="res://Assets/npcs/enemies_16x16.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/SupportScenes/Npcs/BasicEnemy.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Effects.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Animation" id=10]
 resource_name = "Attack"
@@ -14,10 +15,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [  ]
+"values": [ 2, 3 ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -33,7 +34,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 1 ]
+"values": [ 4 ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -47,10 +48,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 0 ]
+"values": [ 0, 1 ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -104,9 +105,9 @@ material = ExtResource( 1 )
 position = Vector2( 10, 10 )
 scale = Vector2( 1.00334, 1 )
 texture = ExtResource( 2 )
-hframes = 4
+hframes = 5
 region_enabled = true
-region_rect = Rect2( 0, 36, 72, 18 )
+region_rect = Rect2( 0, 54, 90, 18 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Idle"
@@ -127,3 +128,6 @@ shape = SubResource( 8 )
 
 [node name="IndicatorPlaceholder" type="Node2D" parent="."]
 position = Vector2( 0, -17 )
+
+[node name="ZContainer" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -8 )
