@@ -4464,6 +4464,40 @@ func CompileEnemies():
 	res.merge(orc_vigil_enemies)
 	return res
 
+var dungeons = {
+	"island" : {},
+	"orc_vigil" : {
+		"type" : "encounter",
+		"tile_translation" : {
+			5 : "vigil_guardian",
+			6 : "orc_monolith",
+		}
+	},
+	"orc_vigil_sanctum" : {
+		"type" : "encounter",
+		"tile_translation" : {
+			5 : "atlas",
+		}
+	},
+	"the_abyss" : {
+		"type" : "encounter",
+		"tile_translation" : {
+			7 : "atlas",
+		}
+	},
+	"test_dungeon" : {
+		"type" : "procedural",
+		"basic_rooms" : ["Room1", "Room2"],
+		"rooms_until_boss" : 5,
+		"room_size" : 20,
+		"tile_translation" : {
+			9 : "crab",
+			10 : "slime",
+			11 : "blue_slime",
+		}
+	},
+}
+
 var items = {
 	0 : {
 		"name": "Ascension Stone",
@@ -5839,6 +5873,7 @@ var achievement_catagories = {
 		"icon" : Vector2(20,0)
 	},
 }
+
 var achievements = {
 	"Bow Projectiles I" : {
 		"which" : "bow_projectiles",

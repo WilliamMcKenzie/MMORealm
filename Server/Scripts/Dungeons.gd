@@ -1,65 +1,20 @@
 extends Node
 
-var valid_names = ["island","orc_vigil","orc_vigil_sanctum","the_abyss"]
-
-func GetTileTranslation(instance_name):
-	if instance_name == "orc_vigil":
-		return {
-			5 : "vigil_guardian",
-			6 : "orc_monolith",
-			7 : ["rock3","rock4"],
-		}
-	if instance_name == "orc_vigil_sanctum":
-		return {
-			5 : "atlas",
-			7 : ["rock3","rock4"],
-		}
-	if instance_name == "the_abyss":
-		return {
-			7 : ["rock1","rock2"],
-		}
-	
-	return {}
-	
 func GenerateDungeon(instance_name):
-	if instance_name == "orc_vigil":
-		return GenerateOrcVigil()
-	if instance_name == "orc_vigil_sanctum":
-		return GenerateOrcVigil()
-	if instance_name == "the_abyss":
-		return GenerateTheAbyss()
+	var dungeon_data = ServerData.dungeons[instance_name]
+	
+	if dungeon_data.type == "encounter":
+		return {Vector2.ZERO : { "room_type" : "Spawn" }}
+	if dungeon_data.type == "procedural":
+		return GenerateProceduralDungeon(dungeon_data.basic_rooms, dungeon_data.rooms_until_boss)
 
-func GenerateOrcVigil():
-	var layout = {
-		Vector2.ZERO : { "room_type" : "Spawn" }
-	}
-	return layout
-func GenerateOrcVigilSanctum():
-	var layout = {
-		Vector2.ZERO : { "room_type" : "Spawn" }
-	}
-	return layout
-func GenerateTheAbyss():
-	var layout = {
-		Vector2.ZERO : { "room_type" : "Spawn" }
-	}
-	return layout
-
-func GenerateOvergrownTemple():
+func GenerateProceduralDungeon(basic_rooms, rooms_until_boss=5):
 	randomize()
 	var layout = {
 		Vector2.ZERO : { "room_type" : "Spawn" }
 	}
 	var coordinates = Vector2.ZERO
-	
-	var rooms_until_boss = 5
 	var twist_chance = 0.5
-	
-	var basic_rooms = [
-		"Mage",
-		"Melee",
-		"Mixed",
-	]
 	
 	var direction_clock = {
 		Vector2(1,0) : Vector2(0,1),
@@ -135,8 +90,7 @@ func GenerateOvergrownTemple():
 		coordinates = Vector2.ZERO
 		direction = direction_clock[path]
 	return layout
-		
-	
+
 func TwistDirection(direction):
 	var direction_map = {
 		Vector2(1,0) : [Vector2(0,1), Vector2(0,-1)],

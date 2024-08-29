@@ -9,8 +9,6 @@ var dungeon_name = "overgrown_temple"
 #For creating new dungeon instances
 func PopulateDungeon(instance_data):
 	dungeon_name = instance_data["Name"]
-	tileset = load("res://Resources/" + dungeon_name + "_tilemap.tres")
-	$TileMap.tile_set = tileset
 	
 	var map = instance_data["Map"]
 	var id = instance_data["Id"]
@@ -38,7 +36,7 @@ func PopulateDungeon(instance_data):
 		3 : Vector2(0,-1),
 	}
 	for _coordinate in range(4):
-		if not map.has(_coordinate):
+		if not map.has(coordinate_map[_coordinate]):
 			continue
 		
 		var coordinate = coordinate_map[_coordinate]

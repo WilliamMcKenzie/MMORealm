@@ -32,9 +32,9 @@ func _ready():
 		#PlayerVerification.CreateFakePlayerContainer()
 	
 	#SpawnNPC("salazar", ["nexus"], Vector2(50,50))
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
-	#get_node("Instances/nexus").OpenPortal("orc_vigil", ["nexus"], Vector2.ZERO, "oranix")
+	get_node("Instances/nexus").OpenPortal("test_dungeon", ["nexus"], Vector2.ZERO)
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
 	#get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
@@ -93,8 +93,6 @@ func StartTutorial(player_id):
 	for child in current_instance_node.get_children():
 		if "tutorial_island" in child.name:
 			instance_id = child.name
-	
-	
 	
 	if instance_id:
 		player_instance_tracker[instance_tree].erase(player_id)
@@ -674,7 +672,7 @@ remote func RecieveChatMessage(message):
 				else:
 					rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "SystemERROR")
 			if message_words[0] == "/d":
-				if message.substr(3,-1) in Dungeons.valid_names:
+				if message.substr(3,-1) in ServerData.dungeons.keys():
 					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal(message.substr(3,-1), instance_tree, player_position)
 					rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
 				else:

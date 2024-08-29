@@ -11,15 +11,25 @@ func _ready():
 
 func SetParentTilemap():
 	var parent_tilemap = get_parent().get_node("TileMap")
+	var parent_objectmap = parent_tilemap.get_node("TileMap")
 	var offset = position/8
 	var room_size = get_parent().room_size
+	
+	if not parent_tilemap.tile_set:
+		parent_tilemap.tile_set = get_node("TileMap").tile_set.duplicate()
+	if not parent_objectmap.tile_set:
+		parent_objectmap.tile_set = get_node("TileMap/TileMap").tile_set.duplicate()
 	
 	if encounter:
 		for x in range(-100, 100):
 			for y in range(-100, 100):
 				var autotile_coord = $TileMap.get_cell_autotile_coord(x,y)
 				var current_tile = $TileMap.get_cell(x,y)
+				var object_autotile_coord = $TileMap/TileMap.get_cell_autotile_coord(x,y)
+				var object_current_tile = $TileMap/TileMap.get_cell(x,y)
 				
+				if object_current_tile > -1:
+					parent_objectmap.set_cell(x + offset.x, y + offset.y, object_current_tile, false, false, false, object_autotile_coord)
 				if current_tile > -1:
 					parent_tilemap.set_cell(x + offset.x, y + offset.y, current_tile, false, false, false, autotile_coord)
 	else:
@@ -27,7 +37,11 @@ func SetParentTilemap():
 			for y in range(-room_size, room_size*2):
 				var autotile_coord = $TileMap.get_cell_autotile_coord(x,y)
 				var current_tile = $TileMap.get_cell(x,y)
+				var object_autotile_coord = $TileMap/TileMap.get_cell_autotile_coord(x,y)
+				var object_current_tile = $TileMap/TileMap.get_cell(x,y)
 				
+				if object_current_tile > -1:
+					parent_objectmap.set_cell(x + offset.x, y + offset.y, object_current_tile, false, false, false, object_autotile_coord)
 				if current_tile > -1:
 					parent_tilemap.set_cell(x + offset.x, y + offset.y, current_tile, false, false, false, autotile_coord)
 	queue_free()

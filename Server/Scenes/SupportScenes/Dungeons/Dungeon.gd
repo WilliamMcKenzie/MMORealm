@@ -54,7 +54,7 @@ func PopulateDungeon():
 		3 : Vector2(0,-1),
 	}
 	for _coordinate in range(4):
-		if not map.has(_coordinate):
+		if not map.has(coordinate_map[_coordinate]):
 			continue
 		
 		var coordinate = coordinate_map[_coordinate]
