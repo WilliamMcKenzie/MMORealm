@@ -4,7 +4,7 @@ var current_class = "Apprentice"
 
 #Tile data
 var unique_tiles = {
-	0 : 0.01,
+	0 : 0,
 	1 : 0.5,
 }
 
@@ -251,6 +251,7 @@ var projectile_databank = {
 		"inherit" : "Wave_strong_fast",
 		"damage" : 70,
 		"speed" : 30,
+		"tile_range" : 12,
 	},
 	"Wave_weak_slow" : {
 		"inherit" : "Wave_strong_fast",
@@ -314,6 +315,150 @@ var projectile_databank = {
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(30),
 		"size" : 5
+	},
+	"GoldDart_strong_fast" : {
+		"projectile" : "GoldDart",
+		"formula" : "0",
+		"damage" : 250,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 9
+	},
+	"Dart_strong_fast" : {
+		"projectile" : "Dart",
+		"formula" : "0",
+		"damage" : 160,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 6
+	},
+	"Dart_mid_fast" : {
+		"projectile" : "Dart",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 6
+	},
+	"Ring_strong_slow" : {
+		"projectile" : "Ring",
+		"formula" : "0",
+		"damage" : 250,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 8
+	},
+	"Star_strong_slow" : {
+		"projectile" : "Star",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Star_strong_medium" : {
+		"projectile" : "Star",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Spinner_strong_medium" : {
+		"projectile" : "Spinner",
+		"formula" : "0",
+		"damage" : 140,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 10,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"GiantSpinner_strong_medium" : {
+		"projectile" : "GiantSpinner",
+		"formula" : "0",
+		"damage" : 300,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 10,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 9
+	},
+	"Fire1_strong_fast" : {
+		"projectile" : "Fire1",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Fire2_strong_fast" : {
+		"projectile" : "Fire2",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Fire3_strong_fast" : {
+		"projectile" : "Fire3",
+		"formula" : "0",
+		"damage" : 160,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Stack_strong_medium" : {
+		"projectile" : "Stack",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
 	},
 }
 
@@ -435,6 +580,22 @@ func MakeProjectile(projectile_type, degrees, wait, targeter = null):
 	
 	return projectile_data
 
+func CreateSpiral(arm_count, projectile_type, mix_in = null, chance = 0.8):
+	randomize()
+	var attack_pattern = []
+	var steps = 32.0
+	
+	for step in steps:
+		if mix_in and randf() > chance:
+			var projectile = MakeProjectile(mix_in, randi() % 360, 0)
+			attack_pattern.append(projectile)
+		for arm in range(arm_count):
+			var wait = 0.2 if (arm+1 == arm_count) else 0
+			var projectile = MakeProjectile(projectile_type, (360.0/steps)*(step+arm*(steps/arm_count)), wait)
+			attack_pattern.append(projectile)
+	
+	return attack_pattern
+
 var rulers = {
 	"oranix" : {
 		"health" : 20000,
@@ -443,7 +604,7 @@ var rulers = {
 		"behavior" : 0,
 		"speed" : 10,
 		"dungeon" : {
-			"rate" : 1,
+			"rate" : 0,
 			"name" : "orc_vigil"
 		},
 		"loot_pool" : special_loot_pools["oranix"],
@@ -453,162 +614,20 @@ var rulers = {
 				"health" : [25,100],
 				"behavior" : 1,
 				"attack_pattern" : [
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,1),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(0.707,0.707),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(1,0),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(0.707,-0.707),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,-1),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(-0.707,-0.707),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(-1,0),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(-0.707,0.707),
-						"size" : 9
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(10),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(20),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-10),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 2,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-20),
-						"size" : 7
-					},
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*8, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 30, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 20, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 10, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 0, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", -10, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", -20, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", -30, 2, "nearest"),
 				]
 			},
 			{
@@ -700,42 +719,9 @@ var rulers = {
 						"direction" : DegreesToVector(240),
 						"size" : 7
 					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 40,
-						"tile_range" : 13,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(60),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 40,
-						"tile_range" : 13,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(180),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 40,
-						"tile_range" : 13,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(300),
-						"size" : 7
-					},
+					MakeProjectile("Wave_mid_slow", 300, 2, "nearest"),
+					MakeProjectile("Wave_mid_slow", 180, 2, "nearest"),
+					MakeProjectile("Wave_mid_slow", 60, 2, "nearest"),
 				]
 			},
 			{
@@ -1048,8 +1034,8 @@ var rulers = {
 		"behavior" : 0,
 		"speed" : 10,
 		"dungeon" : {
-			"rate" : 0,
-			"name" : "flaming_abyss"
+			"rate" : 1,
+			"name" : "the_abyss"
 		},
 		"loot_pool" : special_loot_pools["salazar"],
 		"phases" : [
@@ -1080,7 +1066,7 @@ var rulers = {
 						"formula" : "0",
 						"damage" : 0,
 						"piercing" : true,
-						"wait" : 1,
+						"wait" : OS.get_system_time_secs(),
 						"speed" : 20,
 						"tile_range" : 0,
 						"targeter" : "nearest",
@@ -1112,63 +1098,126 @@ var rulers = {
 			},
 			{
 				"duration" : 5,
-				"health" : [0,99.99],
+				"health" : [75,99.99],
+				"attack_pattern" : [
+					MakeProjectile("Dart_strong_fast", -40, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -30, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -10, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 40, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 10, 2, "nearest"),
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [75,99.99],
+				"attack_pattern" : CreateSpiral(4, "Star_strong_slow")
+			},
+			{
+				"duration" : 7,
+				"health" : [25,75],
+				"attack_pattern" : [
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*1, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*2, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*3, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*4, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*5, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*6, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*7, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*8, 1),
+					MakeProjectile("GiantSpinner_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("Spinner_strong_medium", 0, 0.8, "nearest"),
+					
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*1, 0),
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*2, 0),
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*3, 0),
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*4, 0),
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*5, 0.8),
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [25,75],
+				"attack_pattern" : [
+					MakeProjectile("Fire1_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("Fire2_strong_fast", -25, 0.1, "nearest"),
+					MakeProjectile("Fire3_strong_fast", 15, 0.1, "nearest"),
+					MakeProjectile("Fire2_strong_fast", -5, 0.1, "nearest"),
+					MakeProjectile("Fire1_strong_fast", 25, 0.1, "nearest"),
+					MakeProjectile("Fire1_strong_fast", 1, 0.1, "nearest"),
+					MakeProjectile("Fire2_strong_fast", 10, 0.1, "nearest"),
+					MakeProjectile("Fire3_strong_fast", -15, 0.1, "nearest"),
+					
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*1, 0),
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*2, 0),
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*3, 0),
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*4, 0),
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*5, 1),
+				]
+			},
+			{
+				"duration" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,25],
 				"attack_pattern" : [
 					{
-						"projectile" : "Dart",
-						"formula" : "0",
-						"damage" : 200,
-						"piercing" : true,
-						"wait" : 1,
-						"speed" : 30,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-40),
-						"size" : 9
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
 					},
 					{
-						"projectile" : "Dart",
-						"formula" : "0",
-						"damage" : 200,
-						"piercing" : true,
-						"wait" : 1,
-						"speed" : 30,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-30),
-						"size" : 9
+						"speech" : "PUNY MORTALS...!",
+						"wait" : 3,
 					},
 					{
-						"projectile" : "Dart",
-						"formula" : "0",
-						"damage" : 200,
-						"piercing" : true,
-						"wait" : 1,
-						"speed" : 30,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-20),
-						"size" : 9
+						"speech" : "FEAR THE ABYSS!",
+						"wait" : 3,
 					},
-					{
-						"projectile" : "Dart",
-						"formula" : "0",
-						"damage" : 200,
-						"piercing" : true,
-						"wait" : 1,
-						"speed" : 30,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-30),
-						"size" : 9
-					},
+				]
+			},
+			{
+				"duration" : 25,
+				"health" : [0,25],
+				"attack_pattern" : CreateSpiral(3, "Star_strong_medium") + [
+					MakeProjectile("Dart_mid_fast", (360.0/8)*1, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*2, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*3, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*4, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*5, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*6, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*7, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*8, 1, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", -5, 0.1, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", 5, 0.1, "nearest"),
+					MakeProjectile("Dart_strong_fast", -40, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -30, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -10, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 40, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
 				]
 			},
 		]
 	},
 	"salazar_left_wing" : {
-		"health" : 10000,
-		"defense" : 60,
+		"health" : 5000,
+		"defense" : 5,
 		"exp" : 3000,
 		"behavior" : 0,
 		"speed" : 0,
@@ -1178,79 +1227,26 @@ var rulers = {
 				"duration" : 4,
 				"health" : [0,100],
 				"attack_pattern" : [
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(0,1),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(0.866,0.5),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(0.866,-0.5),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(0,-1),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(-0.866,-0.5),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 2,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(-0.866,0.5),
-						"size" : 7
-					},
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*8, 1, "nearest"),
+					MakeProjectile("Stack_strong_medium", 20, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 20, 1, "nearest"),
 				]
 			},
 		]
 	},
 	"salazar_right_wing" : {
-		"health" : 10000,
-		"defense" : 60,
+		"health" : 5000,
+		"defense" : 5,
 		"exp" : 3000,
 		"behavior" : 0,
 		"speed" : 0,
@@ -1260,72 +1256,19 @@ var rulers = {
 				"duration" : 4,
 				"health" : [0,100],
 				"attack_pattern" : [
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(0,1),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(0.866,0.5),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(0.866,-0.5),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(0,-1),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(-0.866,-0.5),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 2,
-						"speed" : 60,
-						"tile_range" : 7,
-						"direction" : Vector2(-0.866,0.5),
-						"size" : 7
-					},
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*8, 1, "nearest"),
+					MakeProjectile("Stack_strong_medium", 20, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 20, 1, "nearest"),
 				]
 			},
 		]
@@ -1543,7 +1486,7 @@ var realm_enemies = {
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
-					MakeProjectile("Slash_1", 0, 0, "nearest"),
+					MakeProjectile("Slash_1", 0, 1, "nearest"),
 				]
 			}
 		]
@@ -1756,7 +1699,7 @@ var realm_enemies = {
 						"formula" : "sin(x)",
 						"damage" : 7,
 						"piercing" : false,
-						"wait" : 0.3,
+						"wait" : 1,
 						"speed" : 30,
 						"tile_range" : 10,
 						"targeter" : "nearest",
@@ -5282,6 +5225,264 @@ var items = {
 			
 		}
 	},
+	433 : {
+		"name": "Worn hat",
+		"description" : "A miserable hat hardly fit for casting spells",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 1.5, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 3,
+		},
+		"tier" : "0",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(92.0, 97.0, 158.0),
+			"helmetMediumNew" : RgbToColor(79.0, 77.0, 144.0),
+			"helmetDarkNew" : RgbToColor(62.0, 60.0, 124.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	434 : {
+		"name": "Wizard's hat",
+		"description" : "A slightly magical hat fit for casting spells",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 2, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 5,
+			"defense" : 1
+		},
+		"tier" : "1",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(58.0, 66.0, 168.0),
+			"helmetMediumNew" : RgbToColor(54.0, 51.0, 148.0),
+			"helmetDarkNew" : RgbToColor(54.0, 51.0, 148.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	435 : {
+		"name": "Eagle-feather hat",
+		"description" : "A hat made for a strong druid",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 2.5, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 7,
+			"defense" : 2
+		},
+		"tier" : "2",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(243.0, 184.0, 73.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(225.0, 164.0, 51.0),
+			"helmetDarkNew" : RgbToColor(210.0, 146.0, 24.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	436 : {
+		"name": "Dragonhide hat",
+		"description" : "A wizard hat made from a strong dragonhide",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 3, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 9,
+			"defense" : 2
+		},
+		"tier" : "3",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(247.0, 83.0, 24.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(202.0, 61.0, 10.0),
+			"helmetDarkNew" : RgbToColor(175.0, 51.0, 7.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	437 : {
+		"name": "Master's hat",
+		"description" : "A hat only the greatest wizards are worthy to wear",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 3.5, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 12,
+			"defense" : 3
+		},
+		"tier" : "4",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(70.0, 160.0, 100.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(54.0, 148.0, 85.0),
+			"helmetDarkNew" : RgbToColor(46.0, 136.0, 71.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	466 : {
+		"name": "Worn cap",
+		"description" : "A second hand cap used by beginner archers",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 2, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 3,
+		},
+		"tier" : "0",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(125.0, 90.0, 35.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(120.0, 70.0, 25.0),
+			"helmetDarkNew" : RgbToColor(105.0, 58.0, 15.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	467 : {
+		"name": "Leather cap",
+		"description" : "A fine cap made from leather",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 2.5, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 4,
+			"defense" : 1
+		},
+		"tier" : "1",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(210.0, 130, 50.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(200.0, 115.0, 45.0),
+			"helmetDarkNew" : RgbToColor(184.0, 108.0, 37.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	468 : {
+		"name": "Eagle-feather cap",
+		"description" : "An excellent cap made from the feathers of an eagle",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 3, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 6,
+			"defense" : 2
+		},
+		"tier" : "2",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(230.0, 165, 50.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(215.0, 155.0, 45.0),
+			"helmetDarkNew" : RgbToColor(207.0, 149.0, 41.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	469 : {
+		"name": "Dragonhide cap",
+		"description" : "An elite cap made from the hide of a powerful dragon",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 3.5, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 7,
+			"defense" : 3
+		},
+		"tier" : "3",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(200.0, 65, 35.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(190.0, 55.0, 27.0),
+			"helmetDarkNew" : RgbToColor(181.0, 48.0, 22.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	470 : {
+		"name": "Master's cap",
+		"description" : "A one of a kind cap passed down from master archers",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 4, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 9,
+			"defense" : 4
+		},
+		"tier" : "4",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(45.0, 165, 28.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(35.0, 155.0, 15.0),
+			"helmetDarkNew" : RgbToColor(27.0, 145.0, 9.0),
+		},
+		"textures" : {
+			
+		}
+	},
 }
 
 var buildings = {
@@ -5423,6 +5624,7 @@ var projectiles = {
 		"rect" : Rect2(50,0,10,10),
 		"rotation" : 90,
 		"spin" : false,
+		"scale" : 1.3,
 	},
 	"Dart" : {
 		"rect" : Rect2(60,0,10,10),
@@ -5463,6 +5665,12 @@ var projectiles = {
 		"rect" : Rect2(70,0,10,10),
 		"rotation" : 45,
 		"spin" : true,
+	},
+	"GiantSpinner" : {
+		"rect" : Rect2(70,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1.4,
 	},
 	"Star" : {
 		"rect" : Rect2(80,0,10,10),

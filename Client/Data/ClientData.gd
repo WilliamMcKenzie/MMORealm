@@ -4,7 +4,7 @@ var current_class = "Apprentice"
 
 #Tile data
 var unique_tiles = {
-	0 : 0.01,
+	0 : 0,
 	1 : 0.5,
 }
 
@@ -112,9 +112,360 @@ var special_loot_pools = {
 		],
 		"loot" : []
 	},
+	"salazar" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+}
+
+var projectile_databank = {
+	"Slash_1" : {
+		"projectile" : "Slash",
+		"formula" : "0",
+		"damage" : 2,
+		"piercing" : false,
+		"wait" : 3,
+		"speed" : 10,
+		"tile_range" : 3,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 8
+	},
+	"GiantBlast_slow" : {
+		"projectile" : "GiantBlast",
+		"formula" : "0",
+		"damage" : 150,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 20,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 9
+	},
+	"GiantBlast_medium" : {
+		"inherit" : "GiantBlast_slow",
+		"speed" : 30,
+	},
+	"GiantBlast_fast" : {
+		"inherit" : "GiantBlast_slow",
+		"speed" : 60,
+	},
+	"SmallBlast_strong_fast" : {
+		"projectile" : "SmallBlast",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0.1,
+		"speed" : 60,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(-45),
+		"size" : 7
+	},
+	"Blast_strong_fast" : {
+		"projectile" : "Blast",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0.1,
+		"speed" : 50,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(-5),
+		"size" : 7
+	},
+	"VigilBlastSmall_1" : {
+		"projectile" : "VigilBlastSmall",
+		"formula" : "0",
+		"damage" : 45,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 25,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 7
+	},
+	"VigilBlastSmall_strong_fast" : {
+		"projectile" : "VigilBlastSmall",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 7
+	},
+	"VigilBlastSmall_slow" : {
+		"inherit" : "VigilBlastSmall_1",
+		"speed" : 15,
+	},
+	"VigilBlast_strong_fast" : {
+		"projectile" : "VigilBlast",
+		"formula" : "0",
+		"damage" : 190,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Wave_strong_fast" : {
+		"projectile" : "Wave",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Wave_mid_fast" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 70,
+	},
+	"Wave_weak_fast" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 30,
+	},
+	"Wave_strong_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 120,
+		"speed" : 30,
+	},
+	"Wave_mid_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 70,
+		"speed" : 30,
+		"tile_range" : 12,
+	},
+	"Wave_weak_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 30,
+		"speed" : 30,
+	},
+	"NeonArrow_mid_slow" : {
+		"projectile" : "NeonArrow",
+		"formula" : "0",
+		"damage" : 40,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 10,
+		"direction" : DegreesToVector(0),
+		"size" : 5
+	},
+	"NeonArrow_mid_fast" : {
+		"projectile" : "NeonArrow",
+		"formula" : "0",
+		"damage" : 70,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 10,
+		"direction" : DegreesToVector(0),
+		"size" : 5
+	},
+	"NeonStar_strong_fast" : {
+		"projectile" : "NeonStar",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(30),
+		"size" : 5
+	},
+	"NeonStar_mid_fast" : {
+		"projectile" : "NeonStar",
+		"formula" : "0",
+		"damage" : 70,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(30),
+		"size" : 5
+	},
+	"NeonStar_weak_fast" : {
+		"projectile" : "NeonStar",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(30),
+		"size" : 5
+	},
+	"GoldDart_strong_fast" : {
+		"projectile" : "GoldDart",
+		"formula" : "0",
+		"damage" : 250,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 9
+	},
+	"Dart_strong_fast" : {
+		"projectile" : "Dart",
+		"formula" : "0",
+		"damage" : 160,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 6
+	},
+	"Dart_mid_fast" : {
+		"projectile" : "Dart",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 6
+	},
+	"Ring_strong_slow" : {
+		"projectile" : "Ring",
+		"formula" : "0",
+		"damage" : 250,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 8
+	},
+	"Star_strong_slow" : {
+		"projectile" : "Star",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Star_strong_medium" : {
+		"projectile" : "Star",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Spinner_strong_medium" : {
+		"projectile" : "Spinner",
+		"formula" : "0",
+		"damage" : 140,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 10,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"GiantSpinner_strong_medium" : {
+		"projectile" : "GiantSpinner",
+		"formula" : "0",
+		"damage" : 300,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 10,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 9
+	},
+	"Fire1_strong_fast" : {
+		"projectile" : "Fire1",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Fire2_strong_fast" : {
+		"projectile" : "Fire2",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Fire3_strong_fast" : {
+		"projectile" : "Fire3",
+		"formula" : "0",
+		"damage" : 160,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
+	"Stack_strong_medium" : {
+		"projectile" : "Stack",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 7
+	},
 }
 
 func _ready():
+	
+	#Loot pools
+	
 	var high_chance = 0.15
 	var decent_chance = 0.1
 	var low_chance = 0.05
@@ -122,6 +473,8 @@ func _ready():
 	
 	for item_id in items.keys():
 		var item = items[item_id]
+		if item.type == "Consumable":
+			continue
 		if item.tier == "0":
 			basic_loot_pools["lowlands_1"].loot.append({
 				"item" : item_id,
@@ -167,12 +520,33 @@ func _ready():
 		if item.tier == "3":
 			basic_loot_pools["godlands_1"].soulbound_loot.append({
 				"item" : item_id,
-				"chance" : 0.01,
+				"chance" : rare_chance,
 				"threshold" : 0.5,
 			})
 			basic_loot_pools["ruler_1"].soulbound_loot.append({
 				"item" : item_id,
-				"chance" : 0.05,
+				"chance" : low_chance,
+				"threshold" : 0.05,
+			})
+			basic_loot_pools["encounter_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : low_chance,
+				"threshold" : 0.05,
+			})
+			basic_loot_pools["encounter_2"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : decent_chance,
+				"threshold" : 0.05,
+			})
+		if item.tier == "4":
+			basic_loot_pools["encounter_1"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : rare_chance,
+				"threshold" : 0.05,
+			})
+			basic_loot_pools["encounter_2"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : low_chance,
 				"threshold" : 0.05,
 			})
 	
@@ -180,6 +554,47 @@ func _ready():
 		var pool = special_loot_pools[enemy_name]
 		pool.soulbound_loot += basic_loot_pools[pool.override].soulbound_loot
 		pool.loot += basic_loot_pools[pool.override].loot
+
+var databank_configured = false
+func ConfigureProjectileDatabank():
+	databank_configured = true
+	for projectile_type in projectile_databank.keys():
+		var projectile = projectile_databank[projectile_type]
+		
+		if projectile.has("inherit"):
+			projectile.merge(projectile_databank[projectile.inherit])
+
+func MakeProjectile(projectile_type, degrees, wait, targeter = null):
+	if not databank_configured:
+		ConfigureProjectileDatabank()
+	
+	var angle = DegreesToVector(degrees)
+	var projectile_data = projectile_databank[projectile_type].duplicate()
+	
+	projectile_data.direction = angle
+	projectile_data.wait = wait
+	if targeter:
+		projectile_data.targeter = targeter
+	elif projectile_data.has("targeter"):
+		projectile_data.erase("targeter")
+	
+	return projectile_data
+
+func CreateSpiral(arm_count, projectile_type, mix_in = null, chance = 0.8):
+	randomize()
+	var attack_pattern = []
+	var steps = 32.0
+	
+	for step in steps:
+		if mix_in and randf() > chance:
+			var projectile = MakeProjectile(mix_in, randi() % 360, 0)
+			attack_pattern.append(projectile)
+		for arm in range(arm_count):
+			var wait = 0.2 if (arm+1 == arm_count) else 0
+			var projectile = MakeProjectile(projectile_type, (360.0/steps)*(step+arm*(steps/arm_count)), wait)
+			attack_pattern.append(projectile)
+	
+	return attack_pattern
 
 var rulers = {
 	"oranix" : {
@@ -199,162 +614,20 @@ var rulers = {
 				"health" : [25,100],
 				"behavior" : 1,
 				"attack_pattern" : [
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,1),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(0.707,0.707),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(1,0),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(0.707,-0.707),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,-1),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(-0.707,-0.707),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(-1,0),
-						"size" : 9
-					},
-					{
-						"projectile" : "GoldDart",
-						"formula" : "0",
-						"damage" : 250,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : Vector2(-0.707,0.707),
-						"size" : 9
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(10),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(20),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-10),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 2,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-20),
-						"size" : 7
-					},
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*8, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 30, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 20, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 10, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 0, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", -10, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", -20, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", -30, 2, "nearest"),
 				]
 			},
 			{
@@ -446,42 +719,9 @@ var rulers = {
 						"direction" : DegreesToVector(240),
 						"size" : 7
 					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 40,
-						"tile_range" : 13,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(60),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 40,
-						"tile_range" : 13,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(180),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 75,
-						"piercing" : false,
-						"wait" : 1,
-						"speed" : 40,
-						"tile_range" : 13,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(300),
-						"size" : 7
-					},
+					MakeProjectile("Wave_mid_slow", 300, 2, "nearest"),
+					MakeProjectile("Wave_mid_slow", 180, 2, "nearest"),
+					MakeProjectile("Wave_mid_slow", 60, 2, "nearest"),
 				]
 			},
 			{
@@ -788,25 +1028,16 @@ var rulers = {
 		]
 	},
 	"salazar" : {
-		"health" : 20,
-		"defense" : 1,
-		"exp" : 10,
+		"health" : 40000,
+		"defense" : 50,
+		"exp" : 10000,
 		"behavior" : 0,
 		"speed" : 10,
 		"dungeon" : {
-			"rate" : 0,
-			"name" : "overgrown_temple"
+			"rate" : 1,
+			"name" : "flaming_abyss"
 		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
+		"loot_pool" : special_loot_pools["salazar"],
 		"phases" : [
 			{
 				"duration" : 1,
@@ -816,79 +1047,231 @@ var rulers = {
 				"attack_pattern" : [
 					{
 						"summon" : "salazar_left_wing",
-						"summon_position" : Vector2(-14,-1),
+						"summon_position" : Vector2(-19,-1),
 						"wait" : 0,
 					},
 					{
 						"summon" : "salazar_right_wing",
-						"summon_position" : Vector2(15,-1),
-						"wait" : 1,
+						"summon_position" : Vector2(20,-1),
+						"wait" : 2,
 					},
 				]
 			},
 			{
-				"duration" : 4,
-				"health" : [0,100],
+				"duration" : OS.get_system_time_secs(),
+				"health" : [99.99,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Slash",
+						"projectile" : "SmallBlast",
 						"formula" : "0",
 						"damage" : 0,
 						"piercing" : true,
-						"wait" : 1000,
-						"speed" : 0,
+						"wait" : OS.get_system_time_secs(),
+						"speed" : 20,
 						"tile_range" : 0,
 						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
-					}
+						"direction" : Vector2(0,1),
+						"size" : 9
+					},
+				]
+			},
+			{
+				"duration" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,99.99],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "So all my vessels have fallen...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "You are not to be underestimated. The abyss awaits you!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [75,99.99],
+				"attack_pattern" : [
+					MakeProjectile("Dart_strong_fast", -40, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -30, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -10, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 40, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 10, 2, "nearest"),
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [75,99.99],
+				"attack_pattern" : CreateSpiral(4, "Star_strong_slow")
+			},
+			{
+				"duration" : 7,
+				"health" : [25,75],
+				"attack_pattern" : [
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*1, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*2, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*3, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*4, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*5, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*6, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*7, 0.1),
+					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*8, 1),
+					MakeProjectile("GiantSpinner_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("Spinner_strong_medium", 0, 0.8, "nearest"),
+					
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*1, 0),
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*2, 0),
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*3, 0),
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*4, 0),
+					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*5, 0.8),
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [25,75],
+				"attack_pattern" : [
+					MakeProjectile("Fire1_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("Fire2_strong_fast", -25, 0.1, "nearest"),
+					MakeProjectile("Fire3_strong_fast", 15, 0.1, "nearest"),
+					MakeProjectile("Fire2_strong_fast", -5, 0.1, "nearest"),
+					MakeProjectile("Fire1_strong_fast", 25, 0.1, "nearest"),
+					MakeProjectile("Fire1_strong_fast", 1, 0.1, "nearest"),
+					MakeProjectile("Fire2_strong_fast", 10, 0.1, "nearest"),
+					MakeProjectile("Fire3_strong_fast", -15, 0.1, "nearest"),
+					
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*1, 0),
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*2, 0),
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*3, 0),
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*4, 0),
+					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*5, 1),
+				]
+			},
+			{
+				"duration" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,25],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "PUNY MORTALS...!",
+						"wait" : 3,
+					},
+					{
+						"speech" : "FEAR THE ABYSS!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 25,
+				"health" : [0,25],
+				"attack_pattern" : CreateSpiral(3, "Star_strong_medium") + [
+					MakeProjectile("Dart_mid_fast", (360.0/8)*1, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*2, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*3, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*4, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*5, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*6, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*7, 0, "nearest"),
+					MakeProjectile("Dart_mid_fast", (360.0/8)*8, 1, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", -5, 0.1, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", 5, 0.1, "nearest"),
+					MakeProjectile("Dart_strong_fast", -40, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -30, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", -10, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 40, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Dart_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
 				]
 			},
 		]
 	},
 	"salazar_left_wing" : {
-		"health" : 200000,
-		"defense" : 1,
-		"exp" : 10,
+		"health" : 10000,
+		"defense" : 60,
+		"exp" : 3000,
 		"behavior" : 0,
-		"speed" : 10,
-		"dungeon" : {
-			"rate" : 0,
-			"name" : "overgrown_temple"
-		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
-		"phases" : []
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*8, 1, "nearest"),
+					MakeProjectile("Stack_strong_medium", 20, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 20, 1, "nearest"),
+				]
+			},
+		]
 	},
 	"salazar_right_wing" : {
-		"health" : 200000,
-		"defense" : 1,
-		"exp" : 10,
+		"health" : 10000,
+		"defense" : 60,
+		"exp" : 3000,
 		"behavior" : 0,
-		"speed" : 10,
-		"dungeon" : {
-			"rate" : 0,
-			"name" : "overgrown_temple"
-		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
-		"phases" : []
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", (360.0/8.0)*8, 1, "nearest"),
+					MakeProjectile("Stack_strong_medium", 20, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 20, 1, "nearest"),
+				]
+			},
+		]
 	},
 }
 var tutorial_enemies = {
@@ -1103,18 +1486,7 @@ var realm_enemies = {
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 3,
-						"speed" : 10,
-						"tile_range" : 3,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 8
-					},
+					MakeProjectile("Slash_1", 0, 1, "nearest"),
 				]
 			}
 		]
@@ -1327,7 +1699,7 @@ var realm_enemies = {
 						"formula" : "sin(x)",
 						"damage" : 7,
 						"piercing" : false,
-						"wait" : 0.3,
+						"wait" : 1,
 						"speed" : 30,
 						"tile_range" : 10,
 						"targeter" : "nearest",
@@ -3754,118 +4126,16 @@ var orc_vigil_enemies = {
 				"behavior" : 1,
 				"speed" : 15,
 				"attack_pattern" : [
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(15),
-						"size" : 9
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-15),
-						"size" : 9
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 45,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 25,
-						"tile_range" : 8,
-						"direction" : Vector2(0,1),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 45,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 25,
-						"tile_range" : 8,
-						"direction" : Vector2(0.707,0.707),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 45,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 25,
-						"tile_range" : 8,
-						"direction" : Vector2(1,0),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 45,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 25,
-						"tile_range" : 8,
-						"direction" : Vector2(0.707,-0.707),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 45,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 25,
-						"tile_range" : 8,
-						"direction" : Vector2(0,-1),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 45,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 25,
-						"tile_range" : 8,
-						"direction" : Vector2(-0.707,-0.707),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 45,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 25,
-						"tile_range" : 8,
-						"direction" : Vector2(-1,0),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 45,
-						"piercing" : false,
-						"wait" : 1.5,
-						"speed" : 25,
-						"tile_range" : 8,
-						"direction" : Vector2(-0.707,0.707),
-						"size" : 7
-					},
+					MakeProjectile("GiantBlast_fast", 15, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", -15, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", (360.0/8.0)*8, 2, "nearest"),
 				]
 			},
 			{
@@ -3874,130 +4144,15 @@ var orc_vigil_enemies = {
 				"behavior" : 2,
 				"speed" : 20,
 				"attack_pattern" : [
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(120),
-						"size" : 7
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 30,
-						"tile_range" : 20,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(240),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 6,
-						"direction" : Vector2(0,1),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 6,
-						"direction" : Vector2(0.707,0.707),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 6,
-						"direction" : Vector2(1,0),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 6,
-						"direction" : Vector2(0.707,-0.707),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 6,
-						"direction" : Vector2(0,-1),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 6,
-						"direction" : Vector2(-0.707,-0.707),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 6,
-						"direction" : Vector2(-1,0),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0.7,
-						"speed" : 70,
-						"tile_range" : 6,
-						"direction" : Vector2(-0.707,0.707),
-						"size" : 6
-					},
+					MakeProjectile("GiantBlast_medium", (360.0/3.0)*1, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", (360.0/3.0)*2, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", (360.0/3.0)*3, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*1)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*2)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*3)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*4)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*5)+30, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_1", ((360.0/6.0)*6)+30, 1, "nearest"),
 				]
 			},
 			{
@@ -4006,160 +4161,21 @@ var orc_vigil_enemies = {
 				"behavior" : 0,
 				"speed" : 20,
 				"attack_pattern" : [
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(0,1),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(0.434,0.901),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(0.782,0.623),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(0.975,0.223),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(0.975,-0.223),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(0.782,-0.623),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(0.434,-0.901),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(0,-1),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(-0.434,-0.901),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(-0.782,-0.623),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(-0.975,-0.223),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(-0.975,0.223),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(-0.782,0.623),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 20,
-						"tile_range" : 12,
-						"direction" : Vector2(-0.434,0.901),
-						"size" : 6
-					},
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*1), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*2), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*3), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*4), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*5), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*6), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*7), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*8), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*9), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*10), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*11), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*12), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*13), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*14), 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_slow", ((360.0/15.0)*15), 0.5, "nearest"),
 				]
 			},
 			{
@@ -4191,283 +4207,31 @@ var orc_vigil_enemies = {
 				"behavior" : 2,
 				"speed" : 10,
 				"attack_pattern" : [
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(0),
-						"size" : 9
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(30),
-						"size" : 5
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(30),
-						"size" : 9
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(60),
-						"size" : 9
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(90),
-						"size" : 9
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(120),
-						"size" : 5
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(120),
-						"size" : 9
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(150),
-						"size" : 9
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(180),
-						"size" : 9
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 5
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(210),
-						"size" : 9
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(240),
-						"size" : 9
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(270),
-						"size" : 9
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(90),
-						"size" : 5
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 30,
-						"tile_range" : 12,
-						"direction" : DegreesToVector(300),
-						"size" : 9
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 70,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 70,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(10),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(330),
-						"size" : 5
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 70,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(20),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(270),
-						"size" : 5
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 70,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(30),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 70,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-10),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 70,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-20),
-						"size" : 7
-					},
-					{
-						"projectile" : "Wave",
-						"formula" : "0",
-						"damage" : 70,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 8,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-30),
-						"size" : 7
-					},
+					MakeProjectile("GiantBlast_medium", 0, 0.2),
+					MakeProjectile("NeonStar_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 30, 0.2),
+					MakeProjectile("GiantBlast_medium", 60, 0.2),
+					MakeProjectile("GiantBlast_medium", 90, 0.2),
+					MakeProjectile("NeonStar_strong_fast", 120, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 120, 0.2),
+					MakeProjectile("GiantBlast_medium", 150, 0.2),
+					MakeProjectile("GiantBlast_medium", 180, 0.2),
+					MakeProjectile("NeonStar_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 210, 0.2),
+					MakeProjectile("GiantBlast_medium", 240, 0.2),
+					MakeProjectile("GiantBlast_medium", 270, 0.2),
+					MakeProjectile("NeonStar_strong_fast", 90, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 300, 0.2),
+					MakeProjectile("Wave_mid_fast", 30, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 20, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 10, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -30, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -20, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -10, 0, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 330, 0, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 270, 0, "nearest"),
 				]
 			},
 		]
@@ -4497,56 +4261,16 @@ var orc_vigil_enemies = {
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 10,
-						"direction" : DegreesToVector(0),
-						"size" : 5
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 10,
-						"direction" : DegreesToVector(90),
-						"size" : 5
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 10,
-						"direction" : DegreesToVector(180),
-						"size" : 5
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : true,
-						"wait" : 1,
-						"speed" : 20,
-						"tile_range" : 10,
-						"direction" : DegreesToVector(270),
-						"size" : 5
-					},
+					MakeProjectile("NeonArrow_mid_slow", 0, 0),
+					MakeProjectile("NeonArrow_mid_slow", 90, 0),
+					MakeProjectile("NeonArrow_mid_slow", 180, 0),
+					MakeProjectile("NeonArrow_mid_slow", 270, 1),
 				]
 			}
 		]
 	},
 	"atlas" : {
-		"health" : 20000,
+		"health" : 40000,
 		"defense" : 10,
 		"exp" : 10000,
 		"behavior" : 0,
@@ -4579,8 +4303,8 @@ var orc_vigil_enemies = {
 				]
 			},
 			{
-				"duration" : 3,
-				"max_uses" : 3,
+				"duration" : 4,
+				"max_uses" : 1,
 				"behavior" : 0,
 				"health" : [0,100],
 				"attack_pattern" : [
@@ -4590,18 +4314,13 @@ var orc_vigil_enemies = {
 					},
 					{
 						"summon" : "vigil_construct",
-						"summon_position" : Vector2(10,5),
+						"summon_position" : Vector2(20,5),
 						"wait" : 0,
 					},
 					{
 						"summon" : "vigil_construct",
-						"summon_position" : Vector2(0,-5),
-						"wait" : 0,
-					},
-					{
-						"summon" : "vigil_construct",
-						"summon_position" : Vector2(-10,5),
-						"wait" : 3,
+						"summon_position" : Vector2(-20,-5),
+						"wait" : 5,
 					},
 				]
 			},
@@ -4610,125 +4329,18 @@ var orc_vigil_enemies = {
 				"health" : [75,100],
 				"behavior" : 1,
 				"attack_pattern" : [
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(30),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(60),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(90),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 2,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(120),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-30),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"direction" : DegreesToVector(-60),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-90),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : true,
-						"wait" : 2,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-120),
-						"size" : 7
-					},
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*1, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*2, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*3, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*4, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*5, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*6, 2),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*7, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*8, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*9, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*10, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*11, 0),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*12, 2),
 				]
 			},
 			{
@@ -4737,138 +4349,17 @@ var orc_vigil_enemies = {
 				"behavior" : 2,
 				"speed" : 15,
 				"attack_pattern" : [
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-25),
-						"size" : 9
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(180),
-						"size" : 5
-					},
-					{
-						"projectile" : "SmallBlast",
-						"formula" : "0",
-						"damage" : 80,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-45),
-						"size" : 7
-					},
-					{
-						"projectile" : "Blast",
-						"formula" : "0",
-						"damage" : 120,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-5),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(220),
-						"size" : 5
-					},
-					{
-						"projectile" : "SmallBlast",
-						"formula" : "0",
-						"damage" : 80,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(25),
-						"size" : 9
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(160),
-						"size" : 5
-					},
-					{
-						"projectile" : "SmallBlast",
-						"formula" : "0",
-						"damage" : 80,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(30),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(200),
-						"size" : 5
-					},
-					{
-						"projectile" : "Blast",
-						"formula" : "0",
-						"damage" : 120,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-10),
-						"size" : 7
-					},
+					MakeProjectile("GiantBlast_fast", -25, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -45, 0.1, "nearest"),
+					MakeProjectile("Blast_strong_fast", -5, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 220, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("GiantBlast_fast", 25, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 160, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 30, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 200, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -10, 0.1, "nearest"),
 				]
 			},
 			{
@@ -4877,432 +4368,59 @@ var orc_vigil_enemies = {
 				"behavior" : 2,
 				"speed" : 5,
 				"attack_pattern" : [
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(90),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(180),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(270),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(45),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(45+90),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(45+180),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(45+270),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 50,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 50,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 50,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 50,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 50,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 50,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonArrow",
-						"formula" : "0",
-						"damage" : 50,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
+					MakeProjectile("VigilBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 90, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 270, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+0, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+90, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+180, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+270, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
 				]
 			},
 			{
 				"duration" : 8,
 				"health" : [0,25],
 				"behavior" : 2,
-				"speed" : 15,
+				"speed" : 10,
 				"attack_pattern" : [
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(90),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(180),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 150,
-						"piercing" : true,
-						"wait" : 0.2,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(270),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(45),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(45+90),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(45+180),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(45+270),
-						"size" : 7
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-25),
-						"size" : 9
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(180),
-						"size" : 5
-					},
-					{
-						"projectile" : "SmallBlast",
-						"formula" : "0",
-						"damage" : 80,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-45),
-						"size" : 7
-					},
-					{
-						"projectile" : "Blast",
-						"formula" : "0",
-						"damage" : 120,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-5),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(220),
-						"size" : 5
-					},
-					{
-						"projectile" : "SmallBlast",
-						"formula" : "0",
-						"damage" : 80,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
-						"size" : 7
-					},
-					{
-						"projectile" : "GiantBlast",
-						"formula" : "0",
-						"damage" : 190,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(25),
-						"size" : 9
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(160),
-						"size" : 5
-					},
-					{
-						"projectile" : "SmallBlast",
-						"formula" : "0",
-						"damage" : 80,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(30),
-						"size" : 7
-					},
-					{
-						"projectile" : "NeonStar",
-						"formula" : "0",
-						"damage" : 100,
-						"piercing" : true,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 12,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(200),
-						"size" : 5
-					},
-					{
-						"projectile" : "Blast",
-						"formula" : "0",
-						"damage" : 120,
-						"piercing" : false,
-						"wait" : 0.1,
-						"speed" : 60,
-						"tile_range" : 15,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-10),
-						"size" : 7
-					},
+					MakeProjectile("VigilBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 90, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 270, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+0, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+90, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+180, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+270, 0, "nearest"),
+					
+					MakeProjectile("GiantBlast_fast", -25, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -45, 0.1, "nearest"),
+					MakeProjectile("Blast_strong_fast", -5, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 220, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("GiantBlast_fast", 25, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 160, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 30, 0.1, "nearest"),
+					MakeProjectile("NeonStar_strong_fast", 200, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -10, 0.1, "nearest"),
 				]
 			},
 		]
 	},
 	"vigil_construct" : {
-		"health" : 4000,
+		"health" : 2000,
 		"defense" : 1,
-		"exp" : 10,
-		"behavior" : 2,
-		"speed" : 10,
+		"exp" : 1000,
+		"behavior" : 1,
+		"speed" : 5,
 		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
 			{
@@ -5321,156 +4439,23 @@ var orc_vigil_enemies = {
 			{
 				"duration" : 10,
 				"health" : [0,100],
+				"behavior" : 2,
+				"speed" : 30,
 				"attack_pattern" : [
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 5,
-						"direction" : Vector2(0,1),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 5,
-						"direction" : Vector2(0.951,0.309),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 5,
-						"direction" : Vector2(0.588,-0.809),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 5,
-						"direction" : Vector2(-0.588,-0.809),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlast",
-						"formula" : "0",
-						"damage" : 60,
-						"piercing" : false,
-						"wait" : 2,
-						"speed" : 70,
-						"tile_range" : 5,
-						"direction" : Vector2(-0.951,0.309),
-						"size" : 7
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 7,
-						"direction" : Vector2(0,1),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 7,
-						"direction" : Vector2(0.707,0.707),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 7,
-						"direction" : Vector2(1,0),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 7,
-						"direction" : Vector2(0.707,-0.707),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 7,
-						"direction" : Vector2(0,-1),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 7,
-						"direction" : Vector2(-0.707,-0.707),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 70,
-						"tile_range" : 7,
-						"direction" : Vector2(-1,0),
-						"size" : 6
-					},
-					{
-						"projectile" : "VigilBlastSmall",
-						"formula" : "0",
-						"damage" : 40,
-						"piercing" : false,
-						"wait" : 2,
-						"speed" : 70,
-						"tile_range" : 7,
-						"direction" : Vector2(-0.707,0.707),
-						"size" : 6
-					},
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*8, 2, "nearest"),
 				]
 			},
 		]
 	},
 }
-var enemies = CompileEnemies()
+onready var enemies = CompileEnemies()
 func CompileEnemies():
 	var res = {}
 	res.merge(rulers)
@@ -6240,6 +5225,264 @@ var items = {
 			
 		}
 	},
+	433 : {
+		"name": "Worn hat",
+		"description" : "A miserable hat hardly fit for casting spells",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 1.5, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 3,
+		},
+		"tier" : "0",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(92.0, 97.0, 158.0),
+			"helmetMediumNew" : RgbToColor(79.0, 77.0, 144.0),
+			"helmetDarkNew" : RgbToColor(62.0, 60.0, 124.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	434 : {
+		"name": "Wizard's hat",
+		"description" : "A slightly magical hat fit for casting spells",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 2, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 5,
+			"defense" : 1
+		},
+		"tier" : "1",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(58.0, 66.0, 168.0),
+			"helmetMediumNew" : RgbToColor(54.0, 51.0, 148.0),
+			"helmetDarkNew" : RgbToColor(54.0, 51.0, 148.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	435 : {
+		"name": "Eagle-feather hat",
+		"description" : "A hat made for a strong druid",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 2.5, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 7,
+			"defense" : 2
+		},
+		"tier" : "2",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(243.0, 184.0, 73.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(225.0, 164.0, 51.0),
+			"helmetDarkNew" : RgbToColor(210.0, 146.0, 24.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	436 : {
+		"name": "Dragonhide hat",
+		"description" : "A wizard hat made from a strong dragonhide",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 3, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 9,
+			"defense" : 2
+		},
+		"tier" : "3",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(247.0, 83.0, 24.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(202.0, 61.0, 10.0),
+			"helmetDarkNew" : RgbToColor(175.0, 51.0, 7.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	437 : {
+		"name": "Master's hat",
+		"description" : "A hat only the greatest wizards are worthy to wear",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 3.5, "range" : 3},
+		},
+		"stats" : {
+			"attack" : 12,
+			"defense" : 3
+		},
+		"tier" : "4",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(70.0, 160.0, 100.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(54.0, 148.0, 85.0),
+			"helmetDarkNew" : RgbToColor(46.0, 136.0, 71.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	466 : {
+		"name": "Worn cap",
+		"description" : "A second hand cap used by beginner archers",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 2, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 3,
+		},
+		"tier" : "0",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(125.0, 90.0, 35.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(120.0, 70.0, 25.0),
+			"helmetDarkNew" : RgbToColor(105.0, 58.0, 15.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	467 : {
+		"name": "Leather cap",
+		"description" : "A fine cap made from leather",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 2.5, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 4,
+			"defense" : 1
+		},
+		"tier" : "1",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(210.0, 130, 50.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(200.0, 115.0, 45.0),
+			"helmetDarkNew" : RgbToColor(184.0, 108.0, 37.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	468 : {
+		"name": "Eagle-feather cap",
+		"description" : "An excellent cap made from the feathers of an eagle",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 3, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 6,
+			"defense" : 2
+		},
+		"tier" : "2",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(230.0, 165, 50.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(215.0, 155.0, 45.0),
+			"helmetDarkNew" : RgbToColor(207.0, 149.0, 41.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	469 : {
+		"name": "Dragonhide cap",
+		"description" : "An elite cap made from the hide of a powerful dragon",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 3.5, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 7,
+			"defense" : 3
+		},
+		"tier" : "3",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(200.0, 65, 35.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(190.0, 55.0, 27.0),
+			"helmetDarkNew" : RgbToColor(181.0, 48.0, 22.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	470 : {
+		"name": "Master's cap",
+		"description" : "A one of a kind cap passed down from master archers",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 7,
+		"buffs" : {
+			"berserk" : { "duration" : 4, "range" : 4},
+		},
+		"stats" : {
+			"dexterity" : 9,
+			"defense" : 4
+		},
+		"tier" : "4",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,10)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(45.0, 165, 28.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(35.0, 155.0, 15.0),
+			"helmetDarkNew" : RgbToColor(27.0, 145.0, 9.0),
+		},
+		"textures" : {
+			
+		}
+	},
 }
 
 var buildings = {
@@ -6381,6 +5624,7 @@ var projectiles = {
 		"rect" : Rect2(50,0,10,10),
 		"rotation" : 90,
 		"spin" : false,
+		"scale" : 1.3,
 	},
 	"Dart" : {
 		"rect" : Rect2(60,0,10,10),
@@ -6421,6 +5665,12 @@ var projectiles = {
 		"rect" : Rect2(70,0,10,10),
 		"rotation" : 45,
 		"spin" : true,
+	},
+	"GiantSpinner" : {
+		"rect" : Rect2(70,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1.4,
 	},
 	"Star" : {
 		"rect" : Rect2(80,0,10,10),

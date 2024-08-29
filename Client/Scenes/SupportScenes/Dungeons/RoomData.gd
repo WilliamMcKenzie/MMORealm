@@ -15,8 +15,8 @@ func SetParentTilemap():
 	var room_size = get_parent().room_size
 	
 	if encounter:
-		for x in range(-50, 100):
-			for y in range(-50, 100):
+		for x in range(-100, 100):
+			for y in range(-100, 100):
 				var autotile_coord = $TileMap.get_cell_autotile_coord(x,y)
 				var current_tile = $TileMap.get_cell(x,y)
 				

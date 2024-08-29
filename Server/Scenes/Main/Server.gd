@@ -31,9 +31,9 @@ func _ready():
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	SpawnNPC("orc_monolith", ["nexus"], Vector2(50,50))
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
+	#SpawnNPC("salazar", ["nexus"], Vector2(50,50))
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 	#get_node("Instances/nexus").OpenPortal("orc_vigil", ["nexus"], Vector2.ZERO, "oranix")
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
@@ -85,7 +85,6 @@ func _Peer_Disconnected(id):
 
 #TUTORIAL
 func StartTutorial(player_id):
-	return
 	var instance_tree = player_state_collection[player_id]["I"].duplicate()
 	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 	var player_container = current_instance_node.get_node("YSort/Players/"+str(player_id))
@@ -94,6 +93,8 @@ func StartTutorial(player_id):
 	for child in current_instance_node.get_children():
 		if "tutorial_island" in child.name:
 			instance_id = child.name
+	
+	
 	
 	if instance_id:
 		player_instance_tracker[instance_tree].erase(player_id)

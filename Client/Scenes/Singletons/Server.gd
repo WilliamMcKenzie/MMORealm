@@ -169,6 +169,7 @@ remote func ReturnTokenVerificationResults(results):
 
 #Tutorial
 remote func StartTutorial():
+	print("sart")
 	GameUI.StartTutorial()
 func ChooseUsername(username):
 	rpc_id(1, "ChooseUsername", username)

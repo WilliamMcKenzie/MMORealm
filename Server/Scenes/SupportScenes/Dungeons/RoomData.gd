@@ -14,8 +14,8 @@ func SpawnEnemies():
 	var room_size = get_parent().room_size
 	
 	if encounter:
-		for x in range(-50, 100):
-			for y in range(-50, 100):
+		for x in range(-50, 50):
+			for y in range(-90, 50):
 				var current_tile = $TileMap.get_cell(x,y)
 				var current_position = position + Vector2(x*8, y*8) - get_parent().position
 				
@@ -30,7 +30,6 @@ func SpawnEnemies():
 						if not tile_translation[current_tile] is String:
 							obstacle_name = tile_translation[current_tile][randi() % len(tile_translation[current_tile])]
 						CreateObstacle(obstacle_name, get_parent().instance_tree, current_position, load("res://Scenes/SupportScenes/Obstacles/Small.tscn").instance(), get_parent().name)
-	
 	else:
 		for x in range(-room_size, room_size*2):
 			for y in range(-room_size, room_size*2):

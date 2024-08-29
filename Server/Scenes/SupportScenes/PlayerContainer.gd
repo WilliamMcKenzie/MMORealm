@@ -114,7 +114,7 @@ func _physics_process(delta):
 	heal_rate = 10.0/character.stats.vitality
 	
 	if status_effects.has("healing"):
-		heal_rate = 10.0/(character.stats.vitality + 100)
+		heal_rate = 10.0/(character.stats.vitality + 200)
 	
 	#Tick
 	for i in range(floor((running_time-last_tick)/heal_rate)):
@@ -557,7 +557,7 @@ func AddExp(exp_amount, enemy_name, enemy_id):
 		exp_pool = exp_amount*3
 	
 	while exp_pool > 0:
-		var level_exp = 100*pow(1.1962,character.level)
+		var level_exp = 100*pow(1.1962,character.level) if (character.level < 20) else 100*pow(1.1962,20)
 		var exp_to_level = level_exp - character.exp
 		
 		if exp_pool < exp_to_level:

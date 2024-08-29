@@ -88,7 +88,7 @@ func _physics_process(delta):
 		for enemy_id in enemy_list.keys():
 			var enemy = enemy_list[enemy_id]
 			if(enemy["health"] < 1):
-				if enemy_list[enemy_id]["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon"):
+				if enemy_list[enemy_id]["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon") and enemy_list[enemy_id]["dead"] == false:
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["dead"] = true

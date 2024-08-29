@@ -84,6 +84,7 @@ func _physics_process(delta):
 			
 			if not _health:
 				enemy_list[enemy_id]["phase_timer"] = 0
+				enemy_list[enemy_id]["pattern_timer"] = 0
 			if _phase.has("behavior"):
 				enemy_list[enemy_id]["behavior"] = _phase["behavior"]
 			if _phase.has("speed"):
