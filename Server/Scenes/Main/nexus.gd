@@ -479,6 +479,7 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		var dungeon_instance = load("res://Scenes/SupportScenes/Dungeons/Dungeon.tscn").instance()
 		dungeon_instance.name = instance_id
 		dungeon_instance.map = instance_map
+		dungeon_instance.dungeon_name = portal_name
 		dungeon_instance.room_size = ServerData.dungeons[portal_name].room_size
 		dungeon_instance.tile_translation = tile_translation
 		dungeon_instance.position = Instances.GetFreeInstancePosition()

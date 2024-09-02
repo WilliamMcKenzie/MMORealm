@@ -13,40 +13,22 @@ func SpawnEnemies():
 	var tile_translation = get_parent().tile_translation
 	var room_size = get_parent().room_size
 	
-	if encounter:
-		for x in range(-50, 50):
-			for y in range(-90, 50):
-				var current_tile = $TileMap.get_cell(x,y)
-				var current_position = position + Vector2(x*8, y*8) - get_parent().position
-				
-				if tile_translation.has(current_tile):
-					if ServerData.GetEnemy(tile_translation[current_tile]):
-						var enemy_name = tile_translation[current_tile]
-						if not tile_translation[current_tile] is String:
-							enemy_name = tile_translation[randi() % len(tile_translation)]
-						get_node("/root/Server").SpawnNPC(enemy_name, get_parent().instance_tree, current_position)
-					else:
-						var obstacle_name = tile_translation[current_tile]
-						if not tile_translation[current_tile] is String:
-							obstacle_name = tile_translation[current_tile][randi() % len(tile_translation[current_tile])]
-						CreateObstacle(obstacle_name, get_parent().instance_tree, current_position, load("res://Scenes/SupportScenes/Obstacles/Small.tscn").instance(), get_parent().name)
-	else:
-		for x in range(-room_size, room_size*2):
-			for y in range(-room_size, room_size*2):
-				var current_tile = $TileMap.get_cell(x,y)
-				var current_position = position + Vector2(x*8, y*8) - get_parent().position
-				
-				if tile_translation.has(current_tile):
-					if ServerData.GetEnemy(tile_translation[current_tile]):
-						var enemy_name = tile_translation[current_tile]
-						if not tile_translation[current_tile] is String:
-							enemy_name = tile_translation[randi() % len(tile_translation)]
-						get_node("/root/Server").SpawnNPC(enemy_name, get_parent().instance_tree, current_position)
-					else:
-						var obstacle_name = tile_translation[current_tile]
-						if not tile_translation[current_tile] is String:
-							obstacle_name = tile_translation[current_tile][randi() % len(tile_translation[current_tile])]
-						CreateObstacle(obstacle_name, get_parent().instance_tree, current_position, load("res://Scenes/SupportScenes/Obstacles/Small.tscn").instance(), get_parent().name)
+	for x in range(-room_size, room_size):
+		for y in range(-room_size, room_size):
+			var current_tile = $TileMap.get_cell(x,y)
+			var current_position = position + Vector2(x*8, y*8) - get_parent().position + Vector2(4,4)
+			
+			if tile_translation.has(current_tile):
+				if ServerData.GetEnemy(tile_translation[current_tile]):
+					var enemy_name = tile_translation[current_tile]
+					if not tile_translation[current_tile] is String:
+						enemy_name = tile_translation[randi() % len(tile_translation)]
+					get_node("/root/Server").SpawnNPC(enemy_name, get_parent().instance_tree, current_position)
+				else:
+					var obstacle_name = tile_translation[current_tile]
+					if not tile_translation[current_tile] is String:
+						obstacle_name = tile_translation[current_tile][randi() % len(tile_translation[current_tile])]
+					CreateObstacle(obstacle_name, get_parent().instance_tree, current_position, load("res://Scenes/SupportScenes/Obstacles/Small.tscn").instance(), get_parent().name)
 	
 func CreateObstacle(obstacle_name, instance_tree, obstacle_position, obstacle, island_id):
 	var obstacle_id = get_node("/root/Server").generate_unique_id()
@@ -73,8 +55,8 @@ func HallwaySetup():
 	var room_size = get_parent().room_size
 	var target_coordinates = direction*Vector2(room_size,room_size)
 	
-	for x in range(-room_size, room_size*2):
-		for y in range(-room_size, room_size*2):
+	for x in range(-room_size*2, room_size*2):
+		for y in range(-room_size*2, room_size*2):
 			if $TileMap.get_cell(x,y) > -1:
 				tiles.append(Vector2(x, y))
 	

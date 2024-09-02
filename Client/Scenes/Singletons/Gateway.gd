@@ -72,6 +72,7 @@ func ConnectToServer(_email, _password, _task):
 	
 func _onConnectionSucceeded():
 	print("Connection succeeded!")
+	LoadingScreen.EndWaiting()
 	if(task == 7):
 		ReviveCharacter()
 	if(task == 6):

@@ -1,7 +1,6 @@
 extends Node2D
 
 var room_data = {}
-var encounter = false
 
 func _ready():
 	if room_data.has("start_room") and room_data.has("target_room"):
@@ -20,33 +19,22 @@ func SetParentTilemap():
 	if not parent_objectmap.tile_set:
 		parent_objectmap.tile_set = get_node("TileMap/TileMap").tile_set.duplicate()
 	
-	if encounter:
-		for x in range(-100, 100):
-			for y in range(-100, 100):
-				var autotile_coord = $TileMap.get_cell_autotile_coord(x,y)
-				var current_tile = $TileMap.get_cell(x,y)
-				var object_autotile_coord = $TileMap/TileMap.get_cell_autotile_coord(x,y)
-				var object_current_tile = $TileMap/TileMap.get_cell(x,y)
-				
-				if object_current_tile > -1:
-					parent_objectmap.set_cell(x + offset.x, y + offset.y, object_current_tile, false, false, false, object_autotile_coord)
-				if current_tile > -1:
-					parent_tilemap.set_cell(x + offset.x, y + offset.y, current_tile, false, false, false, autotile_coord)
-	else:
-		for x in range(-room_size, room_size*2):
-			for y in range(-room_size, room_size*2):
-				var autotile_coord = $TileMap.get_cell_autotile_coord(x,y)
-				var current_tile = $TileMap.get_cell(x,y)
-				var object_autotile_coord = $TileMap/TileMap.get_cell_autotile_coord(x,y)
-				var object_current_tile = $TileMap/TileMap.get_cell(x,y)
-				
-				if object_current_tile > -1:
-					parent_objectmap.set_cell(x + offset.x, y + offset.y, object_current_tile, false, false, false, object_autotile_coord)
-				if current_tile > -1:
-					parent_tilemap.set_cell(x + offset.x, y + offset.y, current_tile, false, false, false, autotile_coord)
+	for x in range(-room_size*2, room_size*2):
+		for y in range(-room_size*2, room_size*2):
+			var autotile_coord = $TileMap.get_cell_autotile_coord(x,y)
+			var current_tile = $TileMap.get_cell(x,y)
+			var object_autotile_coord = $TileMap/TileMap.get_cell_autotile_coord(x,y)
+			var object_current_tile = $TileMap/TileMap.get_cell(x,y)
+			
+			if object_current_tile > -1:
+				parent_objectmap.set_cell(x + offset.x, y + offset.y, object_current_tile, false, false, false, object_autotile_coord)
+			if current_tile > -1:
+				parent_tilemap.set_cell(x + offset.x, y + offset.y, current_tile, false, false, false, autotile_coord)
 	queue_free()
 
 func HallwaySetup():
+	get_node("TileMap").queue_free()
+	return
 	var start_room = get_parent().get_node(str(room_data.start_room))
 	var target_room = get_parent().get_node(str(room_data.target_room))
 	var direction = room_data.target_room - room_data.start_room
@@ -55,8 +43,10 @@ func HallwaySetup():
 	var room_size = get_parent().room_size
 	var target_coordinates = direction*Vector2(room_size,room_size)
 	
-	for x in range(-room_size, room_size*2):
-		for y in range(-room_size, room_size*2):
+	for x in range(-room_size*2, room_size*2):
+		for y in range(-room_size*2, room_size*2):
+			if $TileMap.get_cell(x,y) > -1 and x > 26:
+				print($TileMap.get_cell(x,y))
 			if $TileMap.get_cell(x,y) > -1:
 				tiles[Vector2(x, y)] = $TileMap.get_cell(x,y)
 	

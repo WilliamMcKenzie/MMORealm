@@ -1120,8 +1120,7 @@ func reponce_parser(response: PoolByteArray):
 							error_object["SQLSTATE_code"] = value
 						'M':
 							error_object["message"] = value
-							
-							push_error("[PostgreSQLClient:%d] %s" % [get_instance_id(), value])
+							print("Bad")
 						'D':
 							error_object["detail"] = value
 						'H':
@@ -1769,6 +1768,7 @@ func reponce_parser(response: PoolByteArray):
 					'E':
 						# If in a failed transaction block (queries will be rejected until block is ended).
 						prints("In a failed transaction block.")
+						DatabaseInterface.Connect()
 					_:
 						# We close the connection with the backend if current backend transaction status indicator is not recognized.
 						close(false)

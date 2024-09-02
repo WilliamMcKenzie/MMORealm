@@ -38,7 +38,7 @@ func _ready():
 	$GameButtons/HelmetButton.connect("pressed", self, "InUI")
 	$GameButtons/HomeButton.connect("pressed", self, "InUI")
 	if str(OS.get_model_name()) == 'GenericDevice':
-		$GameButtons/HelmetButton.visible = false
+		#$GameButtons/HelmetButton.visible = false
 		$GameButtons/HomeButton.visible = false
 
 func _physics_process(delta):
@@ -135,8 +135,9 @@ func PlayAnimation(animation_name, data):
 
 func SetAccountData(_account_data):
 	if account_data:
+		get_node("Building").SetHouseData(_account_data.home)
 		for achievement in account_data.achievements.keys():
-			if account_data.achievements[achievement] != _account_data.achievements[achievement]:
+			if account_data.achievements.has(achievement) and account_data.achievements[achievement] != _account_data.achievements[achievement]:
 				animation_tracker.append({ "name" : "UnlockAchievement", "data" : achievement})
 	
 		account_data = _account_data
@@ -145,7 +146,6 @@ func SetAccountData(_account_data):
 			$Achievements.Open()
 	else:
 		account_data = _account_data
-	get_node("Building").SetHouseData(_account_data.home)
 
 func SetCharacterData(character):
 	

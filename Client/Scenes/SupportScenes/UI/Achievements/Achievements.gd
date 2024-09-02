@@ -2,6 +2,7 @@ extends CanvasLayer
 
 var category_button = preload("res://Scenes/SupportScenes/UI/Achievements/CategoryButton.tscn")
 var achievement_button = preload("res://Scenes/SupportScenes/UI/Achievements/Achievement.tscn")
+var last_category = "Classes"
 
 func _ready():
 	$ExitButton.connect("pressed", self, "ToggleAchievements")
@@ -26,12 +27,13 @@ func Open():
 		category_instance.connect("pressed", self, "SetCategory", [catagory])
 		categories_node.add_child(category_instance)
 		
-	SetCategory("Classes")
+	SetCategory(last_category)
 
 func Close():
 	self.visible = false
 
 func SetCategory(category_name):
+	last_category = category_name
 	var categories_node = $MarginContainer/Container/Categories
 	var achievements_node = $MarginContainer/Container/ScrollContainer/AchievementsRoot
 	var achievements = ClientData.achievement_catagories[category_name].achievements

@@ -31,10 +31,10 @@ func _ready():
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
-	#SpawnNPC("salazar", ["nexus"], Vector2(50,50))
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
+	get_node("Instances/nexus").OpenPortal("frozen_fortress", ["nexus"], Vector2.ZERO)
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
-	get_node("Instances/nexus").OpenPortal("test_dungeon", ["nexus"], Vector2.ZERO)
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
 	#get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
@@ -93,6 +93,7 @@ func StartTutorial(player_id):
 	for child in current_instance_node.get_children():
 		if "tutorial_island" in child.name:
 			instance_id = child.name
+			break
 	
 	if instance_id:
 		player_instance_tracker[instance_tree].erase(player_id)
@@ -422,9 +423,11 @@ remote func SendPlayerProjectile(projectile_data):
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
-	rpc("RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
+	for player_id in player_instance_tracker[instance_tree]:
+		rpc_id(player_id, "RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
 func RemoveEnemyProjectile(projectile_id, instance_tree):
-	rpc("RemoveEnemyProjectile", projectile_id, instance_tree)
+	for player_id in player_instance_tracker[instance_tree]:
+		rpc_id(player_id, "RemoveEnemyProjectile", projectile_id, instance_tree)
 
 remote func NPCHit(enemy_id, damage):
 	var player_id = get_tree().get_rpc_sender_id()

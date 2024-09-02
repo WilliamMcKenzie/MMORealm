@@ -210,7 +210,7 @@ func SetHouseData(house_data):
 			building_node.name = building_name
 			storage_container.add_child(building_node)
 		
-		if (not building_data.has("achievement")) or (GameUI.account_data.has("achievements") and GameUI.account_data.achievements[building_data.achievement]):
+		if (not building_data.has("achievement")) or (GameUI.account_data.has("achievements") and (GameUI.account_data.achievements.has([building_data.achievement]) and GameUI.account_data.achievements[building_data.achievement])):
 			var building_node = storage_container.get_node(building_name)
 			building_node.SetBuilding(building_name, quantity)
 		elif building_data.has("achievement"):

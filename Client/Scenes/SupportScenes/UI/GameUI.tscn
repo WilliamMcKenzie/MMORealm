@@ -933,7 +933,6 @@ anims/Start = SubResource( 37 )
 anims/Stats = SubResource( 35 )
 
 [node name="FPS" type="Label" parent="."]
-visible = false
 margin_left = 635.0
 margin_top = 11.0
 margin_right = 677.0
@@ -1008,8 +1007,7 @@ custom_constants/separation = 5
 alignment = 2
 
 [node name="BuildButton" type="PanelContainer" parent="UtilityButtons"]
-margin_left = 43.0
-margin_right = 81.0
+margin_right = 38.0
 margin_bottom = 38.0
 size_flags_vertical = 0
 custom_styles/panel = SubResource( 17 )
@@ -1077,8 +1075,8 @@ z_index = 22
 normal = SubResource( 13 )
 
 [node name="Column1" type="VBoxContainer" parent="UtilityButtons"]
-margin_left = 86.0
-margin_right = 124.0
+margin_left = 43.0
+margin_right = 81.0
 margin_bottom = 122.0
 
 [node name="BackpackButton" type="PanelContainer" parent="UtilityButtons/Column1"]

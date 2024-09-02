@@ -19,15 +19,16 @@ var default_account_data = {
 	"gold": 5000,
 	"finished_tutorial": false,
 	"achievements": {
-		"Trial By Fire" : false,
 	},
 	"statistics": {
 		"tiles_covered" : 0,
+		"ability_used" : 0,
 		"damage_taken" : 0,
 		"bow_projectiles" : 0,
 		"staff_projectiles" : 0,
 		"sword_projectiles" : 0,
 		"projectiles_landed" : 0,
+		"deaths" : 0,
 	},
 	"home" : {
 		"whitelist" : [],
@@ -136,14 +137,15 @@ var new_character = {
 		]
 }
 
-func _ready():
+func Connect():
 	var connection_string = "postgresql://%s:%s@%s:%d/%s" % [
 		db_username, db_password, host, port, database_name
 	]
 	database.connect_to_host(connection_string, true)
-	
+
+func _ready():
+	Connect()
 	var default_home_tiles = []
-	
 	#Grass
 	for x in range(24):
 		default_home_tiles.append([])

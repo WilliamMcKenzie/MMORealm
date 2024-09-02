@@ -43,12 +43,15 @@ var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 func Init():
 	current_instance_tree = ["nexus"]
 
+var player_position
 var latency_timer = 59
 func _physics_process(delta):
 	latency_timer += 1
 	client_clock = OS.get_system_time_msecs()+latency
 	
-	if latency_timer == 60:
+	if latency_timer % 20 == 0 and get_node("../SceneHandler").has_node(GetCurrentInstance()):
+		player_position = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position
+	if latency_timer >= 60:
 		latency_timer = 0
 		rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 
@@ -61,11 +64,7 @@ func UpdateLeftJoystick(output):
 
 #Check if vector is within a certain range of player
 func IsWithinRange(_vector, _range = 16):
-	var player_position = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position
-	if player_position.distance_to(_vector) <= _range*8:
-		return true
-	else:
-		return false
+	return true if (player_position.distance_to(_vector) <= _range*8) else false
 
 func _process(delta):
 	if (html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED ||
@@ -129,36 +128,15 @@ func _Disconnected():
 func _onConnectionFailed():
 	ErrorPopup.OpenPopup("Connection failed")
 func _onConnectionSucceeded():
-	rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 	var timer = Timer.new()
 	timer.wait_time = 0.5
 	timer.autostart = true
-	timer.connect("timeout", self, "DetermineLatency")
 	self.add_child(timer)
 
-func DetermineLatency():
-	pass
-	#rpc_id(1, "DetermineLatency", OS.get_system_time_msecs())
-remote func ReturnLatency(client_time):
-	latency_array.append((OS.get_system_time_msecs() - client_time)/2)
-	if latency_array.size() == 9:
-		var total_latency = 0
-		latency_array.sort()
-		var mid_point = latency_array[4]
-		for i in range(latency_array.size()-1-1-1):
-			if latency_array[i] > (2 * mid_point) and latency_array[i] > 20:
-				latency_array.remove(i)
-			else:
-				total_latency += latency_array[i]
-		delta_latency = (total_latency / latency_array.size()) - latency
-		delta_latency = (total_latency / latency_array.size()) - latency
-		latency = total_latency / latency_array.size()
-		latency_array.clear()
-
 remote func ReturnServerTime(server_time, client_time):
-	latency = (OS.get_system_time_msecs()-client_time)/2
-	latency = server_time - client_time - latency
-	
+	var _latency = (OS.get_system_time_msecs()-client_time)/2
+	latency = server_time - client_time - _latency
+
 remote func FetchToken():
 	rpc_id(1, "ReturnToken", token, character_index)
 remote func ReturnTokenVerificationResults(results):
@@ -169,7 +147,6 @@ remote func ReturnTokenVerificationResults(results):
 
 #Tutorial
 remote func StartTutorial():
-	print("sart")
 	GameUI.StartTutorial()
 func ChooseUsername(username):
 	rpc_id(1, "ChooseUsername", username)
@@ -264,10 +241,11 @@ func SendProjectile(projectile_data):
 	rpc_id(1, "SendPlayerProjectile", projectile_data)
 
 remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
+	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree:
+		return
+	
 	var node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id))
-	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree or not node:
-		pass
-	elif node.projectile_dict.has(OS.get_system_time_msecs()):
+	if node.projectile_dict.has(OS.get_system_time_msecs()):
 		node.projectile_dict[OS.get_system_time_msecs()].append(projectile_data)
 	else:
 		node.projectile_dict[OS.get_system_time_msecs()] = [projectile_data]
@@ -275,17 +253,23 @@ remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
 remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 	if instance_tree != current_instance_tree:
 		pass
-	elif get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
+	elif has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)).ShootProjectile()
-		if get_node("../SceneHandler/"+GetCurrentInstance()).has_node("Pool"):
-			for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
-				if child.is_active == false:
-					child.projectile_data = projectile_data
-					child.is_active = true
-					child.Activate()
-					break
-		else:
-			CreatePool(projectile_pool_amount)
+	if get_node("../SceneHandler/"+GetCurrentInstance()).has_node("Pool"):
+		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
+			if child.is_active == false:
+				child.projectile_data = projectile_data
+				child.is_active = true
+				child.Activate()
+				break
+	else:
+		CreatePool(projectile_pool_amount)
+		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
+			if child.is_active == false:
+				child.projectile_data = projectile_data
+				child.is_active = true
+				child.Activate()
+				break
 
 remote func RemoveEnemyProjectile(id, instance_tree):
 	if instance_tree != current_instance_tree:

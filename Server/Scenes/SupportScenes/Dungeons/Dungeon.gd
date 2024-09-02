@@ -1,6 +1,7 @@
 extends "res://Scenes/Main/Nexus.gd"
 
 #Room size accounts for hallways in between
+var dungeon_name = "poop"
 var room_size = 20
 var map = {}
 var tile_translation = {}
@@ -8,6 +9,8 @@ var tile_translation = {}
 var sync_clock_counter = 1
 
 func GetMapSpawnpoint():
+	if ServerData.dungeons[dungeon_name].has("spawnpoint"):
+		return ServerData.dungeons[dungeon_name].spawnpoint
 	return Vector2(room_size/2*8, room_size/2*8)
 
 func _ready():
@@ -29,7 +32,6 @@ func _physics_process(delta):
 
 #For creating new dungeon instances
 func PopulateDungeon():
-	var dungeon_name = get_parent().object_list[name]["name"]
 	var id = name
 	
 	#We add the hallways after so they go on top of the room tiles
@@ -70,8 +72,6 @@ func PopulateDungeon():
 		var room_to_add = room_nodes[room].instance()
 		var room_data = map[room]
 		
-		if map.size() == 1:
-			room_to_add.encounter = true
 		room_to_add.position = room*(room_size)*8
 		room_to_add.name = str(room)
 		add_child(room_to_add)

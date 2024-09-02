@@ -59,7 +59,7 @@ func InspectItem(_item):
 	
 	for buff in item_on_use.get_children():
 		buff.visible = false
-	if item.type == "Helmet":
+	if item.type == "Helmet" or item.type == "Hat" or item.type == "Cap":
 		item_on_use.visible = true
 		item_on_use.get_node("Label").visible = true
 		for buff in item.buffs.keys():

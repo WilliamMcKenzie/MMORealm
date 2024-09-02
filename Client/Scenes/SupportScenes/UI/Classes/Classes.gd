@@ -136,7 +136,7 @@ func SetCharacter(classname):
 		
 	for stat in character.bonus_stats:
 		var value = stat_totals[stat]
-		if (value > 30 and stat != "health") or (value > 300):
+		if (value >= 30 and stat != "health") or (value > 300):
 			
 			strengths_node.visible = true
 			strengths_node.get_node("Label").visible = true

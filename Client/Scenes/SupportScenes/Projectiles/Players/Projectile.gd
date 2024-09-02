@@ -34,7 +34,7 @@ func WallCollision(area):
 	if area.name == "TileMap" or "object_id" in area.get_parent():
 		queue_free()
 
-func _process(delta):
+func _physics_process(delta):
 	if ClientData.GetProjectile(projectile).spin:
 		$Sprite.rotation_degrees += delta
 	
@@ -52,5 +52,5 @@ func set_direction(direction: Vector2):
 	self.direction = direction
 
 func interaction(body):
-	if (piercing == false) and (body.has_method("MoveEnemy")) :
+	if (piercing == false) and (body.has_method("MoveEnemy")):
 		queue_free()

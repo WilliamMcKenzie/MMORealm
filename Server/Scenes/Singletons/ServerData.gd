@@ -90,6 +90,28 @@ var special_loot_pools = {
 		],
 		"loot" : []
 	},
+	"vajira" : {
+		"override" : "ruler_1",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"raa'sloth" : {
+		"override" : "ruler_1",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 	"vigil_guardian" : {
 		"override" : "encounter_1",
 		"soulbound_loot" : [
@@ -123,9 +145,415 @@ var special_loot_pools = {
 		],
 		"loot" : []
 	},
+	"salazar_awakened" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 }
-
 var projectile_databank = {
+	"RoyalSlash_strong_medium" : {
+		"projectile" : "RoyalSlash",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"RoyalSlash_mid_fast" : {
+		"projectile" : "RoyalSlash",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantRoyalSlash_strong_medium" : {
+		"projectile" : "GiantRoyalSlash",
+		"formula" : "0",
+		"damage" : 200,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 25,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"RoyalSlash_strong_fast_short" : {
+		"projectile" : "RoyalSlash",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 45,
+		"tile_range" : 3,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantAbyssSpinner_strong_medium" : {
+		"projectile" : "GiantAbyssSpinner",
+		"formula" : "0",
+		"damage" : 180,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantAbyssSpinner_strong_slow" : {
+		"projectile" : "GiantAbyssSpinner",
+		"formula" : "0",
+		"damage" : 180,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 10,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantAbyssSpinner_mid_fast" : {
+		"projectile" : "GiantAbyssSpinner",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 35,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"AbyssSpinner_mid_fast" : {
+		"projectile" : "AbyssSpinner",
+		"formula" : "0",
+		"damage" : 60,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 35,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"AbyssSpinner_strong_medium" : {
+		"projectile" : "AbyssSpinner",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"GreenBlast_1" : {
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 4,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : 20,
+						"tile_range" : 3,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : 8
+					},
+	"None" : {
+						"projectile" : "Slash",
+						"formula" : "0",
+						"damage" : 0,
+						"piercing" : true,
+						"wait" : 1000,
+						"speed" : 0,
+						"tile_range" : 0,
+						"targeter" : "nearest",
+						"direction" : Vector2(0,0),
+						"size" : 4
+	},
+	"GiantIceSlash_mid_slow" : {
+		"projectile" : "GiantIceSlash",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 10,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantIceSlash_strong_fast" : {
+		"projectile" : "GiantIceSlash",
+		"formula" : "0",
+		"damage" : 180,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantIceSlash_strong_medium" : {
+		"projectile" : "GiantIceSlash",
+		"formula" : "0",
+		"damage" : 180,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"IceSlash_strong_fast" : {
+		"projectile" : "IceSlash",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"IceSlash_strong_medium" : {
+		"projectile" : "IceSlash",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Ball_strong_slow" : {
+		"projectile" : "Ball",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 10,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Ball_mid_fast" : {
+		"projectile" : "Ball",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"GiantBall_strong_slow" : {
+		"projectile" : "GiantBall",
+		"formula" : "0",
+		"damage" : 200,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 10,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 8
+	},
+	"GiantBall_mid_fast" : {
+		"projectile" : "GiantBall",
+		"formula" : "0",
+		"damage" : 140,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 8
+	},
+	"FlameArrow_strong_fast_short" : {
+		"projectile" : "FlameArrow",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 50,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"FlameBurst_strong_fast" : {
+		"projectile" : "FlameBurst",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 50,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"FlameBurst_strong_slow" : {
+		"projectile" : "FlameBurst",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"FlameBurst_medium_fast" : {
+		"projectile" : "FlameBurst",
+		"formula" : "0",
+		"damage" : 60,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 50,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"FlameBurst_weak_fast" : {
+		"projectile" : "FlameBurst",
+		"formula" : "0",
+		"damage" : 40,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 50,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"GiantFlameArrow_strong_medium" : {
+		"projectile" : "GiantFlameArrow",
+		"formula" : "0",
+		"damage" : 160,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantFlameArrow_strong_fast" : {
+		"projectile" : "GiantFlameArrow",
+		"formula" : "0",
+		"damage" : 160,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 50,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"FlameArrow_strong_fast" : {
+		"projectile" : "FlameArrow",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"FlameArrow_mid_fast" : {
+		"projectile" : "FlameArrow",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 50,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"FlameBlast_strong_slow" : {
+		"projectile" : "FlameBlast",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"FlameBlast_strong_fast" : {
+		"projectile" : "FlameBlast",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 50,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"GiantFlameBlast_strong_fast" : {
+		"projectile" : "GiantFlameBlast",
+		"formula" : "0",
+		"damage" : 140,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 40,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantFlameBlast_strong_medium" : {
+		"projectile" : "GiantFlameBlast",
+		"formula" : "0",
+		"damage" : 140,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
 	"Slash_1" : {
 		"projectile" : "Slash",
 		"formula" : "0",
@@ -144,7 +572,7 @@ var projectile_databank = {
 		"damage" : 150,
 		"piercing" : true,
 		"wait" : 0,
-		"speed" : 15,
+		"speed" : 8,
 		"tile_range" : 20,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
@@ -152,11 +580,11 @@ var projectile_databank = {
 	},
 	"GiantBlast_medium" : {
 		"inherit" : "GiantBlast_slow",
-		"speed" : 30,
+		"speed" : 20,
 	},
 	"GiantBlast_fast" : {
 		"inherit" : "GiantBlast_slow",
-		"speed" : 60,
+		"speed" : 40,
 	},
 	"SmallBlast_strong_fast" : {
 		"projectile" : "SmallBlast",
@@ -463,6 +891,12 @@ var projectile_databank = {
 }
 
 func _ready():
+	#Achievements
+	for achievement in achievements:
+		var data = achievements[achievement]
+		if data.which == "enemies_killed" and data.has("enemies"):
+			enemies_tracked += data.enemies
+	
 	
 	#Loot pools
 	
@@ -580,17 +1014,16 @@ func MakeProjectile(projectile_type, degrees, wait, targeter = null):
 	
 	return projectile_data
 
-func CreateSpiral(arm_count, projectile_type, mix_in = null, chance = 0.8):
+func CreateSpiral(arm_count, projectile_type, delay, mix_in = null, chance = 0.2, steps = 32.0):
 	randomize()
 	var attack_pattern = []
-	var steps = 32.0
 	
 	for step in steps:
-		if mix_in and randf() > chance:
+		if mix_in and randf() < chance:
 			var projectile = MakeProjectile(mix_in, randi() % 360, 0)
 			attack_pattern.append(projectile)
 		for arm in range(arm_count):
-			var wait = 0.2 if (arm+1 == arm_count) else 0
+			var wait = delay if (arm+1 == arm_count) else 0
 			var projectile = MakeProjectile(projectile_type, (360.0/steps)*(step+arm*(steps/arm_count)), wait)
 			attack_pattern.append(projectile)
 	
@@ -598,7 +1031,17 @@ func CreateSpiral(arm_count, projectile_type, mix_in = null, chance = 0.8):
 
 var rulers = {
 	"oranix" : {
-		"health" : 20000,
+		"scale" : 1.2,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,54), Vector2(90,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+			"Death" : [4],
+		},
+		
+		"health" : 25000,
 		"defense" : 10,
 		"exp" : 2000,
 		"behavior" : 0,
@@ -609,6 +1052,46 @@ var rulers = {
 		},
 		"loot_pool" : special_loot_pools["oranix"],
 		"phases" : [
+			{
+				"duration" : 12,
+				"behavior" : 1,
+				"speed" : 5,
+				"on_spawn" : true,
+				"health" : [99.9999999,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_mid_slow", (45.0/2)+(360.0/8.0)*1, 0),
+					MakeProjectile("Wave_mid_slow", (45.0/2)+(360.0/8.0)*2, 0),
+					MakeProjectile("Wave_mid_slow", (45.0/2)+(360.0/8.0)*3, 0),
+					MakeProjectile("Wave_mid_slow", (45.0/2)+(360.0/8.0)*4, 0),
+					MakeProjectile("Wave_mid_slow", (45.0/2)+(360.0/8.0)*5, 0),
+					MakeProjectile("Wave_mid_slow", (45.0/2)+(360.0/8.0)*6, 0),
+					MakeProjectile("Wave_mid_slow", (45.0/2)+(360.0/8.0)*7, 0),
+					MakeProjectile("Wave_mid_slow", (45.0/2)+(360.0/8.0)*8, 2),
+				]
+			},
+			{
+				"duration" : 7,
+				"behavior" : 1,
+				"speed" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "I stand guard over the last remanants of the greaet orc kingdom...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "As a vessel of Salazar I will not fall!",
+						"wait" : 3,
+					},
+				]
+			},
 			{
 				"duration" : 4,
 				"health" : [25,100],
@@ -946,88 +1429,352 @@ var rulers = {
 		]
 	},
 	"vajira" : {
-		"health" : 20,
-		"defense" : 1,
-		"exp" : 10,
-		"behavior" : 1,
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,72), Vector2(90,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+			"Death" : [4],
+		},
+		
+		"health" : 30000,
+		"defense" : 10,
+		"exp" : 2000,
+		"behavior" : 0,
 		"speed" : 10,
 		"dungeon" : {
 			"rate" : 0,
-			"name" : "overgrown_temple"
+			"name" : "frozen_fortress"
 		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
+		"loot_pool" : special_loot_pools["vajira"],
 		"phases" : [
 			{
-				"duration" : 4,
+				"duration" : 12,
+				"behavior" : 1,
+				"speed" : 5,
+				"on_spawn" : true,
+				"health" : [99.9999999,100],
+				"attack_pattern" : [
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*1, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*2, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*3, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*4, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*5, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*6, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*7, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*8, 2),
+				]
+			},
+			{
+				"duration" : 7,
+				"behavior" : 1,
+				"speed" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 0,
-						"piercing" : true,
-						"wait" : 1000,
-						"speed" : 0,
-						"tile_range" : 0,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
-					}
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "I have been entrusted to rule over this island as a vessel...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "Challenge me if you dare!",
+						"wait" : 3,
+					},
+					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*1, 0),
+					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*2, 0),
+					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*3, 0),
+					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*4, 0),
+					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*5, 0),
+					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*6, 0),
+					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*7, 0),
+					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*8, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*1, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*2, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*3, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*4, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*5, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*6, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*7, 0),
+					MakeProjectile("Ball_strong_slow", (45.0/2)+(360.0/8.0)*8, 2),
+				]
+			},
+			{
+				"duration" : 6,
+				"behavior" : 2,
+				"speed" : 20,
+				"health" : [25,100],
+				"attack_pattern" : [
+					MakeProjectile("GiantIceSlash_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_medium", 20, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_medium", -20, 0.5, "nearest"),
+					
+					MakeProjectile("IceSlash_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("IceSlash_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("IceSlash_strong_fast", -20, 0.5, "nearest"),
+					
+					MakeProjectile("Ball_strong_slow", 36+((360.0/5)*1), 0),
+					MakeProjectile("Ball_strong_slow", 36+((360.0/5)*2), 0),
+					MakeProjectile("Ball_strong_slow", 36+((360.0/5)*3), 0),
+					MakeProjectile("Ball_strong_slow", 36+((360.0/5)*4), 0),
+					MakeProjectile("Ball_strong_slow", 36+((360.0/5)*5), 0.2),
+					MakeProjectile("Ball_mid_fast", 0+((360.0/5)*1), 0),
+					MakeProjectile("Ball_mid_fast", 0+((360.0/5)*2), 0),
+					MakeProjectile("Ball_mid_fast", 0+((360.0/5)*3), 0),
+					MakeProjectile("Ball_mid_fast", 0+((360.0/5)*4), 0),
+					MakeProjectile("Ball_mid_fast", 0+((360.0/5)*5), 0.2),
+				]
+			},
+			{
+				"duration" : 6,
+				"behavior" : 0,
+				"speed" : 10,
+				"health" : [25,100],
+				"attack_pattern" : CreateSpiral(3, "Ball_strong_slow", 0.4, "IceSlash_strong_medium", 0.3)
+			},
+			{
+				"duration" : 6,
+				"behavior" : 1,
+				"speed" : 10,
+				"health" : [25,100],
+				"attack_pattern" : [
+					MakeProjectile("GiantIceSlash_mid_slow", 60+((360.0/3.0)*1), 0),
+					MakeProjectile("GiantIceSlash_mid_slow", 60+((360.0/3.0)*2), 0),
+					MakeProjectile("GiantIceSlash_mid_slow", 60+((360.0/3.0)*3), 0.5),
+					
+					MakeProjectile("IceSlash_strong_medium", 0, 0.2, "nearest"),
+					MakeProjectile("IceSlash_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("IceSlash_strong_medium", -10, 0.2, "nearest"),
+					MakeProjectile("IceSlash_strong_medium", -20, 0, "nearest"),
+					MakeProjectile("IceSlash_strong_medium", 20, 0.2, "nearest"),
+					
+					MakeProjectile("Ball_mid_fast", (360.0/8.0)*1, 0),
+					MakeProjectile("Ball_mid_fast", (360.0/8.0)*2, 0),
+					MakeProjectile("Ball_mid_fast", (360.0/8.0)*3, 0),
+					MakeProjectile("Ball_mid_fast", (360.0/8.0)*4, 0),
+					MakeProjectile("Ball_mid_fast", (360.0/8.0)*5, 0),
+					MakeProjectile("Ball_mid_fast", (360.0/8.0)*6, 0),
+					MakeProjectile("Ball_mid_fast", (360.0/8.0)*7, 0),
+					MakeProjectile("Ball_mid_fast", (360.0/8.0)*8, 0.5),
+					
+					MakeProjectile("GiantIceSlash_mid_slow", 0+((360.0/3.0)*1), 0),
+					MakeProjectile("GiantIceSlash_mid_slow", 0+((360.0/3.0)*2), 0),
+					MakeProjectile("GiantIceSlash_mid_slow", 0+((360.0/3.0)*3), 0.5),
+				]
+			},
+			{
+				"duration" : 6,
+				"behavior" : 2,
+				"speed" : 5,
+				"health" : [0,25],
+				"attack_pattern" : [
+					MakeProjectile("GiantBall_mid_fast", 60+((360.0/3.0)*1), 0),
+					MakeProjectile("GiantBall_mid_fast", 60+((360.0/3.0)*2), 0),
+					MakeProjectile("GiantBall_mid_fast", 60+((360.0/3.0)*3), 0.5),
+					
+					MakeProjectile("IceSlash_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("IceSlash_strong_fast", 10, 0, "nearest"),
+					MakeProjectile("IceSlash_strong_fast", -10, 0.2, "nearest"),
+					MakeProjectile("IceSlash_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("IceSlash_strong_fast", 20, 0.2, "nearest"),
+					
+					MakeProjectile("GiantIceSlash_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", 10, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", -10, 0.2, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", 20, 0.2, "nearest"),
+					
+					MakeProjectile("Ball_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("Ball_mid_fast", 10, 0, "nearest"),
+					MakeProjectile("Ball_mid_fast", -10, 0.2, "nearest"),
+					MakeProjectile("Ball_mid_fast", -20, 0, "nearest"),
+					MakeProjectile("Ball_mid_fast", 20, 0.2, "nearest"),
+					
+					MakeProjectile("GiantBall_strong_slow", 0+((360.0/3.0)*1), 0),
+					MakeProjectile("GiantBall_strong_slow", 0+((360.0/3.0)*2), 0),
+					MakeProjectile("GiantBall_strong_slow", 0+((360.0/3.0)*3), 0.5),
 				]
 			},
 		]
 	},
 	"raa'sloth" : {
-		"health" : 20,
-		"defense" : 1,
-		"exp" : 10,
+		"scale" : 1.3,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,90), Vector2(90,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+			"Death" : [4],
+		},
+		
+		"health" : 25000,
+		"defense" : 20,
+		"exp" : 2000,
 		"behavior" : 1,
-		"speed" : 10,
+		"speed" : 4,
 		"dungeon" : {
 			"rate" : 0,
-			"name" : "overgrown_temple"
+			"name" : "ruined_pyramids"
 		},
-		"loot_pool" : {
-			"soulbound_loot" : [
-				{
-					"item" : 0,
-					"chance" : 1,
-					"threshold" : 1,
-				},
-			],
-			"loot" : []
-		},
+		"loot_pool" : special_loot_pools["raa'sloth"],
 		"phases" : [
 			{
-				"duration" : 4,
+				"duration" : 12,
+				"behavior" : 1,
+				"speed" : 5,
+				"on_spawn" : true,
+				"health" : [99.9999999,100],
+				"attack_pattern" : [
+					MakeProjectile("AbyssSpinner_mid_fast", (45.0/2)+(360.0/8.0)*1, 0),
+					MakeProjectile("RoyalSlash_mid_fast", (45.0/2)+(360.0/8.0)*2, 0),
+					MakeProjectile("AbyssSpinner_mid_fast", (45.0/2)+(360.0/8.0)*3, 0),
+					MakeProjectile("RoyalSlash_mid_fast", (45.0/2)+(360.0/8.0)*4, 0),
+					MakeProjectile("AbyssSpinner_mid_fast", (45.0/2)+(360.0/8.0)*5, 0),
+					MakeProjectile("RoyalSlash_mid_fast", (45.0/2)+(360.0/8.0)*6, 0),
+					MakeProjectile("AbyssSpinner_mid_fast", (45.0/2)+(360.0/8.0)*7, 0),
+					MakeProjectile("RoyalSlash_mid_fast", (45.0/2)+(360.0/8.0)*8, 2),
+				]
+			},
+			{
+				"duration" : 5,
+				"behavior" : 1,
+				"speed" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 0,
-						"piercing" : true,
-						"wait" : 1000,
-						"speed" : 0,
-						"tile_range" : 0,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
-					}
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 0,
+					},
+					{
+						"speech" : "The abyss holds powers greater then you know...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "Salazar will not fall to the likes of you!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 7,
+				"behavior" : 1,
+				"speed" : 5,
+				"health" : [25,100],
+				"attack_pattern" : [
+					MakeProjectile("RoyalSlash_strong_fast_short", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", (360.0/8.0)*8, 0, "nearest"),
+					
+					MakeProjectile("GiantAbyssSpinner_mid_fast", 0, 0.2, "nearest"),
+					
+					MakeProjectile("GiantAbyssSpinner_mid_fast", 45, 0, "nearest"),
+					MakeProjectile("GiantAbyssSpinner_mid_fast", -45, 0.2, "nearest"),
+					
+					MakeProjectile("RoyalSlash_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("RoyalSlash_mid_fast", -10, 0, "nearest"),
+					MakeProjectile("RoyalSlash_mid_fast", 10, 0, "nearest"),
+					MakeProjectile("RoyalSlash_mid_fast", -20, 0, "nearest"),
+					MakeProjectile("RoyalSlash_mid_fast", 20, 0.5, "nearest"),
+				]
+			},
+			{
+				"duration" : 6,
+				"behavior" : 0,
+				"speed" : 5,
+				"health" : [25,100],
+				"attack_pattern" : CreateSpiral(2, "AbyssSpinner_mid_fast", 0.2, "GiantRoyalSlash_strong_medium", 1)
+			},
+			{
+				"duration" : 6,
+				"behavior" : 2,
+				"speed" : 10,
+				"health" : [25,100],
+				"attack_pattern" : [
+					MakeProjectile("AbyssSpinner_mid_fast", 36+((360.0/5.0)*1), 0),
+					MakeProjectile("AbyssSpinner_mid_fast", 36+((360.0/5.0)*2), 0),
+					MakeProjectile("AbyssSpinner_mid_fast", 36+((360.0/5.0)*3), 0),
+					MakeProjectile("AbyssSpinner_mid_fast", 36+((360.0/5.0)*4), 0),
+					MakeProjectile("AbyssSpinner_mid_fast", 36+((360.0/5.0)*5), 0),
+					
+					MakeProjectile("GiantRoyalSlash_strong_medium", 0, 0.2, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 0, 0.2, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", 0, 0.2, "nearest"),
+					
+					MakeProjectile("AbyssSpinner_mid_fast", ((360.0/5.0)*1), 0),
+					MakeProjectile("AbyssSpinner_mid_fast", ((360.0/5.0)*2), 0),
+					MakeProjectile("AbyssSpinner_mid_fast", ((360.0/5.0)*3), 0),
+					MakeProjectile("AbyssSpinner_mid_fast", ((360.0/5.0)*4), 0),
+					MakeProjectile("AbyssSpinner_mid_fast", ((360.0/5.0)*5), 0),
+					
+					MakeProjectile("RoyalSlash_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 0, 0.2, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("RoyalSlash_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 0, 0.2, "nearest"),
+				]
+			},
+			{
+				"duration" : 60,
+				"behavior" : 1,
+				"speed" : 5,
+				"health" : [0,25],
+				"attack_pattern" : CreateSpiral(1, "RoyalSlash_mid_fast", 0.1, "GiantAbyssSpinner_strong_medium", 0.3) + [
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*1), 0),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*2), 0),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*3), 0),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*4), 0),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*5), 0),
+					
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*1), 0),
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*2), 0),
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*3), 0),
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*4), 0),
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*5), 1),
+					
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*1), 0),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*2), 0),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*3), 0),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*4), 0),
+					MakeProjectile("GiantRoyalSlash_strong_medium", 36+((360.0/5.0)*5), 0),
+					
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*1), 0),
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*2), 0),
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*3), 0),
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*4), 0),
+					MakeProjectile("RoyalSlash_strong_medium", ((360.0/5.0)*5), 1),
 				]
 			},
 		]
 	},
 	"salazar" : {
+		"scale" : 1.3,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,90), Vector2(90,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+			"Death" : [4],
+		},
+		
 		"health" : 40000,
 		"defense" : 50,
 		"exp" : 10000,
@@ -1114,7 +1861,7 @@ var rulers = {
 			{
 				"duration" : 5,
 				"health" : [75,99.99],
-				"attack_pattern" : CreateSpiral(4, "Star_strong_slow")
+				"attack_pattern" : CreateSpiral(4, "Star_strong_slow", 0.2)
 			},
 			{
 				"duration" : 7,
@@ -1185,7 +1932,7 @@ var rulers = {
 			{
 				"duration" : 25,
 				"health" : [0,25],
-				"attack_pattern" : CreateSpiral(3, "Star_strong_medium") + [
+				"attack_pattern" : CreateSpiral(3, "Star_strong_medium", 0.2) + [
 					MakeProjectile("Dart_mid_fast", (360.0/8)*1, 0, "nearest"),
 					MakeProjectile("Dart_mid_fast", (360.0/8)*2, 0, "nearest"),
 					MakeProjectile("Dart_mid_fast", (360.0/8)*3, 0, "nearest"),
@@ -1216,6 +1963,16 @@ var rulers = {
 		]
 	},
 	"salazar_left_wing" : {
+		"scale" : 1.3,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,90), Vector2(90,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+			"Death" : [4],
+		},
+		
 		"health" : 5000,
 		"defense" : 5,
 		"exp" : 3000,
@@ -1245,6 +2002,16 @@ var rulers = {
 		]
 	},
 	"salazar_right_wing" : {
+		"scale" : 1.3,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,90), Vector2(90,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+			"Death" : [4],
+		},
+		
 		"health" : 5000,
 		"defense" : 5,
 		"exp" : 3000,
@@ -1276,6 +2043,15 @@ var rulers = {
 }
 var tutorial_enemies = {
 	"tutorial_crab" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 7,
+		"rect" : Rect2(Vector2(0,0), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
 		"health" : 20,
 		"defense" : 1,
 		"exp" : 10,
@@ -1295,23 +2071,21 @@ var tutorial_enemies = {
 				"duration" : 4,
 				"health" : [0,100],
 				"attack_pattern" : [
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 0,
-						"piercing" : true,
-						"wait" : 1000,
-						"speed" : 0,
-						"tile_range" : 0,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,0),
-						"size" : 4
-					}
+					MakeProjectile("None", 0, 1000, "nearest"),
 				]
 			},
 		]
 	},
 	"tutorial_troll_warrior" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(0,20), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 70,
 		"defense" : 1,
 		"exp" : 10,
@@ -1323,55 +2097,24 @@ var tutorial_enemies = {
 				"duration" : 5,
 				"health" : [0,100],
 				"attack_pattern" : [
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 10,
-						"tile_range" : 3,
-						"direction" : Vector2(0,1),
-						"size" : 4
-					},
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 10,
-						"tile_range" : 3,
-						"direction" : Vector2(1,0),
-						"size" : 4
-					},
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 10,
-						"tile_range" : 3,
-						"direction" : Vector2(0,-1),
-						"size" : 4
-					},
-					{
-						"projectile" : "Slash",
-						"formula" : "0",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0.5,
-						"speed" : 10,
-						"tile_range" : 3,
-						"direction" : Vector2(-1,0),
-						"size" : 4
-					}
+					MakeProjectile("Slash_1", 0, 0.5),
+					MakeProjectile("Slash_1", 90, 0.5),
+					MakeProjectile("Slash_1", 180, 0.5),
+					MakeProjectile("Slash_1", 270, 0.5),
 				]
 			}
 		]
 	},
 	"tutorial_troll_king" : {
+		"scale" : 1.1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,0), Vector2(72,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 300,
 		"defense" : 2,
 		"exp" : 30,
@@ -1474,7 +2217,15 @@ var tutorial_enemies = {
 }
 var realm_enemies = {
 	"crab" : {
-		"variations" : ["tutorial_crab"],
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 7,
+		"rect" : Rect2(Vector2(0,0), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
 		"health" : 50,
 		"defense" : 1,
 		"exp" : 10,
@@ -1492,6 +2243,15 @@ var realm_enemies = {
 		]
 	},
 	"slime" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 5,
+		"rect" : Rect2(Vector2(20,0), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
 		"health" : 50,
 		"defense" : 1,
 		"exp" : 10,
@@ -1503,35 +2263,22 @@ var realm_enemies = {
 				"duration" : 10,
 				"health" : [0,100],
 				"attack_pattern" : [
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "2",
-						"damage" : 4,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(10),
-						"size" : 8
-					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "(-2)",
-						"damage" : 4,
-						"piercing" : false,
-						"wait" : 3,
-						"speed" : 20,
-						"tile_range" : 3,
-						"targeter" : "nearest",
-						"direction" : DegreesToVector(-10),
-						"size" : 8
-					}
+					MakeProjectile("GreenBlast_1", 10, 0, "nearest"),
+					MakeProjectile("GreenBlast_1", -10, 3, "nearest"),
 				]
 			}
 		]
 	},
 	"nature_druid" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(140,10), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 300,
 		"defense" : 3,
 		"exp" : 43,
@@ -1578,94 +2325,14 @@ var realm_enemies = {
 						"direction" : DegreesToVector(0),
 						"size" : 7
 					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "sin(x)",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"direction" : Vector2(0,1),
-						"size" : 7
-					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "sin(x)",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"direction" : Vector2(0.707,0.707),
-						"size" : 7
-					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "sin(x)",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"direction" : Vector2(1,0),
-						"size" : 7
-					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "sin(x)",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"direction" : Vector2(0.707,-0.707),
-						"size" : 7
-					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "sin(x)",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"direction" : Vector2(0,-1),
-						"size" : 7
-					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "sin(x)",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"direction" : Vector2(-0.707,-0.707),
-						"size" : 7
-					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "sin(x)",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"direction" : Vector2(-1,0),
-						"size" : 7
-					},
-					{
-						"projectile" : "GreenBlast",
-						"formula" : "sin(x)",
-						"damage" : 2,
-						"piercing" : false,
-						"wait" : 0,
-						"speed" : 20,
-						"tile_range" : 3,
-						"direction" : Vector2(-0.707,0.707),
-						"size" : 7
-					},
+					MakeProjectile("GreenBlast_1", (360.0/8)*1, 0, "nearest"),
+					MakeProjectile("GreenBlast_1", (360.0/8)*2, 0, "nearest"),
+					MakeProjectile("GreenBlast_1", (360.0/8)*3, 0, "nearest"),
+					MakeProjectile("GreenBlast_1", (360.0/8)*4, 0, "nearest"),
+					MakeProjectile("GreenBlast_1", (360.0/8)*5, 0, "nearest"),
+					MakeProjectile("GreenBlast_1", (360.0/8)*6, 0, "nearest"),
+					MakeProjectile("GreenBlast_1", (360.0/8)*7, 0, "nearest"),
+					MakeProjectile("GreenBlast_1", (360.0/8)*8, 0, "nearest"),
 				]
 			},
 			{
@@ -1711,6 +2378,15 @@ var realm_enemies = {
 		]
 	},
 	"nature_sprite_stationary" : {
+		"scale" : 0.8,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(120,10), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
 		"health" : 40,
 		"defense" : 0,
 		"exp" : 10,
@@ -1739,6 +2415,15 @@ var realm_enemies = {
 		]
 	},
 	"nature_sprite" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(120,10), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
 		"variations" : ["nature_sprite_stationary"],
 		"health" : 10,
 		"defense" : 0,
@@ -1768,6 +2453,15 @@ var realm_enemies = {
 		]
 	},
 	"goblin_warrior" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(0,10), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 60,
 		"defense" : 3,
 		"exp" : 10,
@@ -1796,6 +2490,15 @@ var realm_enemies = {
 		]
 	},
 	"goblin_archer" : {
+		"scale" : 0.8,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(40,10), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 30,
 		"defense" : 0,
 		"exp" : 10,
@@ -1848,6 +2551,15 @@ var realm_enemies = {
 		]
 	},
 	"goblin_cannon" : {
+		"scale" : 1.2,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(80,10), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 20,
 		"defense" : 1000,
 		"exp" : 45,
@@ -1904,6 +2616,15 @@ var realm_enemies = {
 		]
 	},
 	"blue_slime" : {
+		"scale" : 1.5,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(80,20), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
 		"health" : 700,
 		"defense" : 1,
 		"exp" : 45,
@@ -1974,6 +2695,15 @@ var realm_enemies = {
 		]
 	},
 	"cyclops_underling" : {
+		"scale" : 1.2,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(100,20), Vector2(30,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
 		"health" : 50,
 		"defense" : 0,
 		"exp" : 13,
@@ -2002,6 +2732,15 @@ var realm_enemies = {
 		]
 	},
 	"cyclops_leader" : {
+		"scale" : 1.2,
+		"res" : 18,
+		"height" : 15,
+		"rect" : Rect2(Vector2(144,0), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [],
+		},
+		
 		"health" : 300,
 		"defense" : 5,
 		"exp" : 89,
@@ -2138,6 +2877,15 @@ var realm_enemies = {
 		]
 	},
 	"imp_warrior" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(130,20), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 200,
 		"defense" : 5,
 		"exp" : 35,
@@ -2208,6 +2956,15 @@ var realm_enemies = {
 		]
 	},
 	"imp_archer" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(200,20), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 100,
 		"defense" : 0,
 		"exp" : 35,
@@ -2260,6 +3017,15 @@ var realm_enemies = {
 		]
 	},
 	"imp_mage" : {
+		"scale" : 0.8,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(170,20), Vector2(30,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
 		"health" : 100,
 		"defense" : 0,
 		"exp" : 35,
@@ -2300,6 +3066,15 @@ var realm_enemies = {
 		]
 	},
 	"fire_druid" : {
+		"scale" : 0.9,
+		"res" : 18,
+		"height" : 8,
+		"rect" : Rect2(Vector2(180,0), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
 		"health" : 200,
 		"defense" : 0,
 		"exp" : 43,
@@ -2400,7 +3175,15 @@ var realm_enemies = {
 		]
 	},
 	"troll_warrior" : {
-		"variations" : ["tutorial_troll_warrior"],
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(0,20), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 100,
 		"defense" : 1,
 		"exp" : 6,
@@ -2461,6 +3244,15 @@ var realm_enemies = {
 		]
 	},
 	"troll_brute" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(40,20), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 200,
 		"defense" : 5,
 		"exp" : 12,
@@ -2501,7 +3293,15 @@ var realm_enemies = {
 		]
 	},
 	"troll_king" : {
-		"variations" : ["tutorial_troll_king"],
+		"scale" : 1.1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,0), Vector2(72,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 300,
 		"defense" : 5,
 		"exp" : 64,
@@ -2632,6 +3432,15 @@ var realm_enemies = {
 		]
 	},
 	"rat_warrior" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(0,30), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 100,
 		"defense" : 6,
 		"exp" : 24,
@@ -2684,6 +3493,15 @@ var realm_enemies = {
 		]
 	},
 	"rat_mage" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(40,30), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 250,
 		"defense" : 0,
 		"exp" : 24,
@@ -2736,6 +3554,15 @@ var realm_enemies = {
 		]
 	},
 	"rat_king" : {
+		"scale" : 1.2,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(60,30), Vector2(30,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [0,2],
+		},
+		
 		"health" : 600,
 		"defense" : 4,
 		"exp" : 200,
@@ -2853,6 +3680,15 @@ var realm_enemies = {
 		]
 	},
 	"viking_king" : {
+		"scale" : 1.2,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(72,0), Vector2(72,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 1200,
 		"defense" : 12,
 		"exp" : 340,
@@ -3040,6 +3876,15 @@ var realm_enemies = {
 		]
 	},
 	"viking_warrior" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(90,30), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [0,2],
+		},
+		
 		"health" : 180,
 		"defense" : 0,
 		"exp" : 140,
@@ -3092,6 +3937,15 @@ var realm_enemies = {
 		]
 	},
 	"yellow_slime" : {
+		"scale" : 1.6,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(130,30), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 1000,
 		"defense" : 0,
 		"exp" : 150,
@@ -3247,6 +4101,15 @@ var realm_enemies = {
 		]
 	},
 	"shadow_druid" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(150,30), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 300,
 		"defense" : 22,
 		"exp" : 200,
@@ -3423,6 +4286,15 @@ var realm_enemies = {
 		]
 	},
 	"skeletal_warrior" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(170,30), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
 		"health" : 180,
 		"defense" : 22,
 		"exp" : 35,
@@ -3463,6 +4335,15 @@ var realm_enemies = {
 		]
 	},
 	"skeletal_archer" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(210,30), Vector2(30,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1,2],
+		},
+		
 		"health" : 90,
 		"defense" : 10,
 		"exp" : 35,
@@ -3503,6 +4384,15 @@ var realm_enemies = {
 		]
 	},
 	"cacodemon" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,18), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 1200,
 		"defense" : 12,
 		"exp" : 200,
@@ -3651,6 +4541,15 @@ var realm_enemies = {
 		]
 	},
 	"basalisk" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(216,18), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
 		"health" : 1000,
 		"defense" : 18,
 		"exp" : 250,
@@ -3763,6 +4662,15 @@ var realm_enemies = {
 		]
 	},
 	"phoenix" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 15,
+		"rect" : Rect2(Vector2(126,18), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 800,
 		"defense" : 15,
 		"exp" : 180,
@@ -3923,6 +4831,15 @@ var realm_enemies = {
 		]
 	},
 	"ice_druid" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 8,
+		"rect" : Rect2(Vector2(90,18), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 90,
 		"defense" : 10,
 		"exp" : 55,
@@ -3975,6 +4892,15 @@ var realm_enemies = {
 		]
 	},
 	"archmage" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 8,
+		"rect" : Rect2(Vector2(36,18), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
 		"health" : 700,
 		"defense" : 15,
 		"exp" : 225,
@@ -4088,6 +5014,15 @@ var realm_enemies = {
 }
 var orc_vigil_enemies = {
 	"vigil_guardian" : {
+		"scale" : 1.5,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(126,54), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 20000,
 		"defense" : 20,
 		"exp" : 6000,
@@ -4237,6 +5172,15 @@ var orc_vigil_enemies = {
 		]
 	},
 	"orc_monolith" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(90,54), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 2000,
 		"defense" : 1,
 		"exp" : 2000,
@@ -4270,6 +5214,15 @@ var orc_vigil_enemies = {
 		]
 	},
 	"atlas" : {
+		"scale" : 1,
+		"res" : 38,
+		"height" : 20,
+		"rect" : Rect2(Vector2(0,0), Vector2(114,38)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1,2],
+		},
+		
 		"health" : 40000,
 		"defense" : 10,
 		"exp" : 10000,
@@ -4416,6 +5369,15 @@ var orc_vigil_enemies = {
 		]
 	},
 	"vigil_construct" : {
+		"scale" : 0.8,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(126,54), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
 		"health" : 2000,
 		"defense" : 1,
 		"exp" : 1000,
@@ -4455,6 +5417,333 @@ var orc_vigil_enemies = {
 		]
 	},
 }
+var frozen_fortress_enemies = {
+	"frozen_monolith" : {
+		"scale" : 1.3,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(90,72), Vector2(18,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"health" : 2000,
+		"defense" : 1,
+		"exp" : 2000,
+		"behavior" : 0,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"on_spawn" : true,
+				"attack_pattern" : [
+					MakeProjectile("None", 0, 1000, "nearest"),
+				]
+			},
+		]
+	},
+}
+var the_abyss_enemies = {
+	"salazar_awakened" : {
+		"scale" : 1,
+		"res" : 38,
+		"height" : 20,
+		"rect" : Rect2(Vector2(114,0), Vector2(114,38)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
+		"health" : 1000,
+		"defense" : 30,
+		"exp" : 12000,
+		"behavior" : 0,
+		"speed" : 15,
+		"loot_pool" : special_loot_pools["salazar_awakened"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 17,
+						"wait" : 12,
+					},
+					{
+						"speech" : "Now your in MY domain...",
+						"wait" : 4,
+					},
+					{
+						"speech" : "I will die before letting you take this kingdom!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [75,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"behavior" : 1,
+				"speed" : 15,
+				"attack_pattern" : [
+					{
+						"speech" : "Feel the inferno!",
+						"wait" : 1,
+					},
+				] + CreateSpiral(2, "FlameBlast_strong_slow", 0.3, "GiantFlameArrow_strong_fast", 0.3)
+			},
+			{
+				"duration" : 8,
+				"health" : [25,75],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"behavior" : 1,
+				"speed" : 15,
+				"attack_pattern" : [
+					{
+						"speech" : "Feel the inferno!",
+						"wait" : 1,
+					},
+				] + CreateSpiral(2, "FlameBlast_strong_slow", 0.2, "GiantFlameArrow_strong_fast", 0.5)
+			},
+			{
+				"duration" : 8,
+				"health" : [0,25],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"behavior" : 1,
+				"speed" : 15,
+				"attack_pattern" : [
+					{
+						"speech" : "Feel the inferno!",
+						"wait" : 1,
+					},
+				] + CreateSpiral(3, "FlameBlast_strong_slow", 0.3, "GiantFlameArrow_strong_fast", 0.6, 16)
+			},
+			{
+				"duration" : 8,
+				"health" : [75,100],
+				"behavior" : 1,
+				"speed" : 15,
+				"attack_pattern" : [
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*1, 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*2, 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*3, 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*4, 0.5),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*1, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*2, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*3, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*4, 0.2),
+					MakeProjectile("GiantFlameBlast_strong_medium", 45+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 45+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 45+((360.0/4.0)*3), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 45+((360.0/4.0)*4), 0.5),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*1, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*2, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*3, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*4, 0.2),
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [75,100],
+				"behavior" : 1,
+				"speed" : 15,
+				"attack_pattern" : [
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*1, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*2, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*3, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*4, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*5, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*6, 0.6),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*1, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*2, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*3, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*4, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*5, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*6, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*7, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*8, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*9, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*10, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*11, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/12.0)*12, 0.6),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*7, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*8, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*9, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*10, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*11, 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/12.0)*12, 0.1),
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [75,100],
+				"behavior" : 0,
+				"speed" : 15,
+				"attack_pattern" : CreateSpiral(3, "FlameBurst_strong_slow", 0.3, "FlameBurst_strong_fast", 0.3, 16)
+			},
+			{
+				"duration" : 10,
+				"health" : [25,75],
+				"behavior" : 1,
+				"speed" : 15,
+				"attack_pattern" : [
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*1, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*3, 1),
+					MakeProjectile("GiantFlameArrow_strong_fast", 0+((360.0/4.0)*1), 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", 10+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -10+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", 10+((360.0/4.0)*3), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -10+((360.0/4.0)*3), 0.1),
+					
+					MakeProjectile("GiantFlameArrow_strong_fast", 20+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -20+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", 20+((360.0/4.0)*3), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -20+((360.0/4.0)*3), 0.1),
+					
+					MakeProjectile("GiantFlameArrow_strong_fast", 30+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -30+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", 30+((360.0/4.0)*3), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -30+((360.0/4.0)*3), 0.1),
+					
+					MakeProjectile("GiantFlameArrow_strong_fast", 40+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", 40+((360.0/4.0)*3), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*3), 2),
+					
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*2, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*4, 1),
+					MakeProjectile("GiantFlameArrow_strong_fast", 0+((360.0/4.0)*2), 0.1),
+					MakeProjectile("GiantFlameArrow_strong_fast", 10+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -10+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", 10+((360.0/4.0)*4), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -10+((360.0/4.0)*4), 0.1),
+					
+					MakeProjectile("GiantFlameArrow_strong_fast", 20+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -20+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", 20+((360.0/4.0)*4), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -20+((360.0/4.0)*4), 0.1),
+					
+					MakeProjectile("GiantFlameArrow_strong_fast", 30+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -30+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", 30+((360.0/4.0)*4), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -30+((360.0/4.0)*4), 0.1),
+					
+					MakeProjectile("GiantFlameArrow_strong_fast", 40+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", 40+((360.0/4.0)*4), 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*4), 2),
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [25,75],
+				"behavior" : 2,
+				"speed" : 25,
+				"attack_pattern" : [
+					MakeProjectile("FlameBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 10, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", -10, 0.3, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 10, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", -10, 0.3, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 10, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", -10, 0.3, "nearest"),
+					
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*1, 0, "nearest"),
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*2, 0, "nearest"),
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*3, 0, "nearest"),
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*4, 0.5, "nearest"),
+					MakeProjectile("GiantFlameBlast_strong_fast", 45+(360.0/4.0)*1, 0, "nearest"),
+					MakeProjectile("GiantFlameBlast_strong_fast", 45+(360.0/4.0)*2, 0, "nearest"),
+					MakeProjectile("GiantFlameBlast_strong_fast", 45+(360.0/4.0)*3, 0, "nearest"),
+					MakeProjectile("GiantFlameBlast_strong_fast", 45+(360.0/4.0)*4, 0.2, "nearest"),
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [25,75],
+				"behavior" : 0,
+				"speed" : 15,
+				"attack_pattern" : CreateSpiral(1, "GiantFlameBlast_strong_medium", 0.1, "FlameArrow_mid_fast", 0.8, 16)
+			},
+			{
+				"duration" : 6,
+				"health" : [0,25],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"behavior" : 0,
+				"speed" : 15,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 3,
+					},
+					{
+						"speech" : "I will destroy this very abyss if I have to!",
+						"wait" : 4,
+					},
+				]
+			},
+			{
+				"duration" : 20,
+				"health" : [0,25],
+				"behavior" : 2,
+				"speed" : 5,
+				"attack_pattern" : [
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*1, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*2, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*3, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*4, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*5, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*6, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*7, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*8, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*9, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*10, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*11, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*12, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*13, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*14, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*15, 0),
+					MakeProjectile("FlameArrow_strong_fast_short", (360.0/16.0)*16, 0.1),
+					
+					MakeProjectile("GiantFlameBlast_strong_medium", 0+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 0+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 0+((360.0/4.0)*3), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 0+((360.0/4.0)*4), 0.1),
+					MakeProjectile("GiantFlameBlast_strong_medium", 45+((360.0/4.0)*1), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 45+((360.0/4.0)*2), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 45+((360.0/4.0)*3), 0),
+					MakeProjectile("GiantFlameBlast_strong_medium", 45+((360.0/4.0)*4), 1),
+					
+					MakeProjectile("GiantFlameArrow_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("GiantFlameArrow_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("GiantFlameArrow_strong_medium", -10, 0.1, "nearest"),
+					
+					MakeProjectile("GiantFlameArrow_strong_medium", 20, 0, "nearest"),
+					MakeProjectile("GiantFlameArrow_strong_medium", -20, 0.1, "nearest"),
+					
+					MakeProjectile("GiantFlameArrow_strong_medium", 30, 0, "nearest"),
+					MakeProjectile("GiantFlameArrow_strong_medium", -30, 0.1, "nearest"),
+					
+					MakeProjectile("GiantFlameArrow_strong_medium", 40, 0, "nearest"),
+					MakeProjectile("GiantFlameArrow_strong_medium", -40, 1, "nearest"),
+				]
+			},
+		]
+	},
+}
 onready var enemies = CompileEnemies()
 func CompileEnemies():
 	var res = {}
@@ -4462,12 +5751,16 @@ func CompileEnemies():
 	res.merge(tutorial_enemies)
 	res.merge(realm_enemies)
 	res.merge(orc_vigil_enemies)
+	res.merge(frozen_fortress_enemies)
+	res.merge(the_abyss_enemies)
 	return res
 
 var dungeons = {
 	"island" : {},
 	"orc_vigil" : {
 		"type" : "encounter",
+		"room_size" : 100,
+		"spawnpoint" : Vector2(10,10)*8,
 		"tile_translation" : {
 			5 : "vigil_guardian",
 			6 : "orc_monolith",
@@ -4475,14 +5768,27 @@ var dungeons = {
 	},
 	"orc_vigil_sanctum" : {
 		"type" : "encounter",
+		"room_size" : 100,
+		"spawnpoint" : Vector2(10,10)*8,
 		"tile_translation" : {
 			5 : "atlas",
 		}
 	},
 	"the_abyss" : {
 		"type" : "encounter",
+		"room_size" : 100,
+		"spawnpoint" : Vector2(10,10)*8,
 		"tile_translation" : {
-			7 : "atlas",
+			7 : "salazar_awakened",
+		}
+	},
+	"frozen_fortress" : {
+		"type" : "procedural",
+		"basic_rooms" : ["Room1","Room2"],
+		"rooms_until_boss" : 1,
+		"room_size" : 26,
+		"tile_translation" : {
+			6 : "frozen_monolith",
 		}
 	},
 	"test_dungeon" : {
@@ -4491,9 +5797,7 @@ var dungeons = {
 		"rooms_until_boss" : 5,
 		"room_size" : 20,
 		"tile_translation" : {
-			9 : "crab",
-			10 : "slime",
-			11 : "blue_slime",
+			5 : "crab",
 		}
 	},
 }
@@ -5644,6 +6948,12 @@ var projectiles = {
 		"rotation" : 90,
 		"spin" : false,
 	},
+	"GiantBall" : {
+		"rect" : Rect2(20,0,10,10),
+		"rotation" : 90,
+		"spin" : false,
+		"scale" : 1.5
+	},
 	"Stack" : {
 		"rect" : Rect2(30,0,10,10),
 		"rotation" : 45,
@@ -5857,73 +7167,309 @@ var projectiles = {
 		"rotation" : 90,
 		"spin" : true,
 	},
+	"FlameBurst" : {
+		"rect" : Rect2(200,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"FlameArrow" : {
+		"rect" : Rect2(210,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 0.8,
+	},
+	"GiantFlameArrow" : {
+		"rect" : Rect2(210,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.5,
+	},
+	"FlameBlast" : {
+		"rect" : Rect2(220,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"GiantFlameBlast" : {
+		"rect" : Rect2(220,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.5,
+	},
+	"IceSlash" : {
+		"rect" : Rect2(230,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"GiantIceSlash" : {
+		"rect" : Rect2(230,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.5,
+	},
+	"AbyssSpinner" : {
+		"rect" : Rect2(240,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1,
+	},
+	"GiantAbyssSpinner" : {
+		"rect" : Rect2(240,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1.6,
+	},
+	"RoyalSlash" : {
+		"rect" : Rect2(250,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"GiantRoyalSlash" : {
+		"rect" : Rect2(250,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.4,
+	},
 }
 
 var achievement_catagories = {
 	"Classes" : { 
-		"achievements" : ["Trial By Fire"], 
+		"achievements" : ["Job Hopper", "Westerly Winds", "Starlight, Starbright", "Brave Story", "True Warrior"], 
 		"icon" : Vector2(0,0)
 	},
-	"Combat" : { 
-		"achievements" : ["Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire",], 
+	"Combat" : {
+		"achievements" : ["Back From The Dead", "Sharpest Shooter", "Druidic Slayer", "On The Rocks", "History Of Beasts", "Fear To Fortitude", "Dragon Slayer"], 
 		"icon" : Vector2(10,0)
 	},
-	"Dungeons" : { 
-		"achievements" : ["Trial By Fire","Trial By Fire","Trial By Fire","Trial By Fire",], 
+	"Misc" : { 
+		"achievements" : ["Mr. Worldwide","6 Feet Under I","6 Feet Under II","6 Feet Under III"], 
 		"icon" : Vector2(20,0)
 	},
 }
 
 var achievements = {
-	"Bow Projectiles I" : {
+	"6 Feet Under I" : {
+		"which" : "deaths",
+		"amount" : 5,
+		"icon" : Vector2(0,30),
+		"description" : "Die 5 times.",
+		"gold" : 200,
+	},
+	"6 Feet Under II" : {
+		"which" : "deaths",
+		"amount" : 25,
+		"icon" : Vector2(0,30),
+		"description" : "Die 25 times.",
+		"gold" : 400,
+	},
+	"6 Feet Under III" : {
+		"which" : "deaths",
+		"amount" : 125,
+		"icon" : Vector2(0,30),
+		"description" : "Die 125 times.",
+		"gold" : 800,
+	},
+	"Mr. Worldwide" : {
+		"which" : "tiles_covered",
+		"amount" : 1000000,
+		"icon" : Vector2(10,30),
+		"description" : "Travel 1000000 tiles.",
+		"gold" : 400,
+	},
+	"Back From The Dead" : {
+		"which" : "enemies_killed",
+		"amount" : 1000,
+		"enemies" : ["cacodemon", "basalisk", "phoenix", "archmage"],
+		"icon" : Vector2(20,20),
+		"description" : "Kill 100 skeletons.",
+		"gold" : 200,
+	},
+	"Sharpest Shooter" : {
+		"which" : "projectiles_landed",
+		"amount" : 1000000,
+		"icon" : Vector2(60,20),
+		"description" : "Kill 1000 druids.",
+		"gold" : 300,
+	},
+	"Druidic Slayer" : {
+		"which" : "enemies_killed",
+		"amount" : 1000,
+		"enemies" : ["ice_druid", "nature_druid", "fire_druid", "shadow_druid"],
+		"icon" : Vector2(10,20),
+		"description" : "Kill 1000 druids.",
+		"gold" : 300,
+	},
+	"On The Rocks" : {
+		"which" : "enemies_killed",
+		"amount" : 1000,
+		"enemies" : ["rock_golem"],
+		"icon" : Vector2(40,20),
+		"description" : "Kill 1000 rock enemies.",
+		"gold" : 400,
+	},
+	"History Of Beasts" : {
+		"which" : "enemies_killed",
+		"amount" : 1000,
+		"enemies" : ["cacodemon", "basalisk", "phoenix", "archmage"],
+		"icon" : Vector2(0,20),
+		"description" : "Kill 10000 gods.",
+		"gold" : 400,
+	},
+	"Fear To Fortitude" : {
+		"which" : "damage_taken",
+		"amount" : 1000000,
+		"icon" : Vector2(30,20),
+		"description" : "Take 1000000 points of damage.",
+		"gold" : 600,
+	},
+	"Dragon Slayer" : {
+		"which" : "enemies_killed",
+		"amount" : 100,
+		"enemies" : ["awakened_salazar"],
+		"icon" : Vector2(50, 20),
+		"description" : "Kill salazar in the abyss 100 times.",
+		"gold" : 800,
+	},
+	"Job Hopper" : {
+		"which" : "classes_unlocked",
+		"amount" : 3,
+		"classes" : ["Noble","Scholar","Nomad"],
+		"icon" : Vector2(0,0),
+		"description" : "Unlock the 3 base classes.",
+		"gold" : 400,
+	},
+	"Westerly Winds" : {
+		"which" : "classes_unlocked",
+		"amount" : 3,
+		"classes" : ["Sentinel","Ranger","Scout"],
+		"icon" : Vector2(10,10),
+		"description" : "Unlock the 3 Nomad secondary classes.",
+		"gold" : 800,
+	},
+	"Starlight, Starbright" : {
+		"which" : "classes_unlocked",
+		"amount" : 3,
+		"classes" : ["Druid","Magician","Warlock"],
+		"icon" : Vector2(0,10),
+		"description" : "Unlock the 3 Scholar secondary classes.",
+		"gold" : 800,
+	},
+	"Brave Story" : {
+		"which" : "classes_unlocked",
+		"amount" : 3,
+		"classes" : ["Knight","Paladin","Marauder"],
+		"icon" : Vector2(2,10),
+		"description" : "Unlock the 3 Noble secondary classes.",
+		"gold" : 800,
+	},
+	"True Warrior" : {
+		"which" : "classes_unlocked",
+		"amount" : 9,
+		"classes" : ["Knight","Paladin","Marauder"]+["Druid","Magician","Warlock"]+["Sentinel","Ranger","Scout"],
+		"icon" : Vector2(30,10),
+		"description" : "Unlock all 9 secondary classes.",
+		"gold" : 1600,
+	},
+	"Unlock Nomad" : {
 		"which" : "bow_projectiles",
 		"amount" : 10,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the arrow.",
 		"gold" : 0,
-		"difficulty" : "easy",
 	},
-	"Sword Projectiles I" : {
+	"Unlock Noble" : {
 		"which" : "sword_projectiles",
 		"amount" : 10,
-		"icon" : Vector2(0,0),
-		"description" : "Become one with the blaede.",
+		"icon" : Vector2(0,10),
+		"description" : "Become one with the blade.",
 		"gold" : 0,
-		"difficulty" : "easy",
 	},
-	"Tank I" : {
-		"which" : "damage_taken",
-		"amount" : 100,
-		"icon" : Vector2(0,0),
-		"description" : "Take some serious damage.",
-		"gold" : 0,
-		"difficulty" : "medium",
-	},
-	"Staff Projectiles I" : {
+	"Unlock Scholar" : {
 		"which" : "staff_projectiles",
 		"amount" : 10,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the magic.",
 		"gold" : 0,
-		"difficulty" : "easy",
 	},
-	"Trial By Fire" : {
+	"Unlock Knight" : {
 		"which" : "damage_taken",
+		"amount" : 20000,
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
+	"Unlock Paladin" : {
+		"which" : "ability_used",
+		"amount" : 1000,
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
+	"Unlock Marauder" : {
+		"which" : "enemies_killed",
+		"amount" : 5,
+		"enemies" : ["awakened_salazar"],
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
+	"Unlock Ranger" : {
+		"which" : "enemies_killed",
 		"amount" : 20,
-		"icon" : Vector2(0,0),
-		"description" : "Take 20 points of damage.",
-		"gold" : 400,
-		"difficulty" : "hard",
-	}
+		"enemies" : ["oranix","vajira","raa'sloth","salazar"],
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
+	"Unlock Sentinel" : {
+		"which" : "damage_taken",
+		"amount" : 20000,
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
+	"Unlock Scout" : {
+		"which" : "tiles_covered",
+		"amount" : 100000,
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
+	"Unlock Magician" : {
+		"which" : "ability_used",
+		"amount" : 1000,
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
+	"Unlock Druid" : {
+		"which" : "enemies_killed",
+		"amount" : 200,
+		"enemies" : ["rock_golem"],
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
+	"Unlock Warlock" : {
+		"which" : "enemies_killed",
+		"amount" : 15000,
+		"icon" : Vector2(0,10),
+		"description" : "Take some serious damage.",
+		"gold" : 0,
+	},
 }
+#The enemy kills we need to keep track of on the player
+var enemies_tracked = []
 
 var characters = {
 	"Apprentice" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
 		"quests" : {
-			"Bow Projectiles I" :  "Nomad",
-			"Sword Projectiles I" : "Noble",
-			"Staff Projectiles I" : "Scholar",
+			"Unlock Nomad" :  "Nomad",
+			"Unlock Noble" : "Noble",
+			"Unlock Scholar" : "Scholar",
 		},
 		"rect" : Rect2(0,0,80,40),
 		"icon" : Vector2(0,210),
@@ -5952,7 +7498,9 @@ var characters = {
 	"Noble" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
 		"quests" : {
-			"Tank I" : "Knight",
+			"Unlock Knight" :  "Knight",
+			"Unlock Paladin" : "Paladin",
+			"Unlock Marauder" : "Marauder",
 		},
 		"rect" : Rect2(0,40,80,40),
 		"icon" : Vector2(20,210),
@@ -5988,6 +7536,9 @@ var characters = {
 	"Nomad" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
 		"quests" : {
+			"Unlock Ranger" :  "Ranger",
+			"Unlock Sentinel" : "Sentinel",
+			"Unlock Scout" : "Scout",
 		},
 		"rect" : Rect2(80,80,80,40),
 		"icon" : Vector2(10,210),
@@ -5995,9 +7546,7 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"bodyMediumNew" : RgbToColor(14.0, 157.0, 43.0),
-					"bodyLightNew" : RgbToColor(25.0, 177.0, 55.0),
-					"helmetDarkNew" : RgbToColor(13.0, 128.0, 36.0),
+					"helmetDarkNew" : RgbToColor(132.0, 100.0, 44.0),
 					"helmetMediumNew" : RgbToColor(14.0, 157.0, 43.0),
 					"helmetLightNew" : RgbToColor(25.0, 177.0, 55.0),
 					"bandNew" : RgbToColor(47.0, 75.0, 29.0),
@@ -6026,6 +7575,9 @@ var characters = {
 	"Scholar" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
 		"quests" : {
+			"Unlock Magician" :  "Magician",
+			"Unlock Druid" : "Druid",
+			"Unlock Warlock" : "Warlock",
 		},
 		"rect" : Rect2(160,120,80,40),
 		"icon" : Vector2(30,210),
@@ -6033,12 +7585,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"bodyMediumNew" : RgbToColor(75.0, 13.0, 124.0),
-					"bodyLightNew" : RgbToColor(94.0, 23.0, 150.0),
 					"helmetDarkNew" : RgbToColor(36.0, 17.0, 131.0),
 					"helmetMediumNew" : RgbToColor(94.0, 23.0, 150.0),
 					"helmetLightNew" : RgbToColor(122.0, 39.0, 170.0),
-					"bandNew" : RgbToColor(33.0, 33.0, 33.0),
 				},
 				"textures" : {
 				},
@@ -6084,17 +7633,300 @@ var characters = {
 			"health" : 100,
 			"attack" : 0,
 			"defense" : 20,
-			"speed" : 0,
+			"speed" : -5,
 			"dexterity" : 0,
 			"vitality" : 10,
+		},
+		"multipliers" : {
+			"Sword" : {"damage" : 1.4, "stats" : 1.4},
+			"Armor" : {"stats" : 1.5},
+			"Helmet" : {"stats" : 1.4},
+		},
+		"description" : "The Knight's high health and mighty armor make them an immovable force.",
+		"teaser" : "Discover by enduring the trials of the battlefield.",
+		"ascension_stones" : 50,
+	},
+	"Paladin" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,200,80,40),
+		"icon" : Vector2(100,210),
+		"color" : Color(252.0/255, 218.0/255, 14.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					"helmetDarkNew" : RgbToColor(95.0, 83.0, 83.0),
+					"helmetLightNew" : RgbToColor(135.0, 117.0, 117.0),
+					"helmetMediumNew" : RgbToColor(108.0, 99.0, 99.0),
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 150,
+			"attack" : 0,
+			"defense" : 10,
+			"speed" : 0,
+			"dexterity" : 0,
+			"vitality" : 25,
 		},
 		"multipliers" : {
 			"Sword" : {"damage" : 1.4, "stats" : 1.4},
 			"Armor" : {"stats" : 1.4},
 			"Helmet" : {"stats" : 1.4},
 		},
-		"description" : "The Knight's high health and mighty armor make them an unstoppable force.",
+		"description" : "The Paladin's high regen and health make them the ultimate tank.",
+		"teaser" : "Discover by using your head.",
+		"ascension_stones" : 50,
+	},
+	"Marauder" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,240,80,40),
+		"icon" : Vector2(120,210),
+		"color" : Color(252.0/255, 72.0/255, 14.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					"helmetDarkNew" : RgbToColor(85.0, 76.0, 73.0),
+					"helmetLightNew" : RgbToColor(157.0, 153.0, 135.0),
+					"helmetMediumNew" : RgbToColor(107.0, 95.0, 91.0),
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 50,
+			"attack" : 30,
+			"defense" : 5,
+			"speed" : 0,
+			"dexterity" : 10,
+			"vitality" : 5,
+		},
+		"multipliers" : {
+			"Sword" : {"damage" : 1.5, "stats" : 1.4},
+			"Armor" : {"stats" : 1.4},
+			"Helmet" : {"stats" : 1.4},
+		},
+		"description" : "The Marauder's sharp blade and swift blows make them a unstoppable force.",
+		"teaser" : "Discover by truly conquering the abyss.",
+		"ascension_stones" : 50,
+	},
+	"Ranger" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,280,80,40),
+		"icon" : Vector2(60,210),
+		"color" : Color(164.0/255, 166.0/255, 63.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					"helmetDarkNew" : RgbToColor(132.0, 100.0, 44.0),
+					"helmetMediumNew" : RgbToColor(14.0, 157.0, 43.0),
+					"helmetLightNew" : RgbToColor(25.0, 177.0, 55.0),
+					"bandNew" : RgbToColor(47.0, 75.0, 29.0),
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 25,
+			"attack" : 20,
+			"defense" : 0,
+			"speed" : 5,
+			"dexterity" : 20,
+			"vitality" : 0,
+		},
+		"multipliers" : {
+			"Bow" : {"damage" : 1.5, "stats" : 1.4},
+			"Hide" : {"stats" : 1.4},
+			"Cap" : {"stats" : 1.4},
+		},
+		"description" : "The Ranger's extreme power and precision make them a feared marksman.",
+		"teaser" : "Discover by hunting the biggest prey in the island.",
+		"ascension_stones" : 50,
+	},
+	"Sentinel" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,320,80,40),
+		"icon" : Vector2(70,210),
+		"color" : Color(38.0/255, 186.0/255, 169.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 100,
+			"attack" : 10,
+			"defense" : 20,
+			"speed" : 10,
+			"dexterity" : 10,
+			"vitality" : 0,
+		},
+		"multipliers" : {
+			"Bow" : {"damage" : 1.4, "stats" : 1.4},
+			"Hide" : {"stats" : 1.4},
+			"Cap" : {"stats" : 1.4},
+		},
+		"description" : "The Sentinel's thick hide make them a robust marksman.",
 		"teaser" : "Discover by enduring the trials of the battlefield.",
+		"ascension_stones" : 50,
+	},
+	"Scout" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,360,80,40),
+		"icon" : Vector2(80,210),
+		"color" : Color(41.0/255, 134.0/255, 74.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 25,
+			"attack" : 10,
+			"defense" : 0,
+			"speed" : 30,
+			"dexterity" : 10,
+			"vitality" : 0,
+		},
+		"multipliers" : {
+			"Bow" : {"damage" : 1.4, "stats" : 1.4},
+			"Hide" : {"stats" : 1.4},
+			"Cap" : {"stats" : 1.4},
+		},
+		"description" : "The Sentinel's thick hide make them a robust marksman.",
+		"teaser" : "Discover by venturing far and wide.",
+		"ascension_stones" : 50,
+	},
+	"Magician" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,440,80,40),
+		"icon" : Vector2(140,210),
+		"color" : Color(62.0/255, 179.0/255, 221.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					"helmetDarkNew" : RgbToColor(36.0, 17.0, 131.0),
+					"helmetMediumNew" : RgbToColor(94.0, 23.0, 150.0),
+					"helmetLightNew" : RgbToColor(122.0, 39.0, 170.0),
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 100,
+			"attack" : 5,
+			"defense" : 0,
+			"speed" : 25,
+			"dexterity" : 5,
+			"vitality" : 20,
+		},
+		"multipliers" : {
+			"Staff" : {"damage" : 1.4, "stats" : 1.4},
+			"Robe" : {"stats" : 1.4},
+			"Hat" : {"stats" : 1.4},
+		},
+		"description" : "The Magician's quick thinking make for a cunning opponent.",
+		"teaser" : "Discover by pulling too many rabbits out of your hat.",
+		"ascension_stones" : 50,
+	},
+	"Druid" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,400,80,40),
+		"icon" : Vector2(150,210),
+		"color" : Color(62.0/255, 218.0/255, 221.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+					"helmetDarkNew" : RgbToColor(36.0, 17.0, 131.0),
+					"helmetMediumNew" : RgbToColor(94.0, 23.0, 150.0),
+					"helmetLightNew" : RgbToColor(122.0, 39.0, 170.0),
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 200,
+			"attack" : 0,
+			"defense" : 10,
+			"speed" : 0,
+			"dexterity" : 0,
+			"vitality" : 40,
+		},
+		"multipliers" : {
+			"Staff" : {"damage" : 1.4, "stats" : 1.4},
+			"Robe" : {"stats" : 1.4},
+			"Hat" : {"stats" : 1.5},
+		},
+		"description" : "The Druid's extreme durability and regeneration can outlast anyone.",
+		"teaser" : "Discover by being one with rock.",
+		"ascension_stones" : 50,
+	},
+	"Warlock" : {
+		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
+		"quests" : {
+		},
+		"rect" : Rect2(0,480,80,40),
+		"icon" : Vector2(160,210),
+		"color" : Color(131.0/255, 62.0/255, 221.0/255),
+		"example_colors" : {
+			"params" : {
+				"colors" : {
+				},
+				"textures" : {
+					
+				},
+			}
+		},
+		"bonus_stats" : {
+			"health" : 0,
+			"attack" : 30,
+			"defense" : 0,
+			"speed" : 10,
+			"dexterity" : 10,
+			"vitality" : 0,
+		},
+		"multipliers" : {
+			"Sword" : {"damage" : 1.2, "stats" : 1.2},
+			"Staff" : {"damage" : 1.4, "stats" : 1.4},
+			"Robe" : {"stats" : 1.4},
+			"Hat" : {"stats" : 1.4},
+		},
+		"description" : "The Warlocks mastery of both sword and staff make them a feared mage.",
+		"teaser" : "Discover by leaving no survivors.",
 		"ascension_stones" : 50,
 	},
 }

@@ -1,33 +1,102 @@
 extends Node2D
 
-export var enemy_type = "crab"
 var distanceTraveled
 var velocity = Vector2.ZERO
 
-export var rect_size1 = Vector2(20,7)
-export var rect_size2 = Vector2(20,10)
+var enemy_type = "crab"
+var rect_size1 = Vector2(20,7)
+var rect_size2 = Vector2(20,10)
+var rect_position1 = Vector2(-10,-6)
+var rect_position2 = Vector2(-10,-9)
 
-export var rect_position1 = Vector2(-10,-6)
-export var rect_position2 = Vector2(-10,-9)
+var texture_8x8 = preload("res://Assets/npcs/enemies_8x8.png")
+var texture_16x16 = preload("res://Assets/npcs/enemies_16x16.png")
+var texture_32x32 = preload("res://Assets/npcs/enemies_32x32.png")
 
 var damage_indicator_scene = preload("res://Scenes/SupportScenes/UI/Indicators/DamageIndicator.tscn")
-var projectile_dict = {}
 var effects = {}
-var effects_node = preload("res://Scenes/SupportScenes/PlayerCharacter/Effects.tscn")
 
 func _ready():
+	set_physics_process(false)
+
+var is_active = false
+
+func Activate(_enemy_type):
 	$Area2D.connect("area_entered", self, "OnHit")
-	if not has_node("ZContainer"):
-		add_child(effects_node.instance())
+	set_physics_process(true)
+	self.visible = true
+	is_active = true
+	
+	enemy_type = _enemy_type
+	var enemy_data = ClientData.GetEnemy(enemy_type)
+	var _animations = enemy_data.animations
+	var _height = enemy_data.height
+	var _scale = enemy_data.scale
+	var _rect = enemy_data.rect
+	var _res = enemy_data.res
+	var _texture
+	
+	#Nodes
+	var sprite_node = get_node("Control/Sprite")
+	var indicator_node = get_node("IndicatorPlaceholder")
+	var effects_node = get_node("ZContainer")
+	var hitbox_node = get_node("Area2D/Hitbox")
+	var rect_variable = (_res*_scale)
+	
+	if _res == 10:
+		_texture = texture_8x8
+	if _res == 18:
+		_texture = texture_16x16
+	if _res == 38:
+		_texture = texture_32x32
+	
+	sprite_node.scale = Vector2(_scale,_scale)
+	sprite_node.position = Vector2(rect_variable/2,rect_variable/2)
+	hitbox_node.shape.extents = Vector2((_res/2)*_scale, (_height/2)*_scale)
+	hitbox_node.position = Vector2(0,-(_height/2)*_scale)
+	
+	rect_size1 = Vector2(rect_variable,rect_variable)
+	rect_size2 = Vector2(rect_variable,rect_variable)
+	rect_position1 = Vector2(-rect_variable/2,-rect_variable)
+	rect_position2 = Vector2(-rect_variable/2,-rect_variable)
+	
+	indicator_node.position = Vector2(0,-_height*_scale)
+	effects_node.position = Vector2(0,-(_height*_scale)+8)
+	
+	sprite_node.texture = _texture
+	sprite_node.region_rect = _rect
+	sprite_node.hframes = _rect.size.x/_rect.size.y
+	sprite_node.vframes = 1
+	
+	var animation_node = get_node("AnimationPlayer")
+	for animation_name in _animations.keys():
+		var frame_time = 0
+		var animation = animation_node.get_animation(animation_name)
+		var key_count = animation.track_get_key_count(0)
+		
+		for i in range(key_count - 1, -1, -1):
+			animation.track_remove_key(0, i)
+		
+		animation.length = 0.3*len(_animations[animation_name])
+		for frame in _animations[animation_name]:
+			animation.track_insert_key(0, frame_time, frame)
+			frame_time += 0.3
+
+func DeActivate():
+	$Area2D.disconnect("area_entered", self, "OnHit")
+	set_physics_process(false)
+	hide()
+	is_active = false
 
 var clock_sync_timer = 0
 func _physics_process(delta):
 	clock_sync_timer += 1
 	if not $AnimationPlayer.is_playing():
 		$AnimationPlayer.play("Idle")
-	SpeedModifiers()
+		
 	if clock_sync_timer == 20:
 		clock_sync_timer = 0
+		SpeedModifiers()
 		UpdateStatusEffects(effects)
 
 func UpdateStatusEffects(status_effects):
@@ -65,9 +134,8 @@ func MoveEnemy(new_position):
 			$Control/Sprite.flip_h = false
 		elif new_position.x-old_position.x < 0 and not $Control/Sprite.flip_h:
 			$Control/Sprite.flip_h = true
-	else:
-		if self.visible:
-				self.visible = false
+	elif self.visible:
+		self.visible = false
 
 func DeathStance():
 	$AnimationPlayer.play("Death")
@@ -90,7 +158,6 @@ func ShowDamageIndicator(damage_amount):
 	if effects.has("invincible"):
 		total_damage = 0
 	
-	var sprite = get_node("Sprite")
 	var shape = get_node("Area2D/Hitbox").shape as RectangleShape2D
 	var _x = shape.extents.x
 	
@@ -107,5 +174,5 @@ func ShowDamageIndicator(damage_amount):
 	timer.connect("timeout", self, "DamageIndicatorTimeout")
 
 func DamageIndicatorTimeout():
-	if is_instance_valid(get_node("DamageIndicator")): 
+	if has_node("DamageIndicator"): 
 		get_node("DamageIndicator").queue_free()

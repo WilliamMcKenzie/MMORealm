@@ -41,12 +41,36 @@ var tutorial_step_translation = ["Intro", "Controls", "Backpack", "Ability", "Qu
 
 var clock_sync_timer = 0
 var clock_sync_timer_2 = 0
+var last_position
 func _physics_process(delta):
 	clock_sync_timer += 1
+	clock_sync_timer_2 += 1
 	if not character:
 		return
 	
-	if clock_sync_timer_2 >= 20:
+	if clock_sync_timer_2 >= 60:
+		clock_sync_timer_2 = 0
+		#Tiles covered
+		if not account_data.statistics.has("tiles_covered"):
+			account_data.statistics.tiles_covered = 0
+		if last_position:
+			account_data.statistics.tiles_covered += round(last_position.distance_to(self.position)/8.0)
+		last_position = self.position
+		
+		#Class achievements
+		for _achievement in account_data.achievements:
+			if account_data.achievements[_achievement] == true or not ServerData.GetAchievement(_achievement):
+				continue
+			var achievement = ServerData.GetAchievement(_achievement)
+			if achievement.which == "classes_unlocked":
+				var unlocked = true
+				for _class in achievement.classes:
+					if not account_data.classes.has(_class) or not account_data.classes[_class]:
+						unlocked = false
+				
+				if unlocked:
+					GetAchievement(_achievement)
+		
 		get_node("/root/Server").SendAccountData(name, account_data)
 	
 	if clock_sync_timer >= 3 and "island" in get_parent().get_parent().get_parent().name:
@@ -545,10 +569,14 @@ func SetCharacter(characters):
 	get_node("/root/Server").SendCharacterData(name, character)
 
 func AddExp(exp_amount, enemy_name, enemy_id):
+	if ServerData.enemies_tracked.has(enemy_name):
+		UpdateStatistics(enemy_name, 1)
+	UpdateStatistics("enemies_killed", 1)
+	
 	if in_tutorial and tutorial_step == 4 and enemy_name == "tutorial_troll_king":
 		tutorial_step += 1
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
-	if in_tutorial and tutorial_step == 1:
+	if in_tutorial and tutorial_step == 1 and enemy_name == "tutorial_crab":
 		tutorial_step += 1
 		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 	
@@ -611,6 +639,7 @@ func DealDamage(damage, enemy_name):
 		Death(enemy_name)
 
 func Death(enemy_name):
+	UpdateStatistics("deaths",1)
 	var username = get_node("/root/Server").player_name_by_id[int(name)]
 	
 	account_data.characters.remove(character_index)
@@ -645,24 +674,69 @@ func DetermineReviveCost(reputation):
 		cost = 200
 	return cost
 
+var updated_achievements = false
 func UpdateStatistics(which, amount_increase):
-	if character.statistics.has(which) and character.ascension_stones >= ServerData.GetCharacter(character.class).ascension_stones:
+	if not updated_achievements:
+		for category in ServerData.achievement_catagories:
+			for achievement in ServerData.achievement_catagories[category].achievements:
+				if not account_data.achievements.has(achievement):
+					account_data.achievements[achievement] = false
+	
+	#Handle character statistics
+	if not character.statistics.has(which):
+			character.statistics[which] = 0
+	if character.ascension_stones >= ServerData.GetCharacter(character.class).ascension_stones:
 		character.statistics[which] += amount_increase
+	
+	#Handle global statistics
+	if not account_data.statistics.has(which):
+		account_data.statistics[which] = 0
 	account_data.statistics[which] += amount_increase
 	
+	#Class quests
 	for _achievement in ServerData.GetCharacter(character.class).quests:
 		var achievement = ServerData.GetAchievement(_achievement)
-		if (achievement.which == which and character.statistics[which] >= achievement.amount):
+		
+		#In case account is outdated
+		if not character.statistics.has(which):
+			character.statistics[which] = 0
+		
+		#If standard achievement, simply check the amount
+		if achievement.which == which and character.statistics[which] >= achievement.amount:
 			GetAchievement(_achievement)
+		
+		#In case of enemies killed, check the enemies in statistics
+		if achievement.which == "enemies_killed" and achievement.has("enemies") and achievement.enemies.has(which):
+			var total = 0
+			for enemy in achievement.enemies:
+				if character.statistics.has(enemy):
+					total += character.statistics[enemy]
+			if total >= achievement.amount:
+				GetAchievement(_achievement)
 	
+	#Regular achievements
 	for _achievement in account_data.achievements:
-		if account_data.achievements[_achievement] == true:
+		if account_data.achievements[_achievement] == true or not ServerData.GetAchievement(_achievement):
 			continue
-			
 		var achievement = ServerData.GetAchievement(_achievement)
-		if (achievement.which == which and account_data.statistics[which] >= achievement.amount):
+		
+		#In case account is outdated
+		if not account_data.statistics.has(which):
+			account_data.statistics[which] = 0
+		
+		#If standard achievement, simply check the amount
+		if achievement.which == which and account_data.statistics[which] >= achievement.amount:
 			account_data.achievements[_achievement] = true
 			GetAchievement(_achievement)
+		
+		#In case of enemies killed, check the enemies in statistics
+		elif achievement.which == "enemies_killed" and achievement.has("enemies") and achievement.enemies.has(which):
+			var total = 0
+			for enemy in achievement.enemies:
+				if account_data.statistics.has(enemy):
+					total += account_data.statistics[enemy]
+			if total >= achievement.amount:
+				GetAchievement(_achievement)
 
 func GetAchievement(achievement_name):
 	var character_data = ServerData.GetCharacter(character.class)
@@ -670,7 +744,8 @@ func GetAchievement(achievement_name):
 	
 	account_data.gold += achievement_data.gold
 	account_data.achievements[achievement_name] = true
-	get_node("/root/Server").SendMessage(int(name), "success", "You recieved " + str(achievement_data.gold) + " gold!")
+	if achievement_data.gold > 0:
+		get_node("/root/Server").SendMessage(int(name), "success", "You recieved " + str(achievement_data.gold) + " gold!")
 	
 	#Check if unlocked new furntiure
 	for building_id in ServerData.buildings.keys():

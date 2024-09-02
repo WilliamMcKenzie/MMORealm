@@ -1,10 +1,10 @@
 extends CanvasLayer
 
 var mobile_versions = {
-	"To walk around, you can use WASD controls." : "To walk around, you can drag on the left side of the screen in the direction you want to go.",
-	"To attack, simply click where you want to shoot with your left mouse button." : "To attack, you can drag on the right side of the screen in the direction you want to shoot.",
+	"To walk around, you can use [WASD] controls." : "To walk around, you can drag on the left side of the screen in the direction you want to go.",
+	"To attack, simply click where you want to shoot with your left mouse button. Try to slay some crabs!" : "To attack, you can drag on the right side of the screen in the direction you want to shoot. Try to slay some crabs!",
 	"Press [SPACE] to use your helmet." : "Press to helmet button in the bottom right to use your helmet.",
-	"Press [R] to return the safety of the port and start your adventure." : "Press the home button in the bottom right to return the safety of the port and start your adventure.",
+	"Press [R] to return the safety of the port, and head up to the docks to start your adventure." : "Press the home button in the bottom right to return the safety of the port, and head up to the docks to start your adventure.",
 }
 
 var subject_data = {

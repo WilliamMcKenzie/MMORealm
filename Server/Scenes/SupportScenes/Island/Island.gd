@@ -79,6 +79,10 @@ func _process(delta):
 		
 		for player_id in player_list.keys():
 			get_node("/root/Server").ForcedEnterInstance(instance_id, int(player_id))
+	
+	if island_close_timer <= 0 and not ServerData.GetEnemy(ruler).has("dungeon"):
+		island_close_timer = 2
+		get_node("/root/Server").SpawnNPC(ruler, instance_tree, map_size/2*8-position)
 
 #Handle standard stuff
 func _physics_process(delta):

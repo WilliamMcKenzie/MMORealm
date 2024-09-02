@@ -1,18 +1,15 @@
 extends "../Map.gd"
 
 #Room size accounts for hallways in between
-export (int, 5, 50) var room_size = 20
-
-var tileset = preload("res://Resources/overgrown_temple_tilemap.tres")
-var dungeon_name = "overgrown_temple"
+var room_size
+var dungeon_name
 
 #For creating new dungeon instances
 func PopulateDungeon(instance_data):
 	dungeon_name = instance_data["Name"]
-	
+	room_size = instance_data["RoomSize"]
 	var map = instance_data["Map"]
 	var id = instance_data["Id"]
-	var room_size = instance_data["RoomSize"]
 	
 	#We add the hallways after so they go on top of the room tiles
 	var hallways_to_add = []
@@ -52,8 +49,6 @@ func PopulateDungeon(instance_data):
 		var room_to_add = room_nodes[room].instance()
 		var room_data = map[room]
 		
-		if map.size() == 1:
-			room_to_add.encounter = true
 		room_to_add.position = room*(room_size)*8
 		room_to_add.name = str(room)
 		add_child(room_to_add)

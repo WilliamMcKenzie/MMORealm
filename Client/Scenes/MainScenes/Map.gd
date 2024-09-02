@@ -4,7 +4,7 @@ var player_spawn = preload("res://Scenes/SupportScenes/PlayerCharacter/PlayerTem
 var last_world_state = 0
 
 var world_state_buffer = []
-const interpolation_offset = 100
+const interpolation_offset = 200
 
 var active_projectiles = []
 
@@ -14,7 +14,7 @@ func _physics_process(delta):
 	if GameUI.is_dead:
 		return
 	
-	var render_time = Server.client_clock - interpolation_offset
+	var render_time = Server.client_clock - interpolation_offset - 100
 	if world_state_buffer.size() > 1:
 		#Remove excess worldstates, leaving only usable ones
 		while(world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T):
@@ -125,22 +125,33 @@ func UpdateWorldState(world_state):
 		world_state_buffer.append(world_state)
 		
 #Enemy nodes
+var living_enemies = []
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
+	if not living_enemies.has(enemy_id):
+		living_enemies.append(enemy_id)
+		for child in get_node("YSort/Enemies").get_children():
+			if child.is_active == false:
+				child.name = enemy_id
+				child.position = enemy_position
+				child.is_active = true
+				child.Activate(enemy_name)
+				return
+		SpawnNewEnemyLegacy(enemy_id, enemy_position, enemy_name)
+func SpawnNewEnemyLegacy(enemy_id, enemy_position, enemy_name):
 	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
 		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+".tscn")
 		if not enemy_scene:
-			for enemy in ClientData.enemies.keys():
-				var enemy_data = ClientData.enemies[enemy]
-				if enemy_data.has("variations") and enemy_data.variations.has(enemy_name):
-					enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy+".tscn")
+			return
 		var enemy_instance = enemy_scene.instance()
 		enemy_instance.name = enemy_id
 		enemy_instance.position = enemy_position
 		get_node("YSort/Enemies").add_child(enemy_instance)
+
 func RefreshEnemies(enemies):
-	for enemy_node in get_node("YSort/Enemies").get_children():
-		if not enemies.has(enemy_node.name):
-			get_node("YSort/Enemies").remove_child(get_node("YSort/Enemies/"+enemy_node.name))
+	for enemy_id in living_enemies:
+		if not enemies.has(enemy_id) and has_node("YSort/Enemies/"+enemy_id):
+			living_enemies.erase(enemy_id)
+			get_node("YSort/Enemies/"+enemy_id).DeActivate()
  
 #Object nodes
 func RefreshObjects(objects):
@@ -159,6 +170,7 @@ func RefreshObjects(objects):
 			continue
 		
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):
+			print(type)
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
 			
