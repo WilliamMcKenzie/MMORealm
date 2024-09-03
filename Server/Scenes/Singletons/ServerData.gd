@@ -6439,6 +6439,16 @@ var dungeons = {
 			10 : "ice_demon",
 		}
 	},
+	"goblin_cellar" : {
+	"type" : "procedural",
+	"basic_rooms" : ["Room1", "Room2"],
+	"rooms_until_boss" : 5,
+	"room_size" : 21,
+	"tile_translation" : {
+		4 : "crab",
+	}
+},
+	
 	"test_dungeon" : {
 		"type" : "procedural",
 		"basic_rooms" : ["Room1", "Room2"],
