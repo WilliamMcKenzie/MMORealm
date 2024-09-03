@@ -56,7 +56,7 @@ func GenerateProceduralDungeon(basic_rooms, rooms_until_boss=5):
 					"room_type" : "Boss",
 					"root_path" : path
 			}
-			layout[coordinates] = boss_room
+			layout[coordinates-direction] = boss_room
 		#Then, put the sub paths which are dead ends.
 		else:
 			for i in range(rooms_until_boss):

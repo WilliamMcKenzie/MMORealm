@@ -4,7 +4,7 @@ var timer = 0
 
 func _physics_process(delta):
 	timer += delta
-	if timer > 10:
+	if timer > 4:
 		queue_free()
 	
 	if id and Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()):

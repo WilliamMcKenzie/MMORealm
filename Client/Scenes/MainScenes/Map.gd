@@ -57,7 +57,7 @@ func _physics_process(delta):
 					get_node("YSort/Enemies/"+str(enemy)).MoveEnemy(new_position)
 					get_node("YSort/Enemies/"+str(enemy)).effects = enemies2[enemy]["effects"]
 					if enemies2[enemy].has("dead"):
-						get_node("YSort/Enemies/"+str(enemy)).DeathStance()
+						get_node("YSort/Enemies/"+str(enemy)).death_stance = enemies2[enemy]["dead"]
 				else:
 					SpawnNewEnemy(enemy, enemies2[enemy]["position"], enemies2[enemy]["name"])
 			RefreshEnemies(world_state_buffer[2]["E"])
@@ -170,7 +170,6 @@ func RefreshObjects(objects):
 			continue
 		
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):
-			print(type)
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
 			

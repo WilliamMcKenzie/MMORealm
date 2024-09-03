@@ -38,6 +38,7 @@ func _physics_process(delta):
 				enemy.erase("phase_timer")
 				enemy.erase("used_phases")
 				enemy.erase("origin")
+				enemy.erase("signals")
 				world_state["E"][enemy_id] = enemy
 			
 			for id in get_node("/root/Server").player_instance_tracker[instance_tree]:
@@ -91,6 +92,7 @@ func SendIslandData(instance_tree):
 				enemy.erase("phase_timer")
 				enemy.erase("used_phases")
 				enemy.erase("origin")
+				enemy.erase("signals")
 				world_state["E"][enemy_id] = enemy
 			
 			#We add speed checks here

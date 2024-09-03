@@ -33,8 +33,6 @@ func SetParentTilemap():
 	queue_free()
 
 func HallwaySetup():
-	get_node("TileMap").queue_free()
-	return
 	var start_room = get_parent().get_node(str(room_data.start_room))
 	var target_room = get_parent().get_node(str(room_data.target_room))
 	var direction = room_data.target_room - room_data.start_room
@@ -45,8 +43,6 @@ func HallwaySetup():
 	
 	for x in range(-room_size*2, room_size*2):
 		for y in range(-room_size*2, room_size*2):
-			if $TileMap.get_cell(x,y) > -1 and x > 26:
-				print($TileMap.get_cell(x,y))
 			if $TileMap.get_cell(x,y) > -1:
 				tiles[Vector2(x, y)] = $TileMap.get_cell(x,y)
 	

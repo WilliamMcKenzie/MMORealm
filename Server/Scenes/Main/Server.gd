@@ -385,6 +385,7 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 			"anchor_position": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
 			"origin" : origin,
 			"effects" : {},
+			"signals" : {},
 			
 			"pattern_index" : 0,
 			"pattern_timer" : 0,

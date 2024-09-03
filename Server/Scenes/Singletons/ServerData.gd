@@ -134,6 +134,17 @@ var special_loot_pools = {
 		],
 		"loot" : []
 	},
+	"og_the_treacherous" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 	"salazar" : {
 		"override" : "encounter_2",
 		"soulbound_loot" : [
@@ -158,6 +169,259 @@ var special_loot_pools = {
 	},
 }
 var projectile_databank = {
+	"IceBlast_mid_fast" : {
+		"projectile" : "IceBlast",
+		"formula" : "0",
+		"damage" : 60,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : 40,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"IceBlast_mid_mid" : {
+		"projectile" : "IceBlast",
+		"formula" : "0",
+		"damage" : 60,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : 20,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"GiantIceBlast_fast_strong" : {
+		"projectile" : "GiantIceBlast",
+		"formula" : "0",
+		"damage" : 170,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : 40,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"AbyssBlast_strong_mid" : {
+		"projectile" : "AbyssBlast",
+		"formula" : "0",
+		"damage" : 90,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : 20,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"AbyssBlast_weak_fast" : {
+		"projectile" : "AbyssBlast",
+		"formula" : "0",
+		"damage" : 30,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : 40,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"IceSlash_weak_slow" : {
+		"projectile" : "IceSlash",
+		"formula" : "0",
+		"damage" : 40,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : 10,
+		"tile_range" : 4,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Ball_weak_fast" : {
+		"projectile" : "Ball",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 70,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : Vector2(-0.866,0.5),
+		"size" : 7
+	},
+	"IceSlash_mid_fast" : {
+		"projectile" : "IceSlash",
+		"formula" : "0",
+		"damage" : 70,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : 40,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"IceSpinner_mid_medium" : {
+		"projectile" : "IceSpinner",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 5,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"IceSpinner_strong_fast" : {
+		"projectile" : "IceSpinner",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"GiantIceSpinner_strong_fast" : {
+		"projectile" : "GiantIceSpinner",
+		"formula" : "0",
+		"damage" : 150,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantIceSlash_mid_slow" : {
+		"projectile" : "GiantIceSlash",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 10,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantIceSlash_strong_fast" : {
+		"projectile" : "GiantIceSlash",
+		"formula" : "0",
+		"damage" : 180,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"GiantIceSlash_strong_medium" : {
+		"projectile" : "GiantIceSlash",
+		"formula" : "0",
+		"damage" : 180,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 9
+	},
+	"IceSlash_strong_fast" : {
+		"projectile" : "IceSlash",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"IceSlash_strong_medium" : {
+		"projectile" : "IceSlash",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"IceSlash_weak_medium" : {
+		"projectile" : "IceSlash",
+		"formula" : "0",
+		"damage" : 40,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 15,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Ball_strong_slow" : {
+		"projectile" : "Ball",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 10,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"Ball_mid_fast" : {
+		"projectile" : "Ball",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 7
+	},
+	"GiantBall_strong_slow" : {
+		"projectile" : "GiantBall",
+		"formula" : "0",
+		"damage" : 200,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 10,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 8
+	},
+	"GiantBall_mid_fast" : {
+		"projectile" : "GiantBall",
+		"formula" : "0",
+		"damage" : 140,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 8
+	},
+	
 	"RoyalSlash_strong_medium" : {
 		"projectile" : "RoyalSlash",
 		"formula" : "0",
@@ -289,114 +553,6 @@ var projectile_databank = {
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
 						"size" : 4
-	},
-	"GiantIceSlash_mid_slow" : {
-		"projectile" : "GiantIceSlash",
-		"formula" : "0",
-		"damage" : 120,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 10,
-		"tile_range" : 8,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 9
-	},
-	"GiantIceSlash_strong_fast" : {
-		"projectile" : "GiantIceSlash",
-		"formula" : "0",
-		"damage" : 180,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 30,
-		"tile_range" : 8,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 9
-	},
-	"GiantIceSlash_strong_medium" : {
-		"projectile" : "GiantIceSlash",
-		"formula" : "0",
-		"damage" : 180,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 15,
-		"tile_range" : 8,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 9
-	},
-	"IceSlash_strong_fast" : {
-		"projectile" : "IceSlash",
-		"formula" : "0",
-		"damage" : 100,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 30,
-		"tile_range" : 8,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 7
-	},
-	"IceSlash_strong_medium" : {
-		"projectile" : "IceSlash",
-		"formula" : "0",
-		"damage" : 100,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 15,
-		"tile_range" : 8,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 7
-	},
-	"Ball_strong_slow" : {
-		"projectile" : "Ball",
-		"formula" : "0",
-		"damage" : 80,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 10,
-		"tile_range" : 6,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 7
-	},
-	"Ball_mid_fast" : {
-		"projectile" : "Ball",
-		"formula" : "0",
-		"damage" : 50,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 30,
-		"tile_range" : 6,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 7
-	},
-	"GiantBall_strong_slow" : {
-		"projectile" : "GiantBall",
-		"formula" : "0",
-		"damage" : 200,
-		"piercing" : true,
-		"wait" : 0,
-		"speed" : 10,
-		"tile_range" : 7,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 8
-	},
-	"GiantBall_mid_fast" : {
-		"projectile" : "GiantBall",
-		"formula" : "0",
-		"damage" : 140,
-		"piercing" : true,
-		"wait" : 0,
-		"speed" : 40,
-		"tile_range" : 7,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 8
 	},
 	"FlameArrow_strong_fast_short" : {
 		"projectile" : "FlameArrow",
@@ -1083,7 +1239,7 @@ var rulers = {
 						"wait" : 0,
 					},
 					{
-						"speech" : "I stand guard over the last remanants of the greaet orc kingdom...",
+						"speech" : "I stand guard over the last remanants of the great orc kingdom...",
 						"wait" : 3,
 					},
 					{
@@ -1481,11 +1637,11 @@ var rulers = {
 						"wait" : 0,
 					},
 					{
-						"speech" : "I have been entrusted to rule over this island as a vessel...",
+						"speech" : "I have been entrusted to guard this fortress with my life...",
 						"wait" : 3,
 					},
 					{
-						"speech" : "Challenge me if you dare!",
+						"speech" : "The creature inside is more powerful then you know. Challenge me if you dare!",
 						"wait" : 3,
 					},
 					MakeProjectile("GiantBall_strong_slow", (360.0/8.0)*1, 0),
@@ -1657,7 +1813,7 @@ var rulers = {
 						"wait" : 0,
 					},
 					{
-						"speech" : "The abyss holds powers greater then you know...",
+						"speech" : "I have been entrusted to rule over this island as a vessel...",
 						"wait" : 3,
 					},
 					{
@@ -5440,9 +5596,497 @@ var frozen_fortress_enemies = {
 				"health" : [0,100],
 				"on_spawn" : true,
 				"attack_pattern" : [
-					MakeProjectile("None", 0, 1000, "nearest"),
+					{
+						"signal" : "monolith_active",
+						"reciever" : "og_the_treacherous",
+						"duration" : 2,
+						"wait" : 0,
+					},
+					MakeProjectile("IceSlash_weak_medium", (360.0/3.0)*1, 0, "nearest"),
+					MakeProjectile("IceSlash_weak_medium", (360.0/3.0)*2, 0, "nearest"),
+					MakeProjectile("IceSlash_weak_medium", (360.0/3.0)*3, 1, "nearest"),
 				]
 			},
+		]
+	},
+	"og_the_treacherous" : {
+		"scale" : 1,
+		"res" : 38,
+		"height" : 30,
+		"rect" : Rect2(Vector2(0,76), Vector2(190,38)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+			"Death" : [4],
+		},
+		
+		"health" : 30000,
+		"defense" : 20,
+		"exp" : 5000,
+		"behavior" : 0,
+		"speed" : 15,
+		"loot_pool" : special_loot_pools["og_the_treacherous"],
+		"phases" : [
+			{
+				"duration" : 17,
+				"health" : [99.99,100],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"on_signal" : ["monolith_active"],
+				"attack_pattern" : [
+					{
+						"dead" : true,
+						"wait" : 0,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 15,
+						"wait" : 8,
+					},
+					{
+						"speech" : "I was trapped here by the troll lords many decades ago...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "The four frozen monoliths are keeping me here and restricting my power!",
+						"wait" : 3,
+					},
+					{
+						"speech" : "If you can destroy them all I will give you a great reward.",
+						"wait" : 4,
+					},
+				]
+			},
+			{
+				"duration" : 1,
+				"health" : [99.9999,100],
+				"on_signal" : ["monolith_active"],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 1,
+						"wait" : 1,
+					},
+				]
+			},
+			{
+				"duration" : 14,
+				"behavior" : 1,
+				"speed" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 14,
+						"wait" : 4,
+					},
+					{
+						"speech" : "Yes! My power! I feel it returning...",
+						"wait" : 0,
+					},
+					{
+						"dead" : false,
+						"wait" : 0.3,
+					},
+					{
+						"dead" : true,
+						"wait" : 0.3,
+					},
+					{
+						"dead" : false,
+						"wait" : 0.3,
+					},
+					{
+						"dead" : true,
+						"wait" : 0.3,
+					},
+					{
+						"dead" : false,
+						"wait" : 0.3,
+					},
+					{
+						"dead" : true,
+						"wait" : 0.3,
+					},
+					{
+						"dead" : false,
+						"wait" : 3,
+					},
+					{
+						"speech" : "Thank you mortals, but unfourtunately...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "I cannot risk you telling the trolls of my freedom! Feel the power of winter!",
+						"wait" : 4,
+					},
+				]
+			},
+			{
+				"duration" : 7,
+				"behavior" : 1,
+				"speed" : 5,
+				"health" : [66,100],
+				"attack_pattern" : CreateSpiral(3, "AbyssSpinner_strong_medium", 0.3, "IceSpinner_strong_fast", 0.4)
+			},
+			{
+				"duration" : 7,
+				"behavior" : 1,
+				"speed" : 10,
+				"health" : [66,100],
+				"attack_pattern" : CreateSpiral(4, "GiantIceBlast_fast_strong", 0.2, null, 0.2, 4) + [
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*1, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*2, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*3, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*4, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*5, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*6, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*7, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*8, 0.5),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*1, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*2, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*3, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*4, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*5, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*6, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*7, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*8, 0.5),
+				] + CreateSpiral(4, "GiantIceBlast_fast_strong", 0.2, null, 0.2, 4) + [
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*9, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*10, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*11, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*12, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*13, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*14, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*15, 0),
+					MakeProjectile("IceSpinner_strong_fast", (360.0/16.0)*16, 0.5),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*9, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*10, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*11, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*12, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*13, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*14, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*15, 0),
+					MakeProjectile("IceBlast_mid_fast", (360.0/16.0)*16, 0.5),
+				]
+			},
+			{
+				"duration" : 7,
+				"behavior" : 0,
+				"speed" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [33,66],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 7,
+						"wait" : 1,
+					},
+					{
+						"speech" : "You are stronger then I anticipated...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "I must use my full power, prepare to die!",
+						"wait" : 4,
+					},
+				]
+			},
+			{
+				"duration" : 12,
+				"behavior" : 2,
+				"speed" : 5,
+				"health" : [33,66],
+				"attack_pattern" : [
+					MakeProjectile("GiantIceSpinner_strong_fast", 45, 0, "nearest"),
+					MakeProjectile("GiantIceSpinner_strong_fast", -89, 0, "nearest"),
+					MakeProjectile("GiantIceBlast_fast_strong", 22, 0, "nearest"),
+					MakeProjectile("GiantIceBlast_fast_strong", -10, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*3, 0.5, "nearest"),
+					
+					MakeProjectile("GiantIceSpinner_strong_fast", 77, 0, "nearest"),
+					MakeProjectile("GiantIceSpinner_strong_fast", -35, 0, "nearest"),
+					MakeProjectile("GiantIceBlast_fast_strong", 10, 0, "nearest"),
+					MakeProjectile("GiantIceBlast_fast_strong", -56, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*8, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*6, 0.5, "nearest"),
+				] + CreateSpiral(1, "IceSlash_mid_fast", 0.1, null, 0.2, 9)
+			},
+			{
+				"duration" : 8,
+				"behavior" : 2,
+				"speed" : 2,
+				"health" : [33,66],
+				"attack_pattern" : CreateSpiral(1, "GiantIceSlash_mid_slow", 0.2, "GiantIceSpinner_strong_fast", 0.5, 24) + [
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", (360.0/8.0)*8, 1, "nearest"),
+				]
+			},
+			{
+				"duration" : 7,
+				"behavior" : 0,
+				"speed" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,33],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 7,
+						"wait" : 1,
+					},
+					{
+						"speech" : "FOOLS! You battle with a general of Vexuvious...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "YOU HAVE NO UNDERSTANDING OF MY POWER!",
+						"wait" : 4,
+					},
+				]
+			},
+			{
+				"duration" : 8,
+				"behavior" : 2,
+				"speed" : 6,
+				"health" : [0,33],
+				"attack_pattern" : [
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*2, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*3, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*4, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*5, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*6, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*7, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*8, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*9, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*10, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*11, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*12, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*13, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*14, 0, "nearest"),
+					
+					MakeProjectile("IceSpinner_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", 5, 0.2, "nearest"),
+					MakeProjectile("IceBlast_mid_fast", 0, 0.2, "nearest"),
+					
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*2, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*3, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*4, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*5, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*6, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*7, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*8, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*9, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*10, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*11, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*12, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*13, 0, "nearest"),
+					MakeProjectile("GiantIceSlash_strong_fast", (360.0/16.0)*14, 0, "nearest"),
+					
+					MakeProjectile("IceSpinner_strong_fast", -20, 0.2, "nearest"),
+					MakeProjectile("IceSlash_strong_fast", 15, 0.2, "nearest"),
+					MakeProjectile("AbyssBlast_strong_mid", -5, 0.2, "nearest"),
+					MakeProjectile("IceSpinner_strong_fast", 0, 0.2, "nearest"),
+				]
+			},
+		]
+	},
+	"ice_spirit" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(0,40), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
+		"health" : 200,
+		"defense" : 0,
+		"exp" : 50,
+		"behavior" : 2,
+		"speed" : 20,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_weak_fast", 0, 2, "nearest"),
+				]
+			}
+		]
+	},
+	"ice_golem" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(108,72), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
+		"health" : 2000,
+		"defense" : 20,
+		"exp" : 250,
+		"behavior" : 2,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "ice_spirit",
+						"summon_position" : Vector2(-19,-1),
+						"wait" : 0,
+					},
+					{
+						"summon" : "ice_spirit",
+						"summon_position" : Vector2(20,-1),
+						"wait" : 0,
+					},
+					{
+						"summon" : "ice_spirit",
+						"summon_position" : Vector2(0,-20),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("IceSlash_mid_fast", 60+(360.0/3.0)*1, 0, "nearest"),
+					MakeProjectile("IceSlash_mid_fast", 60+(360.0/3.0)*2, 0, "nearest"),
+					MakeProjectile("IceSlash_mid_fast", 60+(360.0/3.0)*3, 1, "nearest"),
+					MakeProjectile("IceSpinner_mid_medium", (360.0/3.0)*1, 0, "nearest"),
+					MakeProjectile("IceSpinner_mid_medium", (360.0/3.0)*2, 0, "nearest"),
+					MakeProjectile("IceSpinner_mid_medium", (360.0/3.0)*3, 2, "nearest"),
+				]
+			},
+		]
+	},
+	"ice_demon" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(162,72), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 3000,
+		"defense" : 10,
+		"exp" : 350,
+		"behavior" : 2,
+		"speed" : 7,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Ball_weak_fast", (360.0/6.0)*1, 0, "nearest"),
+					MakeProjectile("Ball_weak_fast", (360.0/6.0)*2, 0, "nearest"),
+					MakeProjectile("Ball_weak_fast", (360.0/6.0)*3, 0, "nearest"),
+					MakeProjectile("Ball_weak_fast", (360.0/6.0)*4, 0, "nearest"),
+					MakeProjectile("Ball_weak_fast", (360.0/6.0)*5, 0, "nearest"),
+					MakeProjectile("Ball_weak_fast", (360.0/6.0)*6, 0, "nearest"),
+					MakeProjectile("IceSlash_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("IceSlash_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("IceSlash_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("IceSlash_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("IceSlash_mid_fast", 0, 0.2, "nearest"),
+				]
+			},
+		]
+	},
+	"ice_troll_guardian" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(198,72), Vector2(72,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
+		"health" : 2000,
+		"defense" : 15,
+		"exp" : 150,
+		"behavior" : 1,
+		"speed" : 15,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "ice_troll",
+						"summon_position" : Vector2(-19,-1),
+						"wait" : 0,
+					},
+					{
+						"summon" : "ice_troll",
+						"summon_position" : Vector2(20,-1),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : CreateSpiral(2, "IceSpinner_mid_medium", 0.4)
+			},
+		]
+	},
+	"ice_troll" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(20,40), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [1,2],
+		},
+		
+		"health" : 600,
+		"defense" : 0,
+		"exp" : 50,
+		"behavior" : 2,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("IceSlash_weak_slow", 0, 0.8, "nearest"),
+				]
+			}
 		]
 	},
 }
@@ -5789,6 +6433,10 @@ var dungeons = {
 		"room_size" : 26,
 		"tile_translation" : {
 			6 : "frozen_monolith",
+			7 : "og_the_treacherous",
+			8 : "ice_golem",
+			9 : "ice_troll_guardian",
+			10 : "ice_demon",
 		}
 	},
 	"test_dungeon" : {
@@ -7208,6 +7856,17 @@ var projectiles = {
 		"spin" : false,
 		"scale" : 1.5,
 	},
+	"IceSpinner" : {
+		"rect" : Rect2(230,10,10,10),
+		"rotation" : 45,
+		"spin" : true,
+	},
+	"GiantIceSpinner" : {
+		"rect" : Rect2(230,10,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1.5,
+	},
 	"AbyssSpinner" : {
 		"rect" : Rect2(240,0,10,10),
 		"rotation" : 45,
@@ -7228,6 +7887,28 @@ var projectiles = {
 	},
 	"GiantRoyalSlash" : {
 		"rect" : Rect2(250,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.4,
+	},
+	"AbyssBlast" : {
+		"rect" : Rect2(240,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"GiantAbyssBlast" : {
+		"rect" : Rect2(240,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.4,
+	},
+	"IceBlast" : {
+		"rect" : Rect2(250,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"GiantIceBlast" : {
+		"rect" : Rect2(250,10,10,10),
 		"rotation" : 45,
 		"spin" : false,
 		"scale" : 1.4,

@@ -23,6 +23,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "Death"
+length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
@@ -39,7 +40,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=4]
 resource_name = "Idle"
 length = 0.6
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1

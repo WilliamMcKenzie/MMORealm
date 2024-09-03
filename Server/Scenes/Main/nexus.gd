@@ -66,10 +66,14 @@ func _physics_process(delta):
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		
 		for enemy_id in enemy_list.keys():
-			for effect in enemy_list[enemy_id]["effects"].keys():
-				enemy_list[enemy_id]["effects"][effect] -= tick_rate
-				if enemy_list[enemy_id]["effects"][effect] <= 0:
-					enemy_list[enemy_id]["effects"].erase(effect)
+			for _effect in enemy_list[enemy_id]["effects"].keys():
+				enemy_list[enemy_id]["effects"][_effect] -= tick_rate
+				if enemy_list[enemy_id]["effects"][_effect] <= 0:
+					enemy_list[enemy_id]["effects"].erase(_effect)
+			for _signal in enemy_list[enemy_id]["signals"].keys():
+				enemy_list[enemy_id]["signals"][_signal] -= tick_rate
+				if enemy_list[enemy_id]["signals"][_signal] <= 0:
+					enemy_list[enemy_id]["signals"].erase(_signal)
 			
 			#Check if we need to switch phase
 			var _phases = ServerData.GetEnemy(enemy_list[enemy_id]["name"]).phases
@@ -107,8 +111,21 @@ func _physics_process(delta):
 					
 					var used_before = enemy_list[enemy_id]["used_phases"].has(_phase_index)
 					var use_limit = phase.has("max_uses")
+					var on_signal = phase.has("on_signal")
 					var on_spawn = phase.has("on_spawn")
 					var possible = not use_limit or not used_before or (used_before and phase.max_uses > enemy_list[enemy_id]["used_phases"][_phase_index])
+					
+					if on_signal and health and possible:
+						var has_signals = true
+						for _signal in phase["on_signal"]:
+							if not enemy_list[enemy_id]["signals"].has(_signal):
+								has_signals = false
+								break
+						if has_signals:
+							possible_phases = [_phase_index]
+							break;
+					elif on_signal:
+						continue
 					
 					if on_spawn and health and possible:
 						possible_phases = [_phase_index]
@@ -140,9 +157,11 @@ func _physics_process(delta):
 				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
 				
 				var is_projectile = current_attack.has("projectile")
+				var is_signal = current_attack.has("signal")
 				var is_summon = current_attack.has("summon")
 				var is_speech = current_attack.has("speech")
 				var is_effect = current_attack.has("effect")
+				var is_dead = current_attack.has("dead")
 				
 				if is_projectile:
 					#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
@@ -181,13 +200,30 @@ func _physics_process(delta):
 						}
 						SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_list[enemy_id]["name"])
 				
+				elif is_signal:
+					var signal_type = current_attack["signal"]
+					var reciever = current_attack["reciever"]
+					var duration = current_attack["duration"]
+					var origin = enemy_list[enemy_id]["origin"]
+					
+					if reciever == "parent" and enemy_list.has(origin):
+						enemy_list[origin]["signals"][signal_type] = duration
+					else:
+						for _enemy_id in enemy_list.keys():
+							if enemy_list[_enemy_id].name == reciever:
+								enemy_list[_enemy_id]["signals"][signal_type] = duration
+				
 				elif is_summon:
 					var summon_position = current_attack["summon_position"] + enemy_list[enemy_id]["position"]
-					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_list[enemy_id]["name"])
+					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_id)
 				
 				elif is_speech:
 					var message = current_attack["speech"]
 					get_node("/root/Server").EnemySpeech(enemy_list[enemy_id]["name"], enemy_id, message)
+				
+				elif is_dead:
+					var dead = current_attack["dead"]
+					enemy_list[enemy_id]["dead"] = dead
 				
 				elif is_effect:
 					var effect = current_attack["effect"]
@@ -206,7 +242,7 @@ func _physics_process(delta):
 				enemy_list.erase(enemy_id)
 				continue
 			
-			if enemy_list[enemy_id].has("dead"):
+			if enemy_list[enemy_id].has("dead") and enemy_list[enemy_id]["dead"]:
 				pass
 			elif (enemy_list[enemy_id]["behavior"] == 0):
 				enemy_list[enemy_id] = Behaviors.Stationary(enemy_list[enemy_id], tick_rate, self)

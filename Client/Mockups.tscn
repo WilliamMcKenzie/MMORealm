@@ -439,7 +439,7 @@ z_index = 11
 texture = ExtResource( 6 )
 hframes = 7
 vframes = 7
-frame = 3
+frame = 10
 
 [node name="Wing" type="Sprite" parent="Spire"]
 material = ExtResource( 2 )

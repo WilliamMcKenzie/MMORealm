@@ -17,6 +17,7 @@ modulate_color = Color( 0.752941, 0.184314, 0.184314, 1 )
 font_data = ExtResource( 1 )
 
 [node name="EnemyChatBubble" type="Node2D"]
+visible = false
 script = ExtResource( 3 )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]

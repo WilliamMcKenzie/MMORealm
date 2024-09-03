@@ -22,6 +22,7 @@ func _ready():
 var is_active = false
 
 func Activate(_enemy_type):
+	
 	$Area2D.connect("area_entered", self, "OnHit")
 	set_physics_process(true)
 	self.visible = true
@@ -52,6 +53,7 @@ func Activate(_enemy_type):
 	
 	sprite_node.scale = Vector2(_scale,_scale)
 	sprite_node.position = Vector2(rect_variable/2,rect_variable/2)
+	hitbox_node.shape = hitbox_node.shape.duplicate()
 	hitbox_node.shape.extents = Vector2((_res/2)*_scale, (_height/2)*_scale)
 	hitbox_node.position = Vector2(0,-(_height/2)*_scale)
 	
@@ -69,6 +71,10 @@ func Activate(_enemy_type):
 	sprite_node.vframes = 1
 	
 	var animation_node = get_node("AnimationPlayer")
+	for animation_name in animation_node.get_animation_list():
+		var original_animation = animation_node.get_animation(animation_name)
+		var duplicated_animation = original_animation.duplicate(true)
+		animation_node.add_animation(animation_name, duplicated_animation)
 	for animation_name in _animations.keys():
 		var frame_time = 0
 		var animation = animation_node.get_animation(animation_name)
@@ -89,8 +95,11 @@ func DeActivate():
 	is_active = false
 
 var clock_sync_timer = 0
+var death_stance
 func _physics_process(delta):
 	clock_sync_timer += 1
+	if not $AnimationPlayer.is_playing() and death_stance:
+		$AnimationPlayer.play("Death")
 	if not $AnimationPlayer.is_playing():
 		$AnimationPlayer.play("Idle")
 		
@@ -136,9 +145,6 @@ func MoveEnemy(new_position):
 			$Control/Sprite.flip_h = true
 	elif self.visible:
 		self.visible = false
-
-func DeathStance():
-	$AnimationPlayer.play("Death")
 
 func ShootProjectile():
 	$AnimationPlayer.play("Attack")

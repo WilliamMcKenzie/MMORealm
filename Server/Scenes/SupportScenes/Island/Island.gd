@@ -114,7 +114,7 @@ func _physics_process(delta):
 		for chunk in chunks:
 			if IsChunkRadiusEmpty(chunk):
 				for id in chunks[chunk]["E"].keys():
-					var is_ruler = enemy_list[id].origin == ruler or enemy_list[id].name == ruler
+					var is_ruler = enemy_list[id].origin == ruler_id or enemy_list[id].name == ruler
 					if not is_ruler:
 						enemy_list.erase(id)
 						chunks[chunk]["E"].erase(id)
