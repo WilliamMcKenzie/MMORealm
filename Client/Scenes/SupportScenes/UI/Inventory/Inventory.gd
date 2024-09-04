@@ -64,7 +64,10 @@ func InspectItem(_item):
 		item_on_use.get_node("Label").visible = true
 		for buff in item.buffs.keys():
 			item_on_use.get_node(buff).visible = true
-			item_on_use.get_node(buff+"/Duration").text = "for "+str(item.buffs[buff].duration)+"s within "+str(item.buffs[buff].range)+" tiles"
+			if item.buffs[buff].range > 0:
+				item_on_use.get_node(buff+"/Duration").text = "for "+str(item.buffs[buff].duration)+"s within "+str(item.buffs[buff].range)+" tiles"
+			else:
+				item_on_use.get_node(buff+"/Duration").text = "for "+str(item.buffs[buff].duration)+"s to self"
 	else:
 		item_on_use.visible = false
 	

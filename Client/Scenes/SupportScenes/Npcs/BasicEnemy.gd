@@ -13,6 +13,7 @@ var texture_8x8 = preload("res://Assets/npcs/enemies_8x8.png")
 var texture_16x16 = preload("res://Assets/npcs/enemies_16x16.png")
 var texture_32x32 = preload("res://Assets/npcs/enemies_32x32.png")
 
+onready var sprite_node = get_node("Control/Sprite")
 var damage_indicator_scene = preload("res://Scenes/SupportScenes/UI/Indicators/DamageIndicator.tscn")
 var effects = {}
 
@@ -20,9 +21,9 @@ func _ready():
 	set_physics_process(false)
 
 var is_active = false
+var collision_connected = false
 
 func Activate(_enemy_type):
-	
 	$Area2D.connect("area_entered", self, "OnHit")
 	set_physics_process(true)
 	self.visible = true
@@ -38,7 +39,6 @@ func Activate(_enemy_type):
 	var _texture
 	
 	#Nodes
-	var sprite_node = get_node("Control/Sprite")
 	var indicator_node = get_node("IndicatorPlaceholder")
 	var effects_node = get_node("ZContainer")
 	var hitbox_node = get_node("Area2D/Hitbox")
@@ -51,6 +51,7 @@ func Activate(_enemy_type):
 	if _res == 38:
 		_texture = texture_32x32
 	
+	#sprite_node.name = enemy_type
 	sprite_node.scale = Vector2(_scale,_scale)
 	sprite_node.position = Vector2(rect_variable/2,rect_variable/2)
 	hitbox_node.shape = hitbox_node.shape.duplicate()
@@ -91,18 +92,18 @@ func Activate(_enemy_type):
 func DeActivate():
 	$Area2D.disconnect("area_entered", self, "OnHit")
 	set_physics_process(false)
-	hide()
+	self.visible = false
 	is_active = false
 
 var clock_sync_timer = 0
 var death_stance
 func _physics_process(delta):
 	clock_sync_timer += 1
-	if not $AnimationPlayer.is_playing() and death_stance:
+	if death_stance:
 		$AnimationPlayer.play("Death")
 	if not $AnimationPlayer.is_playing():
 		$AnimationPlayer.play("Idle")
-		
+	
 	if clock_sync_timer == 20:
 		clock_sync_timer = 0
 		SpeedModifiers()
@@ -139,10 +140,10 @@ func MoveEnemy(new_position):
 		var old_position = position
 		set_position(theoretical_position)
 		
-		if new_position.x-old_position.x > 0 and $Control/Sprite.flip_h:
-			$Control/Sprite.flip_h = false
-		elif new_position.x-old_position.x < 0 and not $Control/Sprite.flip_h:
-			$Control/Sprite.flip_h = true
+		if new_position.x-old_position.x > 0 and sprite_node.flip_h:
+			sprite_node.flip_h = false
+		elif new_position.x-old_position.x < 0 and not sprite_node.flip_h:
+			sprite_node.flip_h = true
 	elif self.visible:
 		self.visible = false
 
@@ -164,21 +165,6 @@ func ShowDamageIndicator(damage_amount):
 	if effects.has("invincible"):
 		total_damage = 0
 	
-	var shape = get_node("Area2D/Hitbox").shape as RectangleShape2D
-	var _x = shape.extents.x
-	
 	var damage_indicator = damage_indicator_scene.instance()
 	damage_indicator.get_node("Label").text = str(-total_damage)
 	$IndicatorPlaceholder.add_child(damage_indicator)
-
-	var timer = Timer.new()
-	timer.wait_time = 1.0 # Adjust this as needed
-	timer.one_shot = true
-	add_child(timer)
-	timer.start()
-
-	timer.connect("timeout", self, "DamageIndicatorTimeout")
-
-func DamageIndicatorTimeout():
-	if has_node("DamageIndicator"): 
-		get_node("DamageIndicator").queue_free()

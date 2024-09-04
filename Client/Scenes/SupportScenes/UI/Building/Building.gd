@@ -186,7 +186,7 @@ func SetHouseData(house_data):
 		state_container.get_node("Switch").texture_normal.region.position.x = icon_translation[open_mode]
 	
 	for guest in whitelist:
-		if not guest_list.get_node(guest):
+		if not guest_list.has_node(guest):
 			var guest_instance = load("res://Scenes/SupportScenes/UI/Building/Guest/Guest.tscn").instance()
 			guest_instance.name = guest
 			guest_list.add_child(guest_instance)

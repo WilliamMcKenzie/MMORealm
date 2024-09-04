@@ -58,7 +58,7 @@ func SetCharacter(_character):
 				stats[stat] += gear[slot].stats[stat]
 	
 	if gear.has("weapon"):
-		time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100)
+		time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100.0)
 		if character.status_effects.has("berserk"):
 			time_between_shots /= (125.0/100.0)
 	else:
@@ -253,6 +253,14 @@ func ShootProjectile(projectile_data, projectile_index):
 	var direction = (mouse_position - position).normalized()
 	var projectile_instance = projectile.instance()
 	var damage = round(CalculateDamageWithMultiplier((rand_range(projectile_data.damage[0], projectile_data.damage[1]))))
+	var offset
+	
+	if projectile_data.has("offset_variation"):
+		randomize()
+		var variation = rand_range(-projectile_data.offset_variation, projectile_data.offset_variation)
+		offset = ClientData.DegreesToVector(variation)
+	else:
+		offset = projectile_data.offset
 	
 	if right_joystick_output != Vector2.ZERO:
 		mouse_position = right_joystick_output*100 + position
@@ -265,7 +273,7 @@ func ShootProjectile(projectile_data, projectile_index):
 		"ProjectileIndex" : projectile_index,
 		"Damage" : damage,
 		"Position": $Axis.global_position,
-		"MousePosition": position+100*OffsetProjectileAngle(direction, projectile_data.offset),
+		"MousePosition": position+100*OffsetProjectileAngle(direction, offset),
 		"Direction": direction,
 	}
 	Server.SendProjectile(_projectile_data)
@@ -280,16 +288,23 @@ func ShootProjectile(projectile_data, projectile_index):
 	projectile_instance.size = projectile_data.size
 	projectile_instance.damage = damage
 	
-	projectile_instance.set_direction(OffsetProjectileAngle(direction, projectile_data.offset))
+	#Just for hjek naga
+	if projectile_data.projectile == "GreenBlast":
+		projectile_instance.position = $Axis.global_position
+	
+	projectile_instance.set_direction(OffsetProjectileAngle(direction, offset))
 	get_parent().add_child(projectile_instance)
-	get_parent().get_node(projectile_instance.name).look_at(position+100*OffsetProjectileAngle(direction, projectile_data.offset))
+	get_parent().get_node(projectile_instance.name).look_at(position+100*OffsetProjectileAngle(direction, offset))
 
 func CalculateDamageWithMultiplier(damage):
 	var base_damage = (damage*(0.5 + (float(stats.attack)/float(50))))
+	var multipliers = ClientData.GetMultiplier(character.gear["weapon"].item)
 	
+	if multipliers.has("damage"):
+		base_damage = floor(base_damage*multipliers.damage)
 	if character.status_effects.has("damaging"):
 		base_damage = floor(base_damage*1.25)
-		
+	
 	return base_damage
 
 func ShowIndicator(type, amount):
@@ -304,13 +319,3 @@ func ShowIndicator(type, amount):
 	else:
 		indicator.get_node("Label").text = "+"+str(amount)
 	$IndicatorPlaceholder.add_child(indicator)
-
-	var timer = Timer.new()
-	timer.wait_time = 1
-	timer.one_shot = true
-	add_child(timer)
-	timer.start()
-	yield(timer, "timeout")
-	
-	if has_node(id): 
-		get_node(id).queue_free()

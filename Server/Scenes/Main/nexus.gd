@@ -488,14 +488,31 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if "island" in portal_name:
 		instance_id = portal_name + " " + instance_id
+		var island_instance
 		
-		var island_instance = load("res://Scenes/SupportScenes/Island/Island.tscn").instance()
-		if portal_name == "tutorial_island":
-			island_instance = load("res://Scenes/SupportScenes/Island/TutorialIsland.tscn").instance()
-		island_instance.name = instance_id
-		island_instance.map_size = map_size
+		if GameplayLoop.island_preloads.has(map_size):
+			var islands = GameplayLoop.island_preloads[map_size]
+			var boilerplate_island_instance = islands[randi() % len(islands)]
+			island_instance = boilerplate_island_instance.duplicate()
+			island_instance.server_ref = boilerplate_island_instance.server_ref
+			island_instance.map_size = boilerplate_island_instance.map_size
+			island_instance.spawn_points = boilerplate_island_instance.spawn_points
+			island_instance.tile_points = boilerplate_island_instance.tile_points
+			island_instance.map_as_array = boilerplate_island_instance.map_as_array
+			island_instance.map_objects = boilerplate_island_instance.map_objects
+			island_instance.enemy_spawn_points = boilerplate_island_instance.enemy_spawn_points
+		else:
+			island_instance = load("res://Scenes/SupportScenes/Island/Island.tscn").instance()
+			if portal_name == "tutorial_island":
+				island_instance = load("res://Scenes/SupportScenes/Island/TutorialIsland.tscn").instance()
+		
+			island_instance.server_ref = get_node("/root/Server")
+			island_instance.map_size = map_size
+			island_instance.GenerateIslandMap()
+			GameplayLoop.island_preloads[map_size] = [island_instance.duplicate()]
+		
 		island_instance.ruler = ruler
-		
+		island_instance.name = instance_id
 		object_list[instance_id] = {
 			"name": portal_name,
 			"type":"DungeonPortals",
@@ -504,7 +521,6 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 			"instance_tree": instance_tree
 		}
 		
-		island_instance.GenerateIslandMap()
 		island_instance.position = Instances.GetFreeInstancePosition()
 		add_child(island_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)

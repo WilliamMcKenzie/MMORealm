@@ -48,6 +48,19 @@ func _physics_process(delta):
 	if not character:
 		return
 	
+	if clock_sync_timer % 10 == 0:
+		for slot in character.gear.keys():
+			if character.gear[slot] != null:
+				var multipliers = ServerData.GetMultiplier(character.gear[slot].item, character.class)
+				gear[slot] = ServerData.GetItem(character.gear[slot].item)
+				for multiplier in multipliers.keys():
+					var value = multipliers[multiplier]
+					if multiplier == "stats":
+						for stat in gear[slot].stats.keys():
+							gear[slot].stats[stat] = floor(gear[slot].stats[stat]*value)
+					elif gear[slot].has(multiplier):
+						gear[slot][multiplier] = floor(gear[slot][multiplier]*value)
+	
 	if clock_sync_timer_2 >= 60:
 		clock_sync_timer_2 = 0
 		#Tiles covered
@@ -135,10 +148,10 @@ func _physics_process(delta):
 	
 	character.ability_cooldown -= delta
 	running_time += delta
-	heal_rate = 10.0/character.stats.vitality
+	heal_rate = 5.0/character.stats.vitality
 	
 	if status_effects.has("healing"):
-		heal_rate = 10.0/(character.stats.vitality + 200)
+		heal_rate = 5.0/(character.stats.vitality + 200)
 	
 	#Tick
 	for i in range(floor((running_time-last_tick)/heal_rate)):
@@ -564,7 +577,15 @@ func SetCharacter(characters):
 	
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
+			var multipliers = ServerData.GetMultiplier(character.gear[slot].item, character.class)
 			gear[slot] = ServerData.GetItem(character.gear[slot].item)
+			for multiplier in multipliers.keys():
+				var value = multipliers[multiplier]
+				if multiplier == "stats":
+					for stat in gear[slot].stats.keys():
+						gear[slot].stats[stat] = floor(gear[slot].stats[stat]*value)
+				elif gear[slot].has(multiplier):
+					gear[slot][multiplier] = floor(gear[slot][multiplier]*value)
 	
 	get_node("/root/Server").SendCharacterData(name, character)
 

@@ -153,8 +153,8 @@ func SetCharacterData(character):
 	if not last_character or last_character.class == character.class:
 		pass
 	else:
-		ClientData.current_class = character.class
 		animation_tracker.append({ "name" : "DiscoverClass", "data" : character.class})
+	ClientData.current_class = character.class
 	
 	#Exp
 	$LeftContainer/BarContainer/ExpContainer/ExpBar.ChangeExp(100*pow(1.1962,character.level), character.exp)

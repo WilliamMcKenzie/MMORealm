@@ -1,11 +1,11 @@
 extends Node
 
-var url = "wss://gameserver.lagso.com"
+#var url = "wss://gameserver.lagso.com"
 #var url = "ws://159.203.0.78:20200"
-#var url = "ws://localhost:20200"
+var url = "ws://localhost:20200"
 
-var ip_address = "159.203.0.78"
-#var ip_address = "localhost"
+#var ip_address = "159.203.0.78"
+var ip_address = "localhost"
 var port = 20200
 
 var network = NetworkedMultiplayerENet.new()
@@ -318,7 +318,6 @@ remote func ConfirmNexus():
 	current_instance_tree = ["nexus"]
 
 func EnterInstance(instance_id):
-	LoadingScreen.Transition(instance_id)
 	yield(get_tree().create_timer(0.3), "timeout")
 	if instance_id == GetCurrentInstance():
 		return
@@ -347,6 +346,7 @@ remote func ReturnHouseData(instance_data):
 	current_instance_tree = ["nexus", instance_data["Id"]]
 
 remote func ReturnDungeonData(instance_data):
+	LoadingScreen.Transition(IdentifierToString(instance_data["Name"]))
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	
@@ -360,6 +360,7 @@ remote func ReturnDungeonData(instance_data):
 	current_instance_tree.append(instance_data["Id"])
 	
 remote func ReturnIslandData(instance_data):
+	LoadingScreen.Transition(IdentifierToString(instance_data["Name"]) + "'s Island")
 	var island_instance = island_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 
@@ -414,3 +415,12 @@ func CreatePool(amount):
 	get_node("../SceneHandler/"+GetCurrentInstance()).move_child(new_pool, 0)
 	for i in range(amount):
 		new_pool.add_child(projectile.instance())
+
+func IdentifierToString(identifier):
+	var words = identifier.split("_")
+	var proper_string = ""
+	for word in words:
+		proper_string += word.capitalize() + " "
+	proper_string = proper_string.strip_edges()
+	
+	return proper_string

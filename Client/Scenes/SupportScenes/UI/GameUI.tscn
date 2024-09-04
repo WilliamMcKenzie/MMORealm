@@ -922,6 +922,13 @@ bg_color = Color( 0, 0, 0, 0.682353 )
 [node name="GameUI" type="CanvasLayer"]
 script = ExtResource( 3 )
 
+[node name="QuestMarker" parent="." instance=ExtResource( 30 )]
+visible = false
+margin_left = 669.0
+margin_top = 9.0
+margin_right = 749.0
+margin_bottom = 89.0
+
 [node name="TutorialAnimations" type="AnimationPlayer" parent="."]
 anims/Ability = SubResource( 34 )
 anims/Backpack = SubResource( 32 )
@@ -1326,13 +1333,6 @@ visible = false
 margin_left = 58.0
 margin_right = 90.0
 margin_bottom = 54.0
-
-[node name="QuestMarker" parent="." instance=ExtResource( 30 )]
-visible = false
-margin_left = 669.0
-margin_top = 9.0
-margin_right = 749.0
-margin_bottom = 89.0
 
 [node name="Inventory" parent="." instance=ExtResource( 1 )]
 

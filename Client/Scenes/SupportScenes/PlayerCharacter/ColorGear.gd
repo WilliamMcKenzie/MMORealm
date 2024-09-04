@@ -23,28 +23,28 @@ var unique_color_params = {
 var default_color_params = {
 	
 	"helmetDarkOrigin" : RgbToColor(0, 0, 255.0),
-	"helmetDarkNew" : RgbToColor(124.0, 69.0, 46.0),
+	"helmetDarkNew" : RgbToColor(116.0, 109.0, 109.0),
 	
 	"helmetLightOrigin" : RgbToColor(0, 255.0, 255.0),
-	"helmetLightNew" : RgbToColor(170.0, 100.0, 47.0),
+	"helmetLightNew" : RgbToColor(142.0, 143.0, 140.0),
 	
 	"helmetMediumOrigin" : RgbToColor(255.0, 0, 255.0),
-	"helmetMediumNew" : RgbToColor(144.0, 84.0, 58.0),
+	"helmetMediumNew" : RgbToColor(127.0, 127.0, 127.0),
 	
 	"bodyLightOrigin" : RgbToColor(255.0, 255.0, 255.0),
-	"bodyLightNew" : RgbToColor(216.0, 202.0, 202.0),
+	"bodyLightNew" : RgbToColor(198.0, 198.0, 198.0),
 	
 	"bodyMediumOrigin" : RgbToColor(255.0, 255.0, 0),
-	"bodyMediumNew" : RgbToColor(193.0, 168.0, 168.0),
+	"bodyMediumNew" : RgbToColor(183.0, 180.0, 178.0),
 	
 	"bandOrigin" : RgbToColor(0, 0, 0),
 	"bandNew" : RgbToColor(144.0, 81.0, 38.0),
 	
 	"weaponOrigin" : RgbToColor(255.0, 0, 0),
-	"weaponNew" : RgbToColor(132.0, 132.0, 132.0),
+	"weaponNew" : RgbToColor(142.0, 143.0, 140.0),
 	
 	"weaponSecondaryOrigin" : RgbToColor(0, 255.0, 0),
-	"weaponSecondaryNew" : RgbToColor(144.0, 81.0, 38.0),
+	"weaponSecondaryNew" : RgbToColor(116.0, 64.0, 30.0),
 }
 
 func GetParams():

@@ -10,7 +10,9 @@ var active_projectiles = []
 
 var expression = Expression.new()
 
+var clock_sync_timer_2 = 0
 func _physics_process(delta):
+	clock_sync_timer_2 += 1
 	if GameUI.is_dead:
 		return
 	
@@ -118,12 +120,22 @@ func _physics_process(delta):
 				get_node("YSort/Pool")[i].projectile_data["position"] = move
 			else:
 				get_node("YSort/Pool")[i].visible = false
-			
+	
+	if clock_sync_timer_2 >= 20:
+		var enemies = get_node("YSort/Enemies")
+		clock_sync_timer_2 = 0
+		for child in enemies.get_children():
+			pass
+			#if child.visible == true and not child.is_active and world_state_buffer[2]["E"].has(child.name):
+				#child.Activate(child.enemy_type)
+			#elif child.visible == true and not child.is_active:
+				#child.DeActivate()
+
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:
 		last_world_state = world_state["T"]
 		world_state_buffer.append(world_state)
-		
+
 #Enemy nodes
 var living_enemies = []
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):

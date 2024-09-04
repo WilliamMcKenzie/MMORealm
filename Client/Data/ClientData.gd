@@ -83,8 +83,8 @@ var special_loot_pools = {
 		"override" : "ruler_1",
 		"soulbound_loot" : [
 			{
-				"item" : 105,
-				"chance" : 0.003,
+				"item" : 173,
+				"chance" : 0.004,
 				"threshold" : 0.05,
 			},
 		],
@@ -92,20 +92,14 @@ var special_loot_pools = {
 	},
 	"vajira" : {
 		"override" : "ruler_1",
-		"soulbound_loot" : [
-			{
-				"item" : 105,
-				"chance" : 0.003,
-				"threshold" : 0.05,
-			},
-		],
+		"soulbound_loot" : [],
 		"loot" : []
 	},
 	"raa'sloth" : {
 		"override" : "ruler_1",
 		"soulbound_loot" : [
 			{
-				"item" : 105,
+				"item" : 438,
 				"chance" : 0.003,
 				"threshold" : 0.05,
 			},
@@ -116,8 +110,8 @@ var special_loot_pools = {
 		"override" : "encounter_1",
 		"soulbound_loot" : [
 			{
-				"item" : 105,
-				"chance" : 0.003,
+				"item" : 171,
+				"chance" : 0.002,
 				"threshold" : 0.05,
 			},
 		],
@@ -127,8 +121,8 @@ var special_loot_pools = {
 		"override" : "encounter_2",
 		"soulbound_loot" : [
 			{
-				"item" : 105,
-				"chance" : 0.003,
+				"item" : 171,
+				"chance" : 0.004,
 				"threshold" : 0.05,
 			},
 		],
@@ -138,30 +132,24 @@ var special_loot_pools = {
 		"override" : "encounter_2",
 		"soulbound_loot" : [
 			{
-				"item" : 105,
-				"chance" : 0.003,
+				"item" : 405,
+				"chance" : 0.004,
 				"threshold" : 0.05,
 			},
 		],
 		"loot" : []
 	},
 	"salazar" : {
-		"override" : "encounter_2",
-		"soulbound_loot" : [
-			{
-				"item" : 105,
-				"chance" : 0.003,
-				"threshold" : 0.05,
-			},
-		],
+		"override" : "none",
+		"soulbound_loot" : [],
 		"loot" : []
 	},
 	"salazar_awakened" : {
 		"override" : "encounter_2",
 		"soulbound_loot" : [
 			{
-				"item" : 105,
-				"chance" : 0.003,
+				"item" : 172,
+				"chance" : 0.004,
 				"threshold" : 0.05,
 			},
 		],
@@ -4512,7 +4500,7 @@ var realm_enemies = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "RexiumArrow",
+						"projectile" : "ShadowArrow",
 						"formula" : "0",
 						"damage" : 20,
 						"piercing" : true,
@@ -4524,7 +4512,7 @@ var realm_enemies = {
 						"size" : 6
 					},
 					{
-						"projectile" : "RexiumArrow",
+						"projectile" : "ShadowArrow",
 						"formula" : "0",
 						"damage" : 20,
 						"piercing" : true,
@@ -5659,8 +5647,9 @@ var frozen_fortress_enemies = {
 			},
 			{
 				"duration" : 1,
-				"health" : [99.9999,100],
+				"health" : [90,100],
 				"on_signal" : ["monolith_active"],
+				"on_spawn" : true,
 				"attack_pattern" : [
 					{
 						"effect" : "invincible",
@@ -6439,6 +6428,16 @@ var dungeons = {
 			10 : "ice_demon",
 		}
 	},
+	"goblin_cellar" : {
+	"type" : "procedural",
+	"basic_rooms" : ["Room1", "Room2"],
+	"rooms_until_boss" : 5,
+	"room_size" : 21,
+	"tile_translation" : {
+		4 : "crab",
+	}
+},
+	
 	"test_dungeon" : {
 		"type" : "procedural",
 		"basic_rooms" : ["Room1", "Room2"],
@@ -6546,8 +6545,8 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,0)],
 		"colors" : {
-			"weaponSecondaryNew" : RgbToColor(161.0, 87.0, 8.0),
-			"weaponNew" : RgbToColor(231.0, 211.0, 61.0)
+			"weaponSecondaryNew" : RgbToColor(231.0, 211.0, 61.0),
+			"weaponNew" : RgbToColor(195.0, 195.0, 195.0),
 		},
 		"textures" : {}
 	},
@@ -6576,7 +6575,7 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,0)],
 		"colors" : {
-			"weaponSecondaryNew" : RgbToColor(74.0, 33.0, 4.0),
+			"weaponSecondaryNew" : RgbToColor(231.0, 211.0, 61.0),
 			"weaponNew" : RgbToColor(25.0, 182.0, 182.0)
 		},
 		"textures" : {}
@@ -6612,54 +6611,67 @@ var items = {
 		"textures" : {}
 	},
 	105 : {
-		"name": "Warlords Vigil",
-		"description" : "An axe unbeknownst to mankind",
+		"name": "Warlord's Battleaxe",
+		"description" : "A heavy weapon forged for the highest ranking Trolls",
 		"type" : "Sword",
 		"slot" : "weapon",
 		"tier" : "UT",
 		
-		"rof" : 150,
+		"rof" : 75,
 		"stats" : {},
 		
 		"projectiles" : [
 			{
-				"damage" : [80,110],
-				"projectile" : "Dart",
+				"damage" : [40,50],
+				"projectile" : "BattleaxeSlash",
 				"formula" : "0",
 				"piercing" : false,
-				"speed" : 50,
+				"speed" : 70,
 				"tile_range" : 3,
 				"size" : 4,
-				"offset" : DegreesToVector(0),
+				"offset" : DegreesToVector(15),
 			},
 			{
-				"damage" : [80,110],
-				"projectile" : "Dart",
+				"damage" : [40,50],
+				"projectile" : "BattleaxeSlash",
 				"formula" : "0",
 				"piercing" : false,
-				"speed" : 50,
+				"speed" : 70,
 				"tile_range" : 3,
 				"size" : 4,
-				"offset" : DegreesToVector(25),
+				"offset" : DegreesToVector(5),
 			},
 			{
-				"damage" : [80,110],
-				"projectile" : "Dart",
+				"damage" : [40,50],
+				"projectile" : "BattleaxeSlash",
 				"formula" : "0",
 				"piercing" : false,
-				"speed" : 50,
+				"speed" : 70,
 				"tile_range" : 3,
 				"size" : 4,
-				"offset" : DegreesToVector(-25),
-			}
+				"offset" : DegreesToVector(-5),
+			},
+			{
+				"damage" : [40,50],
+				"projectile" : "BattleaxeSlash",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 70,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(-15),
+			},
+			
 		],
 		
-		"path" : ["items/items_8x8.png", 26, 26, Vector2(7,0)],
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,0)],
 		"colors" : {
 			"weaponSecondaryNew" : RgbToColor(231.0, 211.0, 61.0),
 			"weaponNew" : RgbToColor(134.0, 2.0, 141.0)
 		},
-		"textures" : {}
+		"textures" : {
+			"weaponTexture" : "warlord's_battleaxe"
+		}
 	},
 	133 : {
 		"name": "Wand of Fire",
@@ -6687,14 +6699,15 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(9,3)],
 		"colors" : {
-			"weaponSecondaryNew" : RgbToColor(105.0, 51.0, 10.0)
+			"weaponSecondaryNew" : RgbToColor(105.0, 51.0, 10.0),
+			"weaponNew" : RgbToColor(160.0, 18.0, 0.0)
 		},
 		"textures" : {
 		}
 	},
 	134 : {
 		"name": "Staff of Fire",
-		"description" : "A  with a fire spell",
+		"description" : "A golden staff with a fire spell",
 		"type" : "Staff",
 		"slot" : "weapon",
 		"tier" : "2",
@@ -6719,7 +6732,8 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(10,3)],
 		"colors" : {
-			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0)
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0),
+			"weaponNew" : RgbToColor(160.0, 18.0, 0.0)
 		},
 		"textures" : {
 		}
@@ -6751,9 +6765,745 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(11,3)],
 		"colors" : {
-			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0)
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0),
+			"weaponNew" : RgbToColor(160.0, 18.0, 0.0)
 		},
 		"textures" : {
+		}
+	},
+	136 : {
+		"name": "Wand of Nature",
+		"description" : "A wooden wand with a nature spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "0",
+		
+		"rof" : 100,
+		"stats" : {
+		
+		},
+		"projectiles" : [
+			{
+				"damage" : [10,15],
+				"projectile" : "Nature1",
+				"formula" : "sin(x)",
+				"piercing" : true,
+				"speed" : 50,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(9,4)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(105.0, 51.0, 10.0),
+			"weaponNew" : RgbToColor(62.0, 187.0, 96.0)
+		},
+		"textures" : {
+		}
+	},
+	137 : {
+		"name": "Staff of Nature",
+		"description" : "A golden staff with a nature spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "2",
+		
+		"rof" : 60,
+		"stats" : {
+		
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [30,40],
+				"projectile" : "Nature2",
+				"formula" : "sin(x)",
+				"piercing" : true,
+				"speed" : 70,
+				"tile_range" : 6,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [20,30],
+				"projectile" : "Nature1",
+				"formula" : "sin(x)",
+				"piercing" : true,
+				"speed" : 50,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(10,4)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0),
+			"weaponNew" : RgbToColor(62.0, 187.0, 96.0)
+		},
+		"textures" : {
+		}
+	},
+	138 : {
+		"name": "Sceptre of Nature",
+		"description" : "A powerful sceptre with a nature spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "4",
+		
+		"rof" : 30,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [50,60],
+				"projectile" : "Nature3",
+				"formula" : "sin(x)",
+				"piercing" : true,
+				"speed" : 90,
+				"tile_range" : 7,
+				"size" : 5,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [40,50],
+				"projectile" : "Nature2",
+				"formula" : "sin(x)",
+				"piercing" : true,
+				"speed" : 70,
+				"tile_range" : 6,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [30,40],
+				"projectile" : "Nature1",
+				"formula" : "sin(x)",
+				"piercing" : true,
+				"speed" : 50,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(11,4)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0),
+			"weaponNew" : RgbToColor(62.0, 187.0, 96.0)
+		},
+		"textures" : {
+		}
+	},
+	139 : {
+		"name": "Wand of Water",
+		"description" : "A wooden wand with a water spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "0",
+		
+		"rof" : 100,
+		"stats" : {
+		
+		},
+		"projectiles" : [
+			{
+				"damage" : [5,10],
+				"projectile" : "Water1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(10),
+			},
+			{
+				"damage" : [5,10],
+				"projectile" : "Water1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(-10),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(9,5)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(105.0, 51.0, 10.0),
+			"weaponNew" : RgbToColor(25.0, 182.0, 182.0)
+		},
+		"textures" : {
+		}
+	},
+	140 : {
+		"name": "Staff of Water",
+		"description" : "A golden staff with a water spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "2",
+		
+		"rof" : 100,
+		"stats" : {
+		
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [5,10],
+				"projectile" : "Water1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(20),
+			},
+			{
+				"damage" : [10,20],
+				"projectile" : "Water2",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 110,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [5,10],
+				"projectile" : "Water1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(-20),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(10,5)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0),
+			"weaponNew" : RgbToColor(25.0, 182.0, 182.0)
+		},
+		"textures" : {
+		}
+	},
+	141 : {
+		"name": "Sceptre of Water",
+		"description" : "A powerful sceptre with a water spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "4",
+		
+		"rof" : 100,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [5,10],
+				"projectile" : "Water1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(-40),
+			},
+			{
+				"damage" : [10,20],
+				"projectile" : "Water2",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 110,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(-20),
+			},
+			{
+				"damage" : [20,40],
+				"projectile" : "Water3",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 120,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [10,20],
+				"projectile" : "Water2",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 110,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(20),
+			},
+			{
+				"damage" : [5,10],
+				"projectile" : "Water1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 100,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector(40),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(11,5)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0),
+			"weaponNew" : RgbToColor(25.0, 182.0, 182.0)
+		},
+		"textures" : {
+		}
+	},
+	142 : {
+		"name": "Flamespitter",
+		"description" : "An ancient staff, a burning reminder of Salazar's fury",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "UT",
+		
+		"rof" : 75,
+		"stats" : {
+		
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [50,60],
+				"projectile" : "Fire3",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset_variation" : 10,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [20,30],
+				"projectile" : "Fire2",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset_variation" : 30,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [20,30],
+				"projectile" : "Fire2",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 50,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset_variation" : 30,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [10,20],
+				"projectile" : "Fire1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 40,
+				"tile_range" : 4,
+				"size" : 3,
+				"offset_variation" : 20,
+				"offset" : DegreesToVector(-25),
+			},
+			{
+				"damage" : [10,20],
+				"projectile" : "Fire1",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 40,
+				"tile_range" : 4,
+				"size" : 3,
+				"offset_variation" : 20,
+				"offset" : DegreesToVector(25),
+			},
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(12,3)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(160.0, 18.0, 0.0)
+		},
+		"textures" : {
+			"weaponTexture" : "flamespitter"
+		}
+	},
+	143 : {
+		"name": "Hj'ek Naga",
+		"description" : "A wand used to ward of the giant Naga of the cloud islands.",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "UT",
+		
+		"rof" : 120,
+		"stats" : {
+		
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [50,60],
+				"projectile" : "GreenBlast",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector((360.0/8.0)*1),
+			},
+			{
+				"damage" : [50,60],
+				"projectile" : "GreenBlast",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector((360.0/8.0)*2),
+			},
+			{
+				"damage" : [50,60],
+				"projectile" : "GreenBlast",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector((360.0/8.0)*3),
+			},
+			{
+				"damage" : [50,60],
+				"projectile" : "GreenBlast",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector((360.0/8.0)*4),
+			},
+			{
+				"damage" : [50,60],
+				"projectile" : "GreenBlast",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector((360.0/8.0)*5),
+			},
+			{
+				"damage" : [50,60],
+				"projectile" : "GreenBlast",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector((360.0/8.0)*6),
+			},
+			{
+				"damage" : [50,60],
+				"projectile" : "GreenBlast",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector((360.0/8.0)*7),
+			},
+			{
+				"damage" : [50,60],
+				"projectile" : "GreenBlast",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : 60,
+				"tile_range" : 6,
+				"size" : 3,
+				"offset" : DegreesToVector((360.0/8.0)*8),
+			},
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(12,4)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(88.0, 85.0, 18.0)
+		},
+		"textures" : {
+			"weaponTexture" : "h'jek_naga"
+		}
+	},
+	166 : {
+		"name": "Wooden Bow",
+		"description" : "A flimsy excuse for a bow.",
+		"type" : "Bow",
+		"slot" : "weapon",
+		"tier" : "0",
+		
+		"rof" : 100,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [15,20],
+				"projectile" : "SteelArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,2)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(105.0, 51.0, 10.0),
+			"weaponNew" : RgbToColor(174.0, 172.0, 156.0)
+		},
+		"textures" : {
+		}
+	},
+	167: {
+		"name": "Yew Bow",
+		"description" : "A reminder of simple times.",
+		"type" : "Bow",
+		"slot" : "weapon",
+		"tier" : "1",
+		
+		"rof" : 100,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [15,20],
+				"projectile" : "GoldenArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(-15),
+			},
+			{
+				"damage" : [15,20],
+				"projectile" : "GoldenArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(15),
+			},
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,2)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(161.0, 87.0, 8.0),
+			"weaponNew" : RgbToColor(207.0, 189.0, 56.0)
+		},
+		"textures" : {
+		}
+	},
+	168: {
+		"name": "Magical Bow",
+		"description" : "A bow enhanced with a powerful spell.",
+		"type" : "Bow",
+		"slot" : "weapon",
+		"tier" : "2",
+		
+		"rof" : 100,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [25,30],
+				"projectile" : "MagicArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(15),
+			},
+			{
+				"damage" : [25,30],
+				"projectile" : "MagicArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(-15),
+			},
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,2)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(161.0, 87.0, 8.0),
+			"weaponNew" : RgbToColor(28.0, 201.0, 201.0)
+		},
+		"textures" : {
+		}
+	},
+	169: {
+		"name": "Bloodstone Bow",
+		"description" : "A strange bow crafted on a blood moon.",
+		"type" : "Bow",
+		"slot" : "weapon",
+		"tier" : "3",
+		
+		"rof" : 100,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [30,35],
+				"projectile" : "BloodArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [30,35],
+				"projectile" : "BloodArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(-15),
+			},
+			{
+				"damage" : [30,35],
+				"projectile" : "BloodArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(15),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,2)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(150.0, 93.0, 0.0),
+			"weaponNew" : RgbToColor(160.0, 0.0, 0.0)
+		},
+		"textures" : {
+		}
+	},
+	170 : {
+		"name": "Shadowbringer Bow",
+		"description" : "A powerful weapon carved from a shadow tree.",
+		"type" : "Bow",
+		"slot" : "weapon",
+		"tier" : "4",
+		
+		"rof" : 100,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [35,40],
+				"projectile" : "ShadowArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [35,40],
+				"projectile" : "ShadowArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(-15),
+			},
+			{
+				"damage" : [35,40],
+				"projectile" : "ShadowArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(15),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,2)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(105.0, 51.0, 10.0),
+			"weaponNew" : RgbToColor(153.0, 35.0, 193.0)
+		},
+		"textures" : {
+		}
+	},
+	171 : {
+		"name": "Archaic Crossbow",
+		"description" : "A deadly crossbow from the old orc empire.",
+		"type" : "Bow",
+		"slot" : "weapon",
+		"tier" : "UT",
+		
+		"rof" : 40,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [200,300],
+				"projectile" : "ArchaicArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 55,
+				"tile_range" : 7,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,2)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(132.0, 124.0, 94.0),
+		},
+		"textures" : {
+			"weaponTexture" : "archaic_crossbow"
 		}
 	},
 	500 : {
@@ -6811,7 +7561,7 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,4)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(204.0, 203.0, 197.0),
+			"bodyMediumNew" : RgbToColor(195.0, 195.0, 195.0),
 			"bodyLightNew" : RgbToColor(209.0, 208.0, 205.0),
 			"bandNew" : RgbToColor(0.0, 0.0, 0.0),
 		},
@@ -6832,8 +7582,8 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,4)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(23.0, 163.0, 163.0),
-			"bodyLightNew" : RgbToColor(25.0, 182.0, 182.0),
+			"bodyMediumNew" : RgbToColor(20.0, 140.0, 140.0),
+			"bodyLightNew" : RgbToColor(23.0, 163.0, 163.0),
 			"bandNew" : RgbToColor(0.0, 0.0, 0.0),
 		},
 		"textures" : {
@@ -6853,12 +7603,35 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,4)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(108.0, 2.0, 113.0),
-			"bodyLightNew" : RgbToColor(134.0, 2.0, 141.0),
+			"bodyMediumNew" : RgbToColor(90.0, 16.0, 82.0),
+			"bodyLightNew" : RgbToColor(108.0, 2.0, 113.0),
 			"bandNew" : RgbToColor(0.0, 0.0, 0.0),
 		},
 		"textures" : {
 			
+		}
+	},
+	505 : {
+		"name": "Bastion Platebody",
+		"description" : "One of the three holy armors forged with the most pure of metal",
+		"type" : "Armor",
+		"slot" : "armor",
+		"tier" : "UT",
+		
+		"stats" : {
+			"defense" : 15,
+			"vitality" : 20,
+			"health" : 100
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,4)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(90.0, 16.0, 82.0),
+			"bodyLightNew" : RgbToColor(108.0, 2.0, 113.0),
+			"bandNew" : RgbToColor(0.0, 0.0, 0.0),
+		},
+		"textures" : {
+			"bodyTexture" : "bastion_platebody",
 		}
 	},
 	533 : {
@@ -6941,9 +7714,9 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,5)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(160.0, 18.0, 0.0),
-			"bodyLightNew" : RgbToColor(25.0, 182.0, 182.0),
-			"bandNew" : RgbToColor(188.0, 21.0, 0.0),
+			"bodyMediumNew" : RgbToColor(114.0, 12.0, 0.0),
+			"bodyLightNew" : RgbToColor(160.0, 18.0, 0.0),
+			"bandNew" : RgbToColor(213.0, 213.0, 148.0),
 		},
 		"textures" : {
 			
@@ -7073,9 +7846,9 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,6)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(231.0, 211.0, 61.0),
-			"bodyLightNew" : RgbToColor(2.0, 131.0, 116.0),
-			"bandNew" : RgbToColor(2.0, 131.0, 116.0),
+			"bodyMediumNew" : RgbToColor(2.0, 131.0, 116.0),
+			"bodyLightNew" : RgbToColor(0.0, 162.0, 135.0),
+			"bandNew" : RgbToColor(231.0, 211.0, 61.0),
 		},
 		"textures" : {
 			
@@ -7101,7 +7874,7 @@ var items = {
 		"colors" : {
 			"helmetMediumNew" : RgbToColor(157.0, 153.0, 135.0),
 			"helmetLightNew" : RgbToColor(174.0, 172.0, 156.0),
-			"helmetDarkNew" : RgbToColor(157.0, 153.0, 135.0),
+			"helmetDarkNew" : RgbToColor(143.0, 138.0, 118.0),
 		},
 		"textures" : {
 			
@@ -7150,10 +7923,11 @@ var items = {
 		"tier" : "2",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,8)],
+		
 		"colors" : {
 			"helmetLightNew" : RgbToColor(209.0, 208.0, 205.0),
-			"helmetMediumNew" : RgbToColor(204.0, 203.0, 197.0),
-			"helmetDarkNew" : RgbToColor(195.0, 195.0, 195.0),
+			"helmetMediumNew" : RgbToColor(207.0, 189.0, 56.0),
+			"helmetDarkNew" : RgbToColor(190.0, 168.0, 48.0),
 		},
 		"textures" : {
 			
@@ -7177,9 +7951,9 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,8)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(25.0, 182.0, 182.0),
-			"helmetMediumNew" : RgbToColor(23.0, 163.0, 163.0),
-			"helmetDarkNew" : RgbToColor(20.0, 140.0, 140.0),
+			"helmetLightNew" : RgbToColor(231.0, 211.0, 61.0),
+			"helmetMediumNew" : RgbToColor(25.0, 182.0, 182.0),
+			"helmetDarkNew" : RgbToColor(23.0, 163.0, 163.0),
 		},
 		"textures" : {
 			
@@ -7203,12 +7977,40 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,8)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(134.0, 2.0, 141.0),
-			"helmetMediumNew" : RgbToColor(108.0, 2.0, 113.0),
-			"helmetDarkNew" : RgbToColor(90.0, 16.0, 82.0),
+			"helmetLightNew" : RgbToColor(231.0, 211.0, 61.0),
+			"helmetMediumNew" : RgbToColor(134.0, 2.0, 141.0),
+			"helmetDarkNew" : RgbToColor(108.0, 2.0, 113.0),
 		},
 		"textures" : {
 			
+		}
+	},
+	405 : {
+		"name": "Everwinter Diadem",
+		"description" : "A grand helm, cold to the touch.",
+		"type" : "Helmet",
+		"slot" : "helmet",
+		
+		"cooldown" : 6,
+		"buffs" : {
+			"invincible" : { "duration" : 2, "range" : 0},
+			"healing" : { "duration" : 3, "range" : 0},
+			"armored" : { "duration" : 4, "range" : 3},
+		},
+		"stats" : {
+			"health" : 150,
+			"vitality" : 30,
+		},
+		"tier" : "UT",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,8)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(160.0, 178.0, 186.0),
+			"helmetMediumNew" : RgbToColor(80.0, 81.0, 75.0),
+			"helmetDarkNew" : RgbToColor(60.0, 60.0, 54.0),
+		},
+		"textures" : {
+			"helmetTexture" : "everwinter_diadem",
 		}
 	},
 	433 : {
@@ -7279,10 +8081,11 @@ var items = {
 		"tier" : "2",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,9)],
+		
 		"colors" : {
-			"helmetLightNew" : RgbToColor(243.0, 184.0, 73.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
-			"helmetMediumNew" : RgbToColor(225.0, 164.0, 51.0),
-			"helmetDarkNew" : RgbToColor(210.0, 146.0, 24.0),
+			"helmetLightNew" : RgbToColor(184.0, 135, 8.0),
+			"helmetMediumNew" : RgbToColor(150.0, 109.0, 0.0),
+			"helmetDarkNew" : RgbToColor(134.0, 97.0, 0.0),
 		},
 		"textures" : {
 			
@@ -7306,9 +8109,9 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,9)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(247.0, 83.0, 24.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
-			"helmetMediumNew" : RgbToColor(202.0, 61.0, 10.0),
-			"helmetDarkNew" : RgbToColor(175.0, 51.0, 7.0),
+			"helmetLightNew" : RgbToColor(188.0, 21.0, 0.0),
+			"helmetMediumNew" : RgbToColor(160.0, 18.0, 0.0),
+			"helmetDarkNew" : RgbToColor(114.0, 12.0, 0.0),
 		},
 		"textures" : {
 			
@@ -7332,12 +8135,39 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,9)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(70.0, 160.0, 100.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
-			"helmetMediumNew" : RgbToColor(54.0, 148.0, 85.0),
-			"helmetDarkNew" : RgbToColor(46.0, 136.0, 71.0),
+			"helmetLightNew" : RgbToColor(190.0, 0.0, 177.0),
+			"helmetMediumNew" : RgbToColor(157.0, 0.0, 162.0),
+			"helmetDarkNew" : RgbToColor(108.0, 0.0, 142.0),
 		},
 		"textures" : {
 			
+		}
+	},
+	438 : {
+		"name": "Beastly Hat",
+		"description" : "A hat crafted by the imp tribes of a time forgotten",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 2,
+		"buffs" : {
+			"healing" : { "duration" : 1, "range" : 2},
+			"damaging" : { "duration" : 1, "range" : 2},
+		},
+		"stats" : {
+			"attack" : 10,
+			"dexterity" : 10,
+		},
+		"tier" : "UT",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(96.0, 63.0, 131.0),
+			"helmetMediumNew" : RgbToColor(132.0, 47.0, 33.0),
+			"helmetDarkNew" : RgbToColor(98.0, 29.0, 17.0),
+		},
+		"textures" : {
+			"helmetTexture" : "beastly_hat",
 		}
 	},
 	466 : {
@@ -7357,9 +8187,9 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,10)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(125.0, 90.0, 35.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
-			"helmetMediumNew" : RgbToColor(120.0, 70.0, 25.0),
-			"helmetDarkNew" : RgbToColor(105.0, 58.0, 15.0),
+			"helmetLightNew" : RgbToColor(123.0, 72.0, 17.0),    #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(105, 51.0, 10.0),
+			"helmetDarkNew" : RgbToColor(83.0, 39.0, 6.0),
 		},
 		"textures" : {
 			
@@ -7380,12 +8210,11 @@ var items = {
 			"defense" : 1
 		},
 		"tier" : "1",
-		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,10)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(210.0, 130, 50.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
-			"helmetMediumNew" : RgbToColor(200.0, 115.0, 45.0),
-			"helmetDarkNew" : RgbToColor(184.0, 108.0, 37.0),
+			"helmetLightNew" : RgbToColor(184.0, 99.0, 8.0),
+			"helmetMediumNew" : RgbToColor(161, 87.0, 8.0),
+			"helmetDarkNew" : RgbToColor(143.0, 75.0, 2.0),
 		},
 		"textures" : {
 			
@@ -7409,9 +8238,9 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,10)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(230.0, 165, 50.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
-			"helmetMediumNew" : RgbToColor(215.0, 155.0, 45.0),
-			"helmetDarkNew" : RgbToColor(207.0, 149.0, 41.0),
+			"helmetLightNew" : RgbToColor(184.0, 135, 8.0),
+			"helmetMediumNew" : RgbToColor(150.0, 109.0, 0.0),
+			"helmetDarkNew" : RgbToColor(134.0, 97.0, 0.0),
 		},
 		"textures" : {
 			
@@ -7432,12 +8261,11 @@ var items = {
 			"defense" : 3
 		},
 		"tier" : "3",
-		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,10)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(200.0, 65, 35.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
-			"helmetMediumNew" : RgbToColor(190.0, 55.0, 27.0),
-			"helmetDarkNew" : RgbToColor(181.0, 48.0, 22.0),
+			"helmetLightNew" : RgbToColor(188.0, 21.0, 0.0),
+			"helmetMediumNew" : RgbToColor(160.0, 18.0, 0.0),
+			"helmetDarkNew" : RgbToColor(114.0, 12.0, 0.0),
 		},
 		"textures" : {
 			
@@ -7461,12 +8289,44 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,10)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(45.0, 165, 28.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
-			"helmetMediumNew" : RgbToColor(35.0, 155.0, 15.0),
-			"helmetDarkNew" : RgbToColor(27.0, 145.0, 9.0),
+			"helmetLightNew" : RgbToColor(23.0, 191.0, 16.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetMediumNew" : RgbToColor(17.0, 160.0, 12.0),
+			"helmetDarkNew" : RgbToColor(9.0, 138.0, 5.0),
 		},
 		"textures" : {
 			
+		}
+	},
+	499 : {
+		"name": "Holy Crown",
+		"description" : "No tree, it is said, can grow to heaven unless its roots reach down to hell.",
+		"type" : "Helmet",
+		"slot" : "helmet",
+		
+		"cooldown" : 6,
+		"buffs" : {
+			"invincible" : { "duration" : 2, "range" : 0},
+			"healing" : { "duration" : 3, "range" : 0},
+			"armored" : { "duration" : 4, "range" : 3},
+		},
+		"stats" : {
+			"health" : 100,
+			"vitality" : 10,
+			"attack" : 10,
+			"dexterity" : 10,
+			"speed" : 10,
+			"defense" : 10,
+		},
+		"tier" : "UT",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,7)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(231.0, 211.0, 61.0),
+			"helmetMediumNew" : RgbToColor(207.0, 189.0, 56.0),
+			"helmetDarkNew" : RgbToColor(190.0, 168.0, 48.0),
+		},
+		"textures" : {
+			"helmetTexture" : "holy_crown",
 		}
 	},
 }
@@ -7735,6 +8595,11 @@ var projectiles = {
 		"rotation" : 45,
 		"spin" : false,
 	},
+	"BattleaxeSlash" : {
+		"rect" : Rect2(50,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
 	"SteelArrow" : {
 		"rect" : Rect2(0,20,10,10),
 		"rotation" : 45,
@@ -7747,7 +8612,7 @@ var projectiles = {
 		"spin" : false,
 		"scale" : 0.8,
 	},
-	"CobaltArrow" : {
+	"MagicArrow" : {
 		"rect" : Rect2(20,20,10,10),
 		"rotation" : 45,
 		"spin" : false,
@@ -7757,10 +8622,16 @@ var projectiles = {
 		"rect" : Rect2(30,20,10,10),
 		"rotation" : 45,
 		"spin" : false,
+		"scale" : 0.85,
+	},
+	"ShadowArrow" : {
+		"rect" : Rect2(40,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
 		"scale" : 0.9,
 	},
-	"RexiumArrow" : {
-		"rect" : Rect2(40,20,10,10),
+	"ArchaicArrow" : {
+		"rect" : Rect2(50,20,10,10),
 		"rotation" : 45,
 		"spin" : false,
 		"scale" : 1,
@@ -7782,8 +8653,9 @@ var projectiles = {
 	},
 	"Nature2" : {
 		"rect" : Rect2(30,30,10,10),
-		"rotation" : 90,
+		"rotation" : 45,
 		"spin" : true,
+		"scale" : 1.1,
 	},
 	"Water2" : {
 		"rect" : Rect2(40,30,10,10),
@@ -7797,8 +8669,9 @@ var projectiles = {
 	},
 	"Nature3" : {
 		"rect" : Rect2(60,30,10,10),
-		"rotation" : 90,
+		"rotation" : 45,
 		"spin" : true,
+		"scale" : 1.2,
 	},
 	"Water3" : {
 		"rect" : Rect2(70,30,10,10),
@@ -8158,6 +9031,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
+					"helmetDarkNew" : RgbToColor(113.0, 55.0, 16.0),
+					"helmetMediumNew" : RgbToColor(126.0, 67.0, 27.0),
+					"helmetLightNew" : RgbToColor(144.0, 81.0, 38.0),
 				},
 				"textures" : {
 				},
@@ -8189,9 +9065,6 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"helmetDarkNew" : RgbToColor(95.0, 83.0, 83.0),
-					"helmetLightNew" : RgbToColor(135.0, 117.0, 117.0),
-					"helmetMediumNew" : RgbToColor(108.0, 99.0, 99.0),
 				},
 				"textures" : {
 				},
@@ -8227,10 +9100,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"helmetDarkNew" : RgbToColor(132.0, 100.0, 44.0),
-					"helmetMediumNew" : RgbToColor(14.0, 157.0, 43.0),
-					"helmetLightNew" : RgbToColor(25.0, 177.0, 55.0),
-					"bandNew" : RgbToColor(47.0, 75.0, 29.0),
+					"helmetDarkNew" : RgbToColor(113.0, 55.0, 16.0),
+					"helmetMediumNew" : RgbToColor(126.0, 67.0, 27.0),
+					"helmetLightNew" : RgbToColor(144.0, 81.0, 38.0),
 				},
 				"textures" : {
 				},
@@ -8245,7 +9117,7 @@ var characters = {
 			"vitality" : 10
 		},
 		"multipliers" : {
-			"Bow" : {"rof" : 3, "stats" : 1.2},
+			"Bow" : {"rof" : 1.2, "stats" : 1.2},
 			"Leather" : {"stats" : 1.2},
 			"Cap" : {"stats" : 1.2},
 		},
@@ -8266,9 +9138,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"helmetDarkNew" : RgbToColor(36.0, 17.0, 131.0),
-					"helmetMediumNew" : RgbToColor(94.0, 23.0, 150.0),
-					"helmetLightNew" : RgbToColor(122.0, 39.0, 170.0),
+					"helmetDarkNew" : RgbToColor(62.0, 60.0, 124.0),
+					"helmetMediumNew" : RgbToColor(77.0, 79.0, 144.0),
+					"helmetLightNew" : RgbToColor(92.0, 97.0, 158.0),
 				},
 				"textures" : {
 				},
@@ -8301,9 +9173,6 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"helmetDarkNew" : RgbToColor(95.0, 83.0, 83.0),
-					"helmetLightNew" : RgbToColor(135.0, 117.0, 117.0),
-					"helmetMediumNew" : RgbToColor(108.0, 99.0, 99.0),
 				},
 				"textures" : {
 					
@@ -8337,9 +9206,6 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"helmetDarkNew" : RgbToColor(95.0, 83.0, 83.0),
-					"helmetLightNew" : RgbToColor(135.0, 117.0, 117.0),
-					"helmetMediumNew" : RgbToColor(108.0, 99.0, 99.0),
 				},
 				"textures" : {
 					
@@ -8409,10 +9275,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"helmetDarkNew" : RgbToColor(132.0, 100.0, 44.0),
-					"helmetMediumNew" : RgbToColor(14.0, 157.0, 43.0),
-					"helmetLightNew" : RgbToColor(25.0, 177.0, 55.0),
-					"bandNew" : RgbToColor(47.0, 75.0, 29.0),
+					"helmetDarkNew" : RgbToColor(113.0, 55.0, 16.0),
+					"helmetMediumNew" : RgbToColor(126.0, 67.0, 27.0),
+					"helmetLightNew" : RgbToColor(144.0, 81.0, 38.0),
 				},
 				"textures" : {
 					
@@ -8428,7 +9293,7 @@ var characters = {
 			"vitality" : 0,
 		},
 		"multipliers" : {
-			"Bow" : {"damage" : 1.5, "stats" : 1.4},
+			"Bow" : {"damage" : 1.2, "rof" : 1.4, "stats" : 1.4},
 			"Hide" : {"stats" : 1.4},
 			"Cap" : {"stats" : 1.4},
 		},
@@ -8446,7 +9311,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					
+					"helmetDarkNew" : RgbToColor(113.0, 55.0, 16.0),
+					"helmetMediumNew" : RgbToColor(126.0, 67.0, 27.0),
+					"helmetLightNew" : RgbToColor(144.0, 81.0, 38.0),
 				},
 				"textures" : {
 					
@@ -8462,7 +9329,7 @@ var characters = {
 			"vitality" : 0,
 		},
 		"multipliers" : {
-			"Bow" : {"damage" : 1.4, "stats" : 1.4},
+			"Bow" : {"rof" : 1.4, "stats" : 1.4},
 			"Hide" : {"stats" : 1.4},
 			"Cap" : {"stats" : 1.4},
 		},
@@ -8480,7 +9347,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					
+					"helmetDarkNew" : RgbToColor(113.0, 55.0, 16.0),
+					"helmetMediumNew" : RgbToColor(126.0, 67.0, 27.0),
+					"helmetLightNew" : RgbToColor(144.0, 81.0, 38.0),
 				},
 				"textures" : {
 					
@@ -8496,7 +9365,7 @@ var characters = {
 			"vitality" : 0,
 		},
 		"multipliers" : {
-			"Bow" : {"damage" : 1.4, "stats" : 1.4},
+			"Bow" : {"rof" : 1.4, "stats" : 1.4},
 			"Hide" : {"stats" : 1.4},
 			"Cap" : {"stats" : 1.4},
 		},
@@ -8514,9 +9383,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"helmetDarkNew" : RgbToColor(36.0, 17.0, 131.0),
-					"helmetMediumNew" : RgbToColor(94.0, 23.0, 150.0),
-					"helmetLightNew" : RgbToColor(122.0, 39.0, 170.0),
+					"helmetDarkNew" : RgbToColor(62.0, 60.0, 124.0),
+					"helmetMediumNew" : RgbToColor(77.0, 79.0, 144.0),
+					"helmetLightNew" : RgbToColor(92.0, 97.0, 158.0),
 				},
 				"textures" : {
 					
@@ -8550,9 +9419,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
-					"helmetDarkNew" : RgbToColor(36.0, 17.0, 131.0),
-					"helmetMediumNew" : RgbToColor(94.0, 23.0, 150.0),
-					"helmetLightNew" : RgbToColor(122.0, 39.0, 170.0),
+					"helmetDarkNew" : RgbToColor(62.0, 60.0, 124.0),
+					"helmetMediumNew" : RgbToColor(77.0, 79.0, 144.0),
+					"helmetLightNew" : RgbToColor(92.0, 97.0, 158.0),
 				},
 				"textures" : {
 					
@@ -8586,6 +9455,9 @@ var characters = {
 		"example_colors" : {
 			"params" : {
 				"colors" : {
+					"helmetDarkNew" : RgbToColor(62.0, 60.0, 124.0),
+					"helmetMediumNew" : RgbToColor(77.0, 79.0, 144.0),
+					"helmetLightNew" : RgbToColor(92.0, 97.0, 158.0),
 				},
 				"textures" : {
 					
@@ -8623,12 +9495,12 @@ func RgbToColor(r, g, b):
 	b = b*1.0
 	return Color(r/255, g/255, b/255)
 
-func GetMultiplier(item):
+func GetMultiplier(item, _class = current_class):
 	var _item = items[int(item)].duplicate(true)
 	var result = {}
 	
-	for type in characters[current_class].multipliers.keys():
-		var multipliers = characters[current_class].multipliers[type]
+	for type in characters[_class].multipliers.keys():
+		var multipliers = characters[_class].multipliers[type]
 		if _item.type == type:
 			for subject in multipliers.keys():
 				result[subject] = multipliers[subject]

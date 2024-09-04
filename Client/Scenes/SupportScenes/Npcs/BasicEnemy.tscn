@@ -15,10 +15,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [  ]
+"values": [ 0, 0 ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -40,6 +40,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=4]
 resource_name = "Idle"
 length = 0.6
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Control/Sprite:frame")
 tracks/0/interp = 1
@@ -47,10 +48,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray(  ),
-"transitions": PoolRealArray(  ),
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [  ]
+"values": [ 0, 1 ]
 }
 
 [sub_resource type="Animation" id=3]

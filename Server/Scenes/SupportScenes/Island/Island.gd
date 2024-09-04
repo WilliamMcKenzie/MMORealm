@@ -1,4 +1,6 @@
 extends "res://Scenes/Main/Nexus.gd"
+var server_ref
+var self_ref = self
 
 export var map_size = Vector2(780,780)
 export var ruler = ""
@@ -56,24 +58,24 @@ func _process(delta):
 		
 		for enemy_id in enemy_list:
 			var enemy = enemy_list[enemy_id]
-			if enemy.name == ruler and not enemy.has("dead"):
+			if enemy.name == ruler and (not enemy.has("dead") or not enemy.dead):
 				ruler_id = enemy_id
 				ruler_alive = true
 			elif enemy.name == ruler:
 				ruler_death_position = enemy.position
-	
-		if not ruler_alive and not ruler_spawned:
+		
+		if not ruler_alive and not ruler_spawned and ServerData.GetEnemy(ruler):
 			ruler_spawned = true
-			var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
-			instance_tree.append(name)
-			if instance_tree:
-				get_node("/root/Server").SpawnNPC(ruler, instance_tree, map_size/2*8-position)
+			var _instance_tree = instance_tree
+			if _instance_tree:
+				get_node("/root/Server").SpawnNPC(ruler, _instance_tree, map_size/2*8-position)
 		elif not ruler_alive and ruler_spawned:
 			island_close_timer -= delta*60
 	
 	if island_close_timer <= 0 and not island_closed and ServerData.GetEnemy(ruler).has("dungeon"):
 		island_closed = true
-		get_parent().object_list.erase(name)
+		if get_parent().object_list.has(name):
+			get_parent().object_list.erase(name)
 		var dungeon = ServerData.GetEnemy(ruler).dungeon.name
 		var instance_id = OpenPortal(dungeon, instance_tree, ruler_death_position)
 		
@@ -92,7 +94,7 @@ func _physics_process(delta):
 		for enemy_id in enemy_list.keys():
 			var enemy = enemy_list[enemy_id]
 			if(enemy["health"] < 1):
-				if enemy_list[enemy_id]["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon") and enemy_list[enemy_id]["dead"] == false:
+				if enemy_list[enemy_id]["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon") and (not enemy_list[enemy_id].has("dead") or enemy_list[enemy_id]["dead"] == false):
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["dead"] = true
@@ -160,7 +162,7 @@ func CalculateChunk(pos):
 
 func GetMapSpawnpoint():
 	randomize()
-	return spawn_points[rand_range(0, spawn_points.size())]
+	return spawn_points[randi() % len(spawn_points)]
 func GetIslandChunk(chunk):
 	var result = []
 	var objects = []
@@ -177,8 +179,6 @@ func GetIslandChunk(chunk):
 					objects.append(map_objects[Vector2(x*8, y*8)])
 				
 				if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk and not player_chunk:
-					var instance_tree = get_parent().object_list[name]["instance_tree"].duplicate(true)
-					instance_tree.append(name)
 					var selection = enemy_spawn_points[Vector2(x,y)]["Selection"]
 					var enemy_index = round(rand_range(0, selection.size()-1))
 					if selection.size() > 0:
@@ -201,11 +201,21 @@ func GetChunkData(chunk):
 		"O" : object_list
 	}
 
+func _ready():
+	if load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn"):
+		var setpiece = load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn").instance()
+		CreateStructure(setpiece, Vector2(round(map_size.x/2), round(map_size.y/2)))
+
 func GenerateIslandMap():
+	if get_script().resource_path.get_file().get_basename() == "TutorialIsland" and has_method("TutorialInit"):
+		self_ref.TutorialInit()
+	
 	noise = OpenSimplexNoise.new()
 	noise.octaves = 1.0
 	noise.period = 12
 	PopulateTiles()
+	ArrayToTiles()
+	PopulateObstacles()
 
 func PopulateTiles():
 	var center = map_size / 2
@@ -260,11 +270,6 @@ func PopulateTiles():
 			if tile == 6 and structure_seed < 0.3:
 				var structure = load("res://Scenes/SupportScenes/Island/Structures/" + structures[structure_index] + ".tscn").instance()
 				CreateStructure(structure, Vector2(x,y))
-		
-	
-	if load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn"):
-		var setpiece = load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn").instance()
-		CreateStructure(setpiece, Vector2(round(map_size.x/2), round(map_size.y/2)))
 
 func CreateStructure(structure, placement):
 	for x in range(-32, 32*2):
@@ -275,13 +280,6 @@ func CreateStructure(structure, placement):
 				var pos = Vector2(x + placement.x, y + placement.y)
 				map_as_array[pos.x][pos.y] = current_tile
 				$TileMap.set_cell(pos.x, pos.y, map_as_array[pos.x][pos.y])
-
-func _ready():
-	#To avoid calling ready twice for tutorial
-	if get_script().resource_path.get_file().get_basename() == "TutorialIsland":
-		return
-	ArrayToTiles()
-	PopulateObstacles()
 
 var chunk_sync_clock_counter = 0
 func CheckChunks():
@@ -348,6 +346,7 @@ func ArrayToTiles():
 				spawn_point_index += 1
 			#For visualizing realms
 			#$TileMap.set_cell(x, y, map_as_array[x][y])
+
 func PopulateObstacles():
 	randomize()
 	var obstacle_small = load("res://Scenes/SupportScenes/Obstacles/Small.tscn")
@@ -385,14 +384,11 @@ func PopulateObstacles():
 				for obstacle in obstacle_list:
 					i += 1
 					if obstacle_seed < chance*i:
-						CreateObstacle(obstacle, get_parent().object_list[name]["instance_tree"], Vector2(x*8, y*8), obstacle_small.instance(), name)
+						CreateObstacle(obstacle, instance_tree, Vector2(x, y), name)
 						break
-	
-func CreateObstacle(obstacle_name, instance_tree, obstacle_position, obstacle, island_id):
-	var obstacle_id = get_node("/root/Server").generate_unique_id()
-	var instance_tree_str = get_node("/root/Server").StringifyInstanceTree(instance_tree)+"/"+str(island_id)
-	if get_node("/root/Server/Instances/"+instance_tree_str):
-		obstacle.name = obstacle_id
-		obstacle.position = obstacle_position
-		get_node("/root/Server/Instances/"+instance_tree_str+"/YSort/Objects").add_child(obstacle)
-		map_objects[obstacle_position] = {"P": obstacle_position, "I": instance_tree, "N":obstacle_name, "Type":"Obstacles"}
+
+func CreateObstacle(obstacle_name, instance_tree, obstacle_position, island_id):
+	var obstacle_id = server_ref.generate_unique_id()
+	var instance_tree_str = server_ref.StringifyInstanceTree(instance_tree)
+	$TileMap.set_cell(obstacle_position.x, obstacle_position.y-1, 7)
+	map_objects[Vector2(obstacle_position.x*8, obstacle_position.y*8)] = {"P": Vector2((obstacle_position.x*8)+4, (obstacle_position.y*8)+6), "I": instance_tree, "N":obstacle_name, "Type":"Obstacles"}

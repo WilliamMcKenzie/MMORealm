@@ -26,18 +26,21 @@ var player_id_by_name = {}
 
 func _ready():
 	StartHTMLServer()
+	GameplayLoop.CreateIslandTemplate()
+	#GameplayLoop.CreateIslandTemplate()
+	#GameplayLoop.CreateIslandTemplate()
 	
 	#Open realm
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
 	
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
-	get_node("Instances/nexus").OpenPortal("frozen_fortress", ["nexus"], Vector2.ZERO)
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
-	#get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
+	#get_node("Instances/nexus").OpenPortal("frozen_fortress", ["nexus"], Vector2.ZERO)
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
+	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
 
 func _process(delta):
 	if html_network.is_listening():
@@ -561,7 +564,7 @@ func ForcedEnterInstance(instance_id, player_id):
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = island_node.GetMapSpawnpoint()
 			
-			rpc_id(player_id, "ReturnIslandData", { "Name": current_instance_node.object_list[instance_id]["name"], "Id":instance_id, "Position": spawnpoint})
+			rpc_id(player_id, "ReturnIslandData", { "Name": island_node.ruler, "Id":instance_id, "Position": spawnpoint})
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
 			
@@ -597,7 +600,7 @@ remote func EnterInstance(instance_id):
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = island_node.GetMapSpawnpoint()
 			
-			rpc_id(player_id, "ReturnIslandData", { "Name": current_instance_node.object_list[instance_id]["name"], "Id":instance_id, "Position": spawnpoint})
+			rpc_id(player_id, "ReturnIslandData", { "Name": island_node.ruler, "Id":instance_id, "Position": spawnpoint})
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
 			
@@ -634,6 +637,9 @@ remote func RecieveChatMessage(message):
 	
 	if len(message) >= 1:
 		if message[0] == "/":
+			if message_words[0] == "/class" and message_words.size() == 2 and player_container.account_data.classes.has(message_words[1]):
+				player_container.character.class = message_words[1]
+				SendCharacterData(player_id, player_container.character)
 			if message_words[0] == "/exp" and message_words.size() == 2 and int(message_words[1]):
 				player_container.AddExp(int(message_words[1]), "Ghoul", "123")
 			if message_words[0] == "/invincible":
@@ -724,11 +730,19 @@ remote func RecieveChatMessage(message):
 func SendError(player_id, error):
 	rpc_id(player_id, "RecieveError", error)
 
+func IdentifierToString(identifier):
+	var words = identifier.split("_")
+	var proper_string = ""
+	for word in words:
+		proper_string += word.capitalize() + " "
+	proper_string = proper_string.strip_edges()
+	
+	return proper_string
 func NotifyDeath(player_id, enemy_name):
 	var instance_tree = player_state_collection[int(player_id)]["I"]
 	
 	rpc_id(player_id, "CharacterDied", enemy_name)
-	rpc("RecieveChat", str(player_name_by_id[player_id]) + " has been killed by a "+enemy_name, "System")
+	rpc("RecieveChat", str(player_name_by_id[player_id]) + " has been killed by a "+IdentifierToString(enemy_name), "System")
 	yield(get_tree().create_timer(1), "timeout")
 	html_network.disconnect_peer(player_id)
 

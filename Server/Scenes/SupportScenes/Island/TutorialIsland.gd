@@ -36,11 +36,6 @@ func PopulateTiles():
 			else:
 				map_as_array[x][y] = 0
 
-func _ready():
-	TutorialInit()
-	ArrayToTiles()
-	PopulateObstacles()
-
 func TutorialInit():
 	ruler = "tutorial_troll_king"
 	

@@ -13,7 +13,7 @@ func _physics_process(delta):
 	if clock_sync_timer >= 20 and Server.player_position:
 		clock_sync_timer = 0
 		var base_position = Vector2(round(Server.player_position.x/8.0), round(Server.player_position.y/8.0))
-		var loading_radius = 16
+		var loading_radius = 24
 		var tile_variations = {
 			0 : [1,0,0],
 			1 : [1,0,0],
@@ -53,7 +53,6 @@ func _physics_process(delta):
 							random_index = (randi() % num_variations[1]) + num_variations[0]
 					
 					$TileMap.set_cell(x,y,tile,false,false,false, Vector2(random_index, 0))
-		
 
 func GenerateChunk(chunk_data, chunk):
 	map_objects += chunk_data["Objects"]
@@ -63,7 +62,7 @@ func GenerateChunk(chunk_data, chunk):
 		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
 			var tile = tiles[x-chunk.x+(chunk_size/2)][y-chunk.y+(chunk_size/2)]
 			map_tiles[Vector2(x,y)] = tile
-		
+
 func LoadChunk(position, offset):
 	var player_coords = Vector2(round((position/8).x), round((position/8).y))
 	var chunk = Vector2(chunk_size*round((player_coords.x+offset.x)/chunk_size), chunk_size*round((player_coords.y+offset.y)/chunk_size))

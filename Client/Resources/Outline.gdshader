@@ -117,7 +117,7 @@ void fragment() {
 	}
 	
 	vec4 current_pixel = texture(TEXTURE, UV);
-	vec2 scaled_uv = fract(UV * 150.0);
+	vec2 scaled_uv = fract((UV/vec2(1.5,0.5))*300.0);
 
 	if(helmetTextureActive == true && (current_pixel == helmetDarkOrigin || current_pixel == helmetLightOrigin || current_pixel == helmetMediumOrigin))
 		COLOR = texture(helmetTexture, scaled_uv);
