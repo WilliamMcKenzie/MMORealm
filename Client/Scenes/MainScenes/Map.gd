@@ -193,6 +193,10 @@ func RefreshObjects(objects):
 			object_instance.object_id = str(object)
 			object_instance.position = objects[object]["position"]
 			
+			if type == "DungeonPortals":
+				object_instance.portal_name = objects[object]["name"]
+				if scene_name == "island":
+					object_instance.portal_name = objects[object]["ruler"] + "'s_island"
 			if type == "LootBags":
 				object_instance.loot = objects[object]["loot"]
 			

@@ -1,6 +1,7 @@
 extends Node2D
 
 var object_id
+var portal_name
 
 func _ready():
 	randomize()
@@ -15,8 +16,10 @@ func OnPortal(body):
 	if body.get_parent().has_method("DefinePlayerState"):
 		GameUI.get_node("EnterPortal").visible = true
 		GameUI.get_node("EnterPortal").portal_id = object_id
+		GameUI.get_node("EnterPortal").portal_name = portal_name
 
 func OffPortal(body):
 	if body.get_parent().has_method("DefinePlayerState"):
 		GameUI.get_node("EnterPortal").visible = false
 		GameUI.get_node("EnterPortal").portal_id = "NULL"
+		GameUI.get_node("EnterPortal").portal_name = "NULL"

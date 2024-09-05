@@ -22,6 +22,7 @@ material = ExtResource( 4 )
 cell_size = Vector2( 8, 8 )
 cell_y_sort = true
 centered_textures = true
+collision_mask = 23
 format = 1
 
 [node name="YSort" parent="." instance=ExtResource( 1 )]

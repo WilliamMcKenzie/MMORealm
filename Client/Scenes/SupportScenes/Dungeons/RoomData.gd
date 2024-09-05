@@ -9,6 +9,7 @@ func _ready():
 	SetParentTilemap()
 
 func SetParentTilemap():
+	var parent = get_parent()
 	var parent_tilemap = get_parent().get_node("TileMap")
 	var parent_objectmap = parent_tilemap.get_node("TileMap")
 	var offset = position/8
@@ -29,7 +30,7 @@ func SetParentTilemap():
 			if object_current_tile > -1:
 				parent_objectmap.set_cell(x + offset.x, y + offset.y, object_current_tile, false, false, false, object_autotile_coord)
 			if current_tile > -1:
-				parent_tilemap.set_cell(x + offset.x, y + offset.y, current_tile, false, false, false, autotile_coord)
+				parent.map_tiles[Vector2(x + offset.x, y + offset.y)] = [current_tile, autotile_coord]
 	queue_free()
 
 func HallwaySetup():

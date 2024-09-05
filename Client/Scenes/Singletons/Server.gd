@@ -317,8 +317,8 @@ remote func ConfirmNexus():
 	get_node("../SceneHandler").add_child(nexus_instance)
 	current_instance_tree = ["nexus"]
 
-func EnterInstance(instance_id):
-	yield(get_tree().create_timer(0.3), "timeout")
+func EnterInstance(instance_id, portal_name):
+	LoadingScreen.Transition(IdentifierToString(portal_name))
 	if instance_id == GetCurrentInstance():
 		return
 	rpc_id(1, "EnterInstance", instance_id)
@@ -346,7 +346,6 @@ remote func ReturnHouseData(instance_data):
 	current_instance_tree = ["nexus", instance_data["Id"]]
 
 remote func ReturnDungeonData(instance_data):
-	LoadingScreen.Transition(IdentifierToString(instance_data["Name"]))
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	
@@ -360,7 +359,6 @@ remote func ReturnDungeonData(instance_data):
 	current_instance_tree.append(instance_data["Id"])
 	
 remote func ReturnIslandData(instance_data):
-	LoadingScreen.Transition(IdentifierToString(instance_data["Name"]) + "'s Island")
 	var island_instance = island_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 

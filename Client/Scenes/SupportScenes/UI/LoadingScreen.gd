@@ -19,6 +19,7 @@ func EndWaiting():
 	waiting = false
 
 var last_place = "Alphabetium Palace"
+	
 func Transition(place):
 	last_place = place
 	$LoadingAnimations.stop()

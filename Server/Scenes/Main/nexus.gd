@@ -515,6 +515,7 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		island_instance.name = instance_id
 		object_list[instance_id] = {
 			"name": portal_name,
+			"ruler": ruler,
 			"type":"DungeonPortals",
 			"end_time": OS.get_system_time_msecs()+OS.get_system_time_msecs(),
 			"position": position,

@@ -41,6 +41,7 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
+	get_node("Instances/nexus").OpenPortal("desert_catacombs", ["nexus"], Vector2.ZERO)
 
 func _process(delta):
 	if html_network.is_listening():
@@ -380,7 +381,12 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 			"max_health":enemy_data.health,
 			"defense":enemy_data.defense,
 			"state":"Idle",
+			
 			"behavior": enemy_data.behavior,
+			"current_direction" : null,
+			"last_position" : Vector2.ZERO,
+			"stuck_timer" : 5,
+			
 			"speed":enemy_data.speed,
 			"exp": enemy_data.exp,
 			"damage_tracker": {},

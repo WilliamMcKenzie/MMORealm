@@ -79,6 +79,17 @@ var basic_loot_pools = {
 	},
 }
 var special_loot_pools = {
+	"mummified_king" : {
+		"override" : "encounter_1",
+		"soulbound_loot" : [
+			{
+				"item" : 471,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 	"oranix" : {
 		"override" : "ruler_1",
 		"soulbound_loot" : [
@@ -157,6 +168,66 @@ var special_loot_pools = {
 	},
 }
 var projectile_databank = {
+	"SandBlastSmall_mid_fast" : {
+		"projectile" : "SandBlastSmall",
+		"formula" : "0",
+		"damage" : 20,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 60,
+		"tile_range" : 3,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 5
+	},
+	"SandBlastSmall_strong_medium" : {
+		"projectile" : "SandBlastSmall",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 3,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 5
+	},
+	"SandBlast_strong_medium" : {
+		"projectile" : "SandBlast",
+		"formula" : "0",
+		"damage" : 150,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 6
+	},
+	"SandBlast_strong_fast" : {
+		"projectile" : "SandBlast",
+		"formula" : "0",
+		"damage" : 150,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 50,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 6
+	},
+	"SandBlast_mid_medium" : {
+		"projectile" : "SandBlast",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 30,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 6
+	},
 	"IceBlast_mid_fast" : {
 		"projectile" : "IceBlast",
 		"formula" : "0",
@@ -409,7 +480,18 @@ var projectile_databank = {
 		"direction" : DegreesToVector(0),
 		"size" : 8
 	},
-	
+	"RoyalSlash_weak_medium" : {
+		"projectile" : "RoyalSlash",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 20,
+		"tile_range" : 3,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : 5
+	},
 	"RoyalSlash_strong_medium" : {
 		"projectile" : "RoyalSlash",
 		"formula" : "0",
@@ -6079,6 +6161,279 @@ var frozen_fortress_enemies = {
 		]
 	},
 }
+var desert_catacombs_enemies = {
+	"mummified_spider" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,126), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
+		"health" : 3000,
+		"defense" : 20,
+		"exp" : 2000,
+		"behavior" : 2,
+		"speed" : 5,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"summon" : "mummified_spider_egg",
+						"summon_position" : Vector2(-19,-1),
+						"wait" : 0,
+					},
+					{
+						"summon" : "mummified_spider_egg",
+						"summon_position" : Vector2(20,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "mummified_spider_egg",
+						"summon_position" : Vector2(0,-18),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("RoyalSlash_weak_medium", 20, 0, "nearest"),
+					MakeProjectile("RoyalSlash_weak_medium", 0, 0, "nearest"),
+					MakeProjectile("RoyalSlash_weak_medium", -20, 0.5, "nearest"),
+					MakeProjectile("Wave_weak_fast", 20, 0, "nearest"),
+					MakeProjectile("Wave_weak_fast", 0, 0, "nearest"),
+					MakeProjectile("Wave_weak_fast", -20, 2, "nearest"),
+				]
+			},
+		]
+	},
+	"mummified_spider_egg" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(60,40), Vector2(10,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"health" : 1000,
+		"defense" : 0,
+		"exp" : 50,
+		"behavior" : 2,
+		"speed" : 4,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*1, 0),
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*2, 0),
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*3, 0),
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*4, 0),
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*5, 2),
+				]
+			}
+		]
+	},
+	"sand_golem" : {
+		"scale" : 1.1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(54,126), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [0,2],
+		},
+		
+		"health" : 4000,
+		"defense" : 30,
+		"exp" : 2000,
+		"behavior" : 1,
+		"speed" : 11,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"summon" : "sand_sprite",
+						"summon_position" : Vector2(0,-1),
+						"wait" : 0,
+					},
+					{
+						"summon" : "sand_sprite",
+						"summon_position" : Vector2(0,5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "sand_sprite",
+						"summon_position" : Vector2(0,-5),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 32,
+				"health" : [0,100],
+				"attack_pattern" : CreateSpiral(2, "SandBlast_mid_medium", 0.3, "RoyalSlash_weak_medium", 0.3)
+			},
+		]
+	},
+	"sand_sprite" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(70,40), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 500,
+		"defense" : 0,
+		"exp" : 50,
+		"behavior" : 2,
+		"speed" : 20,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("SandBlastSmall_mid_fast", 10, 0, "nearest"),
+					MakeProjectile("SandBlastSmall_mid_fast", -10, 0.5, "nearest"),
+				]
+			}
+		]
+	},
+	"mummified_ghoul" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(108,126), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 2000,
+		"defense" : 10,
+		"exp" : 2000,
+		"behavior" : 2,
+		"speed" : 25,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"summon" : "mini_mummified_ghoul",
+						"summon_position" : Vector2(10,-10),
+						"wait" : 0,
+					},
+					{
+						"summon" : "mini_mummified_ghoul",
+						"summon_position" : Vector2(-10,5),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 32,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*8, 3, "nearest"),
+				]
+			},
+		]
+	},
+	"mini_mummified_ghoul" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(90,40), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 500,
+		"defense" : 0,
+		"exp" : 50,
+		"behavior" : 1,
+		"speed" : 15,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("SandBlastSmall_strong_medium", (360.0/4.0)*1, 0, "nearest"),
+					MakeProjectile("SandBlastSmall_strong_medium", (360.0/4.0)*2, 0, "nearest"),
+					MakeProjectile("SandBlastSmall_strong_medium", (360.0/4.0)*3, 0, "nearest"),
+					MakeProjectile("SandBlastSmall_strong_medium", (360.0/4.0)*4, 2, "nearest"),
+				]
+			}
+		]
+	},
+	"mummified_king" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(144,126), Vector2(72,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
+		"health" : 30000,
+		"defense" : 10,
+		"exp" : 5000,
+		"behavior" : 0,
+		"speed" : 25,
+		"loot_pool" : special_loot_pools["mummified_king"],
+		"phases" : [
+			{
+				"duration" : 32,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*8, 3, "nearest"),
+				]
+			},
+		]
+	},
+}
 var the_abyss_enemies = {
 	"salazar_awakened" : {
 		"scale" : 1,
@@ -6385,6 +6740,7 @@ func CompileEnemies():
 	res.merge(realm_enemies)
 	res.merge(orc_vigil_enemies)
 	res.merge(frozen_fortress_enemies)
+	res.merge(desert_catacombs_enemies)
 	res.merge(the_abyss_enemies)
 	return res
 
@@ -6428,15 +6784,27 @@ var dungeons = {
 			10 : "ice_demon",
 		}
 	},
+	"desert_catacombs" : {
+		"type" : "procedural",
+		"basic_rooms" : ["Room1", "Room2", "Room3"],
+		"rooms_until_boss" : 3,
+		"room_size" : 21,
+		"tile_translation" : {
+			4 : "mummified_spider",
+			5 : "sand_golem",
+			6 : "mummified_ghoul",
+			7 : "mummified_king",
+		}
+	},
 	"goblin_cellar" : {
-	"type" : "procedural",
-	"basic_rooms" : ["Room1", "Room2"],
-	"rooms_until_boss" : 5,
-	"room_size" : 21,
-	"tile_translation" : {
-		4 : "crab",
-	}
-},
+		"type" : "procedural",
+		"basic_rooms" : ["Room1", "Room2"],
+		"rooms_until_boss" : 5,
+		"room_size" : 21,
+		"tile_translation" : {
+			4 : "crab",
+		}
+	},
 	
 	"test_dungeon" : {
 		"type" : "procedural",
@@ -6853,7 +7221,7 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "4",
 		
-		"rof" : 30,
+		"rof" : 40,
 		"stats" : {
 					
 		},
@@ -7018,7 +7386,7 @@ var items = {
 				"offset" : DegreesToVector(-40),
 			},
 			{
-				"damage" : [10,20],
+				"damage" : [10,30],
 				"projectile" : "Water2",
 				"formula" : "0",
 				"piercing" : false,
@@ -7028,7 +7396,7 @@ var items = {
 				"offset" : DegreesToVector(-20),
 			},
 			{
-				"damage" : [20,40],
+				"damage" : [40,50],
 				"projectile" : "Water3",
 				"formula" : "0",
 				"piercing" : false,
@@ -7038,7 +7406,7 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [10,20],
+				"damage" : [10,30],
 				"projectile" : "Water2",
 				"formula" : "0",
 				"piercing" : false,
@@ -7081,7 +7449,7 @@ var items = {
 		
 		"projectiles" : [
 			{
-				"damage" : [50,60],
+				"damage" : [40,50],
 				"projectile" : "Fire3",
 				"formula" : "0",
 				"piercing" : false,
@@ -7092,7 +7460,7 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [20,30],
+				"damage" : [20,25],
 				"projectile" : "Fire2",
 				"formula" : "0",
 				"piercing" : false,
@@ -7103,7 +7471,7 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [20,30],
+				"damage" : [20,25],
 				"projectile" : "Fire2",
 				"formula" : "0",
 				"piercing" : false,
@@ -7152,7 +7520,7 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "UT",
 		
-		"rof" : 120,
+		"rof" : 35,
 		"stats" : {
 		
 		},
@@ -8297,6 +8665,30 @@ var items = {
 			
 		}
 	},
+	471 : {
+		"name": "Desert Headdress",
+		"description" : "An expertly crafted headdress said to make it's wearer short tempered",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 10,
+		"buffs" : {
+			"berserk" : { "duration" : 4, "range" : 4},
+			"damaging" : { "duration" : 2, "range" : 2},
+		},
+		"stats" : {
+			"attack" : 10,
+			"dexterity" : 5
+		},
+		"tier" : "UT",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,10)],
+		"colors" : {
+		},
+		"textures" : {
+			"helmetTexture" : "desert_headdress"
+		}
+	},
 	499 : {
 		"name": "Holy Crown",
 		"description" : "No tree, it is said, can grow to heaven unless its roots reach down to hell.",
@@ -8497,6 +8889,18 @@ var projectiles = {
 	},
 	"VigilBlastSmall" : {
 		"rect" : Rect2(170,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"SandBlast" : {
+		"rect" : Rect2(160,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.1,
+	},
+	"SandBlastSmall" : {
+		"rect" : Rect2(170,10,10,10),
 		"rotation" : 45,
 		"spin" : false,
 		"scale" : 1,

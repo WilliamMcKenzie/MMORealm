@@ -3,8 +3,48 @@ extends "../Map.gd"
 #Room size accounts for hallways in between
 var room_size
 var dungeon_name
+var map_tiles = {}
 
 #For creating new dungeon instances
+var clock_sync_timer = 0
+func _physics_process(delta):
+	clock_sync_timer += 1
+	if clock_sync_timer >= 20 and Server.player_position:
+		clock_sync_timer = 0
+		var base_position = Vector2(round(Server.player_position.x/8.0), round(Server.player_position.y/8.0))
+		var loading_radius = 24
+		var tile_variations = {
+			0 : [1,0,0],
+			1 : [1,0,0],
+			2 : [2,3,0.01],
+			3 : [3,4,0.08],
+			4 : [3,4,0.1],
+			5 : [3,6,0.1],
+			6 : [2,4,0.25],
+			7 : [1,0,0],
+			8 : [1,0,0],
+			9 : [1,0,0],
+		}
+		
+		for x in range(base_position.x-(loading_radius/2), base_position.x+(loading_radius/2)):
+			for y in range(base_position.y-(loading_radius/2), base_position.y+(loading_radius/2)):
+				if map_tiles.has(Vector2(x,y)):
+					var tile = map_tiles[Vector2(x,y)][0]
+					var autotile_coord = map_tiles[Vector2(x,y)][1]
+					map_tiles.erase(Vector2(x,y))
+					
+					var num_variations = tile_variations[tile]
+					var random_index = 0
+					
+					#Standard tile
+					if num_variations[0] > 1:
+						random_index = randi() % num_variations[0]
+						
+						#Special tile
+						if randf() < num_variations[2]:
+							random_index = (randi() % num_variations[1]) + num_variations[0]
+					$TileMap.set_cell(x,y,tile, false, false, false, autotile_coord)
+
 func PopulateDungeon(instance_data):
 	dungeon_name = instance_data["Name"]
 	room_size = instance_data["RoomSize"]
