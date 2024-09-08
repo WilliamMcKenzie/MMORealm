@@ -49,42 +49,9 @@ func _physics_process(delta):
 		return
 	
 	if clock_sync_timer % 10 == 0:
-		for slot in character.gear.keys():
-			if character.gear[slot] != null:
-				var multipliers = ServerData.GetMultiplier(character.gear[slot].item, character.class)
-				gear[slot] = ServerData.GetItem(character.gear[slot].item)
-				for multiplier in multipliers.keys():
-					var value = multipliers[multiplier]
-					if multiplier == "stats":
-						for stat in gear[slot].stats.keys():
-							gear[slot].stats[stat] = floor(gear[slot].stats[stat]*value)
-					elif gear[slot].has(multiplier):
-						gear[slot][multiplier] = floor(gear[slot][multiplier]*value)
-	
-	if clock_sync_timer_2 >= 60:
-		clock_sync_timer_2 = 0
-		#Tiles covered
-		if not account_data.statistics.has("tiles_covered"):
-			account_data.statistics.tiles_covered = 0
-		if last_position:
-			account_data.statistics.tiles_covered += round(last_position.distance_to(self.position)/8.0)
-		last_position = self.position
-		
-		#Class achievements
-		for _achievement in account_data.achievements:
-			if account_data.achievements[_achievement] == true or not ServerData.GetAchievement(_achievement):
-				continue
-			var achievement = ServerData.GetAchievement(_achievement)
-			if achievement.which == "classes_unlocked":
-				var unlocked = true
-				for _class in achievement.classes:
-					if not account_data.classes.has(_class) or not account_data.classes[_class]:
-						unlocked = false
-				
-				if unlocked:
-					GetAchievement(_achievement)
-		
-		get_node("/root/Server").SendAccountData(name, account_data)
+		for slot in gear.keys():
+			if gear[slot] != null:
+				gear[slot] = ServerData.GetItem(character.gear[slot].item, true, character.class)
 	
 	if clock_sync_timer >= 3 and "island" in get_parent().get_parent().get_parent().name:
 		clock_sync_timer = 0
@@ -141,17 +108,66 @@ func _physics_process(delta):
 				current_quest_data.id = current_quest
 		
 		server_node.SendQuestData(name, current_quest_data)
+	
+	if clock_sync_timer >= 3 and "dungeon" in get_parent().get_parent().get_parent().name:
+		clock_sync_timer = 0
 		
+		var server_node = get_node("/root/Server")
+		var instance_tree = server_node.player_state_collection[int(name)]["I"]
+		var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
+		
+		var closest = OS.get_system_time_msecs()
+		var current_quest_data = null
+		
+		for enemy_id in instance_node.enemy_list.keys():
+			var enemy = instance_node.enemy_list[enemy_id]
+			if enemy.name == instance_node.dungeon_boss and enemy.position.distance_to(self.position) < closest:
+				closest = enemy.position.distance_to(self.position)
+				current_quest = enemy_id 
+		
+		if current_quest and instance_node.enemy_list.has(current_quest):
+			current_quest_data = instance_node.enemy_list[current_quest].duplicate()
+			current_quest_data.id = current_quest
+		
+		server_node.SendQuestData(name, current_quest_data)
+	
 	elif clock_sync_timer >= 3:
 		current_quest = null
 		get_node("/root/Server").SendQuestData(name, null)
 	
 	character.ability_cooldown -= delta
 	running_time += delta
-	heal_rate = 5.0/character.stats.vitality
+	heal_rate = 4.0/(character.stats.vitality*6*(character.stats.health/500.0))
 	
 	if status_effects.has("healing"):
-		heal_rate = 5.0/(character.stats.vitality + 200)
+		heal_rate = 4.0/(character.stats.vitality*18*(character.stats.health/500.0))
+	
+	#heal_rate = heal_rate/character.stats.health*200.0
+	
+	if clock_sync_timer_2 >= 60:
+		clock_sync_timer_2 = 0
+		#Tiles covered
+		if not account_data.statistics.has("tiles_covered"):
+			account_data.statistics.tiles_covered = 0
+		if last_position:
+			account_data.statistics.tiles_covered += round(last_position.distance_to(self.position)/8.0)
+		last_position = self.position
+		
+		#Class achievements
+		for _achievement in account_data.achievements:
+			if account_data.achievements[_achievement] == true or not ServerData.GetAchievement(_achievement):
+				continue
+			var achievement = ServerData.GetAchievement(_achievement)
+			if achievement.which == "classes_unlocked":
+				var unlocked = true
+				for _class in achievement.classes:
+					if not account_data.classes.has(_class) or not account_data.classes[_class]:
+						unlocked = false
+				
+				if unlocked:
+					GetAchievement(_achievement)
+		
+		get_node("/root/Server").SendAccountData(name, account_data)
 	
 	#Tick
 	for i in range(floor((running_time-last_tick)/heal_rate)):
@@ -161,7 +177,7 @@ func _physics_process(delta):
 			get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 		if health > character.stats.health:
 			health = character.stats.health
-		
+	
 	for effect in status_effects.keys():
 		status_effects[effect] -= delta
 		if status_effects[effect] <= 0:
@@ -577,15 +593,7 @@ func SetCharacter(characters):
 	
 	for slot in character.gear.keys():
 		if character.gear[slot] != null:
-			var multipliers = ServerData.GetMultiplier(character.gear[slot].item, character.class)
-			gear[slot] = ServerData.GetItem(character.gear[slot].item)
-			for multiplier in multipliers.keys():
-				var value = multipliers[multiplier]
-				if multiplier == "stats":
-					for stat in gear[slot].stats.keys():
-						gear[slot].stats[stat] = floor(gear[slot].stats[stat]*value)
-				elif gear[slot].has(multiplier):
-					gear[slot][multiplier] = floor(gear[slot][multiplier]*value)
+			gear[slot] = ServerData.GetItem(character.gear[slot].item, true, character.class)
 	
 	get_node("/root/Server").SendCharacterData(name, character)
 
@@ -610,7 +618,7 @@ func AddExp(exp_amount, enemy_name, enemy_id):
 		var exp_to_level = level_exp - character.exp
 		
 		if exp_pool < exp_to_level:
-			character.exp += exp_pool
+			character.exp += floor(exp_pool)
 			exp_pool = 0
 		else:
 			exp_pool -= exp_to_level
@@ -636,7 +644,7 @@ func DealDamage(damage, enemy_name):
 	if not character:
 		return
 	
-	var practical_defense = character.stats.defense
+	var practical_defense = character.stats.duplicate().defense
 	for slot in gear.keys():
 		var item = gear[slot]
 		if item.stats.has("defense"):
@@ -785,7 +793,3 @@ func GetAchievement(achievement_name):
 	
 	get_node("/root/Server").SendAccountData(name, account_data)
 	get_node("/root/Server").SendCharacterData(name, character)
-
-func _on_PlayerHitbox_area_entered(area):
-	if "enemy_id" in area.get_parent():
-		DealDamage(area.get_parent().damage, area.get_parent().enemy_id)

@@ -11,7 +11,11 @@ func _physics_process(delta):
 			if instance_tree[instance_tree.size()-1].split(" ")[0] == "island":
 				SendIslandData(instance_tree)
 				continue
-			var node = get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree))
+			var node_string = "/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)
+			if not has_node(node_string):
+				continue
+			
+			var node = get_node(node_string)
 			node.object_list = CleanObjects(node.object_list).duplicate(true)
 			
 			world_state = {}
@@ -42,7 +46,7 @@ func _physics_process(delta):
 				world_state["E"][enemy_id] = enemy
 			
 			for id in get_node("/root/Server").player_instance_tracker[instance_tree]:
-				get_node("/root/Server").SendWorldState(id, world_state)
+				get_node("/root/Server").SendWorldState(id, world_state, instance_tree)
 
 func SendIslandData(instance_tree):
 	var node = get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree))
@@ -97,7 +101,7 @@ func SendIslandData(instance_tree):
 			
 			#We add speed checks here
 			for id in node.chunks[chunk]["P"]:
-				get_node("/root/Server").SendWorldState(id, world_state)
+				get_node("/root/Server").SendWorldState(id, world_state, instance_tree)
 
 func CleanObjects(objects):
 	for objects_id in objects.keys():

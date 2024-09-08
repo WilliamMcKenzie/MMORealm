@@ -34,6 +34,8 @@ func _ready():
 
 func _physics_process(delta):
 	running_time += delta
+	if not get_world_2d():
+		return
 	for projectile_id in projectile_list.keys():
 		var projectile = projectile_list[projectile_id]
 		var alive_time = OS.get_system_time_msecs()/1000-projectile["start_time"]
@@ -124,6 +126,8 @@ func _physics_process(delta):
 						if has_signals:
 							possible_phases = [_phase_index]
 							break;
+						else:
+							continue
 					elif on_signal:
 						continue
 					
@@ -527,12 +531,14 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 		return instance_id
 	else:
+		instance_id =  "dungeon " + instance_id
 		var instance_map = Dungeons.GenerateDungeon(portal_name)
 		var tile_translation = ServerData.dungeons[portal_name].tile_translation
 		var dungeon_instance = load("res://Scenes/SupportScenes/Dungeons/Dungeon.tscn").instance()
 		dungeon_instance.name = instance_id
 		dungeon_instance.map = instance_map
 		dungeon_instance.dungeon_name = portal_name
+		dungeon_instance.dungeon_boss = ServerData.dungeons[portal_name].dungeon_boss
 		dungeon_instance.room_size = ServerData.dungeons[portal_name].room_size
 		dungeon_instance.tile_translation = tile_translation
 		dungeon_instance.position = Instances.GetFreeInstancePosition()
@@ -540,8 +546,7 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		object_list[instance_id] = {
 			"name":portal_name,
 			"type":"DungeonPortals",
-			#"end_time": OS.get_system_time_msecs()+30000,
-			"end_time": OS.get_system_time_msecs()+OS.get_system_time_msecs(),
+			"end_time": OS.get_system_time_msecs()+30000,
 			"position": position,
 			"instance_tree": instance_tree
 		}

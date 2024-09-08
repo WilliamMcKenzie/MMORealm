@@ -35,13 +35,23 @@ func _ready():
 		#PlayerVerification.CreateFakePlayerContainer()
 	
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
-	#get_node("Instances/nexus").OpenPortal("frozen_fortress", ["nexus"], Vector2.ZERO)
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
-	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "troll_king")
-	get_node("Instances/nexus").OpenPortal("desert_catacombs", ["nexus"], Vector2.ZERO)
+	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "tutorial_troll_king")
+	get_node("Instances/nexus").OpenPortal("ruined_temple", ["nexus"], Vector2.ZERO)
+
+#Update connected players
+var clock_sync_timer = 0
+func _physics_process(delta):
+	clock_sync_timer += 1
+	if clock_sync_timer >= 60:
+		var network_connected_peers = get_tree().get_network_connected_peers()
+		for instance_tree in player_instance_tracker.keys():
+			for id in player_instance_tracker[instance_tree]:
+				if not network_connected_peers.has(id):
+					player_instance_tracker[instance_tree].erase(id)
 
 func _process(delta):
 	if html_network.is_listening():
@@ -326,8 +336,8 @@ remote func RecievePlayerState(player_state):
 		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
 
-func SendWorldState(id, world_state):
-	rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
+func SendWorldState(id, world_state, instance_tree):
+	var error = rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
 
 #TOKENS
 func _on_TokenExpiration_timeout():

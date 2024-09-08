@@ -95,7 +95,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 173,
-				"chance" : 0.004,
+				"chance" : 0.005,
 				"threshold" : 0.05,
 			},
 		],
@@ -122,7 +122,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 171,
-				"chance" : 0.002,
+				"chance" : 0.0025,
 				"threshold" : 0.05,
 			},
 		],
@@ -133,7 +133,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 171,
-				"chance" : 0.004,
+				"chance" : 0.005,
 				"threshold" : 0.05,
 			},
 		],
@@ -150,6 +150,17 @@ var special_loot_pools = {
 		],
 		"loot" : []
 	},
+	"eye_of_naa'zorak" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 105,
+				"chance" : 0.004,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 	"salazar" : {
 		"override" : "none",
 		"soulbound_loot" : [],
@@ -160,7 +171,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 172,
-				"chance" : 0.004,
+				"chance" : 0.005,
 				"threshold" : 0.05,
 			},
 		],
@@ -168,6 +179,283 @@ var special_loot_pools = {
 	},
 }
 var projectile_databank = {
+		"RoyalSlash_weak_medium" : {
+			"projectile" : "RoyalSlash",
+			"formula" : "0",
+			"damage" : 50,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 20,
+			"tile_range" : 3,
+			"targeter" : "nearest",
+			"direction" : DegreesToVector(0),
+			"size" : 5
+		},
+		"RoyalSlash_strong_medium" : {
+			"projectile" : "RoyalSlash",
+			"formula" : "0",
+			"damage" : 100,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 20,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : DegreesToVector(0),
+			"size" : 9
+		},
+		"RoyalSlash_mid_fast" : {
+			"projectile" : "RoyalSlash",
+			"formula" : "0",
+			"damage" : 80,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 30,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : DegreesToVector(0),
+			"size" : 9
+		},
+		"GiantRoyalSlash_strong_medium" : {
+			"projectile" : "GiantRoyalSlash",
+			"formula" : "0",
+			"damage" : 200,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 25,
+			"tile_range" : 8,
+			"targeter" : "nearest",
+			"direction" : DegreesToVector(0),
+			"size" : 9
+		},
+		"RoyalSlash_strong_fast_short" : {
+			"projectile" : "RoyalSlash",
+			"formula" : "0",
+			"damage" : 100,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 45,
+			"tile_range" : 3,
+			"targeter" : "nearest",
+			"direction" : DegreesToVector(0),
+			"size" : 9
+		},
+		"Dart_mid_medium" : {
+			"projectile" : "Dart",
+			"formula" : "0",
+			"damage" : 30,
+			"piercing" : true,
+			"wait" : 0,
+			"speed" : 35,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"Dart_strong_medium" : {
+			"projectile" : "Dart",
+			"formula" : "0",
+			"damage" : 80,
+			"piercing" : true,
+			"wait" : 0,
+			"speed" : 40,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"BloodShuriken1" : {
+			"projectile" : "BloodShuriken",
+			"formula" : "0",
+			"damage" : 100,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 30,
+			"tile_range" : 6,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"BloodSpinner_strong_medium" : {
+			"projectile" : "BloodSpinner",
+			"formula" : "0",
+			"damage" : 50,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 40,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"BloodSpinner_weak_fast" : {
+			"projectile" : "BloodSpinner",
+			"formula" : "0",
+			"damage" : 30,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 60,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"DemonicWave_mid_fast" : {
+			"projectile" : "DemonicWave",
+			"formula" : "0",
+			"damage" : 80,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 60,
+			"tile_range" : 4,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"DemonicWave_strong_medium" : {
+			"projectile" : "DemonicWave",
+			"formula" : "0",
+			"damage" : 100,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 30,
+			"tile_range" : 6,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"SmallDemonicBlast_weak_fast" : {
+			"projectile" : "SmallDemonicBlast",
+			"formula" : "0",
+			"damage" : 40,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 70,
+			"tile_range" : 5,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 5
+		},
+		"SmallDemonicBlast_mid_medium" : {
+			"projectile" : "SmallDemonicBlast",
+			"formula" : "0",
+			"damage" : 60,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 35,
+			"tile_range" : 5,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 5
+		},
+		"DemonicBlast_mid_slow" : {
+			"projectile" : "DemonicBlast",
+			"formula" : "0",
+			"damage" : 70,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 15,
+			"tile_range" : 9,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"DemonicBlast_strong_medium" : {
+			"projectile" : "DemonicBlast",
+			"formula" : "0",
+			"damage" : 100,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 30,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"GiantDemonicBlast_strong_slow" : {
+			"projectile" : "GiantDemonicBlast",
+			"formula" : "0",
+			"damage" : 240,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 10,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 7
+		},
+		"GiantDemonicBlast_strong_fast" : {
+			"projectile" : "GiantDemonicBlast",
+			"formula" : "0",
+			"damage" : 170,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 60,
+			"tile_range" : 7,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 7
+		},
+		
+		"Dart_strong_medium_short" : {
+			"projectile" : "Dart",
+			"formula" : "0",
+			"damage" : 60,
+			"piercing" : true,
+			"wait" : 0,
+			"speed" : 40,
+			"tile_range" : 2,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"DemonicBlast_strong_medium_short" : {
+			"projectile" : "DemonicBlast",
+			"formula" : "0",
+			"damage" : 70,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 30,
+			"tile_range" : 2,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"DemonicWave_mid_fast_short" : {
+			"projectile" : "DemonicWave",
+			"formula" : "0",
+			"damage" : 40,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 60,
+			"tile_range" : 2,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+		"BloodSpinner_weak_fast_short" : {
+			"projectile" : "BloodSpinner",
+			"formula" : "0",
+			"damage" : 40,
+			"piercing" : false,
+			"wait" : 0,
+			"speed" : 60,
+			"tile_range" : 2,
+			"targeter" : "nearest",
+			"direction" : Vector2.ZERO,
+			"size" : 6
+		},
+	"BlueBlast_strong_fast" : {
+		"projectile" : "BlueBlast",
+		"formula" : "0",
+		"damage" : 60,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 40,
+		"tile_range" : 5,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : 4
+	},
 	"SandBlastSmall_mid_fast" : {
 		"projectile" : "SandBlastSmall",
 		"formula" : "0",
@@ -479,66 +767,6 @@ var projectile_databank = {
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
 		"size" : 8
-	},
-	"RoyalSlash_weak_medium" : {
-		"projectile" : "RoyalSlash",
-		"formula" : "0",
-		"damage" : 50,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 20,
-		"tile_range" : 3,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 5
-	},
-	"RoyalSlash_strong_medium" : {
-		"projectile" : "RoyalSlash",
-		"formula" : "0",
-		"damage" : 100,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 20,
-		"tile_range" : 7,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 9
-	},
-	"RoyalSlash_mid_fast" : {
-		"projectile" : "RoyalSlash",
-		"formula" : "0",
-		"damage" : 80,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 30,
-		"tile_range" : 7,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 9
-	},
-	"GiantRoyalSlash_strong_medium" : {
-		"projectile" : "GiantRoyalSlash",
-		"formula" : "0",
-		"damage" : 200,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 25,
-		"tile_range" : 8,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 9
-	},
-	"RoyalSlash_strong_fast_short" : {
-		"projectile" : "RoyalSlash",
-		"formula" : "0",
-		"damage" : 100,
-		"piercing" : false,
-		"wait" : 0,
-		"speed" : 45,
-		"tile_range" : 3,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : 9
 	},
 	"GiantAbyssSpinner_strong_medium" : {
 		"projectile" : "GiantAbyssSpinner",
@@ -1240,11 +1468,17 @@ func MakeProjectile(projectile_type, degrees, wait, targeter = null):
 	
 	return projectile_data
 
-func CreateSpiral(arm_count, projectile_type, delay, mix_in = null, chance = 0.2, steps = 32.0):
+func CreateSpiral(arm_count, projectile_type, delay, mix_in = null, chance = 0.2, steps = 32.0, invincible = false):
 	randomize()
 	var attack_pattern = []
 	
 	for step in steps:
+		if invincible:
+			attack_pattern.append({
+				"effect" : "invincible",
+				"duration" : 1,
+				"wait" : 0,
+			})
 		if mix_in and randf() < chance:
 			var projectile = MakeProjectile(mix_in, randi() % 360, 0)
 			attack_pattern.append(projectile)
@@ -1848,7 +2082,7 @@ var rulers = {
 		"speed" : 4,
 		"dungeon" : {
 			"rate" : 0,
-			"name" : "ruined_pyramids"
+			"name" : "ruined_temple"
 		},
 		"loot_pool" : special_loot_pools["raa'sloth"],
 		"phases" : [
@@ -3788,7 +4022,10 @@ var realm_enemies = {
 			"Idle" : [0,1],
 			"Attack" : [0,2],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.2,
+			"name" : "desert_catacombs"
+		},
 		"health" : 600,
 		"defense" : 4,
 		"exp" : 200,
@@ -3914,7 +4151,10 @@ var realm_enemies = {
 			"Idle" : [0,1],
 			"Attack" : [2,3],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.2,
+			"name" : "desert_catacombs"
+		},
 		"health" : 1200,
 		"defense" : 12,
 		"exp" : 340,
@@ -4896,7 +5136,10 @@ var realm_enemies = {
 			"Idle" : [0],
 			"Attack" : [1],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.2,
+			"name" : "desert_catacombs"
+		},
 		"health" : 800,
 		"defense" : 15,
 		"exp" : 180,
@@ -5710,7 +5953,7 @@ var frozen_fortress_enemies = {
 					},
 					{
 						"effect" : "invincible",
-						"duration" : 15,
+						"duration" : 16,
 						"wait" : 8,
 					},
 					{
@@ -5735,7 +5978,24 @@ var frozen_fortress_enemies = {
 				"attack_pattern" : [
 					{
 						"effect" : "invincible",
-						"duration" : 1,
+						"duration" : 1.5,
+						"wait" : 1,
+					},
+				]
+			},
+			{
+				"duration" : 1,
+				"health" : [99.99,100],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 2,
+						"wait" : 0,
+					},
+					{
+						"dead" : true,
 						"wait" : 1,
 					},
 				]
@@ -6229,7 +6489,7 @@ var desert_catacombs_enemies = {
 		"health" : 1000,
 		"defense" : 0,
 		"exp" : 50,
-		"behavior" : 2,
+		"behavior" : 0,
 		"speed" : 4,
 		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
@@ -6401,7 +6661,7 @@ var desert_catacombs_enemies = {
 		]
 	},
 	"mummified_king" : {
-		"scale" : 1,
+		"scale" : 1.2,
 		"res" : 18,
 		"height" : 16,
 		"rect" : Rect2(Vector2(144,126), Vector2(72,18)),
@@ -6418,17 +6678,127 @@ var desert_catacombs_enemies = {
 		"loot_pool" : special_loot_pools["mummified_king"],
 		"phases" : [
 			{
-				"duration" : 32,
-				"health" : [0,100],
+				"duration" : 7,
+				"health" : [25,100],
+				"behavior" : 2,
+				"speed" : 10,
 				"attack_pattern" : [
-					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*1, 0, "nearest"),
-					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*2, 0, "nearest"),
-					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*3, 0, "nearest"),
-					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*4, 0, "nearest"),
-					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*5, 0, "nearest"),
-					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*6, 0, "nearest"),
-					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*7, 0, "nearest"),
-					MakeProjectile("SandBlast_mid_medium", (360.0/8.0)*8, 3, "nearest"),
+					MakeProjectile("SandBlast_strong_fast", (360.0/6.0)*1, 0),
+					MakeProjectile("SandBlast_strong_fast", (360.0/6.0)*2, 0),
+					MakeProjectile("SandBlast_strong_fast", (360.0/6.0)*3, 0),
+					MakeProjectile("SandBlast_strong_fast", (360.0/6.0)*4, 0),
+					MakeProjectile("SandBlast_strong_fast", (360.0/6.0)*5, 0),
+					MakeProjectile("SandBlast_strong_fast", (360.0/6.0)*6, 0),
+					MakeProjectile("SandBlastSmall_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("RoyalSlash_mid_fast", 0, 0.1, "nearest"),
+					MakeProjectile("RoyalSlash_mid_fast", 0, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("SandBlastSmall_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("SandBlast_strong_fast", 30+(360.0/6.0)*1, 0),
+					MakeProjectile("SandBlast_strong_fast", 30+(360.0/6.0)*2, 0),
+					MakeProjectile("SandBlast_strong_fast", 30+(360.0/6.0)*3, 0),
+					MakeProjectile("SandBlast_strong_fast", 30+(360.0/6.0)*4, 0),
+					MakeProjectile("SandBlast_strong_fast", 30+(360.0/6.0)*5, 0),
+					MakeProjectile("SandBlast_strong_fast", 30+(360.0/6.0)*6, 0),
+					MakeProjectile("RoyalSlash_mid_fast", 0, 0.1, "nearest"),
+					MakeProjectile("SandBlastSmall_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("RoyalSlash_mid_fast", 0, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("SandBlastSmall_strong_medium", 0, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 0, 0.2, "nearest"),
+				]
+			},
+			{
+				"duration" : 7,
+				"health" : [25,100],
+				"behavior" : 0,
+				"speed" : 10,
+				"attack_pattern" : CreateSpiral(2, "RoyalSlash_mid_fast", 0.2, "BlueBlast_strong_fast", 0.4)
+			},
+			{
+				"duration" : 7,
+				"health" : [25,100],
+				"behavior" : 1,
+				"speed" : 10,
+				"attack_pattern" : [
+					MakeProjectile("SandBlast_strong_medium", (360.0/3.0)*1, 0),
+					MakeProjectile("SandBlast_strong_medium", (360.0/3.0)*2, 0),
+					MakeProjectile("SandBlast_strong_medium", (360.0/3.0)*3, 0.3),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*1, 0),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*2, 0),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*3, 0),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*4, 0),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*5, 0.3),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*1, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*2, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*3, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*4, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*5, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*6, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*7, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*8, 0.3),
+				]
+			},
+			{
+				"duration" : 7,
+				"behavior" : 1,
+				"speed" : 10,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0, 25],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 7,
+						"wait" : 1,
+					},
+					{
+						"speech" : "I once ruled over this kingdom...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "MY POWER IS STILL BEYOND YOUR GRASP!",
+						"wait" : 4,
+					},
+				]
+			},
+			{
+				"duration" : 7,
+				"health" : [0,25],
+				"behavior" : 2,
+				"speed" : 10,
+				"attack_pattern" : [
+					MakeProjectile("GiantRoyalSlash_strong_medium", 20, 0, "nearest"),
+					MakeProjectile("GiantRoyalSlash_strong_medium", -20, 0, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 5, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", -5, 0.2, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", -10, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", -5, 0.2, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 5, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 5, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", -5, 0.2, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", -10, 0.1, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", -5, 0.2, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 0, 0.2, "nearest"),
+					MakeProjectile("BlueBlast_strong_fast", 5, 0.1, "nearest"),
+					
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*1, 0),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*2, 0),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*3, 0),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*4, 0),
+					MakeProjectile("RoyalSlash_strong_medium", (360.0/5.0)*5, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*1, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*2, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*3, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*4, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*5, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*6, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*7, 0),
+					MakeProjectile("BlueBlast_strong_fast", (360.0/8.0)*8, 0),
 				]
 			},
 		]
@@ -6732,6 +7102,617 @@ var the_abyss_enemies = {
 		]
 	},
 }
+var ruined_temple_enemies = {
+	"imp_general" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(198,90), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 2000,
+		"defense" : 40,
+		"exp" : 2500,
+		"behavior" : 2,
+		"speed" : 8,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,50],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"summon" : "imp_legionnaire",
+						"summon_position" : Vector2(10,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "imp_legionnaire",
+						"summon_position" : Vector2(-10,0),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [50,100],
+				"attack_pattern" : [
+					MakeProjectile("RoyalSlash_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_medium", -10, 1, "nearest"),
+					MakeProjectile("Wave_mid_fast", 10, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -10, 2, "nearest"),
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,50],
+				"attack_pattern" : [
+					MakeProjectile("RoyalSlash_strong_medium", 10, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("RoyalSlash_strong_medium", -10, 1, "nearest"),
+					MakeProjectile("Wave_mid_fast", 10, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -10, 2, "nearest"),
+				]
+			}
+		]
+	},
+	"imp_legionnaire" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(160,40), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2,3],
+		},
+		
+		"health" : 1000,
+		"defense" : 20,
+		"exp" : 100,
+		"behavior" : 2,
+		"speed" : 15,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("RoyalSlash_strong_fast_short", 0, 0.4, "nearest"),
+				]
+			}
+		]
+	},
+	"demonic_spirit" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(162,90), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 4000,
+		"defense" : 10,
+		"exp" : 2500,
+		"behavior" : 1,
+		"speed" : 20,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 0.5,
+				"health" : [0,99.99999],
+				"on_spawn" : true,
+				"max_uses" : 3,
+				"attack_pattern" : [
+					{
+						"summon" : "lesser_demonic_spirit",
+						"summon_position" : Vector2(0,0),
+						"wait" : 0.6,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [99.99999,100],
+				"attack_pattern" : CreateSpiral(3, "BloodShuriken1", 0.2, null, 0.2, 16)
+			},
+			{
+				"duration" : 10,
+				"health" : [0,99.99999],
+				"attack_pattern" : CreateSpiral(3, "BloodShuriken1", 0.2, null, 0.2, 16)
+			}
+		]
+	},
+	"lesser_demonic_spirit" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(140,40), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [],
+		},
+		
+		"health" : 100,
+		"defense" : 10,
+		"exp" : 100,
+		"behavior" : 2,
+		"speed" : 25,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : CreateSpiral(1, "BloodSpinner_weak_fast", 0, null, 0.2, 5) + [MakeProjectile("None", -10, 1, "nearest")]
+			}
+		]
+	},
+	"demonic_beast" : {
+		"scale" : 1.2,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(126,90), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 5000,
+		"defense" : 20,
+		"exp" : 3000,
+		"behavior" : 1,
+		"speed" : 3,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"summon" : "demonic_fledgling",
+						"summon_position" : Vector2(-19,-1),
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_fledgling",
+						"summon_position" : Vector2(20,-5),
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_fledgling",
+						"summon_position" : Vector2(0,-18),
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("DemonicWave_strong_medium", 0, 0.2, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", 0, 0.2, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", 0, 0.2, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", 0, 2, "nearest"),
+				]
+			}
+		]
+	},
+	"demonic_fledgling" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(110,40), Vector2(30,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
+		"health" : 1000,
+		"defense" : 10,
+		"exp" : 100,
+		"behavior" : 1,
+		"speed" : 15,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("SmallDemonicBlast_weak_fast", 0, 0.2, "nearest"),
+				]
+			}
+		]
+	},
+	"eye_of_naa'zorak" : {
+		"scale" : 1.5,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,108), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [0,1],
+		},
+		
+		"health" : 100000,
+		"defense" : 30,
+		"exp" : 7000,
+		"behavior" : 1,
+		"speed" : 5,
+		"loot_pool" : special_loot_pools["eye_of_naa'zorak"],
+		"phases" : [
+			{
+				"duration" : 7,
+				"health" : [66, 100],
+				"attack_pattern" : [
+					MakeProjectile("Dart_strong_medium", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", (360.0/8.0)*8, 0.5, "nearest"),
+					
+					MakeProjectile("DemonicWave_strong_medium", (360.0/6.0)*1, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/6.0)*2, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/6.0)*3, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/6.0)*4, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/6.0)*5, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/6.0)*6, 0.5, "nearest"),
+					
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/7.0)*1, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/7.0)*2, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/7.0)*3, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/7.0)*4, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/7.0)*5, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/7.0)*6, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/7.0)*7, 0.5, "nearest"),
+					
+					MakeProjectile("GiantDemonicBlast_strong_slow", 10, 0, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_slow", -10, 0, "nearest"),
+				]
+			},
+			{
+				"duration" : 7,
+				"health" : [66, 100],
+				"attack_pattern" : [
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*1, 0),
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*2, 0),
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*3, 0),
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*4, 0),
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*5, 0.5),
+					
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*1, 0),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*2, 0),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*3, 0),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*4, 0),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*5, 0.5),
+					
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*1, 0),
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*2, 0),
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*3, 0),
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*4, 0),
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*5, 0.5),
+					
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*1, 0, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*2, 0, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*3, 0, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*4, 0, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*5, 0.5, "nearest"),
+					
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*1, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*2, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*3, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*4, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", (360.0/5.0)*5, 0.5, "nearest"),
+					
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*1, 0, "nearest"),
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*2, 0, "nearest"),
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*3, 0, "nearest"),
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*4, 0, "nearest"),
+					MakeProjectile("SmallDemonicBlast_weak_fast", (360.0/5.0)*5, 0.5, "nearest"),
+				] + CreateSpiral(2, "BloodSpinner_weak_fast", 0.1, null, 0.2, 16)
+			},
+			{
+				"duration" : 5,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"behavior" : 0,
+				"health" : [66, 99.9999],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 1,
+					},
+					{
+						"speech" : "You dare disrupt this ritual?..",
+						"wait" : 3,
+					},
+					{
+						"speech" : "BECOME A SACRIFICE!",
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/3.0)*1)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/3.0)*2)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/3.0)*3)*60,
+						"wait" : 0,
+					},
+				]
+			},
+			{
+				"duration" : 20,
+				"health" : [66,100],
+				"behavior" : 0,
+				"on_signal" : ["monolith_active"],
+				"on_spawn" : true,
+				"attack_pattern" : CreateSpiral(2, "DemonicBlast_mid_slow", 0.3, null, 0.2, 32, true)
+			},
+			
+			{
+				"duration" : 7,
+				"health" : [33, 66],
+				"behavior" : 1,
+				"attack_pattern" : [
+					MakeProjectile("Dart_strong_medium", -30, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", -20, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", -10, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", 30, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", 20, 0, "nearest"),
+					MakeProjectile("Dart_strong_medium", 10, 0.5, "nearest"),
+					
+					MakeProjectile("DemonicWave_mid_fast", -30, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast", -20, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast", -10, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast", 30, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast", 20, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast", 10, 1, "nearest"),
+				] + CreateSpiral(1, "BloodSpinner_strong_medium", 0, null, 0.2, 20) + [MakeProjectile("None", -10, 0.3, "nearest")]
+			},
+			{
+				"duration" : 7,
+				"health" : [33, 66],
+				"behavior" : 1,
+				"attack_pattern" : [
+					MakeProjectile("SmallDemonicBlast_mid_medium", -30, 0.1, "nearest"),
+					MakeProjectile("SmallDemonicBlast_mid_medium", -20, 0.1, "nearest"),
+					MakeProjectile("SmallDemonicBlast_mid_medium", -10, 0.1, "nearest"),
+					MakeProjectile("SmallDemonicBlast_mid_medium", 0, 0.1, "nearest"),
+					MakeProjectile("SmallDemonicBlast_mid_medium", 30, 0.1, "nearest"),
+					MakeProjectile("SmallDemonicBlast_mid_medium", 20, 0.1, "nearest"),
+					MakeProjectile("SmallDemonicBlast_mid_medium", 10, 0.1, "nearest"),
+					
+					MakeProjectile("DemonicBlast_strong_medium", 20, 0.2, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", 10, 0.2, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", 0, 0.2, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", -10, 0.2, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium", -20, 0.2, "nearest"),
+					
+					MakeProjectile("GiantDemonicBlast_strong_fast", -10, 0.3, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_fast", 0, 0.3, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_fast", 10, 0.3, "nearest"),
+				] + CreateSpiral(1, "DemonicWave_mid_fast", 0, null, 0.2, 16) + [MakeProjectile("None", -10, 0.3, "nearest")] + CreateSpiral(1, "BloodSpinner_strong_medium", 0, null, 0.2, 7) + [MakeProjectile("None", -10, 0.3, "nearest")]
+			},
+			{
+				"duration" : 5,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"behavior" : 0,
+				"health" : [33, 66],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 1,
+					},
+					{
+						"speech" : "I EMBODY PURE EVIL...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "KNOW SUFFERING!",
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/5.0)*1)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/5.0)*2)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/5.0)*3)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/5.0)*4)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/5.0)*5)*60,
+						"wait" : 0,
+					},
+				]
+			},
+			{
+				"duration" : 20,
+				"health" : [33,66],
+				"behavior" : 0,
+				"on_signal" : ["monolith_active"],
+				"on_spawn" : true,
+				"attack_pattern" : CreateSpiral(3, "DemonicBlast_mid_slow", 0.3, "Dart_mid_medium", 0.2, 32, true)
+			},
+			
+			{
+				"duration" : 7,
+				"health" : [0, 33],
+				"behavior" : 2,
+				"attack_pattern" : [
+					MakeProjectile("GiantDemonicBlast_strong_fast", -20, 0.3, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_fast", 20, 0.3, "nearest"),
+					
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*1, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*2, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*3, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*4, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*5, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*6, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*7, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*8, 1, "nearest"),
+					
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*9, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*10, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*11, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*12, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*13, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*14, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*15, 0, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*16, 1, "nearest"),
+				] + CreateSpiral(1, "DemonicBlast_mid_slow", 0, null, 0.2, 24)
+			},
+			{
+				"duration" : 5,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"behavior" : 0,
+				"health" : [0, 33],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 1,
+					},
+					{
+						"speech" : "YOU FOOLS!..",
+						"wait" : 3,
+					},
+					{
+						"speech" : "RETURN TO THE ABYSS!",
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/6.0)*1)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/5.0)*2)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/6.0)*3)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/6.0)*4)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/6.0)*5)*60,
+						"wait" : 0,
+					},
+					{
+						"summon" : "demonic_monolith",
+						"summon_position" : DegreesToVector((360.0/6.0)*6)*60,
+						"wait" : 0,
+					},
+				]
+			},
+			{
+				"duration" : 20,
+				"health" : [0,33],
+				"behavior" : 0,
+				"on_signal" : ["monolith_active"],
+				"on_spawn" : true,
+				"attack_pattern" : CreateSpiral(4, "DemonicBlast_mid_slow", 0.4, "Dart_mid_medium", 0.3, 32, true)
+			},
+		]
+	},
+	"demonic_monolith" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(90,90), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 2000,
+		"defense" : 1,
+		"exp" : 2000,
+		"behavior" : 0,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"signal" : "monolith_active",
+						"reciever" : "eye_of_naa'zorak",
+						"duration" : 2,
+						"wait" : 0,
+					},
+					MakeProjectile("BloodSpinner_weak_fast_short", -40, 0, "nearest"),
+					MakeProjectile("BloodSpinner_weak_fast_short", 40, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast_short", 0, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast_short", 10, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast_short", -10, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast_short", 20, 0, "nearest"),
+					MakeProjectile("DemonicWave_mid_fast_short", -20, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium_short", 30, 0, "nearest"),
+					MakeProjectile("DemonicBlast_strong_medium_short", -30, 1.5, "nearest"),
+					
+					{
+						"signal" : "monolith_active",
+						"reciever" : "eye_of_naa'zorak",
+						"duration" : 2,
+						"wait" : 0,
+					},
+					MakeProjectile("Dart_strong_medium_short", (360.0/4.0)*1, 0),
+					MakeProjectile("Dart_strong_medium_short", (360.0/4.0)*2, 0),
+					MakeProjectile("Dart_strong_medium_short", (360.0/4.0)*3, 0),
+					MakeProjectile("Dart_strong_medium_short", (360.0/4.0)*4, 1.5),
+				]
+			}
+		]
+	},
+}
 onready var enemies = CompileEnemies()
 func CompileEnemies():
 	var res = {}
@@ -6742,12 +7723,14 @@ func CompileEnemies():
 	res.merge(frozen_fortress_enemies)
 	res.merge(desert_catacombs_enemies)
 	res.merge(the_abyss_enemies)
+	res.merge(ruined_temple_enemies)
 	return res
 
 var dungeons = {
 	"island" : {},
 	"orc_vigil" : {
 		"type" : "encounter",
+		"dungeon_boss" : "vigil_guardian",
 		"room_size" : 100,
 		"spawnpoint" : Vector2(10,10)*8,
 		"tile_translation" : {
@@ -6757,6 +7740,7 @@ var dungeons = {
 	},
 	"orc_vigil_sanctum" : {
 		"type" : "encounter",
+		"dungeon_boss" : "atlas",
 		"room_size" : 100,
 		"spawnpoint" : Vector2(10,10)*8,
 		"tile_translation" : {
@@ -6765,6 +7749,7 @@ var dungeons = {
 	},
 	"the_abyss" : {
 		"type" : "encounter",
+		"dungeon_boss" : "salazar_awakened",
 		"room_size" : 100,
 		"spawnpoint" : Vector2(10,10)*8,
 		"tile_translation" : {
@@ -6773,6 +7758,7 @@ var dungeons = {
 	},
 	"frozen_fortress" : {
 		"type" : "procedural",
+		"dungeon_boss" : "frozen_monolith",
 		"basic_rooms" : ["Room1","Room2"],
 		"rooms_until_boss" : 1,
 		"room_size" : 26,
@@ -6786,8 +7772,9 @@ var dungeons = {
 	},
 	"desert_catacombs" : {
 		"type" : "procedural",
+		"dungeon_boss" : "mummified_king",
 		"basic_rooms" : ["Room1", "Room2", "Room3"],
-		"rooms_until_boss" : 3,
+		"rooms_until_boss" : 5,
 		"room_size" : 21,
 		"tile_translation" : {
 			4 : "mummified_spider",
@@ -6796,8 +7783,22 @@ var dungeons = {
 			7 : "mummified_king",
 		}
 	},
+	"ruined_temple" : {
+		"type" : "procedural",
+		"dungeon_boss" : "eye_of_naa'zarok",
+		"basic_rooms" : ["Room1", "Room2", "Room3"],
+		"rooms_until_boss" : 3,
+		"room_size" : 24,
+		"tile_translation" : {
+			6 : "demonic_beast",
+			7 : "demonic_spirit",
+			8 : "imp_general",
+			9 : "eye_of_naa'zorak",
+		}
+	},
 	"goblin_cellar" : {
 		"type" : "procedural",
+		"dungeon_boss" : "gobby",
 		"basic_rooms" : ["Room1", "Room2"],
 		"rooms_until_boss" : 5,
 		"room_size" : 21,
@@ -6979,8 +7980,8 @@ var items = {
 		"textures" : {}
 	},
 	105 : {
-		"name": "Warlord's Battleaxe",
-		"description" : "A heavy weapon forged for the highest ranking Trolls",
+		"name": "Hellrazor",
+		"description" : "A heavy axe, forged by the demon tribes for warriors of Naa'zorak",
 		"type" : "Sword",
 		"slot" : "weapon",
 		"tier" : "UT",
@@ -8362,12 +9363,12 @@ var items = {
 		"cooldown" : 6,
 		"buffs" : {
 			"invincible" : { "duration" : 2, "range" : 0},
-			"healing" : { "duration" : 3, "range" : 0},
+			"healing" : { "duration" : 2, "range" : 0},
 			"armored" : { "duration" : 4, "range" : 3},
 		},
 		"stats" : {
 			"health" : 150,
-			"vitality" : 30,
+			"defense" : 10,
 		},
 		"tier" : "UT",
 		
@@ -8667,7 +9668,7 @@ var items = {
 	},
 	471 : {
 		"name": "Desert Headdress",
-		"description" : "An expertly crafted headdress said to make it's wearer short tempered",
+		"description" : "An expertly crafted headdress, once worn by a great king",
 		"type" : "Cap",
 		"slot" : "helmet",
 		
@@ -8677,8 +9678,8 @@ var items = {
 			"damaging" : { "duration" : 2, "range" : 2},
 		},
 		"stats" : {
-			"attack" : 10,
-			"dexterity" : 5
+			"attack" : 8,
+			"speed" : 6
 		},
 		"tier" : "UT",
 		
@@ -8864,17 +9865,6 @@ var projectiles = {
 		"rotation" : 45,
 		"spin" : false,
 	},
-	"Ring" : {
-		"rect" : Rect2(50,0,10,10),
-		"rotation" : 90,
-		"spin" : false,
-		"scale" : 1.3,
-	},
-	"Dart" : {
-		"rect" : Rect2(60,0,10,10),
-		"rotation" : 45,
-		"spin" : false,
-	},
 	"GoldDart" : {
 		"rect" : Rect2(150,0,10,10),
 		"rotation" : 45,
@@ -8916,22 +9906,6 @@ var projectiles = {
 		"rotation" : 45,
 		"spin" : false,
 		"scale" : 1,
-	},
-	"Spinner" : {
-		"rect" : Rect2(70,0,10,10),
-		"rotation" : 45,
-		"spin" : true,
-	},
-	"GiantSpinner" : {
-		"rect" : Rect2(70,0,10,10),
-		"rotation" : 45,
-		"spin" : true,
-		"scale" : 1.4,
-	},
-	"Star" : {
-		"rect" : Rect2(80,0,10,10),
-		"rotation" : 45,
-		"spin" : true,
 	},
 	"Blast" : {
 		"rect" : Rect2(90,0,10,10),
@@ -9189,6 +10163,69 @@ var projectiles = {
 		"rotation" : 45,
 		"spin" : false,
 		"scale" : 1.4,
+	},
+	"GiantDemonicBlast" : {
+		"rect" : Rect2(230,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.4,
+	},
+	"DemonicBlast" : {
+		"rect" : Rect2(230,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"SmallDemonicBlast" : {
+		"rect" : Rect2(230,30,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"DemonicWave" : {
+		"rect" : Rect2(240,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
+	"BloodSpinner" : {
+		"rect" : Rect2(250,20,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1,
+	},
+	"BloodShuriken" : {
+		"rect" : Rect2(250,30,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1,
+	},
+	"Ring" : {
+		"rect" : Rect2(50,0,10,10),
+		"rotation" : 90,
+		"spin" : false,
+		"scale" : 1.3,
+	},
+	"Dart" : {
+		"rect" : Rect2(60,0,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Spinner" : {
+		"rect" : Rect2(70,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+	},
+	"GiantSpinner" : {
+		"rect" : Rect2(70,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1.4,
+	},
+	"Star" : {
+		"rect" : Rect2(80,0,10,10),
+		"rotation" : 45,
+		"spin" : true,
 	},
 }
 
@@ -9911,11 +10948,11 @@ func GetMultiplier(item, _class = current_class):
 		
 	return result
 
-func GetItem(item, include_class_boost = false):
+func GetItem(item, include_class_boost = false, _class = current_class):
 	if items.has(int(item)) and include_class_boost:
 		var _item = items[int(item)].duplicate(true)
-		for type in characters[current_class].multipliers.keys():
-			var multipliers = characters[current_class].multipliers[type]
+		for type in characters[_class].multipliers.keys():
+			var multipliers = characters[_class].multipliers[type]
 			if _item.type == type:
 				for subject in multipliers.keys():
 					if subject == "damage":

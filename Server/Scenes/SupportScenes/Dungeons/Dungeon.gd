@@ -1,6 +1,7 @@
 extends "res://Scenes/Main/Nexus.gd"
 
 #Room size accounts for hallways in between
+var dungeon_boss = "mummified_king"
 var dungeon_name = "poop"
 var room_size = 20
 var map = {}
@@ -22,13 +23,12 @@ func _physics_process(delta):
 	if sync_clock_counter ==  60:
 		sync_clock_counter = 0
 		
-		var is_empty = get_node("YSort/Players").get_child_count() == 0 and get_child_count() == 1
+		var is_empty = get_node("YSort/Players").get_child_count() == 0 and get_child_count() == 2
 		var is_open = get_parent().object_list.has(name)
 		if is_empty and not is_open:
 			get_node("/root/Server").player_instance_tracker.erase(instance_tree)
 			get_parent().object_list.erase(name)
 			get_parent().remove_child(self)
-			queue_free()
 
 #For creating new dungeon instances
 func PopulateDungeon():
@@ -74,7 +74,7 @@ func PopulateDungeon():
 		
 		room_to_add.position = room*(room_size)*8
 		room_to_add.name = str(room)
-		add_child(room_to_add)
+		$YSort.add_child(room_to_add)
 		
 		if room_data.has("direction"):
 			var hallway_to_add = hallway_nodes[room_data.direction].instance()
@@ -85,4 +85,4 @@ func PopulateDungeon():
 			hallways_to_add.append(hallway_to_add)
 	
 	for hallway in hallways_to_add:
-		add_child(hallway)
+		$YSort.add_child(hallway)
