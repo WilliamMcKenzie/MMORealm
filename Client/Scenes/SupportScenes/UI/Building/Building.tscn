@@ -440,31 +440,47 @@ margin_bottom = 58.0
 
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer"]
 margin_top = 6.0
-margin_right = 70.0
+margin_right = 72.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 8
 text = "State:"
 
-[node name="CurrentState" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer"]
-margin_left = 74.0
+[node name="StateContainer" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer"]
+margin_left = 76.0
+margin_right = 136.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 60, 0 )
+size_flags_horizontal = 9
+flat = true
+align = 0
+icon_align = 2
+expand_icon = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer"]
+margin_right = 62.0
+margin_bottom = 20.0
+size_flags_vertical = 0
+
+[node name="CurrentState" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer/HBoxContainer"]
 margin_top = 6.0
-margin_right = 112.0
+margin_right = 38.0
 margin_bottom = 20.0
 size_flags_vertical = 8
 custom_colors/font_color = Color( 0.0823529, 0.819608, 0.231373, 1 )
 text = "Closed"
 
-[node name="Switch" type="TextureButton" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer"]
+[node name="Switch" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer/HBoxContainer"]
 material = SubResource( 70 )
-margin_left = 116.0
-margin_right = 136.0
+margin_left = 42.0
+margin_right = 62.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 20, 20 )
+size_flags_horizontal = 0
 size_flags_vertical = 0
-texture_normal = SubResource( 47 )
+texture = SubResource( 47 )
 expand = true
-stretch_mode = 4
+stretch_mode = 5
 
 [node name="GuestlistContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 margin_top = 66.0
@@ -509,3 +525,5 @@ custom_fonts/font = SubResource( 63 )
 anims/DeInspectBuilding = SubResource( 73 )
 anims/InspectBuilding = SubResource( 74 )
 anims/RESET = SubResource( 75 )
+
+[connection signal="text_entered" from="PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer/Input" to="." method="_on_Input_text_entered"]

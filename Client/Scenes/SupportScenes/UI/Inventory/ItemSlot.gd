@@ -103,7 +103,8 @@ func InspectItem():
 		last_click = 0
 	GameUI.get_node("Inventory").InspectItem(item)
 func DeInspectItem():
-	GameUI.get_node("Inventory").DeInspectItem(item)
+	if item:
+		GameUI.get_node("Inventory").DeInspectItem(item)
 
 func SetItem(_item, _quantity):
 	item = _item

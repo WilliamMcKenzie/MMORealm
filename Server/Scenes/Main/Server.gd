@@ -157,6 +157,34 @@ func ConfirmUsername(result, username, player_id):
 	rpc_id(player_id, "ConfirmUsername", result, username)
 
 #BUILDING
+remote func AddGuest(guest):
+	var player_id = get_tree().get_rpc_sender_id()
+	var house_id = "house " + str(player_id)
+	var house_node = get_node("Instances/nexus/"+house_id)
+	
+	if player_state_collection[player_id]["I"] != ["nexus", house_id]:
+		return
+	
+	house_node.AddGuest(guest)
+remote func RemoveGuest(guest):
+	var player_id = get_tree().get_rpc_sender_id()
+	var house_id = "house " + str(player_id)
+	var house_node = get_node("Instances/nexus/"+house_id)
+	
+	if player_state_collection[player_id]["I"] != ["nexus", house_id]:
+		return
+	
+	house_node.RemoveGuest(guest)
+remote func ToggleState():
+	var player_id = get_tree().get_rpc_sender_id()
+	var house_id = "house " + str(player_id)
+	var house_node = get_node("Instances/nexus/"+house_id)
+	
+	if player_state_collection[player_id]["I"] != ["nexus", house_id]:
+		return
+	
+	house_node.ToggleState()
+
 remote func RemoveBuilding(position):
 	var player_id = get_tree().get_rpc_sender_id()
 	var house_id = "house " + str(player_id)

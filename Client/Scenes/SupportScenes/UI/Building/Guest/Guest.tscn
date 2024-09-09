@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scenes/SupportScenes/UI/Building/Guest/Guest.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=69]
 size = 24
@@ -25,6 +26,7 @@ custom_constants/margin_right = 3
 custom_constants/margin_top = 3
 custom_constants/margin_left = 3
 custom_constants/margin_bottom = 3
+script = ExtResource( 2 )
 
 [node name="Guest" type="HBoxContainer" parent="."]
 margin_left = 3.0

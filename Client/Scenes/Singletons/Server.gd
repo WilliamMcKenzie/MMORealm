@@ -1,11 +1,11 @@
 extends Node
 
-var url = "wss://gameserver.lagso.com"
+#var url = "wss://gameserver.lagso.com"
 #var url = "ws://159.203.0.78:20200"
-#var url = "ws://localhost:20200"
+var url = "ws://localhost:20200"
 
-var ip_address = "159.203.0.78"
-#var ip_address = "localhost"
+#var ip_address = "159.203.0.78"
+var ip_address = "localhost"
 var port = 20200
 
 var network = NetworkedMultiplayerENet.new()
@@ -371,6 +371,12 @@ remote func ReturnIslandData(instance_data):
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
 
+func AddGuest(guest):
+	rpc_id(1, "AddGuest", guest)
+func RemoveGuest(guest):
+	rpc_id(1, "RemoveGuest", guest)
+func ToggleState():
+	rpc_id(1, "ToggleState")
 func RemoveBuilding(position):
 	rpc_id(1, "RemoveBuilding", position)
 func PlaceBuilding(type, position):

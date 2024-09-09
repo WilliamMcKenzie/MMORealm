@@ -50,6 +50,7 @@ func SetHouseData(account_data):
 
 func CreateStorage(object, index):
 	var storage_id = "loot "+get_node("/root/Server").generate_unique_id()+" "+str(index)
+	print(object.type)
 	if object.position is String:
 		var vector2_position = Vector2.ZERO
 		object.position = object.position.replace("(","").replace(")","").replace(",","").split(" ")
@@ -87,6 +88,38 @@ func CreateStatue(object, index):
 		"position": object.position,
 		"instance_tree": instance_tree
 	}
+
+func ToggleState():
+	open_mode = "closed" if open_mode == "open" else "open"
+	var server = get_node("/root/Server")
+	var instance_tree = server.player_state_collection[player_id]["I"]
+	var player_container = server.get_node("Instances/"+server.StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+		
+	var house_data = player_container.account_data.home
+	house_data.open_mode = open_mode
+	get_node("/root/Server").rpc_id(player_id, "UpdateHouseData", house_data)
+
+func AddGuest(guest):
+	if not whitelist.has(guest):
+		whitelist.append(guest)
+		var server = get_node("/root/Server")
+		var instance_tree = server.player_state_collection[player_id]["I"]
+		var player_container = server.get_node("Instances/"+server.StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+		
+		var house_data = player_container.account_data.home
+		house_data.whitelist = whitelist
+		get_node("/root/Server").rpc_id(player_id, "UpdateHouseData", house_data)
+
+func RemoveGuest(guest):
+	if whitelist.has(guest) and guest != get_node("/root/Server").player_name_by_id[player_id]:
+		whitelist.erase(guest)
+		var server = get_node("/root/Server")
+		var instance_tree = server.player_state_collection[player_id]["I"]
+		var player_container = server.get_node("Instances/"+server.StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+		
+		var house_data = player_container.account_data.home
+		house_data.whitelist = whitelist
+		get_node("/root/Server").rpc_id(player_id, "UpdateHouseData", house_data)
 
 func RemoveBuilding(_position):
 	var server = get_node("/root/Server")
@@ -243,6 +276,7 @@ func SaveData():
 	var player_container = server.get_node("Instances/"+server.StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
 	
 	var house_data = player_container.account_data.home
+	house_data.open_mode = open_mode
 	house_data.whitelist = whitelist
 	house_data.tiles = tiles
 	

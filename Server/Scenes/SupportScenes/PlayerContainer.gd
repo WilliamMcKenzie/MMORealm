@@ -512,7 +512,7 @@ func LootItem(to_data, from_data):
 	
 	var object_reference = get_parent().get_parent().get_parent().object_list[loot_id]
 	var loot = object_reference.loot
-	if not "Storage" in object_reference.name:
+	if not "storage" in object_reference.name:
 		object_reference.end_time = OS.get_system_time_msecs()+40000
 	
 	#Identifying items
@@ -580,7 +580,7 @@ func LootItem(to_data, from_data):
 		loot[to_data.index] = selected_item_raw
 		loot[from_data.index] = replaced_item_raw
 		
-	if loot == [null,null,null,null,null,null,null,null] and object_reference.name != "Storage":
+	if loot == [null,null,null,null,null,null,null,null] and object_reference.name != "storage":
 		get_parent().get_parent().get_parent().object_list.erase(loot_id)
 
 	get_node("/root/Server").SendCharacterData(name, character)

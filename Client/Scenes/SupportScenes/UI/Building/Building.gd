@@ -6,6 +6,7 @@ var inspecting_building = null
 
 func _ready():
 	$PanelContainer/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/ExitButton.connect("pressed", self, "ToggleBuilding")
+	$PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer.connect("pressed", self, "ToggleState")
 
 func InspectBuilding(_type):
 	if not _type or not ClientData.GetBuilding(_type):
@@ -166,11 +167,12 @@ func Close():
 	active = false
 
 func SetHouseData(house_data):
+	print(house_data.open_mode)
 	if inspecting_building:
 		InspectBuilding(inspecting_building)
 	var whitelist = house_data.whitelist
 	var open_mode = house_data.open_mode
-	var state_container = $PanelContainer/MarginContainer/VBoxContainer/OpenContainer
+	var state_container = $PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer/HBoxContainer
 	var guest_list = $PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer/MarginContainer/ScrollContainer/Guestlist
 	
 	if open_mode != state_container.get_node("CurrentState").text.to_lower().replace(" ", "_"):
@@ -183,12 +185,14 @@ func SetHouseData(house_data):
 			"closed" : Color(62.0/255, 118.0/255, 221.0/255),
 		}
 		state_container.get_node("CurrentState").text = open_mode.replace("_", " ").capitalize()
-		state_container.get_node("Switch").texture_normal.region.position.x = icon_translation[open_mode]
+		state_container.get_node("CurrentState").add_color_override("font_color", color_translation[open_mode])
+		state_container.get_node("Switch").texture.region.position.x = icon_translation[open_mode]
 	
 	for guest in whitelist:
 		if not guest_list.has_node(guest):
 			var guest_instance = load("res://Scenes/SupportScenes/UI/Building/Guest/Guest.tscn").instance()
 			guest_instance.name = guest
+			guest_instance.get_node("Guest/Name").text = guest
 			guest_list.add_child(guest_instance)
 	for guest in guest_list.get_children():
 		if not whitelist.has(guest.name):
@@ -229,6 +233,13 @@ func SelectBuilding(type):
 	brush = type
 	$BuildingBackground.dragging = false
 
+
+func _on_Input_text_entered(new_guest):
+	Server.AddGuest(new_guest)
+	$PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer/Input.text = ""
+	$PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer/Input.release_focus()
+func ToggleState():
+	Server.ToggleState()
 func PlaceBuilding(position, type=brush):
 	if type == "remover":
 		Server.RemoveBuilding(position)
