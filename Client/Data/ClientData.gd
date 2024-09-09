@@ -79,6 +79,17 @@ var basic_loot_pools = {
 	},
 }
 var special_loot_pools = {
+	"rokk_the_rough" : {
+		"override" : "encounter_1",
+		"soulbound_loot" : [
+			{
+				"item" : 505,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 	"mummified_king" : {
 		"override" : "encounter_1",
 		"soulbound_loot" : [
@@ -6804,6 +6815,121 @@ var desert_catacombs_enemies = {
 		]
 	},
 }
+var rocky_cave_enemies = {
+	"rokk_the_rough" : {
+		"scale" : 1.5,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(36,108), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
+		"health" : 30000,
+		"defense" : 20,
+		"exp" : 2000,
+		"behavior" : 1,
+		"speed" : 5,
+		"loot_pool" : special_loot_pools["rokk_the_rough"],
+		"phases" : [
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("RoyalSlash_weak_medium", 20, 0, "nearest"),
+					MakeProjectile("RoyalSlash_weak_medium", 0, 0, "nearest"),
+					MakeProjectile("RoyalSlash_weak_medium", -20, 0.5, "nearest"),
+					MakeProjectile("Wave_weak_fast", 20, 0, "nearest"),
+					MakeProjectile("Wave_weak_fast", 0, 0, "nearest"),
+					MakeProjectile("Wave_weak_fast", -20, 2, "nearest"),
+				]
+			},
+		]
+	},
+	"lil_rock_golem" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(200,40), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 200,
+		"defense" : 10,
+		"exp" : 30,
+		"behavior" : 2,
+		"speed" : 4,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*1, 0),
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*2, 0),
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*3, 0),
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*4, 0),
+					MakeProjectile("Wave_weak_fast", (360.0/5.0)*5, 2),
+				]
+			}
+		]
+	},
+	"rock_sprite" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(220,40), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [],
+		},
+		
+		"health" : 100,
+		"defense" : 5,
+		"exp" : 30,
+		"behavior" : 1,
+		"speed" : 6,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_weak_fast", 0, 0.4, "nearest"),
+				]
+			}
+		]
+	},
+	"rock_scorpion" : {
+		"scale" : 1.2,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(240,40), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [],
+		},
+		
+		"health" : 200,
+		"defense" : 15,
+		"exp" : 60,
+		"behavior" : 2,
+		"speed" : 7,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Ball_mid_fast", 0, 0.7, "nearest"),
+				]
+			}
+		]
+	},
+}
 var the_abyss_enemies = {
 	"salazar_awakened" : {
 		"scale" : 1,
@@ -7109,8 +7235,8 @@ var ruined_temple_enemies = {
 		"height" : 16,
 		"rect" : Rect2(Vector2(198,90), Vector2(36,18)),
 		"animations" : {
-			"Idle" : [0],
-			"Attack" : [1],
+			"Idle" : [0,1],
+			"Attack" : [2,3],
 		},
 		
 		"health" : 2000,
@@ -7724,6 +7850,7 @@ func CompileEnemies():
 	res.merge(desert_catacombs_enemies)
 	res.merge(the_abyss_enemies)
 	res.merge(ruined_temple_enemies)
+	res.merge(rocky_cave_enemies)
 	return res
 
 var dungeons = {
@@ -7783,9 +7910,22 @@ var dungeons = {
 			7 : "mummified_king",
 		}
 	},
+	"rocky_cave" : {
+		"type" : "procedural",
+		"dungeon_boss" : "rokk_the_rough",
+		"basic_rooms" : ["Room1", "Room2", "Room3"],
+		"rooms_until_boss" : 4,
+		"room_size" : 21,
+		"tile_translation" : {
+			4 : "rokk_the_rough",
+			5 : "lil_rock_golem",
+			6 : "rock_sprite",
+			7 : "rock_scorpion",
+		}
+	},
 	"ruined_temple" : {
 		"type" : "procedural",
-		"dungeon_boss" : "eye_of_naa'zarok",
+		"dungeon_boss" : "eye_of_naa'zorak",
 		"basic_rooms" : ["Room1", "Room2", "Room3"],
 		"rooms_until_boss" : 3,
 		"room_size" : 24,
@@ -7828,6 +7968,24 @@ var items = {
 		"slot" : "na",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,13)],
+	},
+	1 : {
+		"name": "Timber",
+		"description" : "A few logs, can be used to build (/home)",
+		"tier" : "4",
+		"type" : "Material",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,13)],
+	},
+	2 : {
+		"name": "Stones",
+		"description" : "A few stones, can be used to build (/home)",
+		"tier" : "4",
+		"type" : "Material",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,13)],
 	},
 	100 : {
 		"name": "Short Sword",
@@ -8981,16 +9139,16 @@ var items = {
 		}
 	},
 	505 : {
-		"name": "Bastion Platebody",
-		"description" : "One of the three holy armors forged with the most pure of metal",
+		"name": "Bedrock Platebody",
+		"description" : "A ridiculously durable armor taken from the lowest parts of the rocky caves",
 		"type" : "Armor",
 		"slot" : "armor",
 		"tier" : "UT",
 		
 		"stats" : {
-			"defense" : 15,
-			"vitality" : 20,
-			"health" : 100
+			"defense" : 14,
+			"vitality" : 5,
+			"health" : 50
 		},
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,4)],
@@ -9000,7 +9158,7 @@ var items = {
 			"bandNew" : RgbToColor(0.0, 0.0, 0.0),
 		},
 		"textures" : {
-			"bodyTexture" : "bastion_platebody",
+			"bodyTexture" : "bedrock_platebody",
 		}
 	},
 	533 : {
@@ -9732,7 +9890,7 @@ var buildings = {
 		"description" : "For storing up to 8 items.",
 		
 		"craftable" : true,
-		"materials" : [0,0,1],
+		"materials" : [1, 1, 2],
 		"max" : 20,
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(50,40)],
 	},
@@ -9752,18 +9910,21 @@ var buildings = {
 		"description" : "Hard as rock.",
 		
 		"craftable" : false,
-		"materials" : [],
+		"materials" : [2],
+		"max" : 50,
 		"path" : ["tiles/tileset.png", 26, 26, Vector2(70,60)],
 		"tile" : 3,
 	},
 	"stone_wall" : {
 		"name" : "Stone Wall",
 		"type" : "tile",
+		"wall" : true,
 		"description" : "Fortress strength in every block.",
 		
 		"craftable" : false,
-		"materials" : [],
-		"path" : ["tiles/tileset.png", 26, 26, Vector2(130,70)],
+		"materials" : [2,2],
+		"max" : 25,
+		"path" : ["tiles/tileset.png", 26, 26, Vector2(70,70)],
 		"tile" : 4,
 	},
 	"wooden_planks" : {
@@ -9772,20 +9933,21 @@ var buildings = {
 		"description" : "Straight from the docks.",
 		
 		"craftable" : true,
-		"materials" : [0,0,0],
-		"max" : 20,
-		"path" : ["tiles/tileset.png", 26, 26, Vector2(140,60)],
+		"materials" : [1],
+		"max" : 50,
+		"path" : ["tiles/tileset.png", 26, 26, Vector2(130,60)],
 		"tile" : 5,
 	},
 	"wooden_wall" : {
 		"name" : "Wooden Wall",
 		"type" : "tile",
+		"wall" : true,
 		"description" : "Carved with care, built to last.",
 		
 		"craftable" : true,
-		"materials" : [0,0,0],
-		"max" : 20,
-		"path" : ["tiles/tileset.png", 26, 26, Vector2(140,60)],
+		"materials" : [1,1],
+		"max" : 25,
+		"path" : ["tiles/tileset.png", 26, 26, Vector2(130,70)],
 		"tile" : 6,
 	},
 	"apprentice_statue" : {

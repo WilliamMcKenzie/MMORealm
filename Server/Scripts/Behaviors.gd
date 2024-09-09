@@ -59,7 +59,6 @@ func Wander(enemy, tick_rate, root):
 
 #Chase
 func Chase(enemy, tick_rate, root):
-	
 	var pos = enemy["position"]
 	var speed = enemy["speed"]
 	

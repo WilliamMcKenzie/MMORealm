@@ -9,8 +9,10 @@ func _physics_process(delta):
 	last_click += delta
 
 func _ready():
-	$TouchScreenButton.connect("pressed", self, "InspectBuilding")
-	connect("pressed", self, "InspectBuilding")
+	if str(OS.get_model_name()) == 'GenericDevice':
+		connect("pressed", self, "InspectBuilding")
+	else:
+		$TouchScreenButton.connect("pressed", self, "InspectBuilding")
 	connect("mouse_exited", self, "DeInspectBuilding")
 	connect("focus_exited", self, "DeInspectBuilding")
 

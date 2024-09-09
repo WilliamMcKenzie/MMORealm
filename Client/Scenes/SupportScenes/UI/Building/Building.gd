@@ -13,9 +13,10 @@ func InspectBuilding(_type):
 	
 	var building = ClientData.GetBuilding(_type)
 	
-	var animator = $BuildingAnimations
-	animator.play("InspectBuilding")
-	inspecting_building = _type
+	if inspecting_building != _type:
+		var animator = $BuildingAnimations
+		animator.play("InspectBuilding")
+		inspecting_building = _type
 	$InspectBuilding.visible = true
 	
 	var building_name = $InspectBuilding/MarginContainer/VBoxContainer/BuildingName
@@ -29,7 +30,6 @@ func InspectBuilding(_type):
 	var max_tag = $InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/Max
 	
 	building_name.text = building.name
-	building_sprite.texture.region = Rect2(building.path[3], Vector2(10, 10))
 	building_description.text = building.description + "\n"
 	
 	var spriteTexture = load("res://Assets/"+building.path[0])

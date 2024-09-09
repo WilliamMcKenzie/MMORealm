@@ -1,11 +1,11 @@
 extends Node
 
-#var url = "wss://lagso.com"
+var url = "wss://lagso.com"
 #var url = "ws://143.110.213.88:20201"
-var url = "ws://localhost:20201"
+#var url = "ws://localhost:20201"
 
-#var ip_address = "143.110.213.88"
-var ip_address = "localhost"
+var ip_address = "143.110.213.88"
+#var ip_address = "localhost"
 var port = 20201
 var network = NetworkedMultiplayerENet.new()
 var html_network = WebSocketClient.new();

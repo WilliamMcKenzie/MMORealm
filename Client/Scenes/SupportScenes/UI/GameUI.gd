@@ -158,15 +158,13 @@ func SetCharacterData(character):
 	
 	#Exp
 	$LeftContainer/BarContainer/ExpContainer/ExpBar.ChangeExp(100*pow(1.1962,character.level), character.exp)
-	if not last_character:
-		pass
-	elif character.exp > last_character.exp:
-		var difference = character.exp - last_character.exp
+	if last_character and character.exp != last_character.exp:
+		var difference = (character.exp - last_character.exp) if(character.exp > last_character.exp) else character.exp
 		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("exp", difference)
-	elif character.level > last_character.level:
+	if last_character and character.level > last_character.level:
 		var difference = character.level - last_character.level
 		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("level", difference)
-	elif character.ascension_stones > last_character.ascension_stones:
+	if last_character and character.ascension_stones > last_character.ascension_stones:
 		var difference = character.ascension_stones - last_character.ascension_stones
 		Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").ShowIndicator("ascension", difference)
 	#Items

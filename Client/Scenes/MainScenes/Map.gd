@@ -125,11 +125,10 @@ func _physics_process(delta):
 		var enemies = get_node("YSort/Enemies")
 		clock_sync_timer_2 = 0
 		for child in enemies.get_children():
-			pass
-			#if child.visible == true and not child.is_active and world_state_buffer[2]["E"].has(child.name):
-				#child.Activate(child.enemy_type)
-			#elif child.visible == true and not child.is_active:
-				#child.DeActivate()
+			if child.visible == true and not child.is_active and world_state_buffer[2]["E"].has(child.name):
+				child.Activate(child.enemy_type)
+			elif child.visible == true and not child.is_active:
+				child.DeActivate()
 
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:

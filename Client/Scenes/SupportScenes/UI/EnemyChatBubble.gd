@@ -14,7 +14,7 @@ func _physics_process(delta):
 		
 		if scene.has_node("YSort/Enemies/"+id):
 			var node = scene.get_node("YSort/Enemies/"+id)
-			self.position = (node.get_node("IndicatorPlaceholder").global_position - root_pos)/0.18
+			self.position = (node.get_node("IndicatorPlaceholder").global_position - root_pos)/0.2
 			self.z_index = node.global_position.y
 			self.visible = true
 		else:

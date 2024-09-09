@@ -62,8 +62,8 @@ var default_account_data = {
 				"grass" : 0,
 				"stone" : 0,
 				"stone_wall" : 0,
-				"wooden_planks" : 0,
-				"wooden_wall" : 0,
+				"wooden_planks" : 20,
+				"wooden_wall" : 10,
 			},
 		}
 	},

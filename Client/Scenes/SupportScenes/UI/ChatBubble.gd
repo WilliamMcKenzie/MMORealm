@@ -14,7 +14,7 @@ func _physics_process(delta):
 		
 		if scene.has_node("YSort/OtherPlayers/"+id):
 			var node = scene.get_node("YSort/OtherPlayers/"+id)
-			self.position = (node.global_position - root_pos)/0.18
+			self.position = (node.global_position - root_pos)/0.2
 			self.z_index = node.global_position.y
 		elif id == str(get_tree().get_network_unique_id()):
 			self.position = Vector2.ZERO

@@ -94,7 +94,7 @@ func SetSpriteData(sprite, path):
 func _physics_process(delta):
 	if GameUI.is_dead:
 		return
-	
+
 	UpdateStatusEffects()
 	MovePlayer(delta)
 	SpeedModifiers()
