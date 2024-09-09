@@ -3211,7 +3211,10 @@ var realm_enemies = {
 			"Idle" : [0,1],
 			"Attack" : [],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.1,
+			"name" : "rocky_cave"
+		},
 		"health" : 300,
 		"defense" : 5,
 		"exp" : 89,
@@ -3545,7 +3548,10 @@ var realm_enemies = {
 			"Idle" : [0,1],
 			"Attack" : [2],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.1,
+			"name" : "rocky_cave"
+		},
 		"health" : 200,
 		"defense" : 0,
 		"exp" : 43,
@@ -3772,7 +3778,10 @@ var realm_enemies = {
 			"Idle" : [0,1],
 			"Attack" : [2,3],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.2,
+			"name" : "rocky_cave"
+		},
 		"health" : 300,
 		"defense" : 5,
 		"exp" : 64,
