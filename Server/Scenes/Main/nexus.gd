@@ -167,7 +167,7 @@ func _physics_process(delta):
 				var is_effect = current_attack.has("effect")
 				var is_dead = current_attack.has("dead")
 				
-				if is_projectile:
+				if is_projectile and not (enemy_list[enemy_id].has("dead") and enemy_list[enemy_id]["dead"] == true):
 					#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
 					var direction = current_attack["direction"].normalized()
 					var no_projectile = false

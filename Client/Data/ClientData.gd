@@ -1524,6 +1524,24 @@ var rulers = {
 		"loot_pool" : special_loot_pools["oranix"],
 		"phases" : [
 			{
+				"duration" : 13,
+				"behavior" : 0,
+				"speed" : 0,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [-100,0],
+				"attack_pattern" : [
+					{
+						"speech" : "No matter, the vigil shall bring you to ruin!",
+						"wait" : 3,
+					},
+					{
+						"speech" : "No matter, the vigil shall bring you to ruin!",
+						"wait" : 10,
+					},
+				]
+			},
+			{
 				"duration" : 12,
 				"behavior" : 1,
 				"speed" : 5,
@@ -1922,6 +1940,24 @@ var rulers = {
 		"loot_pool" : special_loot_pools["vajira"],
 		"phases" : [
 			{
+				"duration" : 13,
+				"behavior" : 0,
+				"speed" : 0,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [-100,0],
+				"attack_pattern" : [
+					{
+						"speech" : "Make sure that monster dosen't escape! He is your burden now.",
+						"wait" : 3,
+					},
+					{
+						"speech" : "Make sure that monster dosen't escape! He is your burden now.",
+						"wait" : 10,
+					},
+				]
+			},
+			{
 				"duration" : 12,
 				"behavior" : 1,
 				"speed" : 5,
@@ -2097,6 +2133,24 @@ var rulers = {
 		},
 		"loot_pool" : special_loot_pools["raa'sloth"],
 		"phases" : [
+			{
+				"duration" : 13,
+				"behavior" : 0,
+				"speed" : 0,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [-100,0],
+				"attack_pattern" : [
+					{
+						"speech" : "I am merely a pawn, Naa'zorak shall char your bones!",
+						"wait" : 3,
+					},
+					{
+						"speech" : "I am merely a pawn, Naa'zorak shall char your bones!",
+						"wait" : 10,
+					},
+				]
+			},
 			{
 				"duration" : 12,
 				"behavior" : 1,
@@ -8491,7 +8545,7 @@ var items = {
 		
 		"projectiles" : [
 			{
-				"damage" : [5,10],
+				"damage" : [10,20],
 				"projectile" : "Water1",
 				"formula" : "0",
 				"piercing" : false,
@@ -8501,7 +8555,7 @@ var items = {
 				"offset" : DegreesToVector(20),
 			},
 			{
-				"damage" : [10,20],
+				"damage" : [20,30],
 				"projectile" : "Water2",
 				"formula" : "0",
 				"piercing" : false,
@@ -8511,7 +8565,7 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [5,10],
+				"damage" : [10,20],
 				"projectile" : "Water1",
 				"formula" : "0",
 				"piercing" : false,

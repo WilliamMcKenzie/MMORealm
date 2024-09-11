@@ -22,8 +22,8 @@ material = ExtResource( 2 )
 position = Vector2( 14, 9.826 )
 scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
-hframes = 15
-vframes = 15
+region_enabled = true
+region_rect = Rect2( 0, 72, 18, 18 )
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( 0, -8 )

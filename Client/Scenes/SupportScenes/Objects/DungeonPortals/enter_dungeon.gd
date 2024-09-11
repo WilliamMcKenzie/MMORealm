@@ -2,6 +2,13 @@ extends Node2D
 
 var object_id
 var portal_name
+var ruler
+var island_translation = {
+	"oranix" : Vector2(0,18),
+	"vajira" : Vector2(0,36),
+	"raa'sloth" : Vector2(0,54),
+	"salazar" : Vector2(0,72),
+}
 
 func _ready():
 	randomize()
@@ -10,7 +17,9 @@ func _ready():
 	var scale_amt = round(rand_range(0.9, 1.2))
 	if has_node("Control"):
 		$Control.rect_scale = Vector2(scale_amt,scale_amt)
-	
+	if ruler and island_translation.has(ruler):
+		$Control/Sprite.region_rect.position = island_translation[ruler]
+
 #Interface Section
 func OnPortal(body):
 	if body.get_parent().has_method("DefinePlayerState"):
