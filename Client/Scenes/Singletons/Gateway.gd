@@ -1,11 +1,11 @@
 extends Node
 
-#var url = "wss://lagso.com"
+var url = "wss://lagso.com"
 #var url = "ws://143.110.213.88:20201"
-var url = "ws://localhost:20201"
+#var url = "ws://localhost:20201"
 
-#var ip_address = "143.110.213.88"
-var ip_address = "localhost"
+var ip_address = "143.110.213.88"
+#var ip_address = "localhost"
 var port = 20201
 var network = NetworkedMultiplayerENet.new()
 var html_network = WebSocketClient.new();
@@ -44,7 +44,7 @@ func ConnectToServerHTML():
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(html_network)
 
-	#custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
+	custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
 	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
 
 func ConnectToServerDefault():
@@ -89,6 +89,9 @@ func _onConnectionSucceeded():
 		RequestCreateAccount()
 	if(task == 0):
 		RequestLogin()
+
+func _onConnectionFailed():
+	print("connectionFailed")
 
 func FetchAccountData():
 	rpc_id(1, "FetchAccountData", email, password)
