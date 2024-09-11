@@ -37,7 +37,7 @@ var last_tick = 0
 #Tutorial
 var in_tutorial = false
 var tutorial_step = 0
-var tutorial_step_translation = ["Intro", "Controls", "Backpack", "Ability", "Quest", "Stats", "Final"]
+var tutorial_step_translation = ["Intro", "Controls", "Backpack", "Ability", "Quest", "Stats", "Ascend", "Final"]
 
 var clock_sync_timer = 0
 var clock_sync_timer_2 = 0
@@ -385,7 +385,7 @@ func GiveBuff(amount, stat, duration):
 #Items
 
 func IncreaseStat(stat):
-	if in_tutorial and tutorial_step == 5:
+	if in_tutorial and tutorial_step == 6:
 		tutorial_step += 1
 		in_tutorial = false
 		account_data.finished_tutorial = true
@@ -415,10 +415,19 @@ func UseItem(index):
 		return
 	
 	if selected_item.use == "ascend" and character.ascension_stones < ServerData.GetCharacter(character.class).ascension_stones:
+		if in_tutorial and tutorial_step == 5:
+			tutorial_step += 1
+			get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 		character.ascension_stones += 1
 		character.inventory[index] = null
 		get_node("/root/Server").SendMessage(int(name), "success", "You feel your strength grow...")
 	elif selected_item.use == "ascend":
+		if in_tutorial and tutorial_step == 5:
+			tutorial_step += 1
+			tutorial_step += 1
+			in_tutorial = false
+			account_data.finished_tutorial = true
+			get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
 		get_node("/root/Server").SendMessage(int(name), "warning", "Class is fully ascended, evolve to ascend further")
 	
 	get_node("/root/Server").SendCharacterData(name, character)
@@ -730,10 +739,6 @@ func UpdateStatistics(which, amount_increase):
 		if not character.statistics.has(which):
 			character.statistics[which] = 0
 		
-		#If standard achievement, simply check the amount
-		if achievement.which == which and character.statistics[which] >= achievement.amount:
-			GetAchievement(_achievement)
-		
 		#In case of enemies killed, check the enemies in statistics
 		if achievement.which == "enemies_killed" and achievement.has("enemies") and achievement.enemies.has(which):
 			var total = 0
@@ -742,6 +747,9 @@ func UpdateStatistics(which, amount_increase):
 					total += character.statistics[enemy]
 			if total >= achievement.amount:
 				GetAchievement(_achievement)
+		#If standard achievement, simply check the amount
+		elif achievement.which == which and character.statistics[which] >= achievement.amount:
+			GetAchievement(_achievement)
 	
 	#Regular achievements
 	for _achievement in account_data.achievements:

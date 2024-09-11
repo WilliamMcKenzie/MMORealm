@@ -28,7 +28,10 @@ var subject_data = {
 		"animation" : "Quest",
 	},  
 	"Stats" : {
-		"text" : ["Wow! You got an ascension stone, consuming it by double clicking gives you two things...", "First, it brings you closer to ascending, and when ascended you can evolve your class through quests.", "Second, it lets you increase your stats. To ascend might take a while...", "But you can level up your stats right now. Consume it then open your stats menu and increase a stat!"],
+		"text" : ["Wow! You got an ascension stone, consuming it by double clicking gives you two things...", "First, it brings you closer to ascending, and when ascended you can evolve your class through quests.", "Second, it lets you increase your stats. To ascend might take a while...", "But you can level up your stats right now. Go ahead and consume it!"],
+	},
+	"Ascend" : {
+		"text" : ["Good! Now you are one step closer to ascending...", "Go ahead and open up your stats, and press the plus to increase it by one!"],
 		"animation" : "Stats",
 	},
 	"Final" : {

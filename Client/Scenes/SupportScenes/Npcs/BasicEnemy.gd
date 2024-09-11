@@ -23,12 +23,7 @@ func _ready():
 var is_active = false
 var collision_connected = false
 
-func Activate(_enemy_type):
-	$Area2D.connect("area_entered", self, "OnHit")
-	set_physics_process(true)
-	self.visible = true
-	is_active = true
-	
+func Activate(_enemy_type):	
 	enemy_type = _enemy_type
 	var enemy_data = ClientData.GetEnemy(enemy_type)
 	var _animations = enemy_data.animations
@@ -88,6 +83,11 @@ func Activate(_enemy_type):
 		for frame in _animations[animation_name]:
 			animation.track_insert_key(0, frame_time, frame)
 			frame_time += 0.3
+	
+	$Area2D.connect("area_entered", self, "OnHit")
+	set_physics_process(true)
+	is_active = true
+	self.visible = true
 
 func DeActivate():
 	$Area2D.disconnect("area_entered", self, "OnHit")

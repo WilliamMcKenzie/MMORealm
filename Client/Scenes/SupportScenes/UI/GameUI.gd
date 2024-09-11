@@ -137,7 +137,7 @@ func SetAccountData(_account_data):
 	if account_data:
 		get_node("Building").SetHouseData(_account_data.home)
 		for achievement in account_data.achievements.keys():
-			if account_data.achievements.has(achievement) and account_data.achievements[achievement] != _account_data.achievements[achievement]:
+			if _account_data.achievements.has(achievement) and account_data.achievements[achievement] != _account_data.achievements[achievement]:
 				animation_tracker.append({ "name" : "UnlockAchievement", "data" : achievement})
 	
 		account_data = _account_data

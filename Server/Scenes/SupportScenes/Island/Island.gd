@@ -36,7 +36,7 @@ var loaded_chunks = {}
 # warning-ignore:unused_argument
 var sync_clock_counter = 0
 var sync_clock_counter_2 = 0
-var island_close_timer = 2
+var island_close_timer = 10
 var island_closed = false
 
 #Handle ruler
@@ -83,7 +83,7 @@ func _process(delta):
 			get_node("/root/Server").ForcedEnterInstance(instance_id, int(player_id))
 	
 	if island_close_timer <= 0 and not ServerData.GetEnemy(ruler).has("dungeon"):
-		island_close_timer = 2
+		island_close_timer = 10
 		get_node("/root/Server").SpawnNPC(ruler, instance_tree, map_size/2*8-position)
 
 #Handle standard stuff
@@ -94,7 +94,7 @@ func _physics_process(delta):
 		for enemy_id in enemy_list.keys():
 			var enemy = enemy_list[enemy_id]
 			if(enemy["health"] < 1):
-				if enemy_list[enemy_id]["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon") and (not enemy_list[enemy_id].has("dead") or enemy_list[enemy_id]["dead"] == false):
+				if enemy_list[enemy_id]["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon"):
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["dead"] = true
@@ -153,7 +153,7 @@ func WithinChunk(chunk, pos):
 	var _chunk = Vector2(chunk_size*round((enemy_coords.x)/chunk_size), chunk_size*round((enemy_coords.y)/chunk_size))
 	
 	return _chunk == chunk
-	
+
 func CalculateChunk(pos):
 	var enemy_coords = Vector2(round((pos/8).x), round((pos/8).y))
 	var chunk = Vector2(chunk_size*round((enemy_coords.x)/chunk_size), chunk_size*round((enemy_coords.y)/chunk_size))
@@ -181,7 +181,7 @@ func GetIslandChunk(chunk):
 				if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk and not player_chunk:
 					var selection = enemy_spawn_points[Vector2(x,y)]["Selection"]
 					var enemy_index = round(rand_range(0, selection.size()-1))
-					if selection.size() > 0:
+					if selection.size() > 0 and Behaviors.DetermineCollisionSafePoint(Vector2(x*8, y*8), Vector2(x*8, y*8), self, selection[enemy_index]):
 						get_node("/root/Server").SpawnNPC(selection[enemy_index], instance_tree, Vector2(x*8, y*8)-self.position)
 	return {
 		"Tiles" : result,
@@ -278,6 +278,8 @@ func CreateStructure(structure, placement):
 			
 			if current_tile > -1:
 				var pos = Vector2(x + placement.x, y + placement.y)
+				if map_objects.has(Vector2(pos.x*8, pos.y*8)):
+					map_objects.erase(Vector2(pos.x*8, pos.y*8))
 				map_as_array[pos.x][pos.y] = current_tile
 				$TileMap.set_cell(pos.x, pos.y, map_as_array[pos.x][pos.y])
 
@@ -383,7 +385,7 @@ func PopulateObstacles():
 				var i = 0
 				for obstacle in obstacle_list:
 					i += 1
-					if obstacle_seed < chance*i:
+					if obstacle_seed < chance*i and not enemy_spawn_points.has(Vector2(x, y)):
 						CreateObstacle(obstacle, instance_tree, Vector2(x, y), name)
 						break
 

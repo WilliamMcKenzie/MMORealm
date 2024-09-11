@@ -177,7 +177,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [],
 		"loot" : []
 	},
-	"salazar_awakened" : {
+	"salazar,_rex_of_the_abyss" : {
 		"override" : "encounter_2",
 		"soulbound_loot" : [
 			{
@@ -3211,7 +3211,10 @@ var realm_enemies = {
 			"Idle" : [0,1],
 			"Attack" : [],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.1,
+			"name" : "rocky_cave"
+		},
 		"health" : 300,
 		"defense" : 5,
 		"exp" : 89,
@@ -3545,7 +3548,10 @@ var realm_enemies = {
 			"Idle" : [0,1],
 			"Attack" : [2],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.1,
+			"name" : "rocky_cave"
+		},
 		"health" : 200,
 		"defense" : 0,
 		"exp" : 43,
@@ -3772,7 +3778,10 @@ var realm_enemies = {
 			"Idle" : [0,1],
 			"Attack" : [2,3],
 		},
-		
+		"dungeon" : {
+			"rate" : 0.2,
+			"name" : "rocky_cave"
+		},
 		"health" : 300,
 		"defense" : 5,
 		"exp" : 64,
@@ -6931,7 +6940,7 @@ var rocky_cave_enemies = {
 	},
 }
 var the_abyss_enemies = {
-	"salazar_awakened" : {
+	"salazar,_rex_of_the_abyss" : {
 		"scale" : 1,
 		"res" : 38,
 		"height" : 20,
@@ -6946,7 +6955,7 @@ var the_abyss_enemies = {
 		"exp" : 12000,
 		"behavior" : 0,
 		"speed" : 15,
-		"loot_pool" : special_loot_pools["salazar_awakened"],
+		"loot_pool" : special_loot_pools["salazar,_rex_of_the_abyss"],
 		"phases" : [
 			{
 				"duration" : 1,
@@ -7876,11 +7885,11 @@ var dungeons = {
 	},
 	"the_abyss" : {
 		"type" : "encounter",
-		"dungeon_boss" : "salazar_awakened",
+		"dungeon_boss" : "salazar,_rex_of_the_abyss",
 		"room_size" : 100,
 		"spawnpoint" : Vector2(10,10)*8,
 		"tile_translation" : {
-			7 : "salazar_awakened",
+			7 : "salazar,_rex_of_the_abyss",
 		}
 	},
 	"frozen_fortress" : {
@@ -8120,7 +8129,7 @@ var items = {
 		"projectiles" : [
 			{
 				"damage" : [80,110],
-				"projectile" : "RexiumSlash",
+				"projectile" : "RedRexiumSlash",
 				"formula" : "0",
 				"piercing" : false,
 				"speed" : 50,
@@ -8133,7 +8142,7 @@ var items = {
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,0)],
 		"colors" : {
 			"weaponSecondaryNew" : RgbToColor(231.0, 211.0, 61.0),
-			"weaponNew" : RgbToColor(134.0, 2.0, 141.0)
+			"weaponNew" :RgbToColor(153.0, 3.0, 19.0),
 		},
 		"textures" : {}
 	},
@@ -9130,8 +9139,8 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,4)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(90.0, 16.0, 82.0),
-			"bodyLightNew" : RgbToColor(108.0, 2.0, 113.0),
+			"bodyMediumNew" : RgbToColor(125.0, 26.0, 22.0),
+			"bodyLightNew" : RgbToColor(153.0, 3.0, 19.0),
 			"bandNew" : RgbToColor(0.0, 0.0, 0.0),
 		},
 		"textures" : {
@@ -9228,8 +9237,8 @@ var items = {
 		}
 	},
 	536 : {
-		"name": "Dragonhide robe",
-		"description" : "a powerful robe made from the skin of a dragon",
+		"name": "Sunflare Robe",
+		"description" : "A powerful robe, hot to the touch",
 		"type" : "Robe",
 		"slot" : "armor",
 		"tier" : "3",
@@ -9241,9 +9250,9 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,5)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(114.0, 12.0, 0.0),
-			"bodyLightNew" : RgbToColor(160.0, 18.0, 0.0),
-			"bandNew" : RgbToColor(213.0, 213.0, 148.0),
+			"bodyMediumNew" : RgbToColor(207.0, 189.0, 56.0),
+			"bodyLightNew" : RgbToColor(232.0, 211.0, 63.0),
+			"bandNew" : RgbToColor(215.0, 37.0, 69.0),
 		},
 		"textures" : {
 			
@@ -9338,8 +9347,8 @@ var items = {
 		}
 	},
 	569 : {
-		"name": "Dragonhide tunic",
-		"description" : "A powerful tunic made from the hide of a powerful dragon",
+		"name": "Foxhide Tunic",
+		"description" : "A powerful tunic made from the hide of a swift fox",
 		"type" : "Hide",
 		"slot" : "armor",
 		"tier" : "3",
@@ -9351,8 +9360,8 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,6)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(114.0, 12.0, 0.0),
-			"bodyLightNew" : RgbToColor(160.0, 18.0, 0.0),
+			"bodyMediumNew" : RgbToColor(163.0, 49.0, 29.0),
+			"bodyLightNew" : RgbToColor(189.0, 57.0, 34.0),
 			"bandNew" : RgbToColor(213.0, 213.0, 148.0),
 		},
 		"textures" : {
@@ -9360,8 +9369,8 @@ var items = {
 		}
 	},
 	570 : {
-		"name": "Master's tunic",
-		"description" : "A tunic made for a master archer",
+		"name": "Snakeskin Tunic",
+		"description" : "A tunic crafted from a basalisk, made for a master archer",
 		"type" : "Hide",
 		"slot" : "armor",
 		"tier" : "4",
@@ -9373,8 +9382,8 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,6)],
 		"colors" : {
-			"bodyMediumNew" : RgbToColor(2.0, 131.0, 116.0),
-			"bodyLightNew" : RgbToColor(0.0, 162.0, 135.0),
+			"bodyMediumNew" : RgbToColor(24.0, 140.0, 89.0),
+			"bodyLightNew" : RgbToColor(37.0, 158.0, 105.0),
 			"bandNew" : RgbToColor(231.0, 211.0, 61.0),
 		},
 		"textures" : {
@@ -9505,8 +9514,8 @@ var items = {
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,8)],
 		"colors" : {
 			"helmetLightNew" : RgbToColor(231.0, 211.0, 61.0),
-			"helmetMediumNew" : RgbToColor(134.0, 2.0, 141.0),
-			"helmetDarkNew" : RgbToColor(108.0, 2.0, 113.0),
+			"helmetMediumNew" : RgbToColor(153.0, 3.0, 19.0),
+			"helmetDarkNew" : RgbToColor(125.0, 26.0, 22.0),
 		},
 		"textures" : {
 			
@@ -9619,8 +9628,8 @@ var items = {
 		}
 	},
 	436 : {
-		"name": "Dragonhide hat",
-		"description" : "A wizard hat made from a strong dragonhide",
+		"name": "Solar Hat",
+		"description" : "A wizard hat made from the beams of the sun",
 		"type" : "Hat",
 		"slot" : "helmet",
 		
@@ -9633,19 +9642,18 @@ var items = {
 			"defense" : 2
 		},
 		"tier" : "3",
-		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,9)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(188.0, 21.0, 0.0),
-			"helmetMediumNew" : RgbToColor(160.0, 18.0, 0.0),
-			"helmetDarkNew" : RgbToColor(114.0, 12.0, 0.0),
+			"helmetLightNew" : RgbToColor(255.0, 234.0, 69.0),
+			"helmetMediumNew" : RgbToColor(232.0, 211.0, 63.0),
+			"helmetDarkNew" : RgbToColor(207.0, 189.0, 56.0),
 		},
 		"textures" : {
 			
 		}
 	},
 	437 : {
-		"name": "Master's hat",
+		"name": "Celestial Hat",
 		"description" : "A hat only the greatest wizards are worthy to wear",
 		"type" : "Hat",
 		"slot" : "helmet",
@@ -9774,8 +9782,8 @@ var items = {
 		}
 	},
 	469 : {
-		"name": "Dragonhide cap",
-		"description" : "An elite cap made from the hide of a powerful dragon",
+		"name": "Foxskin Cap",
+		"description" : "An elite cap made from the hide of a swift fox",
 		"type" : "Cap",
 		"slot" : "helmet",
 		
@@ -9790,16 +9798,16 @@ var items = {
 		"tier" : "3",
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,10)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(188.0, 21.0, 0.0),
-			"helmetMediumNew" : RgbToColor(160.0, 18.0, 0.0),
-			"helmetDarkNew" : RgbToColor(114.0, 12.0, 0.0),
+			"helmetLightNew" : RgbToColor(215.0, 67.0, 39.0),
+			"helmetMediumNew" : RgbToColor(189.0, 57.0, 34.0),
+			"helmetDarkNew" : RgbToColor(163.0, 49.0, 29.0),
 		},
 		"textures" : {
 			
 		}
 	},
 	470 : {
-		"name": "Master's cap",
+		"name": "Master's Cap",
 		"description" : "A one of a kind cap passed down from master archers",
 		"type" : "Cap",
 		"slot" : "helmet",
@@ -9816,7 +9824,7 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,10)],
 		"colors" : {
-			"helmetLightNew" : RgbToColor(23.0, 191.0, 16.0),     #note, these colours do not match the sprite 1 to 1 and should be changed
+			"helmetLightNew" : RgbToColor(23.0, 191.0, 16.0),
 			"helmetMediumNew" : RgbToColor(17.0, 160.0, 12.0),
 			"helmetDarkNew" : RgbToColor(9.0, 138.0, 5.0),
 		},
@@ -10131,6 +10139,11 @@ var projectiles = {
 		"spin" : false,
 	},
 	"RexiumSlash" : {
+		"rect" : Rect2(60,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"RedRexiumSlash" : {
 		"rect" : Rect2(40,10,10,10),
 		"rotation" : 45,
 		"spin" : false,
@@ -10401,7 +10414,7 @@ var achievement_catagories = {
 		"icon" : Vector2(10,0)
 	},
 	"Misc" : { 
-		"achievements" : ["Mr. Worldwide","6 Feet Under I","6 Feet Under II","6 Feet Under III"], 
+		"achievements" : ["Vagabond", "Mr. Worldwide","6 Feet Under I","6 Feet Under II","6 Feet Under III"], 
 		"icon" : Vector2(20,0)
 	},
 }
@@ -10428,6 +10441,13 @@ var achievements = {
 		"description" : "Die 125 times.",
 		"gold" : 800,
 	},
+	"Vagabond" : {
+		"which" : "tiles_covered",
+		"amount" : 100000,
+		"icon" : Vector2(10,30),
+		"description" : "Travel 100000 tiles.",
+		"gold" : 200,
+	},
 	"Mr. Worldwide" : {
 		"which" : "tiles_covered",
 		"amount" : 1000000,
@@ -10447,7 +10467,7 @@ var achievements = {
 		"which" : "projectiles_landed",
 		"amount" : 1000000,
 		"icon" : Vector2(60,20),
-		"description" : "Kill 1000 druids.",
+		"description" : "Land 1000000 projectiles.",
 		"gold" : 300,
 	},
 	"Druidic Slayer" : {
@@ -10484,7 +10504,7 @@ var achievements = {
 	"Dragon Slayer" : {
 		"which" : "enemies_killed",
 		"amount" : 100,
-		"enemies" : ["awakened_salazar"],
+		"enemies" : ["salazar,_rex_of_the_abyss"],
 		"icon" : Vector2(50, 20),
 		"description" : "Kill salazar in the abyss 100 times.",
 		"gold" : 800,
@@ -10517,7 +10537,7 @@ var achievements = {
 		"which" : "classes_unlocked",
 		"amount" : 3,
 		"classes" : ["Knight","Paladin","Marauder"],
-		"icon" : Vector2(2,10),
+		"icon" : Vector2(20,10),
 		"description" : "Unlock the 3 Noble secondary classes.",
 		"gold" : 800,
 	},
@@ -10567,7 +10587,7 @@ var achievements = {
 	"Unlock Marauder" : {
 		"which" : "enemies_killed",
 		"amount" : 5,
-		"enemies" : ["awakened_salazar"],
+		"enemies" : ["salazar,_rex_of_the_abyss"],
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,

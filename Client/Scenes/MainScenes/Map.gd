@@ -125,9 +125,11 @@ func _physics_process(delta):
 		var enemies = get_node("YSort/Enemies")
 		clock_sync_timer_2 = 0
 		for child in enemies.get_children():
-			if child.visible == true and not child.is_active and world_state_buffer[2]["E"].has(child.name):
+			if child.visible == true and not child.is_active and len(world_state_buffer) > 2 and world_state_buffer[2]["E"].has(child.name):
 				child.Activate(child.enemy_type)
 			elif child.visible == true and not child.is_active:
+				child.DeActivate()
+			elif child.visible == true and child.is_active and len(world_state_buffer) > 2 and not world_state_buffer[2]["E"].has(child.name):
 				child.DeActivate()
 
 func UpdateWorldState(world_state):

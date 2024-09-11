@@ -73,7 +73,6 @@ tracks/0/keys = {
 extents = Vector2( 5, 5 )
 
 [node name="0" type="Node2D"]
-visible = false
 script = ExtResource( 3 )
 
 [node name="Control" type="Control" parent="."]
@@ -85,7 +84,7 @@ mouse_filter = 2
 
 [node name="Sprite" type="Sprite" parent="Control"]
 material = ExtResource( 1 )
-position = Vector2( 7, 7 )
+position = Vector2( 7, 9 )
 texture = ExtResource( 4 )
 hframes = 2
 region_enabled = true

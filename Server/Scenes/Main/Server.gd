@@ -40,7 +40,7 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "tutorial_troll_king")
-	get_node("Instances/nexus").OpenPortal("ruined_temple", ["nexus"], Vector2.ZERO)
+	#get_node("Instances/nexus").OpenPortal("ruined_temple", ["nexus"], Vector2.ZERO)
 
 #Update connected players
 var clock_sync_timer = 0

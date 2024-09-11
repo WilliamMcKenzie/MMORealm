@@ -167,7 +167,6 @@ func Close():
 	active = false
 
 func SetHouseData(house_data):
-	print(house_data.open_mode)
 	if inspecting_building:
 		InspectBuilding(inspecting_building)
 	var whitelist = house_data.whitelist

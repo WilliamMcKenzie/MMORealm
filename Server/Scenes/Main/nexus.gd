@@ -502,9 +502,11 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 			island_instance.map_size = boilerplate_island_instance.map_size
 			island_instance.spawn_points = boilerplate_island_instance.spawn_points
 			island_instance.tile_points = boilerplate_island_instance.tile_points
-			island_instance.map_as_array = boilerplate_island_instance.map_as_array
+			island_instance.map_as_array = boilerplate_island_instance.map_as_array.duplicate(true)
 			island_instance.map_objects = boilerplate_island_instance.map_objects
 			island_instance.enemy_spawn_points = boilerplate_island_instance.enemy_spawn_points
+			var tilemap = island_instance.get_node("TileMap") 
+			tilemap = island_instance.get_node("TileMap").duplicate()
 		else:
 			island_instance = load("res://Scenes/SupportScenes/Island/Island.tscn").instance()
 			if portal_name == "tutorial_island":
