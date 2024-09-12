@@ -532,6 +532,14 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		add_child(island_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 		return instance_id
+	elif "house" in portal_name:
+		object_list[instance_id] = {
+			"name":"house",
+			"type":"DungeonPortals",
+			"end_time": OS.get_system_time_msecs()+OS.get_system_time_msecs(),
+			"position": position,
+			"instance_tree": instance_tree
+		}
 	else:
 		instance_id =  "dungeon " + instance_id
 		var instance_map = Dungeons.GenerateDungeon(portal_name)

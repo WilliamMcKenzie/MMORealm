@@ -32,7 +32,7 @@ func _physics_process(delta):
 	var server = get_node("/root/Server")
 	
 	if vessels_dead:
-		server.get_node("Instances/nexus").OpenPortal("island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(1000,1000), "salazar")
+		server.get_node("Instances/nexus").OpenPortal("island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
 		at_spire = true
 		bosses_status = {
 			"oranix" : false,

@@ -2291,13 +2291,13 @@ var rulers = {
 	},
 	"salazar" : {
 		"scale" : 1.3,
-		"res" : 18,
-		"height" : 16,
-		"rect" : Rect2(Vector2(0,90), Vector2(90,18)),
+		"res" : 38,
+		"height" : 20,
+		"rect" : Rect2(Vector2(0,38), Vector2(114,38)),
 		"animations" : {
-			"Idle" : [0,1],
-			"Attack" : [2,3],
-			"Death" : [4],
+			"Idle" : [0],
+			"Attack" : [1],
+			"Death" : [2],
 		},
 		
 		"health" : 40000,
@@ -2488,14 +2488,13 @@ var rulers = {
 		]
 	},
 	"salazar_left_wing" : {
-		"scale" : 1.3,
+		"scale" : 1,
 		"res" : 18,
 		"height" : 16,
-		"rect" : Rect2(Vector2(0,90), Vector2(90,18)),
+		"rect" : Rect2(Vector2(162,52), Vector2(36,18)),
 		"animations" : {
-			"Idle" : [0,1],
-			"Attack" : [2,3],
-			"Death" : [4],
+			"Idle" : [0],
+			"Attack" : [1],
 		},
 		
 		"health" : 5000,
@@ -2527,14 +2526,13 @@ var rulers = {
 		]
 	},
 	"salazar_right_wing" : {
-		"scale" : 1.3,
+		"scale" : 1,
 		"res" : 18,
 		"height" : 16,
-		"rect" : Rect2(Vector2(0,90), Vector2(90,18)),
+		"rect" : Rect2(Vector2(198,52), Vector2(36,18)),
 		"animations" : {
-			"Idle" : [0,1],
-			"Attack" : [2,3],
-			"Death" : [4],
+			"Idle" : [0],
+			"Attack" : [1],
 		},
 		
 		"health" : 5000,

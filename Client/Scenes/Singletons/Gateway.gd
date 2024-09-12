@@ -94,11 +94,13 @@ func FetchAccountData():
 	rpc_id(1, "FetchAccountData", email, password)
 
 remote func ReturnAccountData(account_data):
+	html_network.disconnect_from_host()
 	get_node("../SceneHandler/Home").SelectionScreen(account_data)
 
 func RequestBuyCharacterSlot():
 	rpc_id(1, "BuyCharacterSlot", email, password)
 remote func ReturnBuyCharacterSlotRequest(result):
+	html_network.disconnect_from_host()
 	if result == true:
 		get_node("../SceneHandler/Home/CharacterSelection").AddCharacterSlot()
 		get_node("../SceneHandler/Home/CharacterSelection").Populate()
@@ -106,6 +108,7 @@ remote func ReturnBuyCharacterSlotRequest(result):
 func RequestCreateCharacter():
 	rpc_id(1, "CreateCharacter", email, password)
 remote func ReturnCreateCharacterRequest(result, new_character):
+	html_network.disconnect_from_host()
 	if result == true:
 		get_node("../SceneHandler/Home/CharacterSelection").characters.append(new_character)
 		get_node("../SceneHandler/Home/CharacterSelection").Populate()
@@ -119,6 +122,7 @@ func RequestCreateAccount():
 	email = ""
 	password = ""
 remote func ReturnCreateAccountRequest(results, message):
+	html_network.disconnect_from_host()
 	LoadingScreen.EndWaiting()
 	print("Results recieved")
 	print(results)
@@ -133,25 +137,28 @@ remote func ReturnCreateAccountRequest(results, message):
 			print("Email in use, please try another.")
 		get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
 		get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
-	network.disconnect("connection_failed", self, "_onConnectionFailed")
-	network.disconnect("connected_to_server", self, "_onConnectionSucceeded")
+	html_network.disconnect("connection_failed", self, "_onConnectionFailed")
+	html_network.disconnect("connected_to_server", self, "_onConnectionSucceeded")
 
 func RequestLogin():
 	LoadingScreen.StartWaiting()
 	rpc_id(1, "LoginRequest", email, password)
 remote func ReturnLogin(result):
+	html_network.disconnect_from_host()
 	LoadingScreen.EndWaiting()
 	get_node("../SceneHandler/Home/LoginPopup").LoginResult(result)
 	
 func GetLeaderboards():
 	rpc_id(1, "GetLeaderboards")
 remote func ReturnLeaderboards(weekly, monthly, all_time):
+	html_network.disconnect_from_host()
 	get_node("../SceneHandler/Home/Leaderboard").SetLeaderboard(weekly, monthly, all_time)
 	GameUI.SetLeaderboard(weekly, monthly, all_time)
 	
 func SendToken():
 	rpc_id(1, "SendToken", email)
 remote func ReturnToken(token):
+	html_network.disconnect_from_host()
 	print("Returend")
 	Server.token = token
 

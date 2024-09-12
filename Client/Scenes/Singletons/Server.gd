@@ -51,7 +51,7 @@ func _physics_process(delta):
 	
 	if latency_timer % 20 == 0 and get_node("../SceneHandler").has_node(GetCurrentInstance()):
 		player_position = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position
-	if latency_timer >= 60:
+	if latency_timer >= 60 and html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
 		latency_timer = 0
 		rpc_id(1, "FetchServerTime", OS.get_system_time_msecs())
 
@@ -321,7 +321,10 @@ func EnterInstance(instance_id, portal_name):
 	LoadingScreen.Transition(IdentifierToString(portal_name))
 	if instance_id == GetCurrentInstance():
 		return
-	rpc_id(1, "EnterInstance", instance_id)
+	if portal_name == "house":
+		rpc_id(1,"RecieveChatMessage", "/home")
+	else:
+		rpc_id(1, "EnterInstance", instance_id)
 
 remote func UpdateHouseData(house_data):
 	GameUI.account_data.home = house_data
