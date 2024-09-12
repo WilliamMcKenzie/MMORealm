@@ -22,8 +22,6 @@ func _physics_process(delta):
 		while(world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T):
 			world_state_buffer.remove(0)
 		
-		print(world_state_buffer.size())
-		
 		#Loop through and update specific world elements
 		if world_state_buffer.size() > 2:
 			var interpolation_factor = float(render_time - world_state_buffer[1]["T"]) / float(world_state_buffer[2]["T"] - world_state_buffer[1]["T"])
@@ -57,6 +55,7 @@ func _physics_process(delta):
 				
 				if get_node("YSort/Enemies").has_node(str(enemy)):
 					var new_position = lerp(enemies1[enemy]["position"], enemies2[enemy]["position"], interpolation_factor)
+					print(new_position)
 					get_node("YSort/Enemies/"+str(enemy)).MoveEnemy(new_position)
 					get_node("YSort/Enemies/"+str(enemy)).effects = enemies2[enemy]["effects"]
 					if enemies2[enemy].has("dead"):
