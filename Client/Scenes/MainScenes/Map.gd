@@ -57,6 +57,7 @@ func _physics_process(delta):
 					pass
 				elif get_node("YSort/Enemies").has_node(str(enemy)):
 					var new_position = lerp(enemies1[enemy]["position"], enemies2[enemy]["position"], interpolation_factor)
+					print(new_position)
 					get_node("YSort/Enemies/"+str(enemy)).MoveEnemy(new_position)
 					get_node("YSort/Enemies/"+str(enemy)).effects = enemies2[enemy]["effects"]
 					if enemies2[enemy].has("dead"):
