@@ -57,10 +57,11 @@ func _physics_process(delta):
 		
 		for player_id in player_list.keys():
 			if not projectile_list[projectile_id]["hit_players"].has(player_id) and (player_list[player_id]["position"]+Vector2(0,-4)).distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
-				projectile_list[projectile_id]["hit_players"][player_id] = true
-				get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_name"])
-				if not projectile_list[projectile_id].piercing:
-					valid_collision = true
+				if has_node("YSort/Players/"+player_id):
+					projectile_list[projectile_id]["hit_players"][player_id] = true
+					get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_name"])
+					if not projectile_list[projectile_id].piercing:
+						valid_collision = true
 		if valid_collision or max_range:
 			get_node("/root/Server").RemoveEnemyProjectile(projectile_id, instance_tree)
 			projectile_list.erase(projectile_id)

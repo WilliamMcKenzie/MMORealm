@@ -30,19 +30,25 @@ func _physics_process(delta):
 				enemy.erase("max_health")
 				enemy.erase("defense")
 				enemy.erase("state")
+				
 				enemy.erase("behaviour")
+				enemy.erase("current_direction")
+				enemy.erase("last_position")
+				enemy.erase("stuck_timer")
+				
 				enemy.erase("speed")
 				enemy.erase("exp")
 				enemy.erase("damage_tracker")
 				enemy.erase("target")
 				enemy.erase("anchor_position")
+				enemy.erase("origin")
+				enemy.erase("signals")
+				
 				enemy.erase("pattern_index")
 				enemy.erase("pattern_timer")
 				enemy.erase("phase_index")
 				enemy.erase("phase_timer")
 				enemy.erase("used_phases")
-				enemy.erase("origin")
-				enemy.erase("signals")
 				world_state["E"][enemy_id] = enemy
 			
 			for id in get_node("/root/Server").player_instance_tracker[instance_tree]:
@@ -84,19 +90,25 @@ func SendIslandData(instance_tree):
 				enemy.erase("max_health")
 				enemy.erase("defense")
 				enemy.erase("state")
+				
 				enemy.erase("behaviour")
+				enemy.erase("current_direction")
+				enemy.erase("last_position")
+				enemy.erase("stuck_timer")
+				
 				enemy.erase("speed")
 				enemy.erase("exp")
 				enemy.erase("damage_tracker")
 				enemy.erase("target")
 				enemy.erase("anchor_position")
+				enemy.erase("origin")
+				enemy.erase("signals")
+				
 				enemy.erase("pattern_index")
 				enemy.erase("pattern_timer")
 				enemy.erase("phase_index")
 				enemy.erase("phase_timer")
 				enemy.erase("used_phases")
-				enemy.erase("origin")
-				enemy.erase("signals")
 				world_state["E"][enemy_id] = enemy
 			
 			#We add speed checks here

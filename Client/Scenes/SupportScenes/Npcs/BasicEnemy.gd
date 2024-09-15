@@ -90,7 +90,8 @@ func Activate(_enemy_type):
 	self.visible = true
 
 func DeActivate():
-	$Area2D.disconnect("area_entered", self, "OnHit")
+	if $Area2D.is_connected("area_entered", self, "OnHit"):
+		$Area2D.disconnect("area_entered", self, "OnHit")
 	set_physics_process(false)
 	self.visible = false
 	is_active = false

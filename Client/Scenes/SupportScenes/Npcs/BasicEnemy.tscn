@@ -78,7 +78,6 @@ tracks/0/keys = {
 extents = Vector2( 5, 5 )
 
 [node name="0" type="Node2D"]
-visible = false
 script = ExtResource( 3 )
 
 [node name="ParticleMaster" type="CPUParticles2D" parent="."]
@@ -132,5 +131,3 @@ position = Vector2( 0, -8 )
 
 [node name="ZContainer" parent="." instance=ExtResource( 2 )]
 visible = true
-
-[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

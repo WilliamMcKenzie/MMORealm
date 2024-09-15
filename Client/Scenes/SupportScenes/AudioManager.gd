@@ -9,6 +9,7 @@ var audio_files = {
 var clock_sync_timer = 0
 var playing_music = false
 func _process(delta):
+	return
 	clock_sync_timer += 1
 	if clock_sync_timer >= 30 and not playing_music and get_node("/root/SceneHandler").has_node("Home"):
 		playing_music = true
@@ -23,6 +24,7 @@ func _process(delta):
 		get_node("TitleTrack").queue_free()
 
 func Play(audio_name):
+	return
 	if audio_files.has(audio_name):
 		var audio_player = AudioStreamPlayer.new()
 		audio_player.stream = audio_files[audio_name][0]

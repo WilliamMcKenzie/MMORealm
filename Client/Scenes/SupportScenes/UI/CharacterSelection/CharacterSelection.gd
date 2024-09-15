@@ -24,7 +24,7 @@ func AddCharacterSlot():
 	get_parent().UpdateGold()
 
 func Populate():
-	if get_node(active_node):
+	if has_node(active_node):
 		get_node(active_node).queue_free()
 	UpdateScrollButtons()
 	

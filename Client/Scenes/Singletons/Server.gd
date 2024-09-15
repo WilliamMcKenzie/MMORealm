@@ -92,10 +92,7 @@ func ConnectToServerHTML():
 	network.create_client(ip_address, port)
 	get_tree().set_network_peer(null)
 	get_tree().network_peer = html_network
-		
-	get_tree().connect("connection_closed ", self, "_Disconnected")
-	get_tree().connect("server_close_request", self, "_Disconnected")
-	get_tree().connect("connection_error", self, "_Disconnected")
+	
 	get_tree().connect("network_peer_disconnected", self, "_Disconnected")
 	get_tree().connect("server_disconnected", self, "_Disconnected")
 
@@ -250,12 +247,12 @@ func SendProjectile(projectile_data):
 remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
 	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree:
 		return
-	
-	var node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id))
-	if node.projectile_dict.has(OS.get_system_time_msecs()):
-		node.projectile_dict[OS.get_system_time_msecs()].append(projectile_data)
-	else:
-		node.projectile_dict[OS.get_system_time_msecs()] = [projectile_data]
+	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers").has_node(str(player_id)):
+		var node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id))
+		if node.projectile_dict.has(OS.get_system_time_msecs()):
+			node.projectile_dict[OS.get_system_time_msecs()].append(projectile_data)
+		else:
+			node.projectile_dict[OS.get_system_time_msecs()] = [projectile_data]
 
 remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 	if instance_tree != current_instance_tree:
@@ -288,7 +285,8 @@ remote func RemoveEnemyProjectile(id, instance_tree):
 				break
 
 func SendPlayerState(player_state):
-	rpc_unreliable_id(1, "RecievePlayerState", player_state)
+	if html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
+		rpc_unreliable_id(1, "RecievePlayerState", player_state)
 
 remote func RecieveWorldState(world_state):
 	if get_node("../SceneHandler/"+GetCurrentInstance()):

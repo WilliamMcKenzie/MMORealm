@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/ui/pill_background.png" type="Texture" id=2]
@@ -157,6 +157,8 @@ modulate_color = Color( 1, 1, 1, 0.313726 )
 
 [sub_resource type="StyleBoxEmpty" id=36]
 
+[sub_resource type="AtlasTexture" id=40]
+
 [sub_resource type="DynamicFont" id=31]
 size = 20
 outline_size = 1
@@ -286,6 +288,11 @@ size_flags_horizontal = 4
 texture_normal = ExtResource( 2 )
 expand = true
 
+[node name="TouchScreenButton" type="TouchScreenButton" parent="MarginContainer/Container/InputContainer/Confirm"]
+modulate = Color( 1, 1, 1, 0 )
+scale = Vector2( 149, 48 )
+normal = SubResource( 40 )
+
 [node name="Label" type="Label" parent="MarginContainer/Container/InputContainer/Confirm"]
 margin_left = 48.0
 margin_top = 14.0
@@ -300,3 +307,4 @@ valign = 1
 
 [connection signal="text_changed" from="MarginContainer/Container/InputContainer/NameContainter/Name/MarginContainer/Name" to="." method="_on_Name_text_changed"]
 [connection signal="pressed" from="MarginContainer/Container/InputContainer/Confirm" to="." method="_on_Confirm_pressed"]
+[connection signal="pressed" from="MarginContainer/Container/InputContainer/Confirm/TouchScreenButton" to="." method="_on_TouchScreenButton_pressed"]
