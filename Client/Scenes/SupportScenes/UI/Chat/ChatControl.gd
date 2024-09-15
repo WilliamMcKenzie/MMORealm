@@ -37,7 +37,7 @@ func AddChat(message,username,classname,id):
 	var chat_message = chat.instance()
 	
 	chat_message.get_node("From").text = "" + username + ":"
-	chat_message.get_node("Message").text = message
+	chat_message.get_node("MarginContainer/Message").text = message
 	
 	if username == "Enemy":
 		GameUI.UpdateEnemyChatBubbles(id, message)
@@ -46,8 +46,8 @@ func AddChat(message,username,classname,id):
 		chat_message.get_node("Icon").visible = false
 		chat_message.get_node("From").add_color_override("font_color", Color(163.0/255,64.0/255,64.0/255))
 		chat_message.get_node("From").text = "" + IdentifierToString(enemy_name) + ":"
-		chat_message.get_node("Message").add_color_override("font_color", Color(255.0/255, 184.0/255, 184.0/255))
-		chat_message.get_node("Message").text = "" + chat_message.get_node("Message").text + ""
+		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(255.0/255, 184.0/255, 184.0/255))
+		chat_message.get_node("MarginContainer/Message").text = "" + chat_message.get_node("MarginContainer/Message").text + ""
 	elif classname:
 		GameUI.UpdateChatBubbles(id, message)
 		chat_message.get_node("Icon").visible = true
@@ -57,23 +57,23 @@ func AddChat(message,username,classname,id):
 	elif username == "System":
 		chat_message.get_node("Icon").visible = false
 		chat_message.get_node("From").text = ""
-		chat_message.get_node("Message").add_color_override("font_color", Color(178.0/255, 223.0/255, 230.0/255))
-		chat_message.get_node("Message").text = "" + chat_message.get_node("Message").text + ""
+		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(178.0/255, 223.0/255, 230.0/255))
+		chat_message.get_node("MarginContainer/Message").text = "" + chat_message.get_node("MarginContainer/Message").text + ""
 	elif username == "SystemWARN":
 		chat_message.get_node("Icon").visible = false
 		chat_message.get_node("From").text = ""
-		chat_message.get_node("Message").add_color_override("font_color", Color(219.0/255, 211.0/255, 122.0/255))
-		chat_message.get_node("Message").text = "" + chat_message.get_node("Message").text + ""
+		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(219.0/255, 211.0/255, 122.0/255))
+		chat_message.get_node("MarginContainer/Message").text = "" + chat_message.get_node("MarginContainer/Message").text + ""
 	elif username == "SystemERROR":
 		chat_message.get_node("Icon").visible = false
 		chat_message.get_node("From").text = ""
-		chat_message.get_node("Message").add_color_override("font_color", Color(219.0/255, 122.0/255, 122.0/255))
-		chat_message.get_node("Message").text = "" + chat_message.get_node("Message").text + ""
+		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(219.0/255, 122.0/255, 122.0/255))
+		chat_message.get_node("MarginContainer/Message").text = "" + chat_message.get_node("MarginContainer/Message").text + ""
 	elif username == "SystemSUCCESS":
 		chat_message.get_node("Icon").visible = false
 		chat_message.get_node("From").text = ""
-		chat_message.get_node("Message").add_color_override("font_color", Color(122.0/255, 219.0/255, 130.0/255))
-		chat_message.get_node("Message").text = "" + chat_message.get_node("Message").text + ""
+		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(122.0/255, 219.0/255, 130.0/255))
+		chat_message.get_node("MarginContainer/Message").text = "" + chat_message.get_node("MarginContainer/Message").text + ""
 	
 	get_node("PanelContainer/VBoxContainer/ScrollContainer/ChatVerticalContainer").add_child(chat_message,1)
 	

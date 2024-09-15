@@ -33,14 +33,14 @@ func _ready():
 	#Open realm
 	#for i in range(100):
 		#PlayerVerification.CreateFakePlayerContainer()
-	
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(200,200), "tutorial_troll_king")
-	get_node("Instances/nexus").OpenPortal("house", ["nexus"], Vector2.ZERO)
+	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
+	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
 
 #Update connected players
 var clock_sync_timer = 0
@@ -126,8 +126,30 @@ func StartTutorial(player_id):
 		SendCharacterData(player_id, player_container.character)
 		rpc_id(int(player_id), "StartTutorial")
 
-func TutorialStep(step, player_id):
-	rpc_id(int(player_id), "TutorialStep", step)
+func Dialogue(which, player_id):
+	rpc_id(int(player_id), "Dialogue", which)
+remote func DialogueResponse(response):
+	var player_id = get_tree().get_rpc_sender_id()
+	var instance_tree = player_state_collection[player_id]["I"].duplicate()
+	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+	var player_container = current_instance_node.get_node("YSort/Players/"+str(player_id))
+	
+	player_container.account_data.time_tracker = {}
+	var time_tracker = player_container.account_data.time_tracker
+	var time = OS.get_datetime()
+	var day = time["day"]
+	var month = time["month"]
+	
+	if response == "Basic Mechanics":
+		StartTutorial(player_id)
+	if response == "Daily Arena" and (not time_tracker.has(response) or (day != time_tracker[response]["day"])):
+		ForcedEnterInstance(CreateArena(player_id, "daily"), player_id)
+	elif response == "Daily Arena":
+		Dialogue("ArenaToSoon", player_id)
+	if response == "Monthly Arena" and (not time_tracker.has(response) or (month != time_tracker[response]["month"])):
+		ForcedEnterInstance(CreateArena(player_id, "monthly"), player_id)
+	elif response == "Monthly Arena":
+		Dialogue("ArenaToSoon", player_id)
 
 remote func ChooseUsername(username):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -152,7 +174,7 @@ func ConfirmUsername(result, username, player_id):
 		
 		player_container.tutorial_step = 1
 		player_container.in_tutorial = true
-		TutorialStep("Controls", player_id)
+		Dialogue("Controls", player_id)
 	
 	rpc_id(player_id, "ConfirmUsername", result, username)
 
@@ -407,6 +429,7 @@ func SendAccountData(player_id, account_data):
 	rpc_id(int(player_id), "RecieveAccountData", account_data)
 
 #NPCS/ENEMIES
+
 func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 	var enemy_id = generate_unique_id()
 	
@@ -516,7 +539,10 @@ remote func Nexus():
 	var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
 	var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
 	
-	if not player_container.in_tutorial:
+	if "arena" in get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).name:
+		if player_container.health > 0:
+			player_container.DealDamage(999, "Gladius")
+	elif not player_container.in_tutorial:
 		rpc_id(player_id, "ConfirmNexus")
 	
 		player_instance_tracker[instance_tree].erase(player_id)
@@ -526,18 +552,18 @@ remote func Nexus():
 		
 		player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
 
-func ForcedNexus(player_id):
+func ForcedNexus(player_id, spawnpoint = Vector2.ZERO):
 	var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
 	var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
 	
-	rpc_id(player_id, "ConfirmNexus")
+	rpc_id(player_id, "ConfirmNexus", spawnpoint)
 	
 	player_instance_tracker[instance_tree].erase(player_id)
 	player_instance_tracker[["nexus"]].append(player_id)
 	get_node("Instances/"+StringifyInstanceTree(instance_tree)).RemovePlayer(player_container)
 	get_node("Instances/"+StringifyInstanceTree(["nexus"])).SpawnPlayer(player_container)
 	
-	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus"]}
+	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": ["nexus"]}
 
 func EnterHouse(player_id, house_player_id):
 	var house_id = "house " + str(house_player_id)
@@ -557,6 +583,20 @@ func EnterHouse(player_id, house_player_id):
 	
 	player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": Vector2.ZERO, "A": "Idle", "I": ["nexus", house_id]}
 	rpc_id(player_id, "ReturnHouseData", {"Name": player_name_by_id[house_player_id], "Id":house_id, "Tiles" : house_node.tiles, "Position": Vector2(12*8,12*8)})
+
+func ShowIndicator(player_id, type, amount):
+	rpc_id(player_id, "ShowIndicator", type, amount)
+func CreateArena(player_id, type):
+	var arena_id = "arena " + str(player_id)
+	var arena_instance = load("res://Scenes/SupportScenes/Arena/Arena.tscn").instance()
+	arena_instance.name = arena_id
+	arena_instance.arena_type = type
+	arena_instance.instance_tree = ["nexus", arena_id]
+	arena_instance.position = Instances.GetFreeInstancePosition()
+	
+	get_node("Instances/nexus").add_child(arena_instance)
+	Instances.AddInstanceToTracker(["nexus"], arena_id)
+	return arena_id
 
 func CreateHouse(player_id):
 	var house_id = "house " + str(player_id)
@@ -593,7 +633,17 @@ func ForcedEnterInstance(instance_id, player_id):
 		instance_tree.append(str(instance_id))
 		
 		#For dungeons
-		if not current_instance_node.object_list[instance_id]["name"] == "island":
+		if "arena" in instance_id:
+			var arena_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+			var spawnpoint = Vector2.ZERO
+			
+			rpc_id(player_id, "ReturnArenaData", { "Name": arena_node.arena_type.capitalize() + " Arena", "Id": instance_id, "Position": spawnpoint})
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
+			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
+			
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": { "A" : "Idle", "C" : Vector2.ZERO }, "I": instance_tree}
+			player_instance_tracker[instance_tree].append(player_id)
+		elif not current_instance_node.object_list[instance_id]["name"] == "island":
 			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = dungeon_node.GetMapSpawnpoint()
 			
@@ -628,8 +678,18 @@ remote func EnterInstance(instance_id):
 		player_instance_tracker[instance_tree].erase(player_id)
 		instance_tree.append(str(instance_id))
 		
+		if "arena" in instance_id:
+			var arena_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+			var spawnpoint = Vector2.ZERO
+			
+			rpc_id(player_id, "ReturnArenaData", { "Name": arena_node.arena_type.capitalize() + " Arena", "Id": instance_id, "Position": spawnpoint})
+			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
+			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
+			
+			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": { "A" : "Idle", "C" : Vector2.ZERO }, "I": instance_tree}
+			player_instance_tracker[instance_tree].append(player_id)
 		#For dungeons
-		if not current_instance_node.object_list[instance_id]["name"] == "island":
+		elif not current_instance_node.object_list[instance_id]["name"] == "island":
 			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = dungeon_node.GetMapSpawnpoint()
 			

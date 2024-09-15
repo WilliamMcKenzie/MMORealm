@@ -90,8 +90,7 @@ func Activate(_enemy_type):
 	self.visible = true
 
 func DeActivate():
-	if($Area2D.has_signal("area_entered")):
-		$Area2D.disconnect("area_entered", self, "OnHit")
+	$Area2D.disconnect("area_entered", self, "OnHit")
 	set_physics_process(false)
 	self.visible = false
 	is_active = false
@@ -160,6 +159,8 @@ func OnHit(body):
 		body.get_parent().interaction(self)
 
 func ShowDamageIndicator(damage_amount):
+	$ParticleMaster.emitting = true
+	AudioManager.Play("hit")
 	var total_damage = floor(-damage_amount - ClientData.GetEnemy(enemy_type).defense)
 	if total_damage < damage_amount - damage_amount*0.9:
 		total_damage = floor(damage_amount - damage_amount*0.9)

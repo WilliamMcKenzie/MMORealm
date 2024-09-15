@@ -31,3 +31,6 @@ func Transition(place):
 	if last_place == place:
 		$Label.visible = false
 		$BG.visible = false
+
+func Countdown():
+	$LoadingAnimations.play("Countdown")

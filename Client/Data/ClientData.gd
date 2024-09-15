@@ -189,6 +189,10 @@ var special_loot_pools = {
 		"loot" : []
 	},
 }
+
+var small = 4
+var medium = 5
+var large = 6
 var projectile_databank = {
 		"RoyalSlash_weak_medium" : {
 			"projectile" : "RoyalSlash",
@@ -200,7 +204,7 @@ var projectile_databank = {
 			"tile_range" : 3,
 			"targeter" : "nearest",
 			"direction" : DegreesToVector(0),
-			"size" : 5
+			"size" : medium
 		},
 		"RoyalSlash_strong_medium" : {
 			"projectile" : "RoyalSlash",
@@ -212,7 +216,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : DegreesToVector(0),
-			"size" : 9
+			"size" : medium
 		},
 		"RoyalSlash_mid_fast" : {
 			"projectile" : "RoyalSlash",
@@ -224,7 +228,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : DegreesToVector(0),
-			"size" : 9
+			"size" : medium
 		},
 		"GiantRoyalSlash_strong_medium" : {
 			"projectile" : "GiantRoyalSlash",
@@ -236,7 +240,7 @@ var projectile_databank = {
 			"tile_range" : 8,
 			"targeter" : "nearest",
 			"direction" : DegreesToVector(0),
-			"size" : 9
+			"size" : large
 		},
 		"RoyalSlash_strong_fast_short" : {
 			"projectile" : "RoyalSlash",
@@ -248,7 +252,7 @@ var projectile_databank = {
 			"tile_range" : 3,
 			"targeter" : "nearest",
 			"direction" : DegreesToVector(0),
-			"size" : 9
+			"size" : medium
 		},
 		"Dart_mid_medium" : {
 			"projectile" : "Dart",
@@ -260,7 +264,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"Dart_strong_medium" : {
 			"projectile" : "Dart",
@@ -272,7 +276,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"BloodShuriken1" : {
 			"projectile" : "BloodShuriken",
@@ -284,7 +288,7 @@ var projectile_databank = {
 			"tile_range" : 6,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"BloodSpinner_strong_medium" : {
 			"projectile" : "BloodSpinner",
@@ -296,7 +300,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"BloodSpinner_weak_fast" : {
 			"projectile" : "BloodSpinner",
@@ -308,7 +312,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"DemonicWave_mid_fast" : {
 			"projectile" : "DemonicWave",
@@ -320,7 +324,7 @@ var projectile_databank = {
 			"tile_range" : 4,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"DemonicWave_strong_medium" : {
 			"projectile" : "DemonicWave",
@@ -332,7 +336,7 @@ var projectile_databank = {
 			"tile_range" : 6,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"SmallDemonicBlast_weak_fast" : {
 			"projectile" : "SmallDemonicBlast",
@@ -344,7 +348,7 @@ var projectile_databank = {
 			"tile_range" : 5,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 5
+			"size" : small
 		},
 		"SmallDemonicBlast_mid_medium" : {
 			"projectile" : "SmallDemonicBlast",
@@ -356,7 +360,7 @@ var projectile_databank = {
 			"tile_range" : 5,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 5
+			"size" : small
 		},
 		"DemonicBlast_mid_slow" : {
 			"projectile" : "DemonicBlast",
@@ -368,7 +372,7 @@ var projectile_databank = {
 			"tile_range" : 9,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"DemonicBlast_strong_medium" : {
 			"projectile" : "DemonicBlast",
@@ -380,7 +384,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"GiantDemonicBlast_strong_slow" : {
 			"projectile" : "GiantDemonicBlast",
@@ -392,7 +396,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 7
+			"size" : large
 		},
 		"GiantDemonicBlast_strong_fast" : {
 			"projectile" : "GiantDemonicBlast",
@@ -404,7 +408,7 @@ var projectile_databank = {
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 7
+			"size" : large
 		},
 		
 		"Dart_strong_medium_short" : {
@@ -417,7 +421,7 @@ var projectile_databank = {
 			"tile_range" : 2,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"DemonicBlast_strong_medium_short" : {
 			"projectile" : "DemonicBlast",
@@ -429,7 +433,7 @@ var projectile_databank = {
 			"tile_range" : 2,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"DemonicWave_mid_fast_short" : {
 			"projectile" : "DemonicWave",
@@ -441,7 +445,7 @@ var projectile_databank = {
 			"tile_range" : 2,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 		"BloodSpinner_weak_fast_short" : {
 			"projectile" : "BloodSpinner",
@@ -453,7 +457,7 @@ var projectile_databank = {
 			"tile_range" : 2,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : 6
+			"size" : medium
 		},
 	"BlueBlast_strong_fast" : {
 		"projectile" : "BlueBlast",
@@ -465,7 +469,7 @@ var projectile_databank = {
 		"tile_range" : 5,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 4
+		"size" : small
 	},
 	"SandBlastSmall_mid_fast" : {
 		"projectile" : "SandBlastSmall",
@@ -477,7 +481,7 @@ var projectile_databank = {
 		"tile_range" : 3,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 5
+		"size" : medium
 	},
 	"SandBlastSmall_strong_medium" : {
 		"projectile" : "SandBlastSmall",
@@ -489,7 +493,7 @@ var projectile_databank = {
 		"tile_range" : 3,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 5
+		"size" : small
 	},
 	"SandBlast_strong_medium" : {
 		"projectile" : "SandBlast",
@@ -501,7 +505,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 6
+		"size" : medium
 	},
 	"SandBlast_strong_fast" : {
 		"projectile" : "SandBlast",
@@ -513,7 +517,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 6
+		"size" : medium
 	},
 	"SandBlast_mid_medium" : {
 		"projectile" : "SandBlast",
@@ -525,7 +529,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 6
+		"size" : medium
 	},
 	"IceBlast_mid_fast" : {
 		"projectile" : "IceBlast",
@@ -537,7 +541,7 @@ var projectile_databank = {
 		"tile_range" : 7,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"IceBlast_mid_mid" : {
 		"projectile" : "IceBlast",
@@ -549,7 +553,7 @@ var projectile_databank = {
 		"tile_range" : 7,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"GiantIceBlast_fast_strong" : {
 		"projectile" : "GiantIceBlast",
@@ -561,7 +565,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"AbyssBlast_strong_mid" : {
 		"projectile" : "AbyssBlast",
@@ -573,7 +577,7 @@ var projectile_databank = {
 		"tile_range" : 7,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"AbyssBlast_weak_fast" : {
 		"projectile" : "AbyssBlast",
@@ -585,7 +589,7 @@ var projectile_databank = {
 		"tile_range" : 7,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"IceSlash_weak_slow" : {
 		"projectile" : "IceSlash",
@@ -597,7 +601,7 @@ var projectile_databank = {
 		"tile_range" : 4,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"Ball_weak_fast" : {
 		"projectile" : "Ball",
@@ -609,7 +613,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : Vector2(-0.866,0.5),
-		"size" : 7
+		"size" : medium
 	},
 	"IceSlash_mid_fast" : {
 		"projectile" : "IceSlash",
@@ -621,7 +625,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"IceSpinner_mid_medium" : {
 		"projectile" : "IceSpinner",
@@ -633,7 +637,7 @@ var projectile_databank = {
 		"tile_range" : 5,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"IceSpinner_strong_fast" : {
 		"projectile" : "IceSpinner",
@@ -645,7 +649,7 @@ var projectile_databank = {
 		"tile_range" : 7,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"GiantIceSpinner_strong_fast" : {
 		"projectile" : "GiantIceSpinner",
@@ -657,7 +661,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"GiantIceSlash_mid_slow" : {
 		"projectile" : "GiantIceSlash",
@@ -669,7 +673,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"GiantIceSlash_strong_fast" : {
 		"projectile" : "GiantIceSlash",
@@ -681,7 +685,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"GiantIceSlash_strong_medium" : {
 		"projectile" : "GiantIceSlash",
@@ -693,7 +697,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"IceSlash_strong_fast" : {
 		"projectile" : "IceSlash",
@@ -705,7 +709,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"IceSlash_strong_medium" : {
 		"projectile" : "IceSlash",
@@ -717,7 +721,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"IceSlash_weak_medium" : {
 		"projectile" : "IceSlash",
@@ -729,7 +733,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"Ball_strong_slow" : {
 		"projectile" : "Ball",
@@ -741,7 +745,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"Ball_mid_fast" : {
 		"projectile" : "Ball",
@@ -753,7 +757,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"GiantBall_strong_slow" : {
 		"projectile" : "GiantBall",
@@ -765,7 +769,7 @@ var projectile_databank = {
 		"tile_range" : 7,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 8
+		"size" : large
 	},
 	"GiantBall_mid_fast" : {
 		"projectile" : "GiantBall",
@@ -777,7 +781,7 @@ var projectile_databank = {
 		"tile_range" : 7,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 8
+		"size" : large
 	},
 	"GiantAbyssSpinner_strong_medium" : {
 		"projectile" : "GiantAbyssSpinner",
@@ -789,7 +793,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"GiantAbyssSpinner_strong_slow" : {
 		"projectile" : "GiantAbyssSpinner",
@@ -801,7 +805,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"GiantAbyssSpinner_mid_fast" : {
 		"projectile" : "GiantAbyssSpinner",
@@ -813,7 +817,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"AbyssSpinner_mid_fast" : {
 		"projectile" : "AbyssSpinner",
@@ -825,7 +829,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"AbyssSpinner_strong_medium" : {
 		"projectile" : "AbyssSpinner",
@@ -837,7 +841,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"GreenBlast_1" : {
 						"projectile" : "GreenBlast",
@@ -849,7 +853,7 @@ var projectile_databank = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(10),
-						"size" : 8
+						"size" : large
 					},
 	"None" : {
 						"projectile" : "Slash",
@@ -873,7 +877,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"FlameBurst_strong_fast" : {
 		"projectile" : "FlameBurst",
@@ -885,7 +889,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"FlameBurst_strong_slow" : {
 		"projectile" : "FlameBurst",
@@ -897,7 +901,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"FlameBurst_medium_fast" : {
 		"projectile" : "FlameBurst",
@@ -909,7 +913,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"FlameBurst_weak_fast" : {
 		"projectile" : "FlameBurst",
@@ -921,7 +925,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"GiantFlameArrow_strong_medium" : {
 		"projectile" : "GiantFlameArrow",
@@ -933,7 +937,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"GiantFlameArrow_strong_fast" : {
 		"projectile" : "GiantFlameArrow",
@@ -945,7 +949,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"FlameArrow_strong_fast" : {
 		"projectile" : "FlameArrow",
@@ -957,7 +961,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"FlameArrow_mid_fast" : {
 		"projectile" : "FlameArrow",
@@ -969,7 +973,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"FlameBlast_strong_slow" : {
 		"projectile" : "FlameBlast",
@@ -981,7 +985,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"FlameBlast_strong_fast" : {
 		"projectile" : "FlameBlast",
@@ -993,7 +997,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"GiantFlameBlast_strong_fast" : {
 		"projectile" : "GiantFlameBlast",
@@ -1005,7 +1009,7 @@ var projectile_databank = {
 		"tile_range" : 40,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"GiantFlameBlast_strong_medium" : {
 		"projectile" : "GiantFlameBlast",
@@ -1017,7 +1021,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 9
+		"size" : large
 	},
 	"Slash_1" : {
 		"projectile" : "Slash",
@@ -1029,7 +1033,7 @@ var projectile_databank = {
 		"tile_range" : 3,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 8
+		"size" : large
 	},
 	"GiantBlast_slow" : {
 		"projectile" : "GiantBlast",
@@ -1041,7 +1045,7 @@ var projectile_databank = {
 		"tile_range" : 20,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 9
+		"size" : large
 	},
 	"GiantBlast_medium" : {
 		"inherit" : "GiantBlast_slow",
@@ -1061,7 +1065,7 @@ var projectile_databank = {
 		"tile_range" : 15,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(-45),
-		"size" : 7
+		"size" : medium
 	},
 	"Blast_strong_fast" : {
 		"projectile" : "Blast",
@@ -1073,7 +1077,7 @@ var projectile_databank = {
 		"tile_range" : 15,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(-5),
-		"size" : 7
+		"size" : medium
 	},
 	"VigilBlastSmall_1" : {
 		"projectile" : "VigilBlastSmall",
@@ -1085,7 +1089,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 7
+		"size" : medium
 	},
 	"VigilBlastSmall_strong_fast" : {
 		"projectile" : "VigilBlastSmall",
@@ -1097,7 +1101,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
-		"size" : 7
+		"size" : medium
 	},
 	"VigilBlastSmall_slow" : {
 		"inherit" : "VigilBlastSmall_1",
@@ -1113,7 +1117,7 @@ var projectile_databank = {
 		"tile_range" : 15,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"Wave_strong_fast" : {
 		"projectile" : "Wave",
@@ -1125,7 +1129,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
-		"size" : 7
+		"size" : medium
 	},
 	"Wave_mid_fast" : {
 		"inherit" : "Wave_strong_fast",
@@ -1160,7 +1164,7 @@ var projectile_databank = {
 		"speed" : 20,
 		"tile_range" : 10,
 		"direction" : DegreesToVector(0),
-		"size" : 5
+		"size" : small
 	},
 	"NeonArrow_mid_fast" : {
 		"projectile" : "NeonArrow",
@@ -1171,7 +1175,7 @@ var projectile_databank = {
 		"speed" : 70,
 		"tile_range" : 10,
 		"direction" : DegreesToVector(0),
-		"size" : 5
+		"size" : small
 	},
 	"NeonStar_strong_fast" : {
 		"projectile" : "NeonStar",
@@ -1183,7 +1187,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(30),
-		"size" : 5
+		"size" : small
 	},
 	"NeonStar_mid_fast" : {
 		"projectile" : "NeonStar",
@@ -1195,7 +1199,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(30),
-		"size" : 5
+		"size" : small
 	},
 	"NeonStar_weak_fast" : {
 		"projectile" : "NeonStar",
@@ -1207,7 +1211,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(30),
-		"size" : 5
+		"size" : small
 	},
 	"GoldDart_strong_fast" : {
 		"projectile" : "GoldDart",
@@ -1219,7 +1223,7 @@ var projectile_databank = {
 		"tile_range" : 15,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 9
+		"size" : large
 	},
 	"Dart_strong_fast" : {
 		"projectile" : "Dart",
@@ -1231,7 +1235,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 6
+		"size" : medium
 	},
 	"Dart_mid_fast" : {
 		"projectile" : "Dart",
@@ -1243,7 +1247,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 6
+		"size" : medium
 	},
 	"Ring_strong_slow" : {
 		"projectile" : "Ring",
@@ -1255,7 +1259,7 @@ var projectile_databank = {
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 8
+		"size" : medium
 	},
 	"Star_strong_slow" : {
 		"projectile" : "Star",
@@ -1267,7 +1271,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 7
+		"size" : small
 	},
 	"Star_strong_medium" : {
 		"projectile" : "Star",
@@ -1279,7 +1283,7 @@ var projectile_databank = {
 		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 7
+		"size" : small
 	},
 	"Spinner_strong_medium" : {
 		"projectile" : "Spinner",
@@ -1291,7 +1295,7 @@ var projectile_databank = {
 		"tile_range" : 10,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 7
+		"size" : small
 	},
 	"GiantSpinner_strong_medium" : {
 		"projectile" : "GiantSpinner",
@@ -1303,7 +1307,7 @@ var projectile_databank = {
 		"tile_range" : 10,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 9
+		"size" : medium
 	},
 	"Fire1_strong_fast" : {
 		"projectile" : "Fire1",
@@ -1315,7 +1319,7 @@ var projectile_databank = {
 		"tile_range" : 7,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 7
+		"size" : small
 	},
 	"Fire2_strong_fast" : {
 		"projectile" : "Fire2",
@@ -1327,7 +1331,7 @@ var projectile_databank = {
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 7
+		"size" : small
 	},
 	"Fire3_strong_fast" : {
 		"projectile" : "Fire3",
@@ -1339,7 +1343,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 7
+		"size" : small
 	},
 	"Stack_strong_medium" : {
 		"projectile" : "Stack",
@@ -1351,7 +1355,7 @@ var projectile_databank = {
 		"tile_range" : 9,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
-		"size" : 7
+		"size" : small
 	},
 }
 
@@ -1617,7 +1621,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -1629,7 +1633,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(15),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -1641,7 +1645,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-15),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -1653,7 +1657,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(30),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -1665,7 +1669,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-30),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -1677,7 +1681,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(120),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -1689,7 +1693,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(240),
-						"size" : 7
+						"size" : medium
 					},
 					MakeProjectile("Wave_mid_slow", 300, 2, "nearest"),
 					MakeProjectile("Wave_mid_slow", 180, 2, "nearest"),
@@ -1711,7 +1715,7 @@ var rulers = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "SmallBlast",
@@ -1723,7 +1727,7 @@ var rulers = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(20),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "SmallBlast",
@@ -1735,7 +1739,7 @@ var rulers = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-20),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Blast",
@@ -1747,7 +1751,7 @@ var rulers = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(10),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "SmallBlast",
@@ -1759,7 +1763,7 @@ var rulers = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-10),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "SmallBlast",
@@ -1771,7 +1775,7 @@ var rulers = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(5),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			},
@@ -1791,7 +1795,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -1803,7 +1807,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(10),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -1815,7 +1819,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-10),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -1827,7 +1831,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(20),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -1839,7 +1843,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-20),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Blast",
@@ -1851,7 +1855,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-25),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Blast",
@@ -1863,7 +1867,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Blast",
@@ -1875,7 +1879,7 @@ var rulers = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(25),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "PlatinumSlash",
@@ -1887,7 +1891,7 @@ var rulers = {
 						"tile_range" : 14,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(120),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "PlatinumSlash",
@@ -1899,7 +1903,7 @@ var rulers = {
 						"tile_range" : 14,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(180),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "PlatinumSlash",
@@ -1911,7 +1915,7 @@ var rulers = {
 						"tile_range" : 14,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(240),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			}
@@ -2343,7 +2347,7 @@ var rulers = {
 						"tile_range" : 0,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,1),
-						"size" : 9
+						"size" : large
 					},
 				]
 			},
@@ -2846,7 +2850,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					MakeProjectile("GreenBlast_1", (360.0/8)*1, 0, "nearest"),
 					MakeProjectile("GreenBlast_1", (360.0/8)*2, 0, "nearest"),
@@ -2894,7 +2898,7 @@ var realm_enemies = {
 						"tile_range" : 10,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 7
+						"size" : medium
 					}
 				]
 			},
@@ -2931,7 +2935,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					}
 				]
 			}
@@ -2969,7 +2973,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					}
 				]
 			}
@@ -3006,7 +3010,7 @@ var realm_enemies = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					}
 				]
 			}
@@ -3043,7 +3047,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "SteelArrow",
@@ -3055,7 +3059,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(25),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "SteelArrow",
@@ -3067,7 +3071,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-25),
-						"size" : 6
+						"size" : medium
 					}
 				]
 			}
@@ -3132,7 +3136,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 5
+						"size" : small
 					}
 				]
 			},
@@ -3306,7 +3310,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "SmallBlast",
@@ -3341,7 +3345,7 @@ var realm_enemies = {
 						"speed" : 40,
 						"tile_range" : 7,
 						"direction" : Vector2(0,1),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Stack",
@@ -3352,7 +3356,7 @@ var realm_enemies = {
 						"speed" : 40,
 						"tile_range" : 7,
 						"direction" : Vector2(0.866,0.5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Stack",
@@ -3363,7 +3367,7 @@ var realm_enemies = {
 						"speed" : 40,
 						"tile_range" : 7,
 						"direction" : Vector2(0.866,-0.5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Stack",
@@ -3374,7 +3378,7 @@ var realm_enemies = {
 						"speed" : 40,
 						"tile_range" : 7,
 						"direction" : Vector2(0,-1),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Stack",
@@ -3385,7 +3389,7 @@ var realm_enemies = {
 						"speed" : 40,
 						"tile_range" : 7,
 						"direction" : Vector2(-0.866,-0.5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Stack",
@@ -3396,7 +3400,7 @@ var realm_enemies = {
 						"speed" : 40,
 						"tile_range" : 7,
 						"direction" : Vector2(-0.866,0.5),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			}
@@ -3451,7 +3455,7 @@ var realm_enemies = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "PlatinumSlash",
@@ -3463,7 +3467,7 @@ var realm_enemies = {
 						"tile_range" : 4,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "PlatinumSlash",
@@ -3475,7 +3479,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 				]
 			}
@@ -3625,7 +3629,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire1",
@@ -3637,7 +3641,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire1",
@@ -3649,7 +3653,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(15),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire1",
@@ -3661,7 +3665,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-15),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -3673,7 +3677,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -3685,7 +3689,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire3",
@@ -3697,7 +3701,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			}
@@ -3803,7 +3807,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "Stack",
@@ -3815,7 +3819,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 5
+						"size" : small
 					}
 				]
 			}
@@ -3855,7 +3859,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "Stack",
@@ -3867,7 +3871,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "Stack",
@@ -3879,7 +3883,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,0),
-						"size" : 5
+						"size" : small
 					}
 				]
 			},
@@ -3977,7 +3981,7 @@ var realm_enemies = {
 		"defense" : 6,
 		"exp" : 24,
 		"behavior" : 2,
-		"speed" : 40,
+		"speed" : 30,
 		"loot_pool" :  basic_loot_pools["highlands_1"],
 		"phases" : [
 			{
@@ -3987,14 +3991,14 @@ var realm_enemies = {
 					{
 						"projectile" : "Wave",
 						"formula" : "0",
-						"damage" : 30,
+						"damage" : 20,
 						"piercing" : false,
 						"wait" : 0,
 						"speed" : 25,
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "IronSlash",
@@ -4006,7 +4010,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(15),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "IronSlash",
@@ -4018,7 +4022,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-15),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			}
@@ -4055,7 +4059,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-15),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "BrownBlast",
@@ -4067,7 +4071,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(15),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "BrownBlast",
@@ -4079,7 +4083,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 5
+						"size" : small
 					},
 				]
 			}
@@ -4142,7 +4146,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-15),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "GoldSlash",
@@ -4154,7 +4158,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "GoldSlash",
@@ -4166,7 +4170,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(15),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			},
@@ -4184,7 +4188,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "GoldSlash",
@@ -4196,7 +4200,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(15),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "GoldSlash",
@@ -4208,7 +4212,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-15),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			}
@@ -4270,7 +4274,7 @@ var realm_enemies = {
 						"speed" : 44,
 						"tile_range" : 6,
 						"direction" : Vector2(0,1),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4281,7 +4285,7 @@ var realm_enemies = {
 						"speed" : 44,
 						"tile_range" : 6,
 						"direction" : Vector2(0.707,0.707),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4292,7 +4296,7 @@ var realm_enemies = {
 						"speed" : 44,
 						"tile_range" : 6,
 						"direction" : Vector2(1,0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4303,7 +4307,7 @@ var realm_enemies = {
 						"speed" : 44,
 						"tile_range" : 6,
 						"direction" : Vector2(0.707,-0.707),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4314,7 +4318,7 @@ var realm_enemies = {
 						"speed" : 44,
 						"tile_range" : 6,
 						"direction" : Vector2(0,-1),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4325,7 +4329,7 @@ var realm_enemies = {
 						"speed" : 44,
 						"tile_range" : 6,
 						"direction" : Vector2(-0.707,-0.707),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4336,7 +4340,7 @@ var realm_enemies = {
 						"speed" : 44,
 						"tile_range" : 6,
 						"direction" : Vector2(-1,0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4347,7 +4351,7 @@ var realm_enemies = {
 						"speed" : 44,
 						"tile_range" : 6,
 						"direction" : Vector2(-0.707,0.707),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Spinner",
@@ -4359,7 +4363,7 @@ var realm_enemies = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-17),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Spinner",
@@ -4371,7 +4375,7 @@ var realm_enemies = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(17),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Dart",
@@ -4383,7 +4387,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "Dart",
@@ -4395,7 +4399,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(35),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "Dart",
@@ -4407,7 +4411,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-35),
-						"size" : 5
+						"size" : small
 					},
 				]
 			},
@@ -4505,7 +4509,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-25),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire1",
@@ -4517,7 +4521,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(25),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire3",
@@ -4529,7 +4533,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -4541,7 +4545,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(25),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire1",
@@ -4553,7 +4557,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-25),
-						"size" : 6
+						"size" : medium
 					},
 				]
 			},
@@ -4584,7 +4588,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-25),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire1",
@@ -4596,7 +4600,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(25),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire3",
@@ -4608,7 +4612,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -4620,7 +4624,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(25),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire1",
@@ -4632,7 +4636,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-25),
-						"size" : 6
+						"size" : medium
 					},
 				]
 			},
@@ -4715,7 +4719,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -4727,7 +4731,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(35),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -4739,7 +4743,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-35),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			},
@@ -4757,7 +4761,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -4769,7 +4773,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(35),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Ball",
@@ -4781,7 +4785,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-35),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4793,7 +4797,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-35),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4805,7 +4809,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(35),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4817,7 +4821,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			},
@@ -4854,7 +4858,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "Wave",
@@ -4866,7 +4870,7 @@ var realm_enemies = {
 						"tile_range" : 4,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 				]
 			}
@@ -4903,7 +4907,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "ShadowArrow",
@@ -4915,7 +4919,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 				]
 			}
@@ -4952,7 +4956,7 @@ var realm_enemies = {
 						"tile_range" : 9,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,1),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Void1",
@@ -4964,7 +4968,7 @@ var realm_enemies = {
 						"tile_range" : 9,
 						"targeter" : "nearest",
 						"direction" : Vector2(0.866,0.5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Void1",
@@ -4976,7 +4980,7 @@ var realm_enemies = {
 						"tile_range" : 9,
 						"targeter" : "nearest",
 						"direction" : Vector2(0.866,-0.5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Void1",
@@ -4988,7 +4992,7 @@ var realm_enemies = {
 						"tile_range" : 9,
 						"targeter" : "nearest",
 						"direction" : Vector2(0,-1),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Void1",
@@ -5000,7 +5004,7 @@ var realm_enemies = {
 						"tile_range" : 9,
 						"targeter" : "nearest",
 						"direction" : Vector2(-0.866,-0.5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Void1",
@@ -5012,7 +5016,7 @@ var realm_enemies = {
 						"tile_range" : 9,
 						"targeter" : "nearest",
 						"direction" : Vector2(-0.866,0.5),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "RexiumSlash",
@@ -5024,7 +5028,7 @@ var realm_enemies = {
 						"tile_range" : 6,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "RexiumSlash",
@@ -5036,7 +5040,7 @@ var realm_enemies = {
 						"tile_range" : 4,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(7),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "RexiumSlash",
@@ -5048,7 +5052,7 @@ var realm_enemies = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(15),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "RexiumSlash",
@@ -5060,7 +5064,7 @@ var realm_enemies = {
 						"tile_range" : 4,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-7),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "RexiumSlash",
@@ -5072,7 +5076,7 @@ var realm_enemies = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-15),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			},
@@ -5109,7 +5113,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Water2",
@@ -5121,7 +5125,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(10),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Water2",
@@ -5133,7 +5137,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-10),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Water2",
@@ -5145,7 +5149,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "MithrilSlash",
@@ -5157,7 +5161,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(10),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Water2",
@@ -5169,7 +5173,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(20),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "MithrilSlash",
@@ -5181,7 +5185,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-10),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Water2",
@@ -5193,7 +5197,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-20),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			},
@@ -5233,7 +5237,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5245,7 +5249,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(20),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5257,7 +5261,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(40),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5269,7 +5273,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(60),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5281,7 +5285,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(40),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5293,7 +5297,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(20),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5305,7 +5309,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5317,7 +5321,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-20),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5329,7 +5333,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-40),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5341,7 +5345,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-60),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5353,7 +5357,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-40),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Fire2",
@@ -5365,7 +5369,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-20),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			},
@@ -5402,7 +5406,7 @@ var realm_enemies = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "GreenBlast",
@@ -5414,7 +5418,7 @@ var realm_enemies = {
 						"tile_range" : 5,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(25),
-						"size" : 6
+						"size" : medium
 					},
 					{
 						"projectile" : "BlueBlast",
@@ -5426,7 +5430,7 @@ var realm_enemies = {
 						"tile_range" : 3,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(-25),
-						"size" : 6
+						"size" : medium
 					},
 				]
 			}
@@ -5486,7 +5490,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(60),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "RedBlast",
@@ -5498,7 +5502,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(180),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "GreenBlast",
@@ -5510,7 +5514,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(300),
-						"size" : 5
+						"size" : small
 					},
 					{
 						"projectile" : "Blast",
@@ -5522,7 +5526,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(0),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Blast",
@@ -5534,7 +5538,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(120),
-						"size" : 7
+						"size" : medium
 					},
 					{
 						"projectile" : "Blast",
@@ -5546,7 +5550,7 @@ var realm_enemies = {
 						"tile_range" : 8,
 						"targeter" : "nearest",
 						"direction" : DegreesToVector(240),
-						"size" : 7
+						"size" : medium
 					},
 				]
 			},
@@ -6588,7 +6592,7 @@ var desert_catacombs_enemies = {
 			"Attack" : [0,2],
 		},
 		
-		"health" : 4000,
+		"health" : 1000,
 		"defense" : 30,
 		"exp" : 2000,
 		"behavior" : 1,
@@ -6635,7 +6639,7 @@ var desert_catacombs_enemies = {
 			"Attack" : [1],
 		},
 		
-		"health" : 500,
+		"health" : 200,
 		"defense" : 0,
 		"exp" : 50,
 		"behavior" : 2,
@@ -6999,10 +7003,10 @@ var the_abyss_enemies = {
 		"rect" : Rect2(Vector2(114,0), Vector2(114,38)),
 		"animations" : {
 			"Idle" : [0,1],
-			"Attack" : [2],
+			"Attack" : [1,2],
 		},
 		
-		"health" : 1000,
+		"health" : 100000,
 		"defense" : 30,
 		"exp" : 12000,
 		"behavior" : 0,
@@ -7192,7 +7196,7 @@ var the_abyss_enemies = {
 				"duration" : 8,
 				"health" : [25,75],
 				"behavior" : 2,
-				"speed" : 25,
+				"speed" : 15,
 				"attack_pattern" : [
 					MakeProjectile("FlameBlast_strong_fast", 0, 0, "nearest"),
 					MakeProjectile("FlameBlast_strong_fast", 10, 0, "nearest"),
@@ -7453,7 +7457,7 @@ var ruined_temple_enemies = {
 			"Attack" : [1],
 		},
 		
-		"health" : 5000,
+		"health" : 3000,
 		"defense" : 20,
 		"exp" : 3000,
 		"behavior" : 1,
@@ -7505,7 +7509,7 @@ var ruined_temple_enemies = {
 			"Attack" : [2],
 		},
 		
-		"health" : 1000,
+		"health" : 500,
 		"defense" : 10,
 		"exp" : 100,
 		"behavior" : 1,
@@ -8454,7 +8458,7 @@ var items = {
 				"piercing" : true,
 				"speed" : 90,
 				"tile_range" : 7,
-				"size" : 5,
+				"size" : small,
 				"offset" : DegreesToVector(0),
 			},
 			{

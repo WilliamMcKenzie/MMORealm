@@ -276,3 +276,5 @@
 [node name="Buildings" type="YSort" parent="Objects"]
 
 [node name="Obstacles" type="YSort" parent="Objects"]
+
+[node name="Npcs" type="YSort" parent="Objects"]

@@ -31,7 +31,9 @@ var current_instance_tree = ["nexus"]
 var nexus = preload("res://Scenes/MainScenes/Nexus/Nexus.tscn")
 var island_container = preload("res://Scenes/MainScenes/Island/Island.tscn")
 var dungeon_container = preload("res://Scenes/MainScenes/Dungeon/Dungeon.tscn")
+var arena_container = preload("res://Scenes/MainScenes/Arena/Arena.tscn")
 var house_container = preload("res://Scenes/MainScenes/House/House.tscn")
+
 
 #Projectile preload
 var projectile = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Projectile.tscn")
@@ -146,6 +148,8 @@ remote func ReturnTokenVerificationResults(results):
 		ErrorPopup.OpenPopup("Login failed")
 
 #Tutorial
+func DialogueResponse(response):
+	rpc_id(1, "DialogueResponse", response)
 remote func StartTutorial():
 	GameUI.StartTutorial()
 func ChooseUsername(username):
@@ -156,8 +160,8 @@ remote func ConfirmUsername(result, username):
 		GameUI.get_node("ChooseName").visible = false
 	else:
 		GameUI.get_node("ChooseName/MarginContainer/Container/InputContainer/NameContainter/NameWarning").text = "Name is taken!"
-remote func TutorialStep(step):
-	GameUI.TutorialStep(step)
+remote func Dialogue(step):
+	GameUI.get_node("NpcDialogue").StartSubject(step)
 
 #OTHER PLAYERS
 func FetchBatchCharacterData(other_players_ids):
@@ -216,6 +220,9 @@ remote func RecieveCharacterData(character):
 	player_node.SetCharacter(character)
 remote func RecieveQuestData(current_quest_data):
 	GameUI.SetQuest(current_quest_data)
+remote func ShowIndicator(type, amount):
+	var player_node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player")
+	player_node.ShowIndicator(type, amount)
 
 func UseItem(index):
 	rpc_id(1, "UseItem", index)
@@ -297,20 +304,24 @@ func GetCurrentInstance():
 func SendChatMessage(message):
 	rpc_id(1,"RecieveChatMessage", message)
 remote func RecieveChat(message,username,classname=null,id=null):
-	GameUI.get_node("ChatControl").AddChat(message,username,classname,id)
+	if not username == "Enemy" or Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()).has_node("YSort/Enemies/"+id):
+		GameUI.get_node("ChatControl").AddChat(message,username,classname,id)
 remote func MovePlayer(new_position):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position = new_position
 
+var last_nexus = 0
 func Nexus():
-	if "nexus" == GetCurrentInstance():
+	if "nexus" == GetCurrentInstance() or OS.get_system_time_msecs()-last_nexus < 100:
 		return
 	rpc_id(1, "Nexus")
-remote func ConfirmNexus():
-	LoadingScreen.Transition("Nexus")
+	last_nexus = OS.get_system_time_msecs()
+remote func ConfirmNexus(spawnpoint = Vector2.ZERO):
+	LoadingScreen.Transition("")
 	yield(get_tree().create_timer(0.3), "timeout")
 	var nexus_instance = nexus.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	nexus_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
+	nexus_instance.get_node("YSort/player").global_position = spawnpoint
 	
 	nexus_instance.name = "nexus"
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
@@ -348,6 +359,19 @@ remote func ReturnHouseData(instance_data):
 	get_node("../SceneHandler").add_child(house_instance)
 	current_instance_tree = ["nexus", instance_data["Id"]]
 
+remote func ReturnArenaData(instance_data):
+	var arena_instance = arena_container.instance()
+	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	
+	arena_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
+	arena_instance.get_node("YSort/player").global_position = instance_data["Position"]
+	arena_instance.name = instance_data["Id"]
+	
+	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
+	get_node("../SceneHandler").add_child(arena_instance)
+	current_instance_tree.append(instance_data["Id"])
+	LoadingScreen.Countdown()
+
 remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
@@ -360,7 +384,7 @@ remote func ReturnDungeonData(instance_data):
 	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
 	current_instance_tree.append(instance_data["Id"])
-	
+
 remote func ReturnIslandData(instance_data):
 	var island_instance = island_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())

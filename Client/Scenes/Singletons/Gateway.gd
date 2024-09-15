@@ -44,7 +44,7 @@ func ConnectToServerHTML():
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(html_network)
 
-	custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
+	#custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
 	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
 
 func ConnectToServerDefault():
@@ -89,9 +89,6 @@ func _onConnectionSucceeded():
 		RequestCreateAccount()
 	if(task == 0):
 		RequestLogin()
-
-func _onConnectionFailed():
-	print("connectionFailed")
 
 func FetchAccountData():
 	rpc_id(1, "FetchAccountData", email, password)

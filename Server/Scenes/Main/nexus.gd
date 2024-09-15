@@ -242,7 +242,8 @@ func _physics_process(delta):
 			
 			#For dungeons and nexus
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
-				CalculateLootPool(enemy_list[enemy_id], enemy_id)
+				if not "arena" in name:
+					CalculateLootPool(enemy_list[enemy_id], enemy_id)
 				enemy_list.erase(enemy_id)
 				continue
 			
@@ -564,3 +565,12 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		add_child(dungeon_instance)
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 		return instance_id
+
+func SpawnNPC(npc_name, instance_tree, position):
+	object_list[npc_name] = {
+		"name": npc_name,
+		"type":"Npcs",
+		"end_time": OS.get_system_time_msecs()+OS.get_system_time_msecs(),
+		"position": position,
+		"instance_tree": instance_tree
+	}

@@ -1,6 +1,8 @@
-[gd_resource type="Theme" load_steps=7 format=2]
+[gd_resource type="Theme" load_steps=9 format=2]
 
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/ui/border_small.png" type="Texture" id=2]
+[ext_resource path="res://Assets/ui/rectangle_background.png" type="Texture" id=3]
 
 [sub_resource type="DynamicFont" id=18]
 outline_size = 1
@@ -13,10 +15,12 @@ outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxTexture" id=20]
+texture = ExtResource( 3 )
 region_rect = Rect2( 0, 0, 384, 128 )
 modulate_color = Color( 1, 1, 1, 0.313726 )
 
 [sub_resource type="StyleBoxTexture" id=19]
+texture = ExtResource( 2 )
 region_rect = Rect2( 0, 0, 18, 18 )
 margin_left = 2.0
 margin_right = 2.0

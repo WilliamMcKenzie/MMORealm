@@ -334,7 +334,7 @@ func UseAbility():
 		
 	if in_tutorial and tutorial_step == 3:
 		tutorial_step += 1
-		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+		get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 	
 	character.ability_cooldown = gear.helmet.cooldown
 	
@@ -389,7 +389,7 @@ func IncreaseStat(stat):
 		tutorial_step += 1
 		in_tutorial = false
 		account_data.finished_tutorial = true
-		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+		get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 	
 	if character.ascension_stones > character.used_ascension_stones:
 		character.used_ascension_stones += 1
@@ -417,7 +417,7 @@ func UseItem(index):
 	if selected_item.use == "ascend" and character.ascension_stones < ServerData.GetCharacter(character.class).ascension_stones:
 		if in_tutorial and tutorial_step == 5:
 			tutorial_step += 1
-			get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+			get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 		character.ascension_stones += 1
 		character.inventory[index] = null
 		get_node("/root/Server").SendMessage(int(name), "success", "You feel your strength grow...")
@@ -427,7 +427,7 @@ func UseItem(index):
 			tutorial_step += 1
 			in_tutorial = false
 			account_data.finished_tutorial = true
-			get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+			get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 		get_node("/root/Server").SendMessage(int(name), "warning", "Class is fully ascended, evolve to ascend further")
 	
 	get_node("/root/Server").SendCharacterData(name, character)
@@ -449,7 +449,7 @@ func EquipItem(index):
 	get_node("/root/Server").SendCharacterData(name, character)
 	if in_tutorial and tutorial_step == 2 and selected_item.slot == "helmet":
 		tutorial_step += 1
-		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+		get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 
 func ChangeItem(to_data, from_data):
 	var remove_gear = false
@@ -472,7 +472,7 @@ func ChangeItem(to_data, from_data):
 			
 			if in_tutorial and tutorial_step == 2 and selected_item.slot == "helmet":
 				tutorial_step += 1
-				get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+				get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 			
 	#Vice versa, trying to place gear slot into inventory
 	if from_data.parent == "gear":
@@ -574,7 +574,7 @@ func LootItem(to_data, from_data):
 			
 			if in_tutorial and tutorial_step == 2 and selected_item.slot == "helmet":
 				tutorial_step += 1
-				get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+				get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 		
 		loot[from_data.index] = replaced_item_raw
 		character[to_data.parent][to_data.index] = selected_item_raw
@@ -613,10 +613,10 @@ func AddExp(exp_amount, enemy_name, enemy_id):
 	
 	if in_tutorial and tutorial_step == 4 and enemy_name == "tutorial_troll_king":
 		tutorial_step += 1
-		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+		get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 	if in_tutorial and tutorial_step == 1 and enemy_name == "tutorial_crab":
 		tutorial_step += 1
-		get_node("/root/Server").TutorialStep(tutorial_step_translation[tutorial_step], name)
+		get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 	
 	var exp_pool = exp_amount
 	if enemy_id == current_quest:
@@ -674,7 +674,21 @@ func DealDamage(damage, enemy_name):
 	UpdateStatistics("damage_taken", total_damage)
 	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	if health < 1 and not is_dead:
-		Death(enemy_name)
+		var server_node = get_node("/root/Server")
+		var instance_tree = server_node.player_state_collection[int(name)]["I"]
+		var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
+		if "arena" in instance_node.name:
+			health = character.stats.health
+			account_data.gold += instance_node.gold
+			account_data.time_tracker[instance_node.arena_type] = OS.get_datetime()
+			get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
+			get_node("/root/Server").SendAccountData(name, account_data)
+			get_node("/root/Server").SendCharacterData(name, character)
+			server_node.ForcedNexus(int(name),  server_node.get_node("Instances/nexus").object_list["arena_master"].position - Vector2(24,0))
+			yield(get_tree().create_timer(1), "timeout")
+			server_node.Dialogue("FinishedArena", name)
+		else:
+			Death(enemy_name)
 
 func Death(enemy_name):
 	UpdateStatistics("deaths",1)

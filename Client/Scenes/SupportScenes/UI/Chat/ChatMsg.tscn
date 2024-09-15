@@ -49,7 +49,7 @@ script = ExtResource( 1 )
 [node name="Icon" type="TextureRect" parent="."]
 material = ExtResource( 3 )
 margin_right = 20.0
-margin_bottom = 31.0
+margin_bottom = 71.0
 rect_min_size = Vector2( 20, 20 )
 texture = SubResource( 5 )
 stretch_mode = 5
@@ -58,28 +58,37 @@ stretch_mode = 5
 material = ExtResource( 3 )
 margin_left = 24.0
 margin_right = 24.0
-margin_bottom = 31.0
+margin_bottom = 71.0
 stretch_mode = 5
 
 [node name="From" type="Label" parent="."]
 margin_left = 28.0
-margin_right = 111.0
+margin_right = 73.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 0, 25 )
 size_flags_vertical = 0
 custom_colors/font_color = Color( 1, 0.937255, 0, 1 )
-text = "Vigil Guardian:"
+text = "Snuffy:"
 valign = 1
 
-[node name="Message" type="Label" parent="."]
-margin_left = 115.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = 77.0
 margin_right = 200.0
-margin_bottom = 25.0
-rect_min_size = Vector2( 0, 25 )
+margin_bottom = 71.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 0
+custom_constants/margin_top = 6
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+
+[node name="Message" type="Label" parent="MarginContainer"]
+margin_top = 6.0
+margin_right = 123.0
+margin_bottom = 71.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "You foolish"
+text = "Hahahahhaha you fucking pricks. Selling 2 acclaim for one vital"
 valign = 1
 autowrap = true
 

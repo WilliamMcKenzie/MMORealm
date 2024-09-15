@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=2]
+[gd_scene load_steps=71 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/Inventory.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=2]
@@ -27,11 +27,12 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/UtilityButtons/ClassButton.gd" type="Script" id=25]
 [ext_resource path="res://Scenes/SupportScenes/UI/UtilityButtons/ClassesButton.gd" type="Script" id=26]
 [ext_resource path="res://Scenes/SupportScenes/UI/UtilityButtons/NearbyButton.gd" type="Script" id=27]
-[ext_resource path="res://Scenes/SupportScenes/UI/TutorialDialogue/TutorialDialogue.tscn" type="PackedScene" id=28]
+[ext_resource path="res://Scenes/SupportScenes/UI/NpcDialogue/NpcDialogue.tscn" type="PackedScene" id=28]
 [ext_resource path="res://Scenes/SupportScenes/UI/ChooseName/ChooseName.tscn" type="PackedScene" id=29]
 [ext_resource path="res://Scenes/SupportScenes/UI/QuestMarker/QuestMarker.tscn" type="PackedScene" id=30]
 [ext_resource path="res://Scenes/SupportScenes/UI/UtilityButtons/BuildButton.gd" type="Script" id=31]
 [ext_resource path="res://Scenes/SupportScenes/UI/Building/Building.tscn" type="PackedScene" id=32]
+[ext_resource path="res://Scenes/SupportScenes/UI/TalkNpc.gd" type="Script" id=33]
 
 [sub_resource type="Animation" id=34]
 resource_name = "Ability"
@@ -940,6 +941,7 @@ anims/Start = SubResource( 37 )
 anims/Stats = SubResource( 35 )
 
 [node name="FPS" type="Label" parent="."]
+visible = false
 margin_left = 635.0
 margin_top = 11.0
 margin_right = 677.0
@@ -998,6 +1000,42 @@ margin_top = 9.5
 margin_right = 67.0
 margin_bottom = 28.5
 text = "Enter"
+align = 1
+valign = 1
+
+[node name="TalkNpc" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -22.5
+margin_right = 50.0
+margin_bottom = 22.5
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 33 )
+
+[node name="MarginContainer" type="MarginContainer" parent="TalkNpc"]
+margin_right = 100.0
+margin_bottom = 45.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="Button" type="TextureButton" parent="TalkNpc/MarginContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 96.0
+margin_bottom = 41.0
+
+[node name="Label" type="Label" parent="TalkNpc/MarginContainer/Button"]
+margin_left = 29.0
+margin_top = 9.5
+margin_right = 67.0
+margin_bottom = 28.5
+text = "Talk"
 align = 1
 valign = 1
 
@@ -1354,7 +1392,7 @@ visible = false
 [node name="TradingMenu" parent="." instance=ExtResource( 16 )]
 visible = false
 
-[node name="TutorialDialogue" parent="." instance=ExtResource( 28 )]
+[node name="NpcDialogue" parent="." instance=ExtResource( 28 )]
 visible = false
 
 [node name="ChooseName" parent="." instance=ExtResource( 29 )]

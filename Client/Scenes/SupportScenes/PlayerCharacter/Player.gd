@@ -9,6 +9,7 @@ var health
 
 var indicators = {
 	"exp" : preload("res://Scenes/SupportScenes/UI/Indicators/ExpIndicator.tscn"),
+	"gold" : preload("res://Scenes/SupportScenes/UI/Indicators/GoldIndicator.tscn"),
 	"level" : preload("res://Scenes/SupportScenes/UI/Indicators/LevelIndicator.tscn"),
 	"damage" : preload("res://Scenes/SupportScenes/UI/Indicators/DamageIndicator.tscn"),
 	"ascension" : preload("res://Scenes/SupportScenes/UI/Indicators/AscensionIndicator.tscn")
@@ -312,10 +313,13 @@ func ShowIndicator(type, amount):
 	var id = str(OS.get_system_time_msecs())
 	
 	indicator.name = id
-	if type == "damage" and amount == 0:
-		return
 	if type == "damage" and amount < 0:
-		indicator.get_node("Label").text = str(amount)
+		$ParticleMaster.emitting = true 
+		AudioManager.Play("hit")
+		if amount < 0:
+			indicator.get_node("Label").text = str(amount)
+		else:
+			return
 	else:
 		indicator.get_node("Label").text = "+"+str(amount)
 	$IndicatorPlaceholder.add_child(indicator)

@@ -18,6 +18,7 @@ var default_account_data = {
 	"character_slots": 1,
 	"gold": 5000,
 	"finished_tutorial": false,
+	"time_tracker" : {},
 	"achievements": {
 	},
 	"statistics": {

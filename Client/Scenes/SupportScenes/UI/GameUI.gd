@@ -54,12 +54,9 @@ func _physics_process(delta):
 func StartTutorial():
 	$TutorialAnimations.play("Start")
 	if account_data.username == "[unset]":
-		$TutorialDialogue.StartSubject("Intro")
+		$NpcDialogue.StartSubject("Intro")
 	else:
 		Server.ChooseUsername(account_data.username)
-	
-func TutorialStep(step):
-	$TutorialDialogue.StartSubject(step)
 
 func SetQuest(current_quest_data):
 	if current_quest_data:
