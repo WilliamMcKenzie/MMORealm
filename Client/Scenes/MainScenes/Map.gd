@@ -4,7 +4,7 @@ var player_spawn = preload("res://Scenes/SupportScenes/PlayerCharacter/PlayerTem
 var last_world_state = 0
 
 var world_state_buffer = []
-const interpolation_offset = 200
+const interpolation_offset = 100
 
 var active_projectiles = []
 
@@ -16,7 +16,7 @@ func _physics_process(delta):
 	if GameUI.is_dead:
 		return
 	
-	var render_time = Server.client_clock - interpolation_offset - 100
+	var render_time = Server.client_clock - interpolation_offset
 	if world_state_buffer.size() > 1:
 		#Remove excess worldstates, leaving only usable ones
 		while(world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T):
@@ -57,7 +57,6 @@ func _physics_process(delta):
 					pass
 				elif get_node("YSort/Enemies").has_node(str(enemy)):
 					var new_position = lerp(enemies1[enemy]["position"], enemies2[enemy]["position"], interpolation_factor)
-					print(new_position)
 					get_node("YSort/Enemies/"+str(enemy)).MoveEnemy(new_position)
 					get_node("YSort/Enemies/"+str(enemy)).effects = enemies2[enemy]["effects"]
 					if enemies2[enemy].has("dead"):

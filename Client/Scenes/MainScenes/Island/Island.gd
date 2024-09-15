@@ -62,8 +62,11 @@ func GenerateChunk(chunk_data, chunk):
 	
 	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
 		for y in range(chunk.y-(chunk_size/2), chunk.y+(chunk_size/2)):
-			var tile = tiles[x-chunk.x+(chunk_size/2)][y-chunk.y+(chunk_size/2)]
-			map_tiles[Vector2(x,y)] = tile
+			var newX = x-chunk.x+(chunk_size/2)
+			var newY = y-chunk.y+(chunk_size/2)
+			if newX in range(tiles.size()) and newY in range(tiles[newX].size()):
+				var tile = tiles[newX][newY]
+				map_tiles[Vector2(x,y)] = tile
 
 func LoadChunk(position, offset):
 	var player_coords = Vector2(round((position/8).x), round((position/8).y))

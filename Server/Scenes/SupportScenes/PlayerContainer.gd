@@ -109,7 +109,7 @@ func _physics_process(delta):
 		
 		server_node.SendQuestData(name, current_quest_data)
 	
-	if clock_sync_timer >= 3 and "dungeon" in get_parent().get_parent().get_parent().name:
+	elif clock_sync_timer >= 3 and "dungeon" in get_parent().get_parent().get_parent().name:
 		clock_sync_timer = 0
 		
 		var server_node = get_node("/root/Server")
@@ -177,7 +177,6 @@ func _physics_process(delta):
 			get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 		if health > character.stats.health:
 			health = character.stats.health
-	
 	for effect in status_effects.keys():
 		status_effects[effect] -= delta
 		if status_effects[effect] <= 0:

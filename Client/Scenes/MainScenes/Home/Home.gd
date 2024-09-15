@@ -19,8 +19,6 @@ func _ready():
 		get_node("LoginPopup/VBoxContainer/EmailContainer/Email/MarginContainer/Email").text = email
 		get_node("LoginPopup/VBoxContainer/PasswordContainer/Password/MarginContainer/Password").text = password
 		get_node("LoginPopup").LoginAttempt()
-		yield(get_tree().create_timer(0.3), "timeout")
-		get_node("LoginPopup").LoginAttempt()
 
 func AuthenticatedUser():
 	Gateway.ConnectToServer(email, password, 4)
