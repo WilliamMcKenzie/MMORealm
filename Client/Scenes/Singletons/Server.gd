@@ -1,7 +1,7 @@
 extends Node
 
-var url = "wss://gameserver.lagso.com"
-#var url = "ws://159.203.0.78:20200"
+#var url = "wss://gameserver.lagso.com"
+var url = "ws://159.203.0.78:20200"
 #var url = "ws://localhost:20200"
 
 var ip_address = "159.203.0.78"
@@ -309,6 +309,8 @@ remote func MovePlayer(new_position):
 
 var last_nexus = 0
 func Nexus():
+	if GameUI.get_node("NpcDialogue").subject == "Final":
+		GameUI.get_node("GameButtons/HomeButton/TutorialArrow").visible = false
 	if "nexus" == GetCurrentInstance() or OS.get_system_time_msecs()-last_nexus < 100:
 		return
 	rpc_id(1, "Nexus")

@@ -110,6 +110,12 @@ func SetItem(_item, _quantity):
 	item = _item
 	quantity = _quantity
 	
+	if item and has_node("TutorialArrow") and ((GameUI.get_node("NpcDialogue").subject == "Stats" and item.item == 0) or (GameUI.get_node("NpcDialogue").subject == "Backpack" and item.item == 400)):
+		$TutorialArrow.visible = true
+		$TutorialArrow2.visible = true
+	elif has_node("TutorialArrow"):
+		$TutorialArrow.visible = false
+		$TutorialArrow2.visible = false
 	if item == null:
 		$ItemIcon.visible = false
 		$ItemBackground.visible = true

@@ -37,9 +37,9 @@ func _ready():
 	
 	$GameButtons/HelmetButton.connect("pressed", self, "InUI")
 	$GameButtons/HomeButton.connect("pressed", self, "InUI")
-	if str(OS.get_model_name()) == 'GenericDevice':
+	#if str(OS.get_model_name()) == 'GenericDevice':
 		#$GameButtons/HelmetButton.visible = false
-		$GameButtons/HomeButton.visible = false
+		#$GameButtons/HomeButton.visible = false
 
 func _physics_process(delta):
 	animation_timer -= delta
@@ -59,7 +59,7 @@ func StartTutorial():
 		Server.ChooseUsername(account_data.username)
 
 func SetQuest(current_quest_data):
-	if current_quest_data:
+	if current_quest_data or Server.GetCurrentInstance() == "nexus":
 		get_node("QuestMarker").SetQuest(current_quest_data)
 	else:
 		get_node("QuestMarker").RemoveQuest()

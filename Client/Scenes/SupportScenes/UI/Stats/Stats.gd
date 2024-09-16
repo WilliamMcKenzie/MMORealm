@@ -3,6 +3,12 @@ extends CanvasLayer
 var inspecting_item = null
 var stat_bar = preload("res://Scenes/SupportScenes/UI/Stats/Stat.tscn")
 
+func _process(delta):
+	if GameUI.get_node("NpcDialogue").subject == "Ascend":
+		$StatsContainer/TutorialArrow.visible = true
+	else:
+		$StatsContainer/TutorialArrow.visible = false
+
 func _ready():
 	$StatsBackground.connect("button_down", self, "ToggleStats")
 	$StatsContainer/CloseButton.connect("pressed", self, "ToggleStats")

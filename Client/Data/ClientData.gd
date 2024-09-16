@@ -9973,9 +9973,9 @@ var buildings = {
 		"type" : "tile",
 		"description" : "Hard as rock.",
 		
-		"craftable" : false,
+		"craftable" : true,
 		"materials" : [2],
-		"max" : 50,
+		"max" : 200,
 		"path" : ["tiles/tileset.png", 26, 26, Vector2(70,60)],
 		"tile" : 3,
 	},
@@ -9985,9 +9985,9 @@ var buildings = {
 		"wall" : true,
 		"description" : "Fortress strength in every block.",
 		
-		"craftable" : false,
+		"craftable" : true,
 		"materials" : [2,2],
-		"max" : 25,
+		"max" : 100,
 		"path" : ["tiles/tileset.png", 26, 26, Vector2(70,70)],
 		"tile" : 4,
 	},
@@ -9998,7 +9998,7 @@ var buildings = {
 		
 		"craftable" : true,
 		"materials" : [1],
-		"max" : 50,
+		"max" : 200,
 		"path" : ["tiles/tileset.png", 26, 26, Vector2(130,60)],
 		"tile" : 5,
 	},
@@ -10010,7 +10010,7 @@ var buildings = {
 		
 		"craftable" : true,
 		"materials" : [1,1],
-		"max" : 25,
+		"max" : 100,
 		"path" : ["tiles/tileset.png", 26, 26, Vector2(130,70)],
 		"tile" : 6,
 	},

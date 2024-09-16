@@ -20,6 +20,7 @@ collision_mask = 0
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="PlayerCharacter"]
+visible = false
 texture = ExtResource( 3 )
 hframes = 13
 vframes = 52

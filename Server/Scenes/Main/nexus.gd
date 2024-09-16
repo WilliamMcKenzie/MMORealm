@@ -32,8 +32,16 @@ func _ready():
 	else:
 		instance_tree = ["nexus"]
 
+var delta_constant = 3
+var clock_sync_timer = 0
 func _physics_process(delta):
-	running_time += delta
+	#Clock sync
+	clock_sync_timer += 1
+	if clock_sync_timer < delta_constant:
+		return
+	clock_sync_timer = 0
+	
+	running_time += delta*delta_constant
 	if not get_world_2d():
 		return
 	for projectile_id in projectile_list.keys():
@@ -42,9 +50,9 @@ func _physics_process(delta):
 		expression.parse(projectile["formula"],["x"])
 		
 		var velocity = projectile.direction.normalized()*projectile.speed
-		var vertical_move_vector = projectile["speed"] * projectile["direction"] * delta
+		var vertical_move_vector = projectile["speed"] * projectile["direction"] * delta * delta_constant
 		var perpendicular_vector = Vector2(-velocity.y, velocity.x)
-		var horizontal_move_vector = perpendicular_vector * expression.execute([alive_time * 50]) * 0.05
+		var horizontal_move_vector = perpendicular_vector * expression.execute([alive_time * 50]) * 0.05 * delta_constant
 		
 		projectile_list[projectile_id]["path"] += vertical_move_vector
 		projectile_list[projectile_id]["position"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
@@ -67,7 +75,6 @@ func _physics_process(delta):
 			projectile_list.erase(projectile_id)
 	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
-		
 		for enemy_id in enemy_list.keys():
 			for _effect in enemy_list[enemy_id]["effects"].keys():
 				enemy_list[enemy_id]["effects"][_effect] -= tick_rate
@@ -245,6 +252,8 @@ func _physics_process(delta):
 			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
 				if not "arena" in name:
 					CalculateLootPool(enemy_list[enemy_id], enemy_id)
+				else:
+					CalculateLootPool(enemy_list[enemy_id], enemy_id, true, "building_materials")
 				enemy_list.erase(enemy_id)
 				continue
 			
@@ -406,22 +415,43 @@ class SortByValue:
 		if a[1] < b[1]:
 			return true
 		return false
-func CalculateLootPool(enemy, enemy_id):
+func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 	randomize()
+	var templates = {
+		"building_materials" : {
+			"soulbound_loot" : [
+				{
+					"item" : 1,
+					"chance" : 0.1,
+					"threshold" : 0.1,
+				},
+				{
+					"item" : 2,
+					"chance" : 0.1,
+					"threshold" : 0.1,
+				},
+			],
+			"loot" : []
+		},
+	}
+	
 	if ServerData.GetEnemy(enemy.name).has("dungeon") and randf() < ServerData.GetEnemy(enemy.name).dungeon.rate:
 		OpenPortal(ServerData.GetEnemy(enemy.name).dungeon.name, instance_tree, enemy.position)
 	
 	var player_pool = enemy["damage_tracker"]
 	var loot_pool = ServerData.GetEnemy(enemy["name"]).loot_pool
+	if template and templates.has(type):
+		loot_pool = templates[type]
 	
-	#Handle EXP
-	var exp_amount = ServerData.GetEnemy(enemy["name"]).exp
-	for player_id in player_pool.keys():
-		var player_container = get_node("YSort/Players/"+str(player_id))
-		if not player_container:
-			player_pool.erase(player_id)
-		else:
-			player_container.AddExp(exp_amount, enemy["name"], enemy_id)
+	if not template:
+		#Handle EXP
+		var exp_amount = ServerData.GetEnemy(enemy["name"]).exp
+		for player_id in player_pool.keys():
+			var player_container = get_node("YSort/Players/"+str(player_id))
+			if not player_container:
+				player_pool.erase(player_id)
+			else:
+				player_container.AddExp(exp_amount, enemy["name"], enemy_id)
 	
 	#Handle loot drops
 	var ordered_pairs = []

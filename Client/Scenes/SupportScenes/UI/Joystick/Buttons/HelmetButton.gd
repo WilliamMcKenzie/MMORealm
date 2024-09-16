@@ -1,7 +1,12 @@
 extends TouchScreenButton
 
+var blank_button = preload("res://Assets/ui/blank_button.png")
+var helmet_button = preload("res://Assets/ui/helmet_button.png")
+
 func _ready():
 	connect("pressed", self, "UseAbility")
+	if str(OS.get_model_name()) == 'GenericDevice':
+		$TextureButton.visible = true
 
 func _physics_process(delta):
 	if GameUI.last_character and GameUI.last_character.gear.helmet == null:
@@ -21,3 +26,14 @@ func _physics_process(delta):
 func UseAbility():
 	if GameUI.last_character and GameUI.last_character.ability_cooldown <= 0:
 		Server.UseAbility()
+
+func _on_TextureButton_pressed():
+	emit_signal("pressed")
+
+func _on_TextureButton_mouse_entered():
+	if not $Timer.visible:
+		normal = blank_button
+		$Space.visible = true
+func _on_TextureButton_mouse_exited():
+	normal = helmet_button
+	$Space.visible = false

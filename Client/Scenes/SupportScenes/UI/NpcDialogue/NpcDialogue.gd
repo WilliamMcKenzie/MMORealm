@@ -1,10 +1,10 @@
 extends CanvasLayer
 
 var mobile_versions = {
-	"To walk around, you can use [WASD] controls." : "Drag on the left side to move.",
-	"To attack click where you want to shoot. Try to slay some crabs!" : "Drag on the right side to attack. Take down some crabs!",
-	"Press [SPACE] to use your helmet." : "Tap the helmet icon in the bottom right to activate it.",
-	"Press [R] to return the safety of the port, and head up to the docks to start your adventure." : "Tap the home icon to return to the port, then head to the docks to begin your journey."
+	"Use [WASD] to move." : "Drag on the left side of the screen to move.",
+	"Click to attack. Take down those crabs!" : "Drag on the right side of the screen to attack. Take down those crabs!",
+	"Press [SPACE] to use your helmet." : "Tap the helmet icon in the bottom right to use your helmet.",
+	"Tap [R] to return to the port and head to the docks for your adventure." : "Tap the home button to return to the port and head to the docks for your adventure."
 }
 
 var subject_data = {
@@ -18,7 +18,7 @@ var subject_data = {
 		"character_rect" : Vector2(0,0),
 	},
 	"Backpack" : {
-		"text" : ["Nice work! Tap the backpack icon to check your gear.", "Drag items to equip them.", "Equip a helmet from the chest!"],
+		"text" : ["Nice work! Tap the backpack icon to check your gear.", "Drag items to equip them.", "Run to the chest and equip a helmet!"],
 		"animation" : "Backpack",
 		"character_rect" : Vector2(0,0),
 	},

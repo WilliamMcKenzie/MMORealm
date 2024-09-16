@@ -67,28 +67,38 @@ func OutsideScreen(ui_node):
 func SetQuest(quest):
 	visible = true
 	
-	var enemies_container = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/Enemies")
-	var camera = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player/Camera2D")
-	if enemies_container.has_node(quest.id) and VisibleByCamera(enemies_container.get_node(quest.id), camera):
-		visible = false
-	
-	if quest != current_quest:
-		current_quest = quest
-		var quest_name = quest.name
-		var quest_data = ClientData.GetEnemy(quest_name)
-		var quest_region = quest_data.rect
-		var quest_texture
+	if Server.GetCurrentInstance() == "nexus":
+		quest = {}
+		quest.position = Vector2(0,-25*8)
+		if {"docks":true} != current_quest:
+			get_node("MarginContainer/TextureRect").texture.atlas = load("res://Assets/objects/objects_16x16.png")
+			get_node("MarginContainer/TextureRect").texture.region = Rect2(Vector2.ZERO, Vector2(18,18))
+		current_quest = {"docks":true}
+		if Server.IsWithinRange(Vector2(0,-25*8), 13):
+			visible = false
+	else:
+		var enemies_container = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/Enemies")
+		var camera = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player/Camera2D")
+		if enemies_container.has_node(quest.id) and VisibleByCamera(enemies_container.get_node(quest.id), camera):
+			visible = false
 		
-		var res = quest_data.res
-		if res == 10:
-			quest_texture = texture_8x8
-		if res == 18:
-			quest_texture = texture_16x16
-		if res == 38:
-			quest_texture = texture_32x32
-		
-		get_node("MarginContainer/TextureRect").texture.atlas = quest_texture
-		get_node("MarginContainer/TextureRect").texture.region = Rect2(quest_region.position, Vector2(quest_region.size.y, quest_region.size.y))
+		if quest != current_quest:
+			current_quest = quest
+			var quest_name = quest.name
+			var quest_data = ClientData.GetEnemy(quest_name)
+			var quest_region = quest_data.rect
+			var quest_texture
+			
+			var res = quest_data.res
+			if res == 10:
+				quest_texture = texture_8x8
+			if res == 18:
+				quest_texture = texture_16x16
+			if res == 38:
+				quest_texture = texture_32x32
+			
+			get_node("MarginContainer/TextureRect").texture.atlas = quest_texture
+			get_node("MarginContainer/TextureRect").texture.region = Rect2(quest_region.position, Vector2(quest_region.size.y, quest_region.size.y))
 	
 	var player_position = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").global_position
 	get_node("Node2D").global_position = player_position

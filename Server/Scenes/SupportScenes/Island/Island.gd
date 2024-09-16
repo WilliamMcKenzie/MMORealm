@@ -88,6 +88,10 @@ func _process(delta):
 
 #Handle standard stuff
 func _physics_process(delta):
+	
+	#Clock sync
+	if clock_sync_timer < delta_constant:
+		return
 	use_chunks = true
 	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
