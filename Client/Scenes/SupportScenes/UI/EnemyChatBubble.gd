@@ -18,7 +18,7 @@ func _physics_process(delta):
 			self.z_index = node.global_position.y
 			self.visible = true
 		else:
-			self.visible = false
+			queue_free()
 
 func Update(_id, text):
 	$PanelContainer/MarginContainer/Label.text = text

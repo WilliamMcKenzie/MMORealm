@@ -7,7 +7,7 @@ func OpenPlayerMenu():
 	GameUI.get_node("Nearby").OpenPlayerMenu(name, last_character_data)
 
 func SetCharacter(character_data):
-	if character_data.hash() == last_character_data.hash():
+	if last_character_data.has("gear") and character_data.gear.hash() == last_character_data.gear.hash() and character_data.class == last_character_data.class:
 		return
 	last_character_data = character_data
 	
@@ -29,7 +29,7 @@ func SetCharacter(character_data):
 		var slot_node = gear_node.get_node(slot)
 		var gear = character_data.gear
 		slot_node.SetItem(gear[slot], 1)
-		
+
 func _ready():
 	$TextureButton.connect("button_down", self, "OpenPlayerMenu")
 	

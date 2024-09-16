@@ -1,0 +1,4 @@
+#Sun Sep 15 19:14:56 ADT 2024
+base.0=C\:\\Users\\willi\\OneDrive\\Documents\\mobiledevelopment\\MMORealm\\MMORealm\\Client\\android\\build\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

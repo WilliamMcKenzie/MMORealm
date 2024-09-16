@@ -1,0 +1,138 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/SupportScenes/UI/Stats/Stats.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/SupportScenes/UI/Stats/StatsBackground.gd" type="Script" id=3]
+[ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Resources/main_theme.tres" type="Theme" id=9]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=13]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.431373 )
+
+[sub_resource type="DynamicFont" id=25]
+size = 19
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=26]
+size = 15
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="StyleBoxEmpty" id=39]
+
+[sub_resource type="Theme" id=38]
+PanelContainer/styles/panel = SubResource( 39 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 1 )
+region = Rect2( 190, 230, 10, 10 )
+
+[node name="Stats" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="StatsTween" type="Tween" parent="."]
+
+[node name="StatsBackground" type="TextureButton" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 400, 180 )
+expand = true
+script = ExtResource( 3 )
+
+[node name="StatsContainer" type="HBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 50.0
+margin_right = 282.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="StatsContainer"]
+margin_right = 232.0
+margin_bottom = 360.0
+theme = ExtResource( 9 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsContainer/PanelContainer2"]
+margin_right = 232.0
+margin_bottom = 360.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 0
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 4
+
+[node name="ResizeContainer" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer"]
+margin_left = 16.0
+margin_right = 216.0
+margin_bottom = 356.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="CharacterInfo" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer"]
+margin_right = 200.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 0, 130 )
+alignment = 1
+
+[node name="Name" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo"]
+margin_top = 12.0
+margin_right = 200.0
+margin_bottom = 30.0
+custom_constants/line_spacing = 0
+custom_fonts/font = SubResource( 25 )
+text = "WilliamQM"
+align = 1
+
+[node name="Character" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo"]
+margin_top = 34.0
+margin_right = 200.0
+margin_bottom = 118.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Info" type="Label" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character"]
+margin_right = 200.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+custom_fonts/font = SubResource( 26 )
+text = "Level 20 Apprentice"
+align = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character"]
+margin_left = 80.0
+margin_top = 44.0
+margin_right = 120.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 40, 40 )
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Sprite" type="Sprite" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer/CharacterInfo/Character/MarginContainer"]
+position = Vector2( 20, 20 )
+scale = Vector2( 6, 6 )
+texture = ExtResource( 4 )
+hframes = 4
+vframes = 4
+region_enabled = true
+region_rect = Rect2( 0, 0, 80, 40 )
+script = ExtResource( 13 )
+
+[node name="CharacterStats" type="VBoxContainer" parent="StatsContainer/PanelContainer2/MarginContainer/ResizeContainer"]
+margin_top = 134.0
+margin_right = 200.0
+margin_bottom = 356.0
+size_flags_vertical = 3
+theme = SubResource( 38 )
+custom_constants/separation = 0
+alignment = 1
+
+[node name="CloseButton" type="TouchScreenButton" parent="StatsContainer"]
+position = Vector2( -45, 4 )
+scale = Vector2( 4, 4 )
+normal = SubResource( 14 )

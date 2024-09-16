@@ -10607,21 +10607,21 @@ var achievements = {
 	},
 	"Unlock Nomad" : {
 		"which" : "bow_projectiles",
-		"amount" : 10,
+		"amount" : 3000,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the arrow.",
 		"gold" : 0,
 	},
 	"Unlock Noble" : {
 		"which" : "sword_projectiles",
-		"amount" : 10,
+		"amount" : 3000,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the blade.",
 		"gold" : 0,
 	},
 	"Unlock Scholar" : {
 		"which" : "staff_projectiles",
-		"amount" : 10,
+		"amount" : 3000,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the magic.",
 		"gold" : 0,
@@ -10642,7 +10642,7 @@ var achievements = {
 	},
 	"Unlock Marauder" : {
 		"which" : "enemies_killed",
-		"amount" : 5,
+		"amount" : 3,
 		"enemies" : ["salazar,_rex_of_the_abyss"],
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
@@ -10650,7 +10650,7 @@ var achievements = {
 	},
 	"Unlock Ranger" : {
 		"which" : "enemies_killed",
-		"amount" : 20,
+		"amount" : 10,
 		"enemies" : ["oranix","vajira","raa'sloth","salazar"],
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
@@ -10658,7 +10658,7 @@ var achievements = {
 	},
 	"Unlock Sentinel" : {
 		"which" : "damage_taken",
-		"amount" : 20000,
+		"amount" : 13000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
@@ -10672,7 +10672,7 @@ var achievements = {
 	},
 	"Unlock Magician" : {
 		"which" : "ability_used",
-		"amount" : 1000,
+		"amount" : 1500,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
@@ -10680,7 +10680,7 @@ var achievements = {
 	"Unlock Druid" : {
 		"which" : "enemies_killed",
 		"amount" : 200,
-		"enemies" : ["rock_golem"],
+		"enemies" : ["phoenix"],
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
@@ -11121,7 +11121,7 @@ var characters = {
 			"Hat" : {"stats" : 1.5},
 		},
 		"description" : "The Druid's extreme durability and regeneration can outlast anyone.",
-		"teaser" : "Discover by being one with rock.",
+		"teaser" : "Discover by putting out some serious fire.",
 		"ascension_stones" : 50,
 	},
 	"Warlock" : {

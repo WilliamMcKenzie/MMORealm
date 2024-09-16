@@ -16,9 +16,11 @@ func _physics_process(delta):
 			var node = scene.get_node("YSort/OtherPlayers/"+id)
 			self.position = (node.global_position - root_pos)/0.2
 			self.z_index = node.global_position.y
+			self.visible = true
 		elif id == str(get_tree().get_network_unique_id()):
 			self.position = Vector2.ZERO
 			self.z_index = root_pos.y
+			self.visible = true
 		else:
 			queue_free()
 

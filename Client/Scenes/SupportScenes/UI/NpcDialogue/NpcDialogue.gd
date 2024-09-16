@@ -1,48 +1,48 @@
 extends CanvasLayer
 
 var mobile_versions = {
-	"To walk around, you can use [WASD] controls." : "To walk around, you can drag on the left side of the screen in the direction you want to go.",
-	"To attack, simply click where you want to shoot with your left mouse button. Try to slay some crabs!" : "To attack, you can drag on the right side of the screen in the direction you want to shoot. Try to slay some crabs!",
-	"Press [SPACE] to use your helmet." : "Press to helmet button in the bottom right to use your helmet.",
-	"Press [R] to return the safety of the port, and head up to the docks to start your adventure." : "Press the home button in the bottom right to return the safety of the port, and head up to the docks to start your adventure.",
+	"To walk around, you can use [WASD] controls." : "Drag on the left side to move.",
+	"To attack click where you want to shoot. Try to slay some crabs!" : "Drag on the right side to attack. Take down some crabs!",
+	"Press [SPACE] to use your helmet." : "Tap the helmet icon in the bottom right to activate it.",
+	"Press [R] to return the safety of the port, and head up to the docks to start your adventure." : "Tap the home icon to return to the port, then head to the docks to begin your journey."
 }
 
 var subject_data = {
 	"Intro" : {
-		"text" : ["Hello adventurer, welcome to the kingdom!", "My name is Kingsly, and I will be showing you the ropes of fighting.", "First of course, you must choose a name."],
+		"text" : ["Welcome to the kingdom, adventurer!", "I'm Kingsly, your guide to combat. First, pick a name!"],
 		"animation" : "ChooseName",
 		"character_rect" : Vector2(0,0),
 	},
 	"Controls" : {
-		"text" : ["Great, next let me teach you about the basics.", "To walk around, you can use [WASD] controls.", "To attack, simply click where you want to shoot with your left mouse button. Try to slay some enemies!"],
+		"text" : ["Let's start with the basics.", "Use [WASD] to move.", "Click to attack. Take down those crabs!"],
 		"character_rect" : Vector2(0,0),
 	},
 	"Backpack" : {
-		"text" : ["Good job! If you press the backpack icon in the top right, you can see your inventory and equipment.", "You can drag gear from slot to slot, to equip/put it into your inventory.", "Go ahead and run over to the chest and try to equip a helmet."],
+		"text" : ["Nice work! Tap the backpack icon to check your gear.", "Drag items to equip them.", "Equip a helmet from the chest!"],
 		"animation" : "Backpack",
 		"character_rect" : Vector2(0,0),
 	},
 	"Ability" : {
-		"text" : ["Now that you have equipped a helmet, you can use it to get buffs.", "Helmets can have many different effects, but usually the metal helms boost armor...", "The archer caps boost your damage...", "And mage hats boost healing speed.", "Press [SPACE] to use your helmet."],
+		"text" : ["Helmets give you buffs.", "Metal helmets boost armor, archer caps boost damage, mage hats boost healing.", "Press [SPACE] to use your helmet."],
 		"animation" : "Ability",
 		"character_rect" : Vector2(0,0),
 	},
 	"Quest" : {
-		"text" : ["Good job, I think you're ready to take on this island's ruler!", "By killing your quest monster, you get bonus EXP...", "Follow your quest to the center of the map and defeat the troll king!"],
+		"text" : ["You're ready for a challenge!", "Defeat the quest boss for bonus EXP.", "Find the troll king at the center of the map!"],
 		"animation" : "Quest",
 		"character_rect" : Vector2(0,0),
 	},  
 	"Stats" : {
-		"text" : ["Wow! You got an ascension stone, consuming it by double clicking gives you two things...", "First, it brings you closer to ascending, and when ascended you can evolve your class through quests.", "Second, it lets you increase your stats. To ascend might take a while...", "But you can level up your stats right now. Go ahead and consume it!"],
+		"text" : ["You found an ascension stone!", "Go loot it then double click to consume it."],
 		"character_rect" : Vector2(0,0),
 	},
 	"Ascend" : {
-		"text" : ["Good! Now you are one step closer to ascending...", "Go ahead and open up your stats, and press the plus to increase it by one!"],
+		"text" : ["Go ahead and open up your stats, and press the plus to increase it by one!"],
 		"animation" : "Stats",
 		"character_rect" : Vector2(0,0),
 	},
 	"Final" : {
-		"text" : ["Good job, this Kingdom will forever be grateful for your efforts.", "You have now unlocked achievements, ascension, and the port.", "Press [R] to return the safety of the port, and head up to the docks to start your adventure."],
+		"text" : ["Great job! You've unlocked achievements, ascension, and the port.", "Tap [R] to return to the port and head to the docks for your adventure."],
 		"animation" : "Final",
 		"character_rect" : Vector2(0,0),
 	},

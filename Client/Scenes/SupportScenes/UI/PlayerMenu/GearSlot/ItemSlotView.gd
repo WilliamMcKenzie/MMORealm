@@ -44,4 +44,3 @@ func SetSpriteData(sprite, path):
 	
 	sprite.texture.atlas = spriteTexture
 	sprite.texture.region = Rect2(path[3]*10, Vector2(10,10))
-	

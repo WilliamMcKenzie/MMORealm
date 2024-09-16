@@ -4,7 +4,7 @@
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=2]
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=5]
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=42]
 atlas = ExtResource( 5 )
 region = Rect2( 40, 220, 10, 10 )
 
@@ -44,7 +44,7 @@ rect_rotation = -45.0
 rect_pivot_offset = Vector2( 30, 30 )
 size_flags_horizontal = 0
 size_flags_vertical = 4
-texture_normal = SubResource( 2 )
+texture_normal = SubResource( 42 )
 expand = true
 stretch_mode = 4
 
@@ -69,6 +69,6 @@ rect_rotation = 135.0
 rect_pivot_offset = Vector2( 30, 30 )
 size_flags_horizontal = 0
 size_flags_vertical = 4
-texture_normal = SubResource( 2 )
+texture_normal = SubResource( 42 )
 expand = true
 stretch_mode = 4

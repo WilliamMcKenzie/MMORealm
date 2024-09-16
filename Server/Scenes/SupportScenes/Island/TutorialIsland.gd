@@ -6,7 +6,7 @@ func PopulateTiles():
 	var center = map_size / 2
 	var ocean_distance = center.length() * 1.5
 	var beach_distance = center.length() * 1.2
-	var forest_distance = center.length() * 1
+	var forest_distance = center.length() * 0.9
 	
 	#For wavy edges of island
 	var noise_scale = 0.6

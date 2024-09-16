@@ -1,0 +1,126 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Resources/Outline.gdshader" type="Shader" id=1]
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=2]
+
+[sub_resource type="ShaderMaterial" id=67]
+shader = ExtResource( 1 )
+shader_param/max_line_width = 1.0
+shader_param/min_line_width = 1.0
+shader_param/freq = 0.0
+shader_param/block_size = 11111.0
+shader_param/starting_colour = Plane( 0, 0, 0, 30 )
+shader_param/ending_colour = Plane( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
+
+[sub_resource type="StreamTexture" id=73]
+load_path = "res://.import/items_8x8.png-61ae49e9e1e9e3bd1375362c8ac88e1b.stex"
+
+[sub_resource type="AtlasTexture" id=62]
+atlas = SubResource( 73 )
+region = Rect2( 0, 190, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=68]
+atlas = ExtResource( 2 )
+region = Rect2( 10, 190, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=70]
+atlas = ExtResource( 2 )
+region = Rect2( 20, 190, 10, 10 )
+
+[sub_resource type="StreamTexture" id=74]
+load_path = "res://.import/items_8x8.png-61ae49e9e1e9e3bd1375362c8ac88e1b.stex"
+
+[sub_resource type="AtlasTexture" id=71]
+atlas = SubResource( 74 )
+region = Rect2( 30, 190, 10, 10 )
+
+[sub_resource type="AtlasTexture" id=72]
+atlas = ExtResource( 2 )
+region = Rect2( 40, 190, 10, 10 )
+
+[node name="ZContainer" type="Node2D"]
+visible = false
+z_index = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = -12.0
+margin_top = -14.0
+margin_right = 50.0
+margin_bottom = 26.0
+rect_scale = Vector2( 0.4, 0.4 )
+mouse_filter = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 19.0
+margin_right = 42.0
+margin_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 3
+
+[node name="damaging" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+visible = false
+material = SubResource( 67 )
+margin_right = 10.0
+margin_bottom = 10.0
+texture = SubResource( 62 )
+stretch_mode = 5
+
+[node name="berserk" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+material = SubResource( 67 )
+margin_right = 10.0
+margin_bottom = 10.0
+texture = SubResource( 68 )
+stretch_mode = 5
+
+[node name="armored" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+visible = false
+material = SubResource( 67 )
+margin_left = 26.0
+margin_right = 36.0
+margin_bottom = 10.0
+texture = SubResource( 70 )
+stretch_mode = 5
+
+[node name="invincible" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+visible = false
+material = SubResource( 67 )
+margin_right = 10.0
+margin_bottom = 10.0
+texture = SubResource( 71 )
+stretch_mode = 5
+
+[node name="healing" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+material = SubResource( 67 )
+margin_left = 13.0
+margin_right = 23.0
+margin_bottom = 10.0
+texture = SubResource( 72 )
+stretch_mode = 5

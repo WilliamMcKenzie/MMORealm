@@ -75,6 +75,9 @@ func _physics_process(delta):
 		elif character.level < 16:
 			quest_enemies = instance_node.badlands_enemies
 			tile = 5
+		if instance_node.ruler == "tutorial_troll_king" and tutorial_step == 1:
+			quest_enemies = ["tutorial_crab"]
+			tile = 2
 		
 		var closest = OS.get_system_time_msecs()
 		var current_quest_data = null
@@ -101,11 +104,13 @@ func _physics_process(delta):
 		}
 		
 		#Tutorial
-		if instance_node.ruler == "tutorial_troll_king":
+		if instance_node.ruler == "tutorial_troll_king" and tutorial_step == 4:
 			current_quest = instance_node.ruler_id
 			if instance_node.enemy_list.has(current_quest):
 				current_quest_data = instance_node.enemy_list[current_quest].duplicate()
 				current_quest_data.id = current_quest
+		elif instance_node.ruler == "tutorial_troll_king" and tutorial_step != 1:
+			current_quest_data = null
 		
 		server_node.SendQuestData(name, current_quest_data)
 	
@@ -324,6 +329,7 @@ func FinishTrade():
 	get_node("/root/Server").SendCharacterData(name, character)
 	get_node("/root/Server").SendCharacterData(other_player_container.name, other_player_container.character)
 	get_node("/root/Server").FinalizeTrade(other_player_container.name, name)
+	ResetTrade()
 	
 #ABILITY
 
@@ -736,8 +742,7 @@ func UpdateStatistics(which, amount_increase):
 	#Handle character statistics
 	if not character.statistics.has(which):
 			character.statistics[which] = 0
-	if character.ascension_stones >= ServerData.GetCharacter(character.class).ascension_stones:
-		character.statistics[which] += amount_increase
+	character.statistics[which] += amount_increase
 	
 	#Handle global statistics
 	if not account_data.statistics.has(which):
@@ -752,17 +757,17 @@ func UpdateStatistics(which, amount_increase):
 		if not character.statistics.has(which):
 			character.statistics[which] = 0
 		
+		#If standard achievement, simply check the amount
+		if achievement.which == which and character.statistics[which] >= achievement.amount and not achievement.has("enemies"):
+			GetAchievement(_achievement)
 		#In case of enemies killed, check the enemies in statistics
-		if achievement.which == "enemies_killed" and achievement.has("enemies") and achievement.enemies.has(which):
+		elif achievement.which == "enemies_killed" and achievement.has("enemies") and achievement.enemies.has(which):
 			var total = 0
 			for enemy in achievement.enemies:
 				if character.statistics.has(enemy):
 					total += character.statistics[enemy]
 			if total >= achievement.amount:
 				GetAchievement(_achievement)
-		#If standard achievement, simply check the amount
-		elif achievement.which == which and character.statistics[which] >= achievement.amount:
-			GetAchievement(_achievement)
 	
 	#Regular achievements
 	for _achievement in account_data.achievements:
@@ -775,7 +780,7 @@ func UpdateStatistics(which, amount_increase):
 			account_data.statistics[which] = 0
 		
 		#If standard achievement, simply check the amount
-		if achievement.which == which and account_data.statistics[which] >= achievement.amount:
+		if achievement.which == which and account_data.statistics[which] >= achievement.amount and not achievement.has("enemies"):
 			account_data.achievements[_achievement] = true
 			GetAchievement(_achievement)
 		

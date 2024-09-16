@@ -28,19 +28,14 @@ func _ready():
 	$ExitButton.connect("pressed", self, "ToggleClasses")
 	$ExitButton/TouchScreenButton.connect("pressed", self, "ToggleClasses")
 func OpenEvolution():
-	$ClassEvolution.visible = false
+	$ClassEvolution.visible = true
 	$NotEnoughStones.visible = false
 	$ClassInfo.visible = false
 	for button in $MarginContainer/TreeRoot.get_children():
 		button.Disable()
 	get_node("MarginContainer/TreeRoot/ClassEvolutionButton").Activate()
-	
 	var class_data = ClientData.GetCharacter(GameUI.last_character.class)
-	if class_data.ascension_stones <= GameUI.last_character.ascension_stones:
-		$ClassEvolution.visible = true
-	else: 
-		$NotEnoughStones.visible = true
-		
+	
 	#Enough stones
 	var root = $ClassEvolution/MarginContainer/HBoxContainer
 	for child in root.get_children():
@@ -49,12 +44,7 @@ func OpenEvolution():
 		var preview = character_preview.instance()
 		preview.SetCharacter(class_data.quests[quest])
 		root.add_child(preview)
-		
-	#Not enough stones
-	root = $NotEnoughStones/MarginContainer/VBoxContainer
-	root.get_node("HBoxContainer/StoneCount").text = str(GameUI.last_character.ascension_stones) + "/" + str(class_data.ascension_stones)
-	root.get_node("Label").text = "You need to consume %d more ascension stones to be able to unlock a new class." % [class_data.ascension_stones-GameUI.last_character.ascension_stones]
-	
+
 func SetCharacter(classname):
 	$ClassEvolution.visible = false
 	$NotEnoughStones.visible = false

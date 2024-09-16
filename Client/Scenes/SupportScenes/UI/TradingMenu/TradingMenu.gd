@@ -281,6 +281,8 @@ func ResetTrade():
 	other_player_name = ""
 	other_player_selection = [false,false,false,false,false,false,false,false]
 	self_selection = [false,false,false,false,false,false,false,false]
+	
+	
 
 func ToggleSelection(i):
 	if self_selection[i]:

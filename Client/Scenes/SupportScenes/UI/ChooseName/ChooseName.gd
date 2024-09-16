@@ -30,9 +30,11 @@ func _on_Name_text_changed(new_text):
 
 func _on_Confirm_pressed():
 	if $MarginContainer/Container/InputContainer/NameContainter/NameWarning.text == "":
+		username = $MarginContainer/Container/InputContainer/NameContainter/Name/MarginContainer/Name.text
 		Server.ChooseUsername(username)
 
 
 func _on_TouchScreenButton_pressed():
 	if $MarginContainer/Container/InputContainer/NameContainter/NameWarning.text == "":
+		username = $MarginContainer/Container/InputContainer/NameContainter/Name/MarginContainer/Name.text
 		Server.ChooseUsername(username)
