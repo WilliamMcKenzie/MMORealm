@@ -8052,6 +8052,15 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,13)],
 	},
+	3 : {
+		"name": "Opal",
+		"description" : "A rare opal gemstone, can be used to build (/home)",
+		"tier" : "4",
+		"type" : "Material",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(5,13)],
+	},
 	100 : {
 		"name": "Short Sword",
 		"description" : "A simple yet effective weapon.",
@@ -10014,6 +10023,26 @@ var buildings = {
 		"path" : ["tiles/tileset.png", 26, 26, Vector2(130,70)],
 		"tile" : 6,
 	},
+	"wooden_bench" : {
+		"name" : "Wooden Bench",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A place to sit",
+		
+		"craftable" : true,
+		"materials" : [1],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,100)],
+	},
+	"wooden_chair" : {
+		"name" : "Wooden Bench",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A place to sit",
+		
+		"craftable" : true,
+		"materials" : [1],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,100)],
+	},
 	"apprentice_statue" : {
 		"name" : "Apprentice Statue",
 		"type" : "object",
@@ -10056,6 +10085,36 @@ var buildings = {
 		"materials" : [],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(90,40)],
 		"achievement" : "Trial By Fire",
+	},
+	"rexium_sword_display" : {
+		"name" : "Rexium Sword Display",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A display of cutting power",
+		
+		"craftable" : true,
+		"materials" : [1,104],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,110)],
+	},
+	"rexium_armor_display" : {
+		"name" : "Rexium Armor Display",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A display of constitution",
+		
+		"craftable" : true,
+		"materials" : [1,504],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,110)],
+	},
+	"rexium_helmet_display" : {
+		"name" : "Rexium Helmet Display",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A display of style",
+		
+		"craftable" : true,
+		"materials" : [1,404],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(20,110)],
 	},
 }
 
