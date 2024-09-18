@@ -177,12 +177,14 @@ func DeInspectItem(item):
 		$InspectItem.visible = false
 
 func ToggleInventory():
-	print("dwqdqw")
-	get_parent().Toggle("inventory")
+	if OS.get_system_time_msecs() - GameUI.get_node("Inventory").last_opened >= 500:
+		get_parent().Toggle("inventory")
 
+var last_opened = 0
 func Open():
-	if active:
+	if active or OS.get_system_time_msecs() - last_opened < 500:
 		return
+	last_opened = OS.get_system_time_msecs()
 	
 	var gear_tween = $GearTween
 	var backpack_tween = $BackpackTween
@@ -192,11 +194,11 @@ func Open():
 	var backpack_element = $BackpackContainer
 	var loot_element = $LootContainer
 	
-	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, Vector2(0, -110)+gear_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	gear_tween.interpolate_property(gear_element, "rect_position", Vector2(324,400), Vector2(324,290), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	gear_tween.start()
-	backpack_tween.interpolate_property(backpack_element, "rect_position", backpack_element.rect_position, Vector2(-100, 0)+backpack_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	backpack_tween.interpolate_property(backpack_element, "rect_position", Vector2(800,0), Vector2(-100, 0)+Vector2(800,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	backpack_tween.start()
-	loot_tween.interpolate_property(loot_element, "rect_position", loot_element.rect_position, Vector2(100, 0)+loot_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	loot_tween.interpolate_property(loot_element, "rect_position", Vector2(-100, 0), Vector2(100, 0)+Vector2(-100, 0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	loot_tween.start()
 	
 	var timer = Timer.new()
@@ -221,11 +223,11 @@ func Close():
 	var backpack_element = $BackpackContainer
 	var loot_element = $LootContainer
 	
-	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, Vector2(0, 110)+gear_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	gear_tween.interpolate_property(gear_element, "rect_position", Vector2(324,290), Vector2(324,400), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	gear_tween.start()
-	backpack_tween.interpolate_property(backpack_element, "rect_position", backpack_element.rect_position, Vector2(100, 0)+backpack_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	backpack_tween.interpolate_property(backpack_element, "rect_position", Vector2(700,0), Vector2(800,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	backpack_tween.start()
-	loot_tween.interpolate_property(loot_element, "rect_position", loot_element.rect_position, Vector2(-100, 0)+loot_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	loot_tween.interpolate_property(loot_element, "rect_position", Vector2(0,0), Vector2(-100, 0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	loot_tween.start()
 	$InventoryBackground.visible = false
 	active = false

@@ -33,7 +33,7 @@ func Open():
 	
 	SetStats(character)
 	
-	stats_tween.interpolate_property(stats_element, "rect_position", stats_element.rect_position, Vector2(-280, 0)+stats_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	stats_tween.interpolate_property(stats_element, "rect_position", Vector2(850,0), Vector2(-280, 0)+Vector2(850,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	stats_tween.start()
 	
 	var timer = Timer.new()
@@ -49,7 +49,7 @@ func Close():
 	var stats_tween = $StatsTween
 	var stats_element = $StatsContainer
 	
-	stats_tween.interpolate_property(stats_element, "rect_position", stats_element.rect_position, Vector2(280, 0)+stats_element.rect_position, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	stats_tween.interpolate_property(stats_element, "rect_position", Vector2(850-280,0), Vector2(850,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	stats_tween.start()
 	$StatsBackground.visible = false
 

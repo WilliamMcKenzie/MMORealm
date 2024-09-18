@@ -1,7 +1,7 @@
 extends Node
 
-#var url = "wss://gameserver.lagso.com"
-var url = "ws://159.203.0.78:20200"
+var url = "wss://gameserver.lagso.com"
+#var url = "ws://159.203.0.78:20200"
 #var url = "ws://localhost:20200"
 
 var ip_address = "159.203.0.78"

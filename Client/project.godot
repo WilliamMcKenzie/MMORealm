@@ -152,6 +152,14 @@ ability={
 [network]
 
 limits/debugger_stdout/max_chars_per_second=222222
+limits/websocket_client/max_in_buffer_kb=256
+limits/websocket_client/max_in_packets=5000
+limits/websocket_client/max_out_buffer_kb=256
+limits/websocket_client/max_out_packets=5000
+limits/websocket_server/max_in_buffer_kb=256
+limits/websocket_server/max_in_packets=5000
+limits/websocket_server/max_out_buffer_kb=256
+limits/websocket_server/max_out_packets=5000
 
 [physics]
 
