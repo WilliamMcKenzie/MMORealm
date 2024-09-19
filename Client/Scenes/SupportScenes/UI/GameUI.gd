@@ -245,6 +245,10 @@ func Toggle(which):
 	last_opened = OS.get_system_time_msecs()
 	if is_in_menu:
 		node.Close()
+		
+		if which == "inventory" or which == "stats" or which == "nearby":
+			yield(get_tree().create_timer(0.1), "timeout")
+		
 		$LeftContainer.visible = true
 		$GameButtons.visible = true
 		$UtilityButtons.visible = true

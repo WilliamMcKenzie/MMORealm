@@ -1,5 +1,10 @@
 extends Node
 
+#For fake player containers
+var fake = false
+var enemy = null
+var loaded_chunks = {}
+
 var email
 
 var account_data = null
@@ -43,6 +48,34 @@ var clock_sync_timer = 0
 var clock_sync_timer_2 = 0
 var last_position
 func _physics_process(delta):
+	if fake:
+		var island = get_parent().get_parent().get_parent()
+		enemy.position = self.position
+		enemy.anchor_position = self.position
+		#enemy.target = island.map_size/2*8
+		
+		var chunk = island.CalculateChunk(island.player_list[self.name].position)
+		var chunks = [
+			chunk + Vector2(16,0),
+			chunk + Vector2(-16,0),
+			chunk + Vector2(16,16),
+			chunk + Vector2(-16,16),
+			chunk + Vector2(16,-16),
+			chunk + Vector2(-16,-16),
+			chunk + Vector2(0,16),
+			chunk + Vector2(0,-16),
+		]
+		for _chunk in chunks:
+			if not loaded_chunks.has(_chunk):
+				loaded_chunks[_chunk] = true
+				island.GetIslandChunk(_chunk)
+		if enemy.target.distance_to(enemy.position) > 200:
+			enemy.target = enemy.position
+		enemy = Behaviors.Wander(enemy, 0.1, get_parent().get_parent().get_parent())
+		var new_pos = enemy.position
+		get_node("/root/Server").RecieveFakePlayerState(int(name), {"T":OS.get_system_time_msecs(), "P":new_pos, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams" : {}}}})
+		return
+	
 	clock_sync_timer += 1
 	clock_sync_timer_2 += 1
 	if not character:
@@ -53,7 +86,9 @@ func _physics_process(delta):
 			if gear[slot] != null:
 				gear[slot] = ServerData.GetItem(character.gear[slot].item, true, character.class)
 	
-	if clock_sync_timer >= 3 and "island" in get_parent().get_parent().get_parent().name:
+	if clock_sync_timer < 30:
+		pass
+	elif clock_sync_timer >= 30 and "island" in get_parent().get_parent().get_parent().name:
 		clock_sync_timer = 0
 		
 		var server_node = get_node("/root/Server")
@@ -88,7 +123,7 @@ func _physics_process(delta):
 				closest = enemy.position.distance_to(self.position)
 				current_quest = enemy_id 
 		
-		if character.level >= 16 and "ruler_id" in instance_node and instance_node.ruler_id and instance_node.enemy_list.has(instance_node.ruler_id):
+		if instance_node.ruler and character.level >= 16 and "ruler_id" in instance_node and instance_node.ruler_id and instance_node.enemy_list.has(instance_node.ruler_id):
 			current_quest = instance_node.ruler_id
 			current_quest_data = instance_node.enemy_list[current_quest].duplicate()
 			current_quest_data.id = current_quest
@@ -113,8 +148,7 @@ func _physics_process(delta):
 			current_quest_data = null
 		
 		server_node.SendQuestData(name, current_quest_data)
-	
-	elif clock_sync_timer >= 3 and "dungeon" in get_parent().get_parent().get_parent().name:
+	elif clock_sync_timer >= 30 and "dungeon" in get_parent().get_parent().get_parent().name:
 		clock_sync_timer = 0
 		
 		var server_node = get_node("/root/Server")
@@ -135,22 +169,29 @@ func _physics_process(delta):
 			current_quest_data.id = current_quest
 		
 		server_node.SendQuestData(name, current_quest_data)
-	
-	elif clock_sync_timer >= 3:
+	elif clock_sync_timer >= 30:
 		current_quest = null
 		get_node("/root/Server").SendQuestData(name, null)
 	
 	character.ability_cooldown -= delta
 	running_time += delta
-	heal_rate = 4.0/(character.stats.vitality*6*(character.stats.health/500.0))
-	
-	if status_effects.has("healing"):
-		heal_rate = 4.0/(character.stats.vitality*18*(character.stats.health/500.0))
 	
 	#heal_rate = heal_rate/character.stats.health*200.0
 	
 	if clock_sync_timer_2 >= 60:
 		clock_sync_timer_2 = 0
+		for effect in status_effects.keys():
+			status_effects[effect] -= 1
+			if status_effects[effect] <= 0:
+				if character.status_effects.has(effect):
+					character.status_effects.erase(effect)
+					var server_node = get_node("/root/Server")
+					var instance_tree = server_node.player_state_collection[int(name)]["I"]
+					var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
+					instance_node.player_list[name].status_effects.erase(effect)
+					get_node("/root/Server").SendCharacterData(name, character)
+				status_effects.erase(effect)
+		
 		#Tiles covered
 		if not account_data.statistics.has("tiles_covered"):
 			account_data.statistics.tiles_covered = 0
@@ -175,24 +216,7 @@ func _physics_process(delta):
 		get_node("/root/Server").SendAccountData(name, account_data)
 	
 	#Tick
-	for i in range(floor((running_time-last_tick)/heal_rate)):
-		last_tick = running_time
-		if health < character.stats.health:
-			health += 1
-			get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
-		if health > character.stats.health:
-			health = character.stats.health
-	for effect in status_effects.keys():
-		status_effects[effect] -= delta
-		if status_effects[effect] <= 0:
-			if character.status_effects.has(effect):
-				character.status_effects.erase(effect)
-				var server_node = get_node("/root/Server")
-				var instance_tree = server_node.player_state_collection[int(name)]["I"]
-				var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
-				instance_node.player_list[name].status_effects.erase(effect)
-				get_node("/root/Server").SendCharacterData(name, character)
-			status_effects.erase(effect)
+	ManageHealing()
 	for stat in stat_buffs.keys():
 		stat_buffs[stat].timer -= delta
 		if stat_buffs[stat].timer <= 0:
@@ -201,6 +225,18 @@ func _physics_process(delta):
 				character.stats[stat] -= stat_buffs[stat].add
 				get_node("/root/Server").SendCharacterData(name, character)
 			stat_buffs.erase(stat)
+func ManageHealing():
+	heal_rate = 4.0/(character.stats.vitality*6*(character.stats.health/500.0))
+	if status_effects.has("healing"):
+		heal_rate = 4.0/(character.stats.vitality*18*(character.stats.health/500.0))
+	for i in range(floor((running_time-last_tick)/heal_rate)):
+		last_tick = running_time
+		if health < character.stats.health:
+			health += 1
+			get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
+		if health > character.stats.health:
+			health = character.stats.health
+
 #TRADE
 var accepted = false
 var other_player_accepted = false
@@ -211,6 +247,7 @@ var other_player_selection = [false,false,false,false,false,false,false,false]
 var selection = [false,false,false,false,false,false,false,false]
 
 func StartTrade(other_player_name):
+	ResetTrade()
 	var other_player_id = get_node("/root/Server").player_id_by_name[other_player_name]
 	var instance_tree = get_node("/root/Server").player_state_collection[int(other_player_id)]["I"]
 	
@@ -300,6 +337,7 @@ func DeselectItem(i):
 	get_node("/root/Server").SendTradeData(other_player_container.name, character.inventory, selection)
 
 func CancelOffer(original):
+	ResetTrade()
 	if original:
 		other_player_container.CancelOffer(false)
 	else:
@@ -310,6 +348,11 @@ func FinishTrade():
 	var our_new_items = []
 	
 	for i in range(character.inventory.size()):
+		if selection[i] and not character.inventory[i]:
+			return
+		if other_player_selection[i] and not other_player_inventory[i]:
+			return
+		
 		if selection[i]:
 			other_player_new_items.append(character.inventory[i].duplicate())
 			character.inventory[i] = null
@@ -330,7 +373,7 @@ func FinishTrade():
 	get_node("/root/Server").SendCharacterData(other_player_container.name, other_player_container.character)
 	get_node("/root/Server").FinalizeTrade(other_player_container.name, name)
 	ResetTrade()
-	
+
 #ABILITY
 
 func UseAbility():
@@ -644,7 +687,7 @@ func AddExp(exp_amount, enemy_name, enemy_id):
 					"health" : 20,
 					"attack" : 1,
 					"defense" : 0,
-					"speed" : 1,
+					"speed" : 0,
 					"dexterity" : 1,
 					"vitality" : 1,
 				}

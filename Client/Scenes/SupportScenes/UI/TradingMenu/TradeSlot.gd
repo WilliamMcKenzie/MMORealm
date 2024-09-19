@@ -22,14 +22,14 @@ var activated = false
 func Toggle():
 	if activated:
 		DeActivate()
-		activated = false
-	else:
+	elif item:
 		Activate()
-		activated = true
 		
 func Activate():
+	activated = true
 	$ItemIcon.modulate = Color(1,1,1)
 func DeActivate():
+	activated = false
 	$ItemIcon.modulate = Color(131.0/255,131.0/255,131.0/255)
 
 func InspectItem():

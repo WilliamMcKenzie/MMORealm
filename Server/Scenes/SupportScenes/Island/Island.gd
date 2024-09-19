@@ -44,6 +44,8 @@ func _process(delta):
 	sync_clock_counter_2 += 1
 	
 	CheckChunks()
+	if not ruler:
+		return
 	
 	if island_closed and get_child_count() == 3:
 		get_node("/root/Server").player_instance_tracker.erase(instance_tree)
@@ -88,10 +90,7 @@ func _process(delta):
 
 #Handle standard stuff
 func _physics_process(delta):
-	
 	#Clock sync
-	if clock_sync_timer < delta_constant:
-		return
 	use_chunks = true
 	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
@@ -121,7 +120,7 @@ func _physics_process(delta):
 			if IsChunkRadiusEmpty(chunk):
 				for id in chunks[chunk]["E"].keys():
 					var is_ruler = enemy_list[id].origin == ruler_id or enemy_list[id].name == ruler
-					if not is_ruler:
+					if not ruler or not is_ruler:
 						enemy_list.erase(id)
 						chunks[chunk]["E"].erase(id)
 func SpawnEnemy(enemy, enemy_id):
@@ -202,13 +201,14 @@ func GetChunkData(chunk):
 	return {
 		"E" : enemies,
 		"P" : players,
-		"O" : object_list
+		"O" : object_list,
 	}
 
 func _ready():
-	if load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn"):
+	if ruler and load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn"):
 		var setpiece = load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn").instance()
 		CreateStructure(setpiece, Vector2(round(map_size.x/2), round(map_size.y/2)))
+		setpiece.queue_free()
 
 func GenerateIslandMap():
 	if get_script().resource_path.get_file().get_basename() == "TutorialIsland" and has_method("TutorialInit"):
@@ -274,6 +274,7 @@ func PopulateTiles():
 			if tile == 6 and structure_seed < 0.3:
 				var structure = load("res://Scenes/SupportScenes/Island/Structures/" + structures[structure_index] + ".tscn").instance()
 				CreateStructure(structure, Vector2(x,y))
+				structure.queue_free()
 
 func CreateStructure(structure, placement):
 	for x in range(-32, 32*2):
@@ -290,7 +291,7 @@ func CreateStructure(structure, placement):
 var chunk_sync_clock_counter = 0
 func CheckChunks():
 	chunk_sync_clock_counter += 1
-	if chunk_sync_clock_counter >= 30:
+	if chunk_sync_clock_counter >= 60:
 		chunk_sync_clock_counter = 0
 		chunks = {}
 		for player_id in player_list.keys():

@@ -32,9 +32,10 @@ func _ready():
 	else:
 		instance_tree = ["nexus"]
 
-var delta_constant = 3
+var delta_constant = 6
 var clock_sync_timer = 0
 func _physics_process(delta):
+	
 	#Clock sync
 	clock_sync_timer += 1
 	if clock_sync_timer < delta_constant:
@@ -44,8 +45,13 @@ func _physics_process(delta):
 	running_time += delta*delta_constant
 	if not get_world_2d():
 		return
+	
 	for projectile_id in projectile_list.keys():
+		
 		var projectile = projectile_list[projectile_id]
+		var projectile_position = projectile["position"]
+		var path = projectile["path"]
+		
 		var alive_time = OS.get_system_time_msecs()/1000-projectile["start_time"]
 		expression.parse(projectile["formula"],["x"])
 		
@@ -54,202 +60,204 @@ func _physics_process(delta):
 		var perpendicular_vector = Vector2(-velocity.y, velocity.x)
 		var horizontal_move_vector = perpendicular_vector * expression.execute([alive_time * 50]) * 0.05 * delta_constant
 		
-		projectile_list[projectile_id]["path"] += vertical_move_vector
-		projectile_list[projectile_id]["position"] = projectile_list[projectile_id]["path"] + horizontal_move_vector
+		path += vertical_move_vector
+		projectile_position = path + horizontal_move_vector
 		
 		var space_state = get_world_2d().direct_space_state
 		
-		var collision = space_state.intersect_point(projectile_list[projectile_id]["position"]+self.global_position, 1, [], 1, true, true)
+		var collision = space_state.intersect_point(projectile_position+self.global_position, 1, [], 1, true, true)
 		var valid_collision = collision.size() > 0 and collision[0].collider.name != "PlayerHitbox"
-		var max_range = projectile_list[projectile_id]["start_position"].distance_to(projectile_list[projectile_id]["path"]) >= projectile_list[projectile_id]["tile_range"]*8
+		var max_range = projectile["start_position"].distance_to(path) >= projectile["tile_range"]*8
 		
 		for player_id in player_list.keys():
-			if not projectile_list[projectile_id]["hit_players"].has(player_id) and (player_list[player_id]["position"]+Vector2(0,-4)).distance_to(projectile_list[projectile_id]["position"]) <= projectile_list[projectile_id]["size"]:
+			if (player_list[player_id]["position"]+Vector2(0,-4)).distance_to(projectile_position) <= projectile["size"] and not projectile["hit_players"].has(player_id):
 				if has_node("YSort/Players/"+player_id):
-					projectile_list[projectile_id]["hit_players"][player_id] = true
-					get_node("YSort/Players/"+player_id).DealDamage(projectile_list[projectile_id]["damage"], projectile_list[projectile_id]["enemy_name"])
-					if not projectile_list[projectile_id].piercing:
+					projectile["hit_players"][player_id] = true
+					get_node("YSort/Players/"+player_id).DealDamage(projectile["damage"], projectile["enemy_name"])
+					if not projectile.piercing:
 						valid_collision = true
 		if valid_collision or max_range:
 			get_node("/root/Server").RemoveEnemyProjectile(projectile_id, instance_tree)
 			projectile_list.erase(projectile_id)
+		else:
+			projectile_list[projectile_id]["path"] = path
+			projectile_list[projectile_id]["position"] = projectile_position
+			projectile_list[projectile_id] = projectile
 	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
-			for _effect in enemy_list[enemy_id]["effects"].keys():
-				enemy_list[enemy_id]["effects"][_effect] -= tick_rate
-				if enemy_list[enemy_id]["effects"][_effect] <= 0:
-					enemy_list[enemy_id]["effects"].erase(_effect)
-			for _signal in enemy_list[enemy_id]["signals"].keys():
-				enemy_list[enemy_id]["signals"][_signal] -= tick_rate
-				if enemy_list[enemy_id]["signals"][_signal] <= 0:
-					enemy_list[enemy_id]["signals"].erase(_signal)
+			var enemy_data = enemy_list[enemy_id]
+			var enemy_name = enemy_data["name"]
+			var behaviour = enemy_data["behavior"]
+			var effects = enemy_data["effects"]
+			var signals = enemy_data["signals"]
+			
+			var pattern_timer = enemy_data["pattern_timer"]
+			var pattern_index = enemy_data["pattern_index"]
+			var phase_timer = enemy_data["phase_timer"]
+			var phase_index = enemy_data["phase_index"]
+			
+			for _effect in effects.keys():
+				effects[_effect] -= tick_rate
+				if effects[_effect] <= 0:
+					effects.erase(_effect)
+			for _signal in signals.keys():
+				signals[_signal] -= tick_rate
+				if signals[_signal] <= 0:
+					signals.erase(_signal)
 			
 			#Check if we need to switch phase
-			var _phases = ServerData.GetEnemy(enemy_list[enemy_id]["name"]).phases
-			if _phases.size() == 0:
-				continue
-			
-			var __phase_index = enemy_list[enemy_id]["phase_index"]
-			var _phase = _phases[__phase_index]
-			
-			var _health_ratio = (enemy_list[enemy_id].health/enemy_list[enemy_id].max_health)*100
-			var _health = _health_ratio >= _phase.health[0] and _health_ratio <= _phase.health[1] 
-			
-			if not _health:
-				enemy_list[enemy_id]["phase_timer"] = 0
-				enemy_list[enemy_id]["pattern_timer"] = 0
-			if _phase.has("behavior"):
-				enemy_list[enemy_id]["behavior"] = _phase["behavior"]
-			if _phase.has("speed"):
-				enemy_list[enemy_id]["speed"] = _phase["speed"]
-			
-			enemy_list[enemy_id]["pattern_timer"] -= tick_rate
-			enemy_list[enemy_id]["phase_timer"] -= tick_rate
-			
-			if enemy_list[enemy_id]["phase_timer"] <= 0:
-				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
-				var phases = enemy_data.phases
-				var phase_index = enemy_list[enemy_id]["phase_index"]
+			var phases = ServerData.GetEnemy(enemy_name).phases
+			if phases.size() > 0:
+				var _phase = phases[enemy_data["phase_index"]]
+				var _health_ratio = (enemy_data.health/enemy_data.max_health)*100
+				var _health = _health_ratio >= _phase.health[0] and _health_ratio <= _phase.health[1]
 				
-				var possible_phases = []
-				var _phase_index = -1
-				for phase in phases:
-					_phase_index += 1
-					var health_ratio = (enemy_list[enemy_id].health/enemy_list[enemy_id].max_health)*100
-					var health = health_ratio >= phase.health[0] and health_ratio <= phase.health[1] 
-					
-					var used_before = enemy_list[enemy_id]["used_phases"].has(_phase_index)
-					var use_limit = phase.has("max_uses")
-					var on_signal = phase.has("on_signal")
-					var on_spawn = phase.has("on_spawn")
-					var possible = not use_limit or not used_before or (used_before and phase.max_uses > enemy_list[enemy_id]["used_phases"][_phase_index])
-					
-					if on_signal and health and possible:
-						var has_signals = true
-						for _signal in phase["on_signal"]:
-							if not enemy_list[enemy_id]["signals"].has(_signal):
-								has_signals = false
-								break
-						if has_signals:
+				if not _health:
+					enemy_data["phase_timer"] = 0
+					pattern_timer = 0
+				if _phase.has("behavior"):
+					behaviour = _phase["behavior"]
+				if _phase.has("speed"):
+					enemy_data["speed"] = _phase["speed"]
+				
+				pattern_timer -= tick_rate
+				phase_timer -= tick_rate
+				
+				if phase_timer <= 0:
+					var possible_phases = []
+					var _phase_index = -1
+					for phase in phases:
+						_phase_index += 1
+						var used_phases = enemy_data["used_phases"]
+						var health_ratio = (enemy_data.health/enemy_data.max_health)*100
+						var health = health_ratio >= phase.health[0] and health_ratio <= phase.health[1] 
+						
+						var used_before = used_phases.has(_phase_index)
+						var use_limit = phase.has("max_uses")
+						var on_signal = phase.has("on_signal")
+						var on_spawn = phase.has("on_spawn")
+						var possible = not use_limit or not used_before or (used_before and phase.max_uses > used_phases[_phase_index])
+						
+						if on_signal and health and possible:
+							var has_signals = true
+							for _signal in phase["on_signal"]:
+								if not enemy_data["signals"].has(_signal):
+									has_signals = false
+									break
+							if has_signals:
+								possible_phases = [_phase_index]
+								break;
+							else:
+								continue
+						elif on_signal:
+							continue
+						
+						if on_spawn and health and possible:
 							possible_phases = [_phase_index]
 							break;
+						if health and possible:
+							possible_phases.append(_phase_index)
+					
+					if len(possible_phases) > 0:
+						var chosen_index = possible_phases[randi() % len(possible_phases)]
+						
+						#Check if used before
+						var used_before = enemy_data["used_phases"].has(chosen_index)
+						if used_before:
+							enemy_data["used_phases"][chosen_index] += 1
 						else:
-							continue
-					elif on_signal:
-						continue
-					
-					if on_spawn and health and possible:
-						possible_phases = [_phase_index]
-						break;
-					if health and possible:
-						possible_phases.append(_phase_index)
+							enemy_data["used_phases"][chosen_index] = 1
+						
+						if phase_index != chosen_index:
+							phase_index = 0
+						
+						pattern_index = 0
+						phase_index = chosen_index
+						phase_timer = phases[chosen_index].duration
 				
-				if len(possible_phases) > 0:
-					var chosen_index = possible_phases[randi() % len(possible_phases)]
+				while pattern_timer <= 0:
+					var enemy_info = ServerData.GetEnemy(enemy_data["name"])
 					
-					#Check if used before
-					var used_before = enemy_list[enemy_id]["used_phases"].has(chosen_index)
-					if used_before:
-						enemy_list[enemy_id]["used_phases"][chosen_index] += 1
+					var attack_pattern = phases[phase_index].attack_pattern
+					var current_attack = attack_pattern[pattern_index]
+					
+					
+					if current_attack.has("projectile") and not (enemy_data.has("dead") and enemy_data["dead"] == true):
+						#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
+						var direction = current_attack["direction"].normalized()
+						var no_projectile = false
+						if not current_attack.has("targeter"):
+							pass
+						elif current_attack["targeter"] == "nearest":
+							var closest = 9999999
+							for player_id in player_list.keys():
+								var player_position = player_list[player_id]["position"]+Vector2(0,-4)
+								if player_position.distance_to(enemy_data["position"]) <= closest:
+									closest = player_position.distance_to(enemy_data["position"])
+									direction = enemy_data["position"].direction_to((player_position))
+									direction = OffsetProjectileAngle(direction, current_attack["direction"])
+							if closest == 9999999 or closest > 8*8:
+								no_projectile = true
+								pattern_timer = current_attack["wait"]
+						
+						if not no_projectile:
+							var projectile_data = {
+								"id" : projectile_id_counter,
+								"name" : current_attack["projectile"],
+								"position" : enemy_data["position"],
+								"direction" : direction,
+								"tile_range" : current_attack["tile_range"],
+								"start_position" : enemy_data["position"],
+								"start_time" : OS.get_system_time_msecs()/1000,
+								"damage" : current_attack["damage"],
+								"piercing" : current_attack["piercing"],
+								"speed" : current_attack["speed"],
+								"formula" : current_attack["formula"],
+								"path" : enemy_data["position"],
+								"hit_players" : {},
+								"size" : current_attack["size"],
+							}
+							SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_data["name"])
+					
+					elif current_attack.has("summon"):
+						var summon_position = current_attack["summon_position"] + enemy_data["position"]
+						get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_id)
+					
+					elif current_attack.has("speech"):
+						var message = current_attack["speech"]
+						get_node("/root/Server").EnemySpeech(enemy_data["name"], enemy_id, message)
+					
+					elif current_attack.has("effect"):
+						var effect = current_attack["effect"]
+						var duration = current_attack["duration"]
+						enemy_data["effects"][effect] = duration
+					
+					elif current_attack.has("dead"):
+						var dead = current_attack["dead"]
+						enemy_data["dead"] = dead
+					
+					elif current_attack.has("signal"):
+						var signal_type = current_attack["signal"]
+						var reciever = current_attack["reciever"]
+						var duration = current_attack["duration"]
+						var origin = enemy_data["origin"]
+						
+						if reciever == "parent" and enemy_list.has(origin):
+							enemy_list[origin]["signals"][signal_type] = duration
+						else:
+							for _enemy_id in enemy_list.keys():
+								if enemy_list[_enemy_id].name == reciever:
+									enemy_list[_enemy_id]["signals"][signal_type] = duration
+					
+					pattern_timer = current_attack["wait"]
+					if pattern_index >= len(attack_pattern)-1:
+						pattern_index = 0
 					else:
-						enemy_list[enemy_id]["used_phases"][chosen_index] = 1
-					
-					if enemy_list[enemy_id]["phase_index"] != chosen_index:
-						enemy_list[enemy_id]["pattern_index"] = 0
-					
-					enemy_list[enemy_id]["phase_index"] = chosen_index
-					enemy_list[enemy_id]["phase_timer"] = phases[chosen_index].duration
-			
-			while enemy_list[enemy_id]["pattern_timer"] <= 0:
-				var enemy_data = ServerData.GetEnemy(enemy_list[enemy_id]["name"])
-				var phase_index = enemy_list[enemy_id]["phase_index"]
-				
-				var attack_pattern = enemy_data["phases"][phase_index].attack_pattern
-				var current_attack = attack_pattern[enemy_list[enemy_id]["pattern_index"]]
-				
-				var is_projectile = current_attack.has("projectile")
-				var is_signal = current_attack.has("signal")
-				var is_summon = current_attack.has("summon")
-				var is_speech = current_attack.has("speech")
-				var is_effect = current_attack.has("effect")
-				var is_dead = current_attack.has("dead")
-				
-				if is_projectile and not (enemy_list[enemy_id].has("dead") and enemy_list[enemy_id]["dead"] == true):
-					#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
-					var direction = current_attack["direction"].normalized()
-					var no_projectile = false
-					if not current_attack.has("targeter"):
-						pass
-					elif current_attack["targeter"] == "nearest":
-						var closest = 9999999
-						for player_id in player_list.keys():
-							var player_position = player_list[player_id]["position"]+Vector2(0,-4)
-							if player_position.distance_to(enemy_list[enemy_id]["position"]) <= closest:
-								closest = player_position.distance_to(enemy_list[enemy_id]["position"])
-								direction = enemy_list[enemy_id]["position"].direction_to((player_position))
-								direction = OffsetProjectileAngle(direction, current_attack["direction"])
-						if closest == 9999999 or closest > 8*8:
-							no_projectile = true
-							enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
-					
-					if not no_projectile:
-						var projectile_data = {
-							"id" : projectile_id_counter,
-							"name" : current_attack["projectile"],
-							"position" : enemy_list[enemy_id]["position"],
-							"direction" : direction,
-							"tile_range" : current_attack["tile_range"],
-							"start_position" : enemy_list[enemy_id]["position"],
-							"start_time" : OS.get_system_time_msecs()/1000,
-							"damage" : current_attack["damage"],
-							"piercing" : current_attack["piercing"],
-							"speed" : current_attack["speed"],
-							"formula" : current_attack["formula"],
-							"path" : enemy_list[enemy_id]["position"],
-							"hit_players" : {},
-							"size" : current_attack["size"],
-						}
-						SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_list[enemy_id]["name"])
-				
-				elif is_signal:
-					var signal_type = current_attack["signal"]
-					var reciever = current_attack["reciever"]
-					var duration = current_attack["duration"]
-					var origin = enemy_list[enemy_id]["origin"]
-					
-					if reciever == "parent" and enemy_list.has(origin):
-						enemy_list[origin]["signals"][signal_type] = duration
-					else:
-						for _enemy_id in enemy_list.keys():
-							if enemy_list[_enemy_id].name == reciever:
-								enemy_list[_enemy_id]["signals"][signal_type] = duration
-				
-				elif is_summon:
-					var summon_position = current_attack["summon_position"] + enemy_list[enemy_id]["position"]
-					get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_id)
-				
-				elif is_speech:
-					var message = current_attack["speech"]
-					get_node("/root/Server").EnemySpeech(enemy_list[enemy_id]["name"], enemy_id, message)
-				
-				elif is_dead:
-					var dead = current_attack["dead"]
-					enemy_list[enemy_id]["dead"] = dead
-				
-				elif is_effect:
-					var effect = current_attack["effect"]
-					var duration = current_attack["duration"]
-					enemy_list[enemy_id]["effects"][effect] = duration
-				
-				enemy_list[enemy_id]["pattern_timer"] = current_attack["wait"]
-				if enemy_list[enemy_id]["pattern_index"] == len(attack_pattern)-1:
-					enemy_list[enemy_id]["pattern_index"] = 0
-				else:
-					enemy_list[enemy_id]["pattern_index"] += 1
+						pattern_index += 1
 			
 			#For dungeons and nexus
-			if(enemy_list[enemy_id]["health"] < 1) and use_chunks == false:
+			if(enemy_data["health"] < 1) and use_chunks == false:
 				if not "arena" in name:
 					CalculateLootPool(enemy_list[enemy_id], enemy_id)
 				else:
@@ -257,15 +265,22 @@ func _physics_process(delta):
 				enemy_list.erase(enemy_id)
 				continue
 			
-			if enemy_list[enemy_id].has("dead") and enemy_list[enemy_id]["dead"]:
+			if enemy_data.has("dead") and enemy_data["dead"]:
 				pass
-			elif (enemy_list[enemy_id]["behavior"] == 0):
-				enemy_list[enemy_id] = Behaviors.Stationary(enemy_list[enemy_id], tick_rate, self)
-			elif (enemy_list[enemy_id]["behavior"] == 1):
-				enemy_list[enemy_id] = Behaviors.Wander(enemy_list[enemy_id], tick_rate, self)
-			elif (enemy_list[enemy_id]["behavior"] == 2):
-				enemy_list[enemy_id] = Behaviors.Chase(enemy_list[enemy_id], tick_rate, self)
+			elif (behaviour == 0):
+				enemy_data = Behaviors.Stationary(enemy_data, tick_rate, self)
+			elif (behaviour == 1):
+				enemy_data = Behaviors.Wander(enemy_data, tick_rate, self)
+			elif (behaviour == 2):
+				enemy_data = Behaviors.Chase(enemy_data, tick_rate, self)
 			
+			enemy_list[enemy_id]["effects"] = effects
+			enemy_list[enemy_id]["signals"] = signals
+			enemy_list[enemy_id]["pattern_timer"] = pattern_timer
+			enemy_list[enemy_id]["pattern_index"] = pattern_index
+			enemy_list[enemy_id]["phase_timer"] = phase_timer
+			enemy_list[enemy_id]["phase_index"] = phase_index
+		
 		if use_chunks == false:
 			last_tick = running_time
 
@@ -283,7 +298,7 @@ func UpdatePlayer(player_id, player_state):
 		if colliding:
 			for collision_data in collision:
 				if collision_data.collider.name == "TileMap":
-					get_node("/root/Server").network.disconnect_peer(player_id)
+					get_node("/root/Server").network.disconnect_peer(int(player_id))
 					break
 
 func SpawnPlayer(player_container):

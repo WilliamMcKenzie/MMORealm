@@ -25,23 +25,29 @@ var player_name_by_id = {}
 var player_id_by_name = {}
 
 func _ready():
+	VisualServer.render_loop_enabled = false
 	StartHTMLServer()
 	GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
 	
 	#Open realm
-	#for i in range(100):
-		#PlayerVerification.CreateFakePlayerContainer()
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
+	var island_id = get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2(-19*8, -37*8), Vector2(750,750), null)
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(100,100), "tutorial_troll_king")
 	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
-
+	for i in range(50):
+		var container = PlayerVerification.CreateFakePlayerContainer()
+		container.GiveEffect("invincible", 99999)
+		container.position = ForcedEnterInstance(island_id, int(container.name))
+		var island = container.get_parent().get_parent().get_parent()
+		island.UpdatePlayer(container.name, {"T":OS.get_system_time_msecs(), "P":container.position, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams" : {}}}})
+		island.GetIslandChunk(island.CalculateChunk(island.player_list[container.name].position))
 #Update connected players
 var clock_sync_timer = 0
 func _physics_process(delta):
@@ -91,7 +97,8 @@ func _Peer_Disconnected(id):
 				player_container.GiveBuff(0, stat, 0)
 		DeleteHouse(id)
 		PlayerVerification.verified_emails.erase(player_container.email)
-		HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
+		if player_container.account_data:
+			HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])).RemovePlayer(player_container)
 		player_container.queue_free()
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
@@ -373,6 +380,18 @@ remote func DetermineLatency(client_time):
 	var player_id =  get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "ReturnLatency", client_time)
 
+func RecieveFakePlayerState(player_id, player_state):
+	if player_state_collection.has(player_id):
+		if(player_state_collection[player_id]["T"] <  player_state["T"]):
+			player_state["I"] = player_state_collection[player_id]["I"]
+			player_state_collection[player_id] = player_state
+			var players = get_node("Instances/"+StringifyInstanceTree(player_state["I"])+"/YSort/Players")
+			if players and players.has_node(str(player_id)):
+				get_node("Instances/"+StringifyInstanceTree(player_state["I"])).UpdatePlayer(player_id, player_state)
+	else:
+		player_instance_tracker[["nexus"]].append(player_id)
+		player_state["I"] = ["nexus"]
+		player_state_collection[player_id] = player_state
 remote func RecievePlayerState(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	if player_state_collection.has(player_id):
@@ -388,7 +407,8 @@ remote func RecievePlayerState(player_state):
 		player_state_collection[player_id] = player_state
 
 func SendWorldState(id, world_state, instance_tree):
-	var error = rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
+	if int(id) in get_tree().get_network_connected_peers():
+		var error = rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
 
 #TOKENS
 func _on_TokenExpiration_timeout():
@@ -412,7 +432,7 @@ func FetchToken(player_id):
 remote func ReturnToken(token, character_index):
 	var player_id = get_tree().get_rpc_sender_id()
 	if not token:
-		network.disconnect_peer(player_id)
+		html_network.disconnect_peer(player_id)
 		return
 	PlayerVerification.Verify(player_id, token, character_index)
 
@@ -495,8 +515,10 @@ remote func SendPlayerProjectile(projectile_data):
 	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
+	var peers = get_tree().get_network_connected_peers()
 	for player_id in player_instance_tracker[instance_tree]:
-		rpc_id(player_id, "RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
+		if player_id in peers:
+			rpc_id(player_id, "RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
 func RemoveEnemyProjectile(projectile_id, instance_tree):
 	for player_id in player_instance_tracker[instance_tree]:
 		rpc_id(player_id, "RemoveEnemyProjectile", projectile_id, instance_tree)
@@ -632,11 +654,11 @@ func ForcedEnterInstance(instance_id, player_id):
 		
 		player_instance_tracker[instance_tree].erase(player_id)
 		instance_tree.append(str(instance_id))
-		
+		var spawnpoint
 		#For dungeons
 		if "arena" in instance_id:
 			var arena_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
-			var spawnpoint = Vector2.ZERO
+			spawnpoint = Vector2.ZERO
 			
 			rpc_id(player_id, "ReturnArenaData", { "Name": arena_node.arena_type.capitalize() + " Arena", "Id": instance_id, "Position": spawnpoint})
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
@@ -646,7 +668,7 @@ func ForcedEnterInstance(instance_id, player_id):
 			player_instance_tracker[instance_tree].append(player_id)
 		elif not current_instance_node.object_list[instance_id]["name"] == "island":
 			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
-			var spawnpoint = dungeon_node.GetMapSpawnpoint()
+			spawnpoint = dungeon_node.GetMapSpawnpoint()
 			
 			rpc_id(player_id, "ReturnDungeonData", { "Map": dungeon_node.map, "Name": current_instance_node.object_list[instance_id]["name"], "Id": instance_id, "RoomSize" : dungeon_node.room_size, "Position": spawnpoint})
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
@@ -657,7 +679,7 @@ func ForcedEnterInstance(instance_id, player_id):
 		#For islands (Map is a node instead of array here)
 		else:
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
-			var spawnpoint = island_node.GetMapSpawnpoint()
+			spawnpoint = island_node.GetMapSpawnpoint()
 			
 			rpc_id(player_id, "ReturnIslandData", { "Name": island_node.ruler, "Id":instance_id, "Position": spawnpoint})
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
@@ -666,6 +688,7 @@ func ForcedEnterInstance(instance_id, player_id):
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": "Idle", "I": instance_tree}
 			player_instance_tracker[instance_tree].append(player_id)
 		SendCharacterData(player_id, player_container.character)
+		return spawnpoint
 
 remote func EnterInstance(instance_id):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -852,7 +875,8 @@ func NotifyDeath(player_id, enemy_name):
 	html_network.disconnect_peer(player_id)
 
 func SetHealth(player_id, max_health, health):
-	rpc_id(player_id,"SetHealth",max_health, health)
+	if player_id in get_tree().get_network_connected_peers():
+		rpc_id(player_id,"SetHealth",max_health, health)
 
 #Utility functions 
 

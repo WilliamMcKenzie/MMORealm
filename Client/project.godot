@@ -30,7 +30,7 @@ config/name="Client"
 run/main_scene="res://SceneHandler.tscn"
 boot_splash/image="res://Assets/ui/whitebg.png"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
-config/icon="res://icon.png"
+config/icon="res://Assets/MMORealm.png"
 
 [autoload]
 
@@ -152,6 +152,14 @@ ability={
 [network]
 
 limits/debugger_stdout/max_chars_per_second=222222
+limits/websocket_client/max_in_buffer_kb=256
+limits/websocket_client/max_in_packets=5000
+limits/websocket_client/max_out_buffer_kb=256
+limits/websocket_client/max_out_packets=5000
+limits/websocket_server/max_in_buffer_kb=256
+limits/websocket_server/max_in_packets=5000
+limits/websocket_server/max_out_buffer_kb=256
+limits/websocket_server/max_out_packets=5000
 
 [physics]
 

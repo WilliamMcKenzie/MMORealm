@@ -100,13 +100,14 @@ func SetQuest(quest):
 			get_node("MarginContainer/TextureRect").texture.atlas = quest_texture
 			get_node("MarginContainer/TextureRect").texture.region = Rect2(quest_region.position, Vector2(quest_region.size.y, quest_region.size.y))
 	
-	var player_position = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").global_position
-	get_node("Node2D").global_position = player_position
-	get_node("Node2D").look_at(quest.position)
-	get_node("Node2D").position = Vector2(40, 40)
-	
-	var _direction = ((quest.position - player_position)/0.18).normalized()
-	direction = _direction
+	if Server.has_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player"):
+		var player_position = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/player").global_position
+		get_node("Node2D").global_position = player_position
+		get_node("Node2D").look_at(quest.position)
+		get_node("Node2D").position = Vector2(40, 40)
+		
+		var _direction = ((quest.position - player_position)/0.18).normalized()
+		direction = _direction
 	
 func RemoveQuest():
 	visible = false

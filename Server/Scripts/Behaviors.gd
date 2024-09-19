@@ -57,27 +57,20 @@ func Wander(enemy, tick_rate, root):
 				enemy["target"] = point
 	return enemy
 
-#Chase
 func Chase(enemy, tick_rate, root):
+	var target = enemy["target"]
 	var pos = enemy["position"]
 	var speed = enemy["speed"]
 	
-	var closest_position = GetClosestPlayer(pos, root)
-	if not closest_position:
-		return enemy
+	var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
+	var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
 	
-	var x_move = -cos(pos.angle_to_point(closest_position))*(0.1/tick_rate)*(speed/10.0)
-	var y_move = -sin(pos.angle_to_point(closest_position))*(0.1/tick_rate)*(speed/10.0)
+	enemy["position"] += Vector2(x_move,y_move)
 	
-	enemy["target"] = closest_position
-	var point1 = enemy["position"] + Vector2(x_move,y_move)
-	var point2 = enemy["position"] + Vector2(0,y_move)
-	var point3 = enemy["position"] + Vector2(x_move,0)
-	if DetermineCollisionSafePoint(pos, point1, root, enemy["name"]):
-		enemy["position"] = point1
-	elif DetermineCollisionSafePoint(pos, point2, root, enemy["name"]):
-		enemy["position"] = point2
-	elif DetermineCollisionSafePoint(pos, point3, root, enemy["name"]):
-		enemy["position"] = point3
-	
+	if (target - pos).length() <= 4:
+		var closest_position = GetClosestPlayer(pos, root)
+		if closest_position and DetermineCollisionSafePoint(pos, closest_position, root, enemy["name"]):
+			var direction = (closest_position - pos).normalized()
+			var point = pos + direction * 8
+			enemy["target"] = point
 	return enemy
