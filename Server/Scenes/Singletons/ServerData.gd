@@ -10178,6 +10178,7 @@ var buildings = {
 		"description" : "A place to sit",
 		
 		"craftable" : true,
+		"max" : 10,
 		"materials" : [1],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,100)],
 	},
@@ -10188,6 +10189,7 @@ var buildings = {
 		"description" : "A place to sit",
 		
 		"craftable" : true,
+		"max" : 10,
 		"materials" : [1],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,100)],
 	},

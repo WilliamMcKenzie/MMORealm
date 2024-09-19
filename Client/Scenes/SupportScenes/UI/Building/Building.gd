@@ -56,7 +56,9 @@ func InspectBuilding(_type):
 		building_materials.visible = true
 		materials_tag.visible = true
 	if building.has("max"):
-		var total = GameUI.account_data.home.inventory[building.type+"s"][_type]
+		var total = 0
+		if GameUI.account_data.home.inventory[building.type+"s"].has(_type):
+			total = GameUI.account_data.home.inventory[building.type+"s"][_type]
 		
 		for _building in GameUI.account_data.home[building.type+"s"]:
 			if building.type == "object" and _building.type == _type:
@@ -201,12 +203,15 @@ func SetHouseData(house_data):
 	var tiles = house_data.inventory.tiles
 	tiles.merge(objects)
 	var buildings = tiles
+	var buildings_data = ClientData.buildings
 	
 	var storage_container = $StorageContainer/PanelContainer2/MarginContainer/ScrollContainer/ResizeContainer
 	
-	for building_name in buildings:
-		var quantity = buildings[building_name]
+	for building_name in buildings_data.keys():
+		var quantity = 0
 		var building_data = ClientData.GetBuilding(building_name)
+		if buildings.has(building_name):
+			quantity = buildings[building_name]
 		
 		if not storage_container.has_node(building_name):
 			var building_node = load("res://Scenes/SupportScenes/UI/Building/BuildingSlot/BuildingSlot.tscn").instance()
