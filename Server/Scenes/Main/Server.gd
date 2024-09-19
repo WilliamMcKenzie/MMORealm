@@ -41,7 +41,7 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(100,100), "tutorial_troll_king")
 	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
-	for i in range(0):
+	for i in range(50):
 		var container = PlayerVerification.CreateFakePlayerContainer()
 		container.GiveEffect("invincible", 99999)
 		container.position = ForcedEnterInstance(island_id, int(container.name))
@@ -97,7 +97,8 @@ func _Peer_Disconnected(id):
 				player_container.GiveBuff(0, stat, 0)
 		DeleteHouse(id)
 		PlayerVerification.verified_emails.erase(player_container.email)
-		HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
+		if player_container.account_data:
+			HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])).RemovePlayer(player_container)
 		player_container.queue_free()
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
@@ -431,7 +432,7 @@ func FetchToken(player_id):
 remote func ReturnToken(token, character_index):
 	var player_id = get_tree().get_rpc_sender_id()
 	if not token:
-		network.disconnect_peer(player_id)
+		html_network.disconnect_peer(player_id)
 		return
 	PlayerVerification.Verify(player_id, token, character_index)
 

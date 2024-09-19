@@ -87,6 +87,9 @@ func OpenGraveyard():
 	get_node("Graveyard").visible = true
 
 func SelectionScreen(account_data):
+	if not account_data:
+		return
+	
 	GameUI.SetAccountData(account_data)
 	Gateway.ConnectToServer(email, password, 5)
 	ClientAuth.cached_email = email

@@ -749,7 +749,7 @@ tracks/22/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ) ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=37]
@@ -1242,7 +1242,6 @@ z_index = 22
 normal = SubResource( 41 )
 
 [node name="LootButton" type="PanelContainer" parent="UtilityButtons"]
-modulate = Color( 1, 1, 1, 0 )
 margin_left = 43.0
 margin_right = 81.0
 margin_bottom = 38.0

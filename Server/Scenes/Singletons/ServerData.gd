@@ -408,7 +408,7 @@ var projectile_databank = {
 			"damage" : 70,
 			"piercing" : false,
 			"wait" : 0,
-			"speed" : 15,
+			"speed" : slow,
 			"tile_range" : 9,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
@@ -7073,7 +7073,7 @@ var the_abyss_enemies = {
 		"defense" : 30,
 		"exp" : 12000,
 		"behavior" : 0,
-		"speed" : 15,
+		"speed" : 40,
 		"loot_pool" : special_loot_pools["salazar,_rex_of_the_abyss"],
 		"phases" : [
 			{
@@ -7109,7 +7109,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(8, "FlameBlast_strong_slow", 0.2, "GiantFlameArrow_strong_fast", 0.3, 8)
+				] + CreateSpiral(8, "FlameBlast_strong_slow", 0.2, "GiantFlameArrow_strong_fast", 0.3, 16) + [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,
@@ -7123,7 +7123,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(12, "FlameBlast_strong_slow", 0.3, "GiantFlameArrow_strong_fast", 0.5, 12)
+				] + CreateSpiral(12, "FlameBlast_strong_slow", 0.3, "GiantFlameArrow_strong_fast", 0.5, 24)+ [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,
@@ -7137,7 +7137,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(16, "FlameBlast_strong_fast", 0.3, "GiantFlameArrow_strong_fast", 1, 16)
+				] + CreateSpiral(16, "FlameBlast_strong_fast", 0.3, "GiantFlameArrow_strong_fast", 1, 32)+ [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,

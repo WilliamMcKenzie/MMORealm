@@ -194,7 +194,7 @@ func Open():
 	var backpack_element = $BackpackContainer
 	var loot_element = $LootContainer
 	
-	gear_tween.interpolate_property(gear_element, "rect_position", Vector2(324,400), Vector2(324,290), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, gear_element.rect_position+Vector2(0,-110), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	gear_tween.start()
 	backpack_tween.interpolate_property(backpack_element, "rect_position", Vector2(800,0), Vector2(-100, 0)+Vector2(800,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	backpack_tween.start()
@@ -223,7 +223,7 @@ func Close():
 	var backpack_element = $BackpackContainer
 	var loot_element = $LootContainer
 	
-	gear_tween.interpolate_property(gear_element, "rect_position", Vector2(324,290), Vector2(324,400), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, gear_element.rect_position+Vector2(0,110), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	gear_tween.start()
 	backpack_tween.interpolate_property(backpack_element, "rect_position", Vector2(700,0), Vector2(800,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	backpack_tween.start()

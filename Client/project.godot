@@ -30,7 +30,7 @@ config/name="Client"
 run/main_scene="res://SceneHandler.tscn"
 boot_splash/image="res://Assets/ui/whitebg.png"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
-config/icon="res://icon.png"
+config/icon="res://Assets/MMORealm.png"
 
 [autoload]
 
