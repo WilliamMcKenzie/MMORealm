@@ -14,19 +14,19 @@ func _process(delta):
 		for object_id in object_list.keys():
 			var object = object_list[object_id]
 			if object.name == "apprentice_statue":
-				GiveStatueBuff(object, "health")
+				GiveStatueBuff(object, "health", 10, 120)
 			if object.name == "noble_statue":
-				GiveStatueBuff(object, "defense")
+				GiveStatueBuff(object, "defense", 3, 120)
 			if object.name == "nomad_statue":
-				GiveStatueBuff(object, "dexterity")
+				GiveStatueBuff(object, "dexterity", 3, 120)
 			if object.name == "scholar_statue":
-				GiveStatueBuff(object, "vitality")
+				GiveStatueBuff(object, "vitality", 3, 120)
 
-func GiveStatueBuff(object, buff):
+func GiveStatueBuff(object, buff, amount, time):
 	for player_id in player_list.keys():
 		if player_list[player_id]["position"].distance_to(object["position"]) <= 30:
 			var player_container = get_node("YSort/Players/"+str(player_id))
-			player_container.GiveBuff(10, buff, 120)
+			player_container.GiveBuff(amount, buff, time)
 
 func SetHouseData(account_data):
 	var house_data = account_data.home
