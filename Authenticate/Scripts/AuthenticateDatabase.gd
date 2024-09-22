@@ -116,6 +116,7 @@ remote func CreateAccount(email, password, player_id):
 	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
 
 remote func AuthenticatePlayer(email, password, player_id):
+	print("Authenticating")
 	var result
 	var gateway_id = get_tree().get_rpc_sender_id()
 	
@@ -125,7 +126,6 @@ remote func AuthenticatePlayer(email, password, player_id):
 		result = false
 	else:
 		result = true
-			
 	rpc_id(gateway_id, "AuthenticateResults", result, player_id)
 
 remote func SendToken(email, player_id):

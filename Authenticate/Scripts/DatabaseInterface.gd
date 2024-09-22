@@ -3,11 +3,11 @@ extends Node
 var database = PostgreSQLClient.new()
 var database_connected = false
 
-var database_name = "defaultdb"
-var db_username = "doadmin"
-var db_password = "AVNS_4aWPimeaFiU2cmEoVlm"
-var host = "mmorealm-database-do-user-16835911-0.c.db.ondigitalocean.com"
-var port = 25060
+var database_name = "postgres"
+var db_username = "postgres.xxdqgjmbxaufkpwzzvkm"
+var db_password = "$ronMan72!s"
+var host = "aws-0-us-east-1.pooler.supabase.com"
+var port = 6543
 
 var weekly_leaderboard = []
 var monthly_leaderboard = []
@@ -139,10 +139,11 @@ var new_character = {
 }
 
 func Connect():
-	var connection_string = "postgresql://%s:%s@%s:%d/%s" % [
-		db_username, db_password, host, port, database_name
-	]
-	database.connect_to_host(connection_string, true)
+	#var connection_string = "postgresql://%s:%s@%s:%d/%s" % [
+	#	db_username, db_password, host, port, database_name
+	#]
+	var connection_string = "postgresql://postgres.xxdqgjmbxaufkpwzzvkm:$ronMan72!s@aws-0-us-east-1.pooler.supabase.com:5432/postgres"
+	database.connect_to_host(connection_string, false)
 
 func _ready():
 	Connect()
@@ -165,9 +166,17 @@ func _ready():
 	weekly_leaderboard = GetLeaderboard(7)
 	monthly_leaderboard = GetLeaderboard(30)
 	all_time_leaderboard = GetLeaderboard(OS.get_system_time_secs())
-	
+
+var clock_sync_timer = 0
 func _physics_process(delta):
+	clock_sync_timer += 1
 	database.poll()
+	if clock_sync_timer % 60 == 0 and database.status != database.Status.STATUS_CONNECTED:
+		Connect()
+	if clock_sync_timer >= 600:
+		#To keep connection from timing out
+		clock_sync_timer = 0
+		FindUser("tester@lester.com")
 	
 #Essential CRUD functions
 	
@@ -178,7 +187,6 @@ func FindUser(email):
 		SELECT * FROM users WHERE email = '%s'
 	""" % [email]
 	var data_arr = database.execute(command)
-	
 	for _data in data_arr:
 		var data = _data.data_row
 		if data != []:
@@ -188,7 +196,6 @@ func FindUser(email):
 				"account_data" : JSON.parse(result[2]).result
 			}
 			return user
-	
 	return null
 
 func AddUser(email, password):
@@ -324,9 +331,8 @@ func UpdateLeaderboard(_username, _character):
 
 func AddToLeaderboard(leaderboard, new_value):
 	var size = leaderboard.size()
-	
 	if size == 0:
-		leaderboard[0] = new_value
+		leaderboard.append(new_value)
 		return leaderboard
 	
 	if new_value.reputation <= leaderboard[size - 1].reputation:

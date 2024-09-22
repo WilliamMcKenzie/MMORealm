@@ -18,7 +18,7 @@ func SignupAttempt():
 	if password.length() < 7:
 		ErrorPopup.OpenPopup("Invalid credentials: Password length must be greater then 7.")
 	else:
-		Gateway.ConnectToServer(email, password, 1)
+		Gateway.GatewayRequest(email, password, 1)
 
 func LoginAttempt():
 	password = $VBoxContainer/PasswordContainer/Password/MarginContainer/Password.text
@@ -26,7 +26,7 @@ func LoginAttempt():
 	if email == "" or password == "":
 		ErrorPopup.OpenPopup("Invalid credentials: Email/password cannot be blank")
 	else:
-		Gateway.ConnectToServer(email, password, 0)
+		Gateway.GatewayRequest(email, password, 0)
 func LoginResult(result):
 	if(result == true):
 		get_node("/root/SceneHandler/Home").email = email

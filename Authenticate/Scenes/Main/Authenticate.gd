@@ -91,6 +91,8 @@ remote func CreateAccount(email, password, player_id):
 	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
 
 remote func AuthenticatePlayer(email, password, player_id):
+	print("Authenticating")
+	
 	var token
 	var result
 	var gateway_id = get_tree().get_rpc_sender_id()
@@ -106,7 +108,8 @@ remote func AuthenticatePlayer(email, password, player_id):
 			
 		var gameserver = "GameServer1"
 		GameServers.DistributeLogToken(token, email, gameserver)
-			
+	
+	print("Results: " + str(result))
 	rpc_id(gateway_id, "AuthenticateResults", result, player_id, token)
 
 remote func GetLeaderboards(player_id):

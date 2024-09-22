@@ -1,10 +1,5 @@
 extends Node
 
-#For fake player containers
-var fake = false
-var enemy = null
-var loaded_chunks = {}
-
 var email
 
 var account_data = null
@@ -47,33 +42,21 @@ var tutorial_step_translation = ["Intro", "Controls", "Backpack", "Ability", "Qu
 var clock_sync_timer = 0
 var clock_sync_timer_2 = 0
 var last_position
+
+#For fake player containers
+var fake_sync_timer = 0
+var fake = false
+var enemy = null
+var target = null
+var loaded_chunks = {}
+var player_state = {"T":OS.get_system_time_msecs(), "P":Vector2.ZERO, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams":{}}}}
+
+var last_shot_time = 0
+var time_between_shots = INF
+
 func _physics_process(delta):
-	if fake:
-		var island = get_parent().get_parent().get_parent()
-		enemy.position = self.position
-		enemy.anchor_position = self.position
-		#enemy.target = island.map_size/2*8
-		
-		var chunk = island.CalculateChunk(island.player_list[self.name].position)
-		var chunks = [
-			chunk + Vector2(16,0),
-			chunk + Vector2(-16,0),
-			chunk + Vector2(16,16),
-			chunk + Vector2(-16,16),
-			chunk + Vector2(16,-16),
-			chunk + Vector2(-16,-16),
-			chunk + Vector2(0,16),
-			chunk + Vector2(0,-16),
-		]
-		for _chunk in chunks:
-			if not loaded_chunks.has(_chunk):
-				loaded_chunks[_chunk] = true
-				island.GetIslandChunk(_chunk)
-		if enemy.target.distance_to(enemy.position) > 200:
-			enemy.target = enemy.position
-		enemy = Behaviors.Wander(enemy, 0.1, get_parent().get_parent().get_parent())
-		var new_pos = enemy.position
-		get_node("/root/Server").RecieveFakePlayerState(int(name), {"T":OS.get_system_time_msecs(), "P":new_pos, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams" : {}}}})
+	if fake and not despawned:
+		HandleFake()
 		return
 	
 	clock_sync_timer += 1
@@ -225,6 +208,86 @@ func _physics_process(delta):
 				character.stats[stat] -= stat_buffs[stat].add
 				get_node("/root/Server").SendCharacterData(name, character)
 			stat_buffs.erase(stat)
+
+#Fake player containers
+var despawned = false
+func DecorateFake():
+	player_state = Bots.DecorateFake(player_state, character, gear)
+func HandleFake():
+	Bots.HandleChat(account_data.username, character.class, name)
+	
+	var server = get_node("/root/Server")
+	var instance_node = get_parent().get_parent().get_parent()
+	enemy.position = self.position
+	enemy.anchor_position = self.position
+	enemy = Behaviors.Bot(enemy, 0.1, instance_node)
+	player_state["P"] = enemy.position
+	player_state["T"] = OS.get_system_time_msecs()
+	if target:
+		player_state["A"] = { "A" : "Attack", "C" : self.position.direction_to(target) }
+	elif self.position != enemy.position:
+		player_state["A"] = { "A" : "Walk", "C" : self.position.direction_to(enemy.position) }
+	else:
+		player_state["A"]["A"] = "Idle"
+	
+	fake_sync_timer += 1
+	var closest = OS.get_system_time_msecs()
+	var closest_pos = null
+	if target:
+		var timing = (OS.get_ticks_msec() / 1000.0) - last_shot_time >= time_between_shots
+		var weapon = gear.has("weapon")
+		var distance = self.position.distance_to(target)
+		var tile_range = gear.weapon.projectiles[0].tile_range*8
+		
+		if distance > tile_range or distance < tile_range-8:
+			enemy.target = target + (self.position - target).normalized() * tile_range
+		
+		if timing and weapon:
+			var i = -1
+			for projectile_data in gear.weapon.projectiles:
+				i += 1
+				var _projectile_data = {
+					"ProjectileIndex" : i,
+					"Damage" : rand_range(10,20),
+					"Position": self.position,
+					"MousePosition": self.position+100*Bots.OffsetProjectileAngle(self.position.direction_to(target), projectile_data.offset),
+					"Direction": self.position.direction_to(target),
+				}
+				server.SendFakePlayerProjectile(_projectile_data, int(name))
+			last_shot_time = OS.get_ticks_msec() / 1000.0
+	
+	if fake_sync_timer >= 40:
+		time_between_shots = (1 / (6.5 * (character.stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100.0)
+		var closest_player = OS.get_system_time_msecs()
+		for player_id in instance_node.player_list.keys():
+			var player_data = instance_node.player_list[player_id]
+			var distance =  player_data.position.distance_to(self.position)
+			if distance < closest_player and not player_data.fake:
+				closest_player = distance
+		if closest_player > 16*8:
+			despawned = true
+			Bots.used_names.erase(account_data.username)
+			server._Peer_Disconnected(int(name))
+			return
+		
+		for enemy_id in instance_node.enemy_list.keys():
+			var enemy_data = instance_node.enemy_list[enemy_id]
+			var distance =  enemy_data.position.distance_to(self.position)
+			if distance < closest:
+				closest =  distance
+				closest_pos = enemy_data.position
+		
+		if closest < 8:
+			target = closest_pos + (self.position - closest_pos).normalized() * 16
+		elif closest < 7*8:
+			target = closest_pos
+		else:
+			target = null
+	self.position = enemy.position
+	get_node("/root/Server").RecieveFakePlayerState(int(name), player_state.duplicate(true))
+
+#Regular player containers
+
 func ManageHealing():
 	heal_rate = 4.0/(character.stats.vitality*6*(character.stats.health/500.0))
 	if status_effects.has("healing"):

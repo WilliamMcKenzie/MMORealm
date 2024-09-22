@@ -1,11 +1,11 @@
 extends Node
 
-#var url = "wss://lagso.com"
-#var url = "ws://143.110.213.88:20201"
-var url = "ws://localhost:20201"
+var url = "wss://gameserver.lagso.com/port20201/"
+#var url = "ws://159.203.0.78:20201"
+#var url = "ws://localhost:20201"
 
-#var ip_address = "143.110.213.88"
-var ip_address = "localhost"
+var ip_address = "159.203.0.78"
+#var ip_address = "localhost"
 var port = 20201
 var network = NetworkedMultiplayerENet.new()
 var html_network = WebSocketClient.new();
@@ -19,13 +19,16 @@ var index = null
 #if we are using the web client
 var html = true
 
+func _ready():
+	ConnectToServerHTML()
+
 func _process(delta):
 	if get_custom_multiplayer() == null:
 		return
 	if not custom_multiplayer.has_network_peer():
 		return
 	custom_multiplayer.poll()
-	
+
 func ConnectToServerHTML():
 	# Connect to WebSocket server
 	var connection_result = html_network.connect_to_url(url, PoolStringArray(), true)
@@ -43,36 +46,20 @@ func ConnectToServerHTML():
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(html_network)
-
-	#custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
 	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
 
-func ConnectToServerDefault():
-	network = NetworkedMultiplayerENet.new()
-	gateway_api = MultiplayerAPI.new()
-	
-	network.create_client(ip_address, port)
-	set_custom_multiplayer(gateway_api)
-	set_custom_multiplayer(gateway_api)
-	custom_multiplayer.set_root_node(self)
-	custom_multiplayer.set_network_peer(network)
+var connected = false
+func _onConnectionSucceeded():
+	connected = true
 
-	custom_multiplayer.connect("connection_failed", self, "_onConnectionFailed")
-	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
-
-func ConnectToServer(_email, _password, _task):
+func GatewayRequest(_email, _password, _task):
 	email = _email
 	task = _task
 	password = _password
 	
-	if html:
-		ConnectToServerHTML()
-	else:
-		ConnectToServerDefault()
+	while(not connected):
+		yield(get_tree().create_timer(1), "timeout")
 	
-func _onConnectionSucceeded():
-	print("Connection succeeded!")
-	LoadingScreen.EndWaiting()
 	if(task == 7):
 		ReviveCharacter()
 	if(task == 6):
@@ -94,13 +81,11 @@ func FetchAccountData():
 	rpc_id(1, "FetchAccountData", email, password)
 
 remote func ReturnAccountData(account_data):
-	html_network.disconnect_from_host()
 	get_node("../SceneHandler/Home").SelectionScreen(account_data)
 
 func RequestBuyCharacterSlot():
 	rpc_id(1, "BuyCharacterSlot", email, password)
 remote func ReturnBuyCharacterSlotRequest(result):
-	html_network.disconnect_from_host()
 	if result == true:
 		get_node("../SceneHandler/Home/CharacterSelection").AddCharacterSlot()
 		get_node("../SceneHandler/Home/CharacterSelection").Populate()
@@ -108,7 +93,6 @@ remote func ReturnBuyCharacterSlotRequest(result):
 func RequestCreateCharacter():
 	rpc_id(1, "CreateCharacter", email, password)
 remote func ReturnCreateCharacterRequest(result, new_character):
-	html_network.disconnect_from_host()
 	if result == true:
 		get_node("../SceneHandler/Home/CharacterSelection").characters.append(new_character)
 		get_node("../SceneHandler/Home/CharacterSelection").Populate()
@@ -122,7 +106,6 @@ func RequestCreateAccount():
 	email = ""
 	password = ""
 remote func ReturnCreateAccountRequest(results, message):
-	html_network.disconnect_from_host()
 	LoadingScreen.EndWaiting()
 	print("Results recieved")
 	print(results)
@@ -137,28 +120,23 @@ remote func ReturnCreateAccountRequest(results, message):
 			print("Email in use, please try another.")
 		get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
 		get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
-	html_network.disconnect("connection_failed", self, "_onConnectionFailed")
-	html_network.disconnect("connected_to_server", self, "_onConnectionSucceeded")
 
 func RequestLogin():
 	LoadingScreen.StartWaiting()
 	rpc_id(1, "LoginRequest", email, password)
 remote func ReturnLogin(result):
-	html_network.disconnect_from_host()
 	LoadingScreen.EndWaiting()
 	get_node("../SceneHandler/Home/LoginPopup").LoginResult(result)
 	
 func GetLeaderboards():
 	rpc_id(1, "GetLeaderboards")
 remote func ReturnLeaderboards(weekly, monthly, all_time):
-	html_network.disconnect_from_host()
 	get_node("../SceneHandler/Home/Leaderboard").SetLeaderboard(weekly, monthly, all_time)
 	GameUI.SetLeaderboard(weekly, monthly, all_time)
 	
 func SendToken():
 	rpc_id(1, "SendToken", email)
 remote func ReturnToken(token):
-	html_network.disconnect_from_host()
 	print("Returend")
 	Server.token = token
 

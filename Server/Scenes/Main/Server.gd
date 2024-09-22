@@ -41,7 +41,7 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(100,100), "tutorial_troll_king")
 	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
-	for i in range(50):
+	for i in range(0):
 		var container = PlayerVerification.CreateFakePlayerContainer()
 		container.GiveEffect("invincible", 99999)
 		container.position = ForcedEnterInstance(island_id, int(container.name))
@@ -50,13 +50,14 @@ func _ready():
 		island.GetIslandChunk(island.CalculateChunk(island.player_list[container.name].position))
 #Update connected players
 var clock_sync_timer = 0
+var bot_ids = {}
 func _physics_process(delta):
 	clock_sync_timer += 1
 	if clock_sync_timer >= 60:
 		var network_connected_peers = get_tree().get_network_connected_peers()
 		for instance_tree in player_instance_tracker.keys():
 			for id in player_instance_tracker[instance_tree]:
-				if not network_connected_peers.has(id):
+				if not network_connected_peers.has(id) and not bot_ids.has(id):
 					player_instance_tracker[instance_tree].erase(id)
 
 func _process(delta):
@@ -87,8 +88,8 @@ func _Peer_Connected(id):
 	print("User " + str(id) + " has connected!")
 	PlayerVerification.Start(id)
 func _Peer_Disconnected(id):
-	print("User " + str(id) + " has disconnected!")
 	if player_state_collection.has(id) and player_instance_tracker[player_state_collection[id]["I"]].has(id) and get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])+"/YSort/Players/"+str(id)):
+		print("User " + str(id) + " has disconnected!")
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
 		
@@ -387,11 +388,12 @@ func RecieveFakePlayerState(player_id, player_state):
 			player_state_collection[player_id] = player_state
 			var players = get_node("Instances/"+StringifyInstanceTree(player_state["I"])+"/YSort/Players")
 			if players and players.has_node(str(player_id)):
-				get_node("Instances/"+StringifyInstanceTree(player_state["I"])).UpdatePlayer(player_id, player_state)
+				get_node("Instances/"+StringifyInstanceTree(player_state["I"])).UpdatePlayer(player_id, player_state, true)
 	else:
 		player_instance_tracker[["nexus"]].append(player_id)
 		player_state["I"] = ["nexus"]
 		player_state_collection[player_id] = player_state
+
 remote func RecievePlayerState(player_state):
 	var player_id = get_tree().get_rpc_sender_id()
 	if player_state_collection.has(player_id):
@@ -483,6 +485,7 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 			"phase_index" : 0,
 			"phase_timer" : 0,
 			"used_phases" : {},
+			"dead" : false
 		}
 		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
 
@@ -493,6 +496,25 @@ func OffsetProjectileAngle(base_direction, offset_vector):
 	var new_direction = Vector2(cos(new_angle), sin(new_angle))
 	
 	return new_direction
+func SendFakePlayerProjectile(projectile_data, player_id):
+	var instance_tree = player_state_collection[player_id]["I"]
+	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	if not player_container:
+		return
+	
+	var weapon = player_container.gear.weapon
+	var projectile = weapon.projectiles[projectile_data.ProjectileIndex]
+	projectile_data.Direction = OffsetProjectileAngle(projectile_data.Direction, projectile.offset)
+	projectile_data.merge({
+		"Projectile":projectile.projectile,
+		"TileRange":projectile.tile_range,
+		"Piercing":projectile.piercing,
+		"Formula":projectile.formula,
+		"Speed":projectile.speed,
+		"Size":projectile.size,
+	})
+	
+	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
@@ -633,6 +655,9 @@ func CreateHouse(player_id):
 	Instances.AddInstanceToTracker(["nexus"], house_id)
 
 func DeleteHouse(player_id):
+	if bot_ids.has(player_id):
+		return
+	
 	var house_id = "house " + str(player_id)
 	var instance_tree = ["nexus", house_id]
 	
@@ -666,7 +691,7 @@ func ForcedEnterInstance(instance_id, player_id):
 			
 			player_state_collection[player_id] = {"T": OS.get_system_time_msecs(), "P": spawnpoint, "A": { "A" : "Idle", "C" : Vector2.ZERO }, "I": instance_tree}
 			player_instance_tracker[instance_tree].append(player_id)
-		elif not current_instance_node.object_list[instance_id]["name"] == "island":
+		elif not "island" in instance_id:
 			var dungeon_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			spawnpoint = dungeon_node.GetMapSpawnpoint()
 			
@@ -755,16 +780,32 @@ func SendMessage(player_id, type, message):
 func EnemySpeech(enemy_name, enemy_id, message):
 	rpc("RecieveChat", message, "Enemy", enemy_name, enemy_id)
 
+var chat_messages = []
 remote func RecieveChatMessage(message):
 	var message_words = message.split(" ")
 	var player_id = get_tree().get_rpc_sender_id()
+	
+	var instance_tree = player_state_collection[player_id]["I"]
+	var instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
+	
 	var player_name = player_name_by_id[player_id]
 	var player_position = player_state_collection[player_id]["P"]
-	var instance_tree = player_state_collection[player_id]["I"]
-	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+	var player_container = instance_node.get_node("YSort/Players/"+str(player_id))
 	
 	if len(message) >= 1:
 		if message[0] == "/":
+			if message_words[0] == "/bot":
+				var multiple_enemies = message_words.size() > 1 and int(message_words[1])
+				if multiple_enemies:
+					for i in range(int(message_words[1])):
+						var container = PlayerVerification.CreateFakePlayerContainer(player_position)
+						container.GiveEffect("invincible", 99999)
+						ForcedEnterInstance(instance_node.name, int(container.name))
+						container.position = player_position
+						instance_node.UpdatePlayer(container.name, {"T":OS.get_system_time_msecs(), "P":container.position, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams" : {}}}})
+					rpc_id(player_id, "RecieveChat", "Here come the bots!", "System")
+				else:
+					rpc_id(player_id, "RecieveChat", "Error spawning bots", "SystemERROR")
 			if message_words[0] == "/class" and message_words.size() == 2 and player_container.account_data.classes.has(message_words[1]):
 				player_container.character.class = message_words[1]
 				SendCharacterData(player_id, player_container.character)
@@ -851,6 +892,11 @@ remote func RecieveChatMessage(message):
 			if message_words[0] == "/max" and message_words.size() == 1:
 				player_container.Max()
 		else:
+			chat_messages.append({
+				"sender" : player_name,
+				"timestamp" : OS.get_system_time_msecs(),
+				"fake" : false,
+			})
 			rpc("RecieveChat", message, player_name, player_container.character.class, player_container.name)
 
 #PLAYER INTERACTION

@@ -32,65 +32,60 @@ func _ready():
 	else:
 		instance_tree = ["nexus"]
 
-var delta_constant = 6
 var clock_sync_timer = 0
 func _physics_process(delta):
 	
 	#Clock sync
-	clock_sync_timer += 1
-	if clock_sync_timer < delta_constant:
-		return
-	clock_sync_timer = 0
-	
-	running_time += delta*delta_constant
+	running_time += delta
 	if not get_world_2d():
 		return
-	
-	for projectile_id in projectile_list.keys():
-		
-		var projectile = projectile_list[projectile_id]
-		var projectile_position = projectile["position"]
-		var path = projectile["path"]
-		
-		var alive_time = OS.get_system_time_msecs()/1000-projectile["start_time"]
-		expression.parse(projectile["formula"],["x"])
-		
-		var velocity = projectile.direction.normalized()*projectile.speed
-		var vertical_move_vector = projectile["speed"] * projectile["direction"] * delta * delta_constant
-		var perpendicular_vector = Vector2(-velocity.y, velocity.x)
-		var horizontal_move_vector = perpendicular_vector * expression.execute([alive_time * 50]) * 0.05 * delta_constant
-		
-		path += vertical_move_vector
-		projectile_position = path + horizontal_move_vector
-		
-		var space_state = get_world_2d().direct_space_state
-		
-		var collision = space_state.intersect_point(projectile_position+self.global_position, 1, [], 1, true, true)
-		var valid_collision = collision.size() > 0 and collision[0].collider.name != "PlayerHitbox"
-		var max_range = projectile["start_position"].distance_to(path) >= projectile["tile_range"]*8
-		
-		for player_id in player_list.keys():
-			if (player_list[player_id]["position"]+Vector2(0,-4)).distance_to(projectile_position) <= projectile["size"] and not projectile["hit_players"].has(player_id):
-				if has_node("YSort/Players/"+player_id):
-					projectile["hit_players"][player_id] = true
-					get_node("YSort/Players/"+player_id).DealDamage(projectile["damage"], projectile["enemy_name"])
-					if not projectile.piercing:
-						valid_collision = true
-		if valid_collision or max_range:
-			get_node("/root/Server").RemoveEnemyProjectile(projectile_id, instance_tree)
-			projectile_list.erase(projectile_id)
-		else:
-			projectile_list[projectile_id]["path"] = path
-			projectile_list[projectile_id]["position"] = projectile_position
-			projectile_list[projectile_id] = projectile
-	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
+		var time = OS.get_system_time_msecs()
+		for projectile_id in projectile_list.keys():
+			var projectile = projectile_list[projectile_id]
+			var projectile_position = projectile["position"]
+			var path = projectile["path"]
+			
+			var alive_time = time/1000-projectile["start_time"]
+			expression.parse(projectile["formula"],["x"])
+			
+			var velocity = projectile.direction.normalized()*projectile.speed
+			var vertical_move_vector = projectile["speed"] * projectile["direction"] * tick_rate
+			var perpendicular_vector = Vector2(-velocity.y, velocity.x)
+			var horizontal_move_vector = perpendicular_vector * expression.execute([alive_time * 50]) * 0.05
+			
+			path += vertical_move_vector
+			projectile_position = path + horizontal_move_vector
+			
+			var space_state = get_world_2d().direct_space_state
+			
+			var collision = space_state.intersect_point(projectile_position+self.global_position, 1, [], 1, true, true)
+			var valid_collision = collision.size() > 0 and collision[0].collider.name != "PlayerHitbox"
+			var max_range = projectile["start_position"].distance_to(path) >= projectile["tile_range"]*8
+			
+			for player_id in player_list.keys():
+				if (player_list[player_id]["position"]+Vector2(0,-4)).distance_to(projectile_position) <= projectile["size"] and not projectile["hit_players"].has(player_id):
+					if has_node("YSort/Players/"+player_id):
+						projectile["hit_players"][player_id] = true
+						get_node("YSort/Players/"+player_id).DealDamage(projectile["damage"], projectile["enemy_name"])
+						if not projectile.piercing:
+							valid_collision = true
+			if valid_collision or max_range:
+				get_node("/root/Server").RemoveEnemyProjectile(projectile_id, instance_tree)
+				projectile_list.erase(projectile_id)
+			else:
+				projectile_list[projectile_id]["path"] = path
+				projectile_list[projectile_id]["position"] = projectile_position
+				projectile_list[projectile_id] = projectile
+		
 		for enemy_id in enemy_list.keys():
 			var enemy_data = enemy_list[enemy_id]
 			var enemy_name = enemy_data["name"]
+			var enemy_position = enemy_data["position"]
 			var behaviour = enemy_data["behavior"]
 			var effects = enemy_data["effects"]
 			var signals = enemy_data["signals"]
+			var enemy_info = ServerData.GetEnemy(enemy_name) 
 			
 			var pattern_timer = enemy_data["pattern_timer"]
 			var pattern_index = enemy_data["pattern_index"]
@@ -107,19 +102,14 @@ func _physics_process(delta):
 					signals.erase(_signal)
 			
 			#Check if we need to switch phase
-			var phases = ServerData.GetEnemy(enemy_name).phases
+			var phases = enemy_info.phases
 			if phases.size() > 0:
-				var _phase = phases[enemy_data["phase_index"]]
+				var _phase = phases[phase_index]
 				var _health_ratio = (enemy_data.health/enemy_data.max_health)*100
 				var _health = _health_ratio >= _phase.health[0] and _health_ratio <= _phase.health[1]
 				
 				if not _health:
-					enemy_data["phase_timer"] = 0
-					pattern_timer = 0
-				if _phase.has("behavior"):
-					behaviour = _phase["behavior"]
-				if _phase.has("speed"):
-					enemy_data["speed"] = _phase["speed"]
+					phase_timer = 0
 				
 				pattern_timer -= tick_rate
 				phase_timer -= tick_rate
@@ -172,16 +162,20 @@ func _physics_process(delta):
 						if phase_index != chosen_index:
 							phase_index = 0
 						
+						pattern_timer = 0
 						pattern_index = 0
 						phase_index = chosen_index
 						phase_timer = phases[chosen_index].duration
+						
+						var new_phase = phases[phase_index]
+						if new_phase.has("behavior"):
+							behaviour = new_phase["behavior"]
+						if new_phase.has("speed"):
+							enemy_data["speed"] = new_phase["speed"]
 				
 				while pattern_timer <= 0:
-					var enemy_info = ServerData.GetEnemy(enemy_data["name"])
-					
 					var attack_pattern = phases[phase_index].attack_pattern
 					var current_attack = attack_pattern[pattern_index]
-					
 					
 					if current_attack.has("projectile") and not (enemy_data.has("dead") and enemy_data["dead"] == true):
 						#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
@@ -193,9 +187,9 @@ func _physics_process(delta):
 							var closest = 9999999
 							for player_id in player_list.keys():
 								var player_position = player_list[player_id]["position"]+Vector2(0,-4)
-								if player_position.distance_to(enemy_data["position"]) <= closest:
-									closest = player_position.distance_to(enemy_data["position"])
-									direction = enemy_data["position"].direction_to((player_position))
+								if player_position.distance_to(enemy_position) <= closest:
+									closest = player_position.distance_to(enemy_position)
+									direction = enemy_position.direction_to((player_position))
 									direction = OffsetProjectileAngle(direction, current_attack["direction"])
 							if closest == 9999999 or closest > 8*8:
 								no_projectile = true
@@ -205,28 +199,28 @@ func _physics_process(delta):
 							var projectile_data = {
 								"id" : projectile_id_counter,
 								"name" : current_attack["projectile"],
-								"position" : enemy_data["position"],
+								"position" : enemy_position,
 								"direction" : direction,
 								"tile_range" : current_attack["tile_range"],
-								"start_position" : enemy_data["position"],
-								"start_time" : OS.get_system_time_msecs()/1000,
+								"start_position" : enemy_position,
+								"start_time" : time/1000,
 								"damage" : current_attack["damage"],
 								"piercing" : current_attack["piercing"],
 								"speed" : current_attack["speed"],
 								"formula" : current_attack["formula"],
-								"path" : enemy_data["position"],
+								"path" : enemy_position,
 								"hit_players" : {},
 								"size" : current_attack["size"],
 							}
-							SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_data["name"])
+							SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_name)
 					
 					elif current_attack.has("summon"):
-						var summon_position = current_attack["summon_position"] + enemy_data["position"]
+						var summon_position = current_attack["summon_position"] + enemy_position
 						get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_id)
 					
 					elif current_attack.has("speech"):
 						var message = current_attack["speech"]
-						get_node("/root/Server").EnemySpeech(enemy_data["name"], enemy_id, message)
+						get_node("/root/Server").EnemySpeech(enemy_name, enemy_id, message)
 					
 					elif current_attack.has("effect"):
 						var effect = current_attack["effect"]
@@ -274,18 +268,21 @@ func _physics_process(delta):
 			elif (behaviour == 2):
 				enemy_data = Behaviors.Chase(enemy_data, tick_rate, self)
 			
-			enemy_list[enemy_id]["effects"] = effects
-			enemy_list[enemy_id]["signals"] = signals
-			enemy_list[enemy_id]["pattern_timer"] = pattern_timer
-			enemy_list[enemy_id]["pattern_index"] = pattern_index
-			enemy_list[enemy_id]["phase_timer"] = phase_timer
-			enemy_list[enemy_id]["phase_index"] = phase_index
+			enemy_data["behavior"] = behaviour
+			enemy_data["effects"] = effects
+			enemy_data["signals"] = signals
+			enemy_data["pattern_timer"] = pattern_timer
+			enemy_data["pattern_index"] = pattern_index
+			enemy_data["phase_timer"] = phase_timer
+			enemy_data["phase_index"] = phase_index
+			enemy_list[enemy_id] = enemy_data
 		
 		if use_chunks == false:
 			last_tick = running_time
 
-func UpdatePlayer(player_id, player_state):
+func UpdatePlayer(player_id, player_state, fake = false):
 	if player_list.has(str(player_id)):
+		player_list[str(player_id)]["fake"] = fake
 		player_list[str(player_id)]["position"] = player_state["P"]
 		player_list[str(player_id)]["animation"] = player_state["A"]
 		player_list[str(player_id)]["sprite"] = player_state["S"]

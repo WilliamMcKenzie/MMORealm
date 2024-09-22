@@ -15,4 +15,4 @@ func BuyCharacterSlot():
 	var password = home_node.password
 	
 	if home_node.gold >= price:
-		Gateway.ConnectToServer(email, password, 3)
+		Gateway.GatewayRequest(email, password, 3)

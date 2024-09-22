@@ -1551,7 +1551,7 @@ var rulers = {
 			"Death" : [4],
 		},
 		
-		"health" : 25000,
+		"health" : 50000,
 		"defense" : 10,
 		"exp" : 2000,
 		"behavior" : 0,
@@ -1598,7 +1598,7 @@ var rulers = {
 				]
 			},
 			{
-				"duration" : 7,
+				"duration" : 6,
 				"behavior" : 1,
 				"speed" : 5,
 				"on_spawn" : true,
@@ -1616,14 +1616,22 @@ var rulers = {
 					},
 					{
 						"speech" : "As a vessel of Salazar I will not fall!",
-						"wait" : 3,
+						"wait" : 4,
 					},
 				]
+			},
+			{
+				"duration" : 6,
+				"health" : [25,100],
+				"behavior" : 2,
+				"speed" : 10,
+				"attack_pattern" : CreateSpiral(2, "GoldDart_strong_fast", 0.2,  "Wave_mid_slow", 0.5)
 			},
 			{
 				"duration" : 4,
 				"health" : [25,100],
 				"behavior" : 1,
+				"speed" : 10,
 				"attack_pattern" : [
 					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*1, 0, "nearest"),
 					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*2, 0, "nearest"),
@@ -1631,6 +1639,7 @@ var rulers = {
 					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*4, 0, "nearest"),
 					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*5, 0, "nearest"),
 					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*7, 0, "nearest"),
 					MakeProjectile("GoldDart_strong_fast", (360.0/8.0)*8, 0, "nearest"),
 					MakeProjectile("Wave_mid_slow", 30, 0, "nearest"),
 					MakeProjectile("Wave_mid_slow", 20, 0, "nearest"),
@@ -1645,6 +1654,7 @@ var rulers = {
 				"duration" : 6,
 				"health" : [25,100],
 				"behavior" : 1,
+				"speed" : 10,
 				"attack_pattern" : [
 					{
 						"projectile" : "Ball",
@@ -1730,8 +1740,8 @@ var rulers = {
 						"direction" : DegreesToVector(240),
 						"size" : medium
 					},
-					MakeProjectile("Wave_mid_slow", 300, 2, "nearest"),
-					MakeProjectile("Wave_mid_slow", 180, 2, "nearest"),
+					MakeProjectile("Wave_mid_slow", 300, 0, "nearest"),
+					MakeProjectile("Wave_mid_slow", 180, 0, "nearest"),
 					MakeProjectile("Wave_mid_slow", 60, 2, "nearest"),
 				]
 			},
@@ -1739,7 +1749,9 @@ var rulers = {
 				"duration" : 6,
 				"health" : [25,100],
 				"behavior" : 2,
+				"speed" : 20,
 				"attack_pattern" : [
+					MakeProjectile("GiantBlast_fast", 0, 0.2, "nearest"),
 					{
 						"projectile" : "Blast",
 						"formula" : "0",
@@ -1749,7 +1761,7 @@ var rulers = {
 						"speed" : med,
 						"tile_range" : 5,
 						"targeter" : "nearest",
-						"direction" : DegreesToVector(0),
+						"direction" : DegreesToVector(10),
 						"size" : medium
 					},
 					{
@@ -1785,7 +1797,7 @@ var rulers = {
 						"speed" : med,
 						"tile_range" : 5,
 						"targeter" : "nearest",
-						"direction" : DegreesToVector(10),
+						"direction" : DegreesToVector(-10),
 						"size" : medium
 					},
 					{
@@ -2055,7 +2067,7 @@ var rulers = {
 			{
 				"duration" : 6,
 				"behavior" : 2,
-				"speed" : slow,
+				"speed" : 15,
 				"health" : [25,100],
 				"attack_pattern" : [
 					MakeProjectile("GiantIceSlash_strong_medium", 0, 0, "nearest"),
@@ -10193,6 +10205,36 @@ var buildings = {
 		"materials" : [1],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,100)],
 	},
+	"rexium_sword_display" : {
+		"name" : "Rexium Sword Display",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A display of cutting power",
+		
+		"craftable" : true,
+		"materials" : [1,104],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,110)],
+	},
+	"rexium_armor_display" : {
+		"name" : "Rexium Armor Display",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A display of constitution",
+		
+		"craftable" : true,
+		"materials" : [1,504],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,110)],
+	},
+	"rexium_helmet_display" : {
+		"name" : "Rexium Helmet Display",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A display of style",
+		
+		"craftable" : true,
+		"materials" : [1,404],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(20,110)],
+	},
 	"apprentice_statue" : {
 		"name" : "Apprentice Statue",
 		"type" : "object",
@@ -10235,36 +10277,6 @@ var buildings = {
 		"materials" : [],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(90,40)],
 		"achievement" : "Trial By Fire",
-	},
-	"rexium_sword_display" : {
-		"name" : "Rexium Sword Display",
-		"type" : "object",
-		"catagory" : "statue",
-		"description" : "A display of cutting power",
-		
-		"craftable" : true,
-		"materials" : [1,104],
-		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,110)],
-	},
-	"rexium_armor_display" : {
-		"name" : "Rexium Armor Display",
-		"type" : "object",
-		"catagory" : "statue",
-		"description" : "A display of constitution",
-		
-		"craftable" : true,
-		"materials" : [1,504],
-		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,110)],
-	},
-	"rexium_helmet_display" : {
-		"name" : "Rexium Helmet Display",
-		"type" : "object",
-		"catagory" : "statue",
-		"description" : "A display of style",
-		
-		"craftable" : true,
-		"materials" : [1,404],
-		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(20,110)],
 	},
 }
 

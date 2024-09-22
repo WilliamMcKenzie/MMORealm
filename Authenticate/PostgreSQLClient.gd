@@ -1120,7 +1120,7 @@ func reponce_parser(response: PoolByteArray):
 							error_object["SQLSTATE_code"] = value
 						'M':
 							error_object["message"] = value
-							print("Bad")
+							print(value)
 						'D':
 							error_object["detail"] = value
 						'H':
