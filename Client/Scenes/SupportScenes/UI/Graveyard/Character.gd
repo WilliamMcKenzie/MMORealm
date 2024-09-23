@@ -78,4 +78,4 @@ func _on_Revive_pressed():
 	var email = home_node.email
 	var password = home_node.password
 	
-	Gateway.ConnectToServer(email, password, 7)
+	Gateway.GatewayRequest(email, password, 7)

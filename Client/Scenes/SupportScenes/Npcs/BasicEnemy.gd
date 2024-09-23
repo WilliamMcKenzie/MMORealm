@@ -53,9 +53,9 @@ func Activate(_enemy_type):
 	hitbox_node.shape.extents = Vector2((_res/2)*_scale, (_height/2)*_scale)
 	hitbox_node.position = Vector2(0,-(_height/2)*_scale)
 	
-	rect_size1 = Vector2(rect_variable,rect_variable)
+	rect_size1 = Vector2(rect_variable,rect_variable-3)
 	rect_size2 = Vector2(rect_variable,rect_variable)
-	rect_position1 = Vector2(-rect_variable/2,-rect_variable)
+	rect_position1 = Vector2(-rect_variable/2,-rect_variable+3)
 	rect_position2 = Vector2(-rect_variable/2,-rect_variable)
 	
 	indicator_node.position = Vector2(0,-_height*_scale)
@@ -100,10 +100,12 @@ var clock_sync_timer = 0
 var death_stance
 func _physics_process(delta):
 	clock_sync_timer += 1
-	if death_stance:
-		$AnimationPlayer.play("Death")
-	if not $AnimationPlayer.is_playing():
-		$AnimationPlayer.play("Idle")
+	
+	if clock_sync_timer % 10:
+		if death_stance:
+			$AnimationPlayer.play("Death")
+		if not $AnimationPlayer.is_playing():
+			$AnimationPlayer.play("Idle")
 	
 	if clock_sync_timer == 20:
 		clock_sync_timer = 0
@@ -133,6 +135,7 @@ func SpeedModifiers():
 		$Control.rect_position = rect_position2
 
 var theoretical_position = position
+var last_flip = 0
 func MoveEnemy(new_position):
 	theoretical_position = new_position
 	if Server.IsWithinRange(new_position):
@@ -141,9 +144,12 @@ func MoveEnemy(new_position):
 		var old_position = position
 		set_position(theoretical_position)
 		
-		if new_position.x-old_position.x > 0 and sprite_node.flip_h:
+		var can_flip = OS.get_system_time_msecs() - last_flip > 100
+		if can_flip and new_position.x-old_position.x > 0 and sprite_node.flip_h:
+			last_flip = OS.get_system_time_msecs()
 			sprite_node.flip_h = false
-		elif new_position.x-old_position.x < 0 and not sprite_node.flip_h:
+		elif can_flip and new_position.x-old_position.x < 0 and not sprite_node.flip_h:
+			last_flip = OS.get_system_time_msecs()
 			sprite_node.flip_h = true
 	elif self.visible:
 		self.visible = false

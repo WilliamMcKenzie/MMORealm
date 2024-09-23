@@ -26,6 +26,7 @@ Dungeons="*res://Scripts/Dungeons.gd"
 Instances="*res://Scripts/Instances.gd"
 Behaviors="*res://Scripts/Behaviors.gd"
 GameplayLoop="*res://Scripts/GameplayLoop.gd"
+Bots="*res://Scripts/Bots.gd"
 
 [display]
 

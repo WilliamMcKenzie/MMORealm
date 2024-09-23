@@ -40,7 +40,7 @@ var island_close_timer = 10
 var island_closed = false
 
 #Handle ruler
-func _process(delta):
+func HandleRuler(delta):
 	sync_clock_counter_2 += 1
 	
 	CheckChunks()
@@ -90,22 +90,23 @@ func _process(delta):
 
 #Handle standard stuff
 func _physics_process(delta):
+	HandleRuler(delta)
+	
 	#Clock sync
 	use_chunks = true
-	
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		for enemy_id in enemy_list.keys():
-			var enemy = enemy_list[enemy_id]
-			if(enemy["health"] < 1):
-				if enemy_list[enemy_id]["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon"):
+			var enemy_data = enemy_list[enemy_id]
+			if(enemy_data["health"] < 1):
+				if enemy_data["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon"):
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 					enemy_list[enemy_id]["dead"] = true
 					if GameplayLoop.bosses_status.has(ruler):
 						GameplayLoop.bosses_status[ruler] = false
 				else:
-					CalculateLootPool(enemy_list[enemy_id], enemy_id)
-					var chunk = CalculateChunk(enemy["position"])
+					CalculateLootPool(enemy_data, enemy_id)
+					var chunk = CalculateChunk(enemy_data["position"])
 					
 					if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):
 						chunks[chunk]["E"].erase(enemy_id)
@@ -184,6 +185,13 @@ func GetIslandChunk(chunk):
 				if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk and not player_chunk:
 					var selection = enemy_spawn_points[Vector2(x,y)]["Selection"]
 					var enemy_index = round(rand_range(0, selection.size()-1))
+					if (chunks.has(chunk) and chunks[chunk]["P"].size() == 0) or not chunks.has(chunk):
+						var container = PlayerVerification.CreateFakePlayerContainer(Vector2(x*8, y*8))
+						container.GiveEffect("invincible", 99999)
+						get_node("/root/Server").ForcedEnterInstance(name, int(container.name))
+						container.position = Vector2(x*8, y*8)
+						UpdatePlayer(container.name, {"T":OS.get_system_time_msecs(), "P":container.position, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams" : {}}}})
+					
 					if selection.size() > 0 and Behaviors.DetermineCollisionSafePoint(Vector2(x*8, y*8), Vector2(x*8, y*8), self, selection[enemy_index]):
 						get_node("/root/Server").SpawnNPC(selection[enemy_index], instance_tree, Vector2(x*8, y*8)-self.position)
 	return {
@@ -191,18 +199,17 @@ func GetIslandChunk(chunk):
 		"Objects" : objects
 	}
 func GetChunkData(chunk):
-	var enemies = {}
-	var players = {}
-	
-	if chunks.has(chunk) and (not chunks[chunk].empty()):
-		enemies = chunks[chunk]["E"]
-		players = chunks[chunk]["P"]
-	
-	return {
-		"E" : enemies,
-		"P" : players,
+	var res = {
+		"E" : {},
+		"P" : {},
 		"O" : object_list,
 	}
+	
+	if chunks.has(chunk) and (not chunks[chunk].empty()):
+		res["E"]= chunks[chunk]["E"]
+		res["P"] = chunks[chunk]["P"]
+	
+	return res
 
 func _ready():
 	if ruler and load("res://Scenes/SupportScenes/Island/Structures/" + ruler + ".tscn"):

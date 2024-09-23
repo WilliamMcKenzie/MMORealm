@@ -408,7 +408,7 @@ var projectile_databank = {
 			"damage" : 70,
 			"piercing" : false,
 			"wait" : 0,
-			"speed" : 15,
+			"speed" : slow,
 			"tile_range" : 9,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
@@ -802,7 +802,7 @@ var projectile_databank = {
 	"GiantBall_strong_slow" : {
 		"projectile" : "GiantBall",
 		"formula" : "0",
-		"damage" : 200,
+		"damage" : 300,
 		"piercing" : true,
 		"wait" : 0,
 		"speed" : 10,
@@ -874,7 +874,7 @@ var projectile_databank = {
 	"AbyssSpinner_strong_medium" : {
 		"projectile" : "AbyssSpinner",
 		"formula" : "0",
-		"damage" : 120,
+		"damage" : 160,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : 15,
@@ -910,7 +910,7 @@ var projectile_databank = {
 	"FlameArrow_strong_fast_short" : {
 		"projectile" : "FlameArrow",
 		"formula" : "0",
-		"damage" : 100,
+		"damage" : 130,
 		"piercing" : true,
 		"wait" : 0,
 		"speed" : med,
@@ -922,7 +922,7 @@ var projectile_databank = {
 	"FlameBurst_strong_fast" : {
 		"projectile" : "FlameBurst",
 		"formula" : "0",
-		"damage" : 80,
+		"damage" : 140,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : med,
@@ -934,7 +934,7 @@ var projectile_databank = {
 	"FlameBurst_strong_slow" : {
 		"projectile" : "FlameBurst",
 		"formula" : "0",
-		"damage" : 80,
+		"damage" : 130,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : slow,
@@ -946,7 +946,7 @@ var projectile_databank = {
 	"FlameBurst_medium_fast" : {
 		"projectile" : "FlameBurst",
 		"formula" : "0",
-		"damage" : 60,
+		"damage" : 120,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : med,
@@ -970,7 +970,7 @@ var projectile_databank = {
 	"GiantFlameArrow_strong_medium" : {
 		"projectile" : "GiantFlameArrow",
 		"formula" : "0",
-		"damage" : 160,
+		"damage" : 320,
 		"piercing" : true,
 		"wait" : 0,
 		"speed" : slow,
@@ -994,7 +994,7 @@ var projectile_databank = {
 	"FlameArrow_strong_fast" : {
 		"projectile" : "FlameArrow",
 		"formula" : "0",
-		"damage" : 100,
+		"damage" : 140,
 		"piercing" : true,
 		"wait" : 0,
 		"speed" : fast,
@@ -1018,10 +1018,10 @@ var projectile_databank = {
 	"FlameBlast_strong_slow" : {
 		"projectile" : "FlameBlast",
 		"formula" : "0",
-		"damage" : 100,
+		"damage" : 170,
 		"piercing" : false,
 		"wait" : 0,
-		"speed" : 15,
+		"speed" : slow,
 		"tile_range" : 12,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
@@ -1030,7 +1030,7 @@ var projectile_databank = {
 	"FlameBlast_strong_fast" : {
 		"projectile" : "FlameBlast",
 		"formula" : "0",
-		"damage" : 100,
+		"damage" : 170,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : med,
@@ -1042,10 +1042,10 @@ var projectile_databank = {
 	"GiantFlameBlast_strong_fast" : {
 		"projectile" : "GiantFlameBlast",
 		"formula" : "0",
-		"damage" : 140,
+		"damage" : 230,
 		"piercing" : false,
 		"wait" : 0,
-		"speed" : med,
+		"speed" : fast,
 		"tile_range" : 40,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
@@ -1054,10 +1054,10 @@ var projectile_databank = {
 	"GiantFlameBlast_strong_medium" : {
 		"projectile" : "GiantFlameBlast",
 		"formula" : "0",
-		"damage" : 140,
+		"damage" : 230,
 		"piercing" : false,
 		"wait" : 0,
-		"speed" : slow,
+		"speed" : med,
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
@@ -7073,7 +7073,7 @@ var the_abyss_enemies = {
 		"defense" : 30,
 		"exp" : 12000,
 		"behavior" : 0,
-		"speed" : 15,
+		"speed" : 40,
 		"loot_pool" : special_loot_pools["salazar,_rex_of_the_abyss"],
 		"phases" : [
 			{
@@ -7109,7 +7109,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(8, "FlameBlast_strong_slow", 0.2, "GiantFlameArrow_strong_fast", 0.3, 8)
+				] + CreateSpiral(8, "FlameBlast_strong_slow", 0.2, "GiantFlameArrow_strong_fast", 0.3, 16) + [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,
@@ -7123,7 +7123,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(12, "FlameBlast_strong_slow", 0.3, "GiantFlameArrow_strong_fast", 0.5, 12)
+				] + CreateSpiral(12, "FlameBlast_strong_slow", 0.3, "GiantFlameArrow_strong_fast", 0.5, 24)+ [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,
@@ -7137,7 +7137,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(16, "FlameBlast_strong_fast", 0.3, "GiantFlameArrow_strong_fast", 1, 16)
+				] + CreateSpiral(16, "FlameBlast_strong_fast", 0.3, "GiantFlameArrow_strong_fast", 1, 32)+ [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,
@@ -10178,6 +10178,7 @@ var buildings = {
 		"description" : "A place to sit",
 		
 		"craftable" : true,
+		"max" : 10,
 		"materials" : [1],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,100)],
 	},
@@ -10188,6 +10189,7 @@ var buildings = {
 		"description" : "A place to sit",
 		
 		"craftable" : true,
+		"max" : 10,
 		"materials" : [1],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,100)],
 	},
@@ -10234,25 +10236,35 @@ var buildings = {
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(90,40)],
 		"achievement" : "Trial By Fire",
 	},
-	"dragon_statue" : {
-		"name" : "Dragon Statue",
+	"rexium_sword_display" : {
+		"name" : "Rexium Sword Display",
 		"type" : "object",
 		"catagory" : "statue",
-		"description" : "Gives nearby players a ??? boost (2m).",
+		"description" : "A display of cutting power",
 		
 		"craftable" : true,
-		"materials" : [104,504,404,3],
-		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,120)],
+		"materials" : [1,104],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,110)],
 	},
-	"elemental_orb" : {
-		"name" : "Elemental Orb",
+	"rexium_armor_display" : {
+		"name" : "Rexium Armor Display",
 		"type" : "object",
 		"catagory" : "statue",
-		"description" : "Gives nearby players a ??? boost (2m).",
+		"description" : "A display of constitution",
 		
 		"craftable" : true,
-		"materials" : [135,138,141,3],
-		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,120)],
+		"materials" : [1,504],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,110)],
+	},
+	"rexium_helmet_display" : {
+		"name" : "Rexium Helmet Display",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "A display of style",
+		
+		"craftable" : true,
+		"materials" : [1,404],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(20,110)],
 	},
 }
 

@@ -4,116 +4,83 @@ var sync_clock_counter = 0
 var world_state
 
 func _physics_process(delta):
+	
 	sync_clock_counter += 1
 	if sync_clock_counter ==  3:
 		sync_clock_counter = 0
-		for instance_tree in get_node("/root/Server").player_instance_tracker.keys():
+		var server = get_node("/root/Server")
+		for instance_tree in server.player_instance_tracker.keys():
 			if instance_tree[instance_tree.size()-1].split(" ")[0] == "island":
 				SendIslandData(instance_tree)
 				continue
-			var node_string = "/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)
+			var node_string = "/root/Server/Instances/"+server.StringifyInstanceTree(instance_tree)
 			if not has_node(node_string):
 				continue
 			
 			var node = get_node(node_string)
 			node.object_list = CleanObjects(node.object_list).duplicate(true)
 			
-			world_state = {}
-			world_state["P"] = node.player_list.duplicate()
-			world_state["E"] = node.enemy_list.duplicate()
-			world_state["O"] = node.object_list.duplicate()
-			world_state["T"] = OS.get_system_time_msecs()
+			world_state = {
+				"P" : node.player_list,
+				"E" : node.enemy_list.duplicate(true),
+				"O" : node.object_list,
+				"T" : OS.get_system_time_msecs()
+			}
 			
 			for enemy_id in world_state["E"].keys():
-				var enemy = world_state["E"][enemy_id].duplicate()
-				enemy.erase("health")
-				enemy.erase("max_health")
-				enemy.erase("defense")
-				enemy.erase("state")
-				
-				enemy.erase("behaviour")
-				enemy.erase("current_direction")
-				enemy.erase("last_position")
-				enemy.erase("stuck_timer")
-				
-				enemy.erase("speed")
-				enemy.erase("exp")
-				enemy.erase("damage_tracker")
-				enemy.erase("target")
-				enemy.erase("anchor_position")
-				enemy.erase("origin")
-				enemy.erase("signals")
-				
-				enemy.erase("pattern_index")
-				enemy.erase("pattern_timer")
-				enemy.erase("phase_index")
-				enemy.erase("phase_timer")
-				enemy.erase("used_phases")
-				world_state["E"][enemy_id] = enemy
+				var enemy = world_state["E"][enemy_id]
+				world_state["E"][enemy_id] = {
+					"name": enemy.name,
+					"position": enemy.position,
+					"effects": enemy.effects,
+					"dead": enemy.dead
+				}
 			
-			for id in get_node("/root/Server").player_instance_tracker[instance_tree]:
-				get_node("/root/Server").SendWorldState(id, world_state, instance_tree)
+			for id in server.player_instance_tracker[instance_tree]:
+				server.SendWorldState(id, world_state, instance_tree)
 
 func SendIslandData(instance_tree):
-	var node = get_node("/root/Server/Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree))
+	var server = get_node("/root/Server")
+	var world_state_base = { "E" : {}, "P" : {}, "O" : {}, "T" : OS.get_system_time_msecs() }
+	var node = get_node("/root/Server/Instances/"+server.StringifyInstanceTree(instance_tree))
 	node.object_list = CleanObjects(node.object_list).duplicate(true)
 	
 	var chunk_size = 16
+	var chunk_offsets = [
+		Vector2(chunk_size, 0),
+		Vector2(chunk_size, chunk_size),
+		Vector2(-chunk_size, 0),
+		Vector2(-chunk_size, chunk_size),
+		Vector2(0, chunk_size),
+		Vector2(chunk_size, -chunk_size),
+		Vector2(0, -chunk_size),
+		Vector2(-chunk_size, -chunk_size)
+	]
+	
 	for chunk in node.chunks.keys():
-		if node.chunks[chunk]["P"].keys().size() > 0:
-			var result = { "E" : {}, "P" : {}, "O" : {} }
-			var chunk_data = []
-			chunk_data.append(node.GetChunkData(chunk))
-			chunk_data.append(node.GetChunkData(chunk + Vector2(chunk_size, 0)))
-			chunk_data.append(node.GetChunkData(chunk + Vector2(chunk_size, chunk_size)))
-			chunk_data.append(node.GetChunkData(chunk + Vector2(-chunk_size, 0)))
-			chunk_data.append(node.GetChunkData(chunk + Vector2(-chunk_size, chunk_size)))
-			chunk_data.append(node.GetChunkData(chunk + Vector2(0, chunk_size)))
-			chunk_data.append(node.GetChunkData(chunk + Vector2(chunk_size, -chunk_size)))
-			chunk_data.append(node.GetChunkData(chunk + Vector2(0, -chunk_size)))
-			chunk_data.append(node.GetChunkData(chunk + Vector2(-chunk_size, -chunk_size)))
+		var players = node.chunks[chunk]["P"]
+		if players.keys().size() > 0:
+			var world_state = world_state_base.duplicate(true)
+			var chunk_data = [node.GetChunkData(chunk)]
+			for offset in chunk_offsets:
+				chunk_data.append(node.GetChunkData(chunk + offset))
 			
 			for chunk_data_value in chunk_data:
-				result["E"].merge(chunk_data_value["E"])
-				result["P"].merge(chunk_data_value["P"])
-				result["O"].merge(chunk_data_value["O"])
+				world_state["E"].merge(chunk_data_value["E"])
+				world_state["P"].merge(chunk_data_value["P"])
+				world_state["O"].merge(chunk_data_value["O"])
 			
-			world_state = {}
-			world_state["P"] = result["P"]
-			world_state["E"] = result["E"]
-			world_state["O"] = result["O"]
-			world_state["T"] = OS.get_system_time_msecs()
+			for enemy_id in world_state["E"]:
+				var enemy = world_state["E"][enemy_id]
+				world_state["E"][enemy_id] = {
+					"name": enemy.name,
+					"position": enemy.position,
+					"effects": enemy.effects,
+					"dead": enemy.dead
+				}
 			
-			for enemy_id in world_state["E"].keys():
-				var enemy = world_state["E"][enemy_id].duplicate()
-				enemy.erase("health")
-				enemy.erase("max_health")
-				enemy.erase("defense")
-				enemy.erase("state")
-				
-				enemy.erase("behaviour")
-				enemy.erase("current_direction")
-				enemy.erase("last_position")
-				enemy.erase("stuck_timer")
-				
-				enemy.erase("speed")
-				enemy.erase("exp")
-				enemy.erase("damage_tracker")
-				enemy.erase("target")
-				enemy.erase("anchor_position")
-				enemy.erase("origin")
-				enemy.erase("signals")
-				
-				enemy.erase("pattern_index")
-				enemy.erase("pattern_timer")
-				enemy.erase("phase_index")
-				enemy.erase("phase_timer")
-				enemy.erase("used_phases")
-				world_state["E"][enemy_id] = enemy
-			
-			#We add speed checks here
-			for id in node.chunks[chunk]["P"]:
-				get_node("/root/Server").SendWorldState(id, world_state, instance_tree)
+			for id in players:
+				server.SendWorldState(id, world_state, instance_tree)
 
 func CleanObjects(objects):
 	for objects_id in objects.keys():

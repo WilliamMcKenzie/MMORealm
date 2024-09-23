@@ -50,6 +50,8 @@ func CalculateRanking(reputation):
 	
 	for catagory in leaderboard_catagories:
 		var leaderboard = leaderboards[catagory]
+		if not leaderboard.has(len(leaderboard)-1):
+			return {"which" : which,"position" : position,}
 		if reputation > leaderboard[len(leaderboard)-1].reputation:
 			position = leaderboard.size()+1
 			which = catagory

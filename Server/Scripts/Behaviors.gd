@@ -36,9 +36,31 @@ func DetermineCollisionSafePoint(pos, point, root, enemy_type):
 func Stationary(enemy, tick_rate, root):
 	return enemy
 
+#Bot NPC
+func Bot(enemy, tick_rate, root):
+	var last_target = enemy["last_target"] if enemy.has("last_target") else 0
+	var target = enemy["target"]
+	var pos = enemy["position"]
+	var speed = enemy["speed"]
+	seed(pos.x+pos.y)
+	
+	if ((target - pos).length() <= 4 and OS.get_system_time_msecs()-last_target > 1000*rand_range(1,10)) or OS.get_system_time_msecs()-last_target > 1000*20:
+		enemy["last_target"] = OS.get_system_time_msecs()
+		randomize()
+		var point = pos + Vector2(rand_range(-40,40),rand_range(-40,40))
+		if DetermineCollisionSafePoint(pos, point, root, enemy["name"]):
+			enemy["target"] = point
+	elif (target - pos).length() <= 4:
+		return enemy
+	
+	var x_move = -cos(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
+	var y_move = -sin(pos.angle_to_point(target))*(0.1/tick_rate)*(speed/10.0)
+	var point = enemy["position"] + Vector2(x_move,y_move)
+	if DetermineCollisionSafePoint(pos, point, root, enemy["name"]):
+		enemy["position"] = point
+	return enemy
 #Wander
 func Wander(enemy, tick_rate, root):
-	
 	var target = enemy["target"]
 	var pos = enemy["position"]
 	var speed = enemy["speed"]
@@ -69,8 +91,16 @@ func Chase(enemy, tick_rate, root):
 	
 	if (target - pos).length() <= 4:
 		var closest_position = GetClosestPlayer(pos, root)
-		if closest_position and DetermineCollisionSafePoint(pos, closest_position, root, enemy["name"]):
+		if closest_position:
+			var points_to_check = [4,8,12,16]
 			var direction = (closest_position - pos).normalized()
-			var point = pos + direction * 8
+			var point = pos
+			for factor in points_to_check:
+				var temp_point = pos + direction * factor
+				if DetermineCollisionSafePoint(pos, temp_point, root, enemy["name"]):
+					point = temp_point
+				else:
+					break
+			
 			enemy["target"] = point
 	return enemy

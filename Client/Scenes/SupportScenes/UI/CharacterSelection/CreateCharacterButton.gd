@@ -10,4 +10,4 @@ func CreateCharacter():
 	var email = home_node.email
 	var password = home_node.password
 	
-	Gateway.ConnectToServer(email, password, 2)
+	Gateway.GatewayRequest(email, password, 2)

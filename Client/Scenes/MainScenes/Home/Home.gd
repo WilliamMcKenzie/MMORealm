@@ -21,7 +21,7 @@ func _ready():
 		get_node("LoginPopup").LoginAttempt()
 
 func AuthenticatedUser():
-	Gateway.ConnectToServer(email, password, 4)
+	Gateway.GatewayRequest(email, password, 4)
 
 func UpdateGold():
 	var ui = get_node("UI")
@@ -91,7 +91,7 @@ func SelectionScreen(account_data):
 		return
 	
 	GameUI.SetAccountData(account_data)
-	Gateway.ConnectToServer(email, password, 5)
+	Gateway.GatewayRequest(email, password, 5)
 	ClientAuth.cached_email = email
 	ClientAuth.cached_password = password
 	ClientAuth.SaveUser(email, password)
@@ -118,7 +118,7 @@ func SelectionScreen(account_data):
 	
 func EnterGame(character_index, character):
 	Server.token = null
-	Gateway.ConnectToServer(email, password, 6)
+	Gateway.GatewayRequest(email, password, 6)
 	Server.ConnectToServerHTML()
 	Server.SetCharacterIndex(character_index)
 	

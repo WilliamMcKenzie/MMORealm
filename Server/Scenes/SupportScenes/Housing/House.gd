@@ -213,7 +213,7 @@ func BuildBuilding(type):
 		return
 	
 	#Check if building is maxed out
-	if building.has("max"):
+	if building.has("max") and house_data.inventory[building.type+"s"].has(type):
 		var total = house_data.inventory[building.type+"s"][type]
 		for _building in house_data[building.type+"s"]:
 			if building.type == "object" and _building.type == type:
@@ -254,6 +254,8 @@ func BuildBuilding(type):
 			materials.erase(int(item.item))
 			player_container.character.inventory[index] = null
 	
+	if not house_data.inventory[building.type+"s"].has(type):
+		house_data.inventory[building.type+"s"][type] = 0
 	if building.type == "object":
 		house_data.inventory[building.type+"s"][type] += 1
 	if building.type == "tile":

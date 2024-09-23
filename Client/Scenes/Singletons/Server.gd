@@ -132,9 +132,13 @@ func _onConnectionSucceeded():
 	timer.autostart = true
 	self.add_child(timer)
 
+var first_fetch = true
 remote func ReturnServerTime(server_time, client_time):
 	var _latency = (OS.get_system_time_msecs()-client_time)/2
-	latency = server_time - client_time - _latency
+	var temp_latency = server_time - client_time - _latency
+	if first_fetch or abs(latency-temp_latency) < 30:
+		first_fetch = false
+		latency = temp_latency
 
 remote func FetchToken():
 	rpc_id(1, "ReturnToken", token, character_index)
@@ -250,7 +254,10 @@ remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
 	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers").has_node(str(player_id)):
 		var node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id))
 		if node.projectile_dict.has(OS.get_system_time_msecs()):
-			node.projectile_dict[OS.get_system_time_msecs()].append(projectile_data)
+			var add = OS.get_system_time_msecs() 
+			while(node.projectile_dict.has(add)):
+				add += 1
+			node.projectile_dict[add] = [projectile_data]
 		else:
 			node.projectile_dict[OS.get_system_time_msecs()] = [projectile_data]
 
