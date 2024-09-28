@@ -40,7 +40,7 @@ var basic_loot_pools = {
 	"godlands_1" : {
 		"soulbound_loot" : [
 			{
-				"item" : 0,
+				"item" : -2,
 				"chance" : 0.05,
 				"threshold" : 0.5,
 			},
@@ -50,7 +50,7 @@ var basic_loot_pools = {
 	"ruler_1" : {
 		"soulbound_loot" : [
 			{
-				"item" : 0,
+				"item" : -1,
 				"chance" : 0.3,
 				"threshold" : 0.05,
 			},
@@ -60,8 +60,13 @@ var basic_loot_pools = {
 	"encounter_1" : {
 		"soulbound_loot" : [
 			{
-				"item" : 0,
+				"item" : -1,
 				"chance" : 0.5,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : -2,
+				"chance" : 1,
 				"threshold" : 0.05,
 			},
 		],
@@ -70,8 +75,13 @@ var basic_loot_pools = {
 	"encounter_2" : {
 		"soulbound_loot" : [
 			{
-				"item" : 0,
+				"item" : -1,
 				"chance" : 1,
+				"threshold" : 0.1,
+			},
+			{
+				"item" : 0,
+				"chance" : 0.5,
 				"threshold" : 0.1,
 			},
 		],
@@ -84,6 +94,47 @@ var mythic = 0.006
 var rare = 0.01
 
 var special_loot_pools = {
+	"pohaku" : {
+		"override" : "encounter_1",
+		"soulbound_loot" : [
+			{
+				"item" : 143,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 571,
+				"chance" : 0.003,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 4,
+				"chance" : 0.01,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 5,
+				"chance" : 0.01,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 6,
+				"chance" : 0.01,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 7,
+				"chance" : 0.05,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 8,
+				"chance" : 0.05,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 	"rokk_the_rough" : {
 		"override" : "encounter_1",
 		"soulbound_loot" : [
@@ -201,7 +252,7 @@ var special_loot_pools = {
 		"override" : "encounter_2",
 		"soulbound_loot" : [
 			{
-				"item" : 172,
+				"item" : 142,
 				"chance" : 0.01,
 				"threshold" : 0.05,
 			},
@@ -225,15 +276,107 @@ var special_loot_pools = {
 	},
 }
 
-var small = 4
-var medium = 5
-var large = 6
+var small = 3
+var medium = 4
+var large = 5
 
-var fast = 60
-var med = 45
-var slow = 30
+var fast = 50
+var med = 30
+var slow = 20
+
+var weak = 50
+var mid = 100
+var strong = 150
 
 var projectile_databank = {
+	"GoldenArrow_weak_medium" : {
+		"projectile" : "GoldenArrow",
+		"formula" : "0",
+		"damage" : weak,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : med,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : small
+	},
+	"GoldenArrow_mid_medium" : {
+		"inherit" : "GoldenArrow_weak_medium",
+		"damage" : mid,
+	},
+	"GiantBlast_slow" : {
+		"projectile" : "GiantBlast",
+		"formula" : "0",
+		"damage" : 150,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : 8,
+		"tile_range" : 20,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : large
+	},
+	"GiantBlast_medium" : {
+		"inherit" : "GiantBlast_slow",
+		"speed" : slow,
+	},
+	"GiantBlast_fast" : {
+		"inherit" : "GiantBlast_slow",
+		"speed" : med,
+	},
+	"SmallBlast_strong_fast" : {
+		"projectile" : "SmallBlast",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0.1,
+		"speed" : fast,
+		"tile_range" : 15,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(-45),
+		"size" : medium
+	},
+	"Wave_strong_fast" : {
+		"projectile" : "Wave",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : fast,
+		"tile_range" : 8,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : medium
+	},
+	"Wave_mid_fast" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 70,
+	},
+	"Wave_weak_fast" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 30,
+	},
+	"Wave_strong_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 120,
+		"speed" : slow,
+	},
+	"Wave_mid_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 70,
+		"speed" : slow,
+		"tile_range" : 6,
+	},
+	"Wave_weak_slow" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 30,
+		"speed" : slow,
+	},
+	
+	
+	
+		
 		"RoyalSlash_weak_medium" : {
 			"projectile" : "RoyalSlash",
 			"formula" : "0",
@@ -247,28 +390,14 @@ var projectile_databank = {
 			"size" : medium
 		},
 		"RoyalSlash_strong_medium" : {
-			"projectile" : "RoyalSlash",
-			"formula" : "0",
+			"inherit" : "RoyalSlash_weak_medium",
 			"damage" : 100,
-			"piercing" : false,
-			"wait" : 0,
 			"speed" : med,
-			"tile_range" : 7,
-			"targeter" : "nearest",
-			"direction" : DegreesToVector(0),
-			"size" : medium
 		},
 		"RoyalSlash_mid_fast" : {
-			"projectile" : "RoyalSlash",
-			"formula" : "0",
+			"inherit" : "RoyalSlash_weak_medium",
 			"damage" : 80,
-			"piercing" : false,
-			"wait" : 0,
 			"speed" : med,
-			"tile_range" : 7,
-			"targeter" : "nearest",
-			"direction" : DegreesToVector(0),
-			"size" : medium
 		},
 		"GiantRoyalSlash_strong_medium" : {
 			"projectile" : "GiantRoyalSlash",
@@ -283,16 +412,10 @@ var projectile_databank = {
 			"size" : large
 		},
 		"RoyalSlash_strong_fast_short" : {
-			"projectile" : "RoyalSlash",
-			"formula" : "0",
+			"inherit" : "RoyalSlash_weak_medium",
 			"damage" : 100,
-			"piercing" : false,
-			"wait" : 0,
 			"speed" : fast,
 			"tile_range" : 3,
-			"targeter" : "nearest",
-			"direction" : DegreesToVector(0),
-			"size" : medium
 		},
 		"Dart_mid_medium" : {
 			"projectile" : "Dart",
@@ -307,17 +430,18 @@ var projectile_databank = {
 			"size" : medium
 		},
 		"Dart_strong_medium" : {
-			"projectile" : "Dart",
-			"formula" : "0",
+			"inherit" : "Dart_mid_medium",
 			"damage" : 80,
-			"piercing" : true,
-			"wait" : 0,
 			"speed" : med,
-			"tile_range" : 7,
-			"targeter" : "nearest",
-			"direction" : Vector2.ZERO,
+		},
+		"Dart_strong_medium_short" : {
+			"inherit" : "Dart_mid_medium",
+			"damage" : 60,
+			"speed" : med,
+			"tile_range" : 2,
 			"size" : medium
 		},
+		
 		"BloodShuriken1" : {
 			"projectile" : "BloodShuriken",
 			"formula" : "0",
@@ -343,16 +467,9 @@ var projectile_databank = {
 			"size" : medium
 		},
 		"BloodSpinner_weak_fast" : {
-			"projectile" : "BloodSpinner",
-			"formula" : "0",
+			"inherit" : "BloodSpinner_strong_medium",
 			"damage" : 30,
-			"piercing" : false,
-			"wait" : 0,
 			"speed" : fast,
-			"tile_range" : 7,
-			"targeter" : "nearest",
-			"direction" : Vector2.ZERO,
-			"size" : medium
 		},
 		"DemonicWave_mid_fast" : {
 			"projectile" : "DemonicWave",
@@ -367,64 +484,10 @@ var projectile_databank = {
 			"size" : medium
 		},
 		"DemonicWave_strong_medium" : {
-			"projectile" : "DemonicWave",
-			"formula" : "0",
+			"inherit" : "DemonicWave_mid_fast",
 			"damage" : 100,
-			"piercing" : false,
-			"wait" : 0,
 			"speed" : slow,
 			"tile_range" : 6,
-			"targeter" : "nearest",
-			"direction" : Vector2.ZERO,
-			"size" : medium
-		},
-		"SmallDemonicBlast_weak_fast" : {
-			"projectile" : "SmallDemonicBlast",
-			"formula" : "0",
-			"damage" : 40,
-			"piercing" : false,
-			"wait" : 0,
-			"speed" : fast,
-			"tile_range" : 5,
-			"targeter" : "nearest",
-			"direction" : Vector2.ZERO,
-			"size" : small
-		},
-		"SmallDemonicBlast_mid_medium" : {
-			"projectile" : "SmallDemonicBlast",
-			"formula" : "0",
-			"damage" : 60,
-			"piercing" : false,
-			"wait" : 0,
-			"speed" : slow,
-			"tile_range" : 5,
-			"targeter" : "nearest",
-			"direction" : Vector2.ZERO,
-			"size" : small
-		},
-		"DemonicBlast_mid_slow" : {
-			"projectile" : "DemonicBlast",
-			"formula" : "0",
-			"damage" : 70,
-			"piercing" : false,
-			"wait" : 0,
-			"speed" : slow,
-			"tile_range" : 9,
-			"targeter" : "nearest",
-			"direction" : Vector2.ZERO,
-			"size" : medium
-		},
-		"DemonicBlast_strong_medium" : {
-			"projectile" : "DemonicBlast",
-			"formula" : "0",
-			"damage" : 100,
-			"piercing" : false,
-			"wait" : 0,
-			"speed" : slow,
-			"tile_range" : 7,
-			"targeter" : "nearest",
-			"direction" : Vector2.ZERO,
-			"size" : medium
 		},
 		"GiantDemonicBlast_strong_slow" : {
 			"projectile" : "GiantDemonicBlast",
@@ -439,41 +502,51 @@ var projectile_databank = {
 			"size" : large
 		},
 		"GiantDemonicBlast_strong_fast" : {
-			"projectile" : "GiantDemonicBlast",
-			"formula" : "0",
+			"inherit" : "GiantDemonicBlast_strong_slow",
 			"damage" : 170,
-			"piercing" : false,
-			"wait" : 0,
 			"speed" : fast,
-			"tile_range" : 7,
-			"targeter" : "nearest",
-			"direction" : Vector2.ZERO,
 			"size" : large
 		},
 		
-		"Dart_strong_medium_short" : {
-			"projectile" : "Dart",
+		"SmallDemonicBlast_weak_fast" : {
+			"projectile" : "SmallDemonicBlast",
 			"formula" : "0",
-			"damage" : 60,
-			"piercing" : true,
+			"damage" : 40,
+			"piercing" : false,
 			"wait" : 0,
-			"speed" : med,
-			"tile_range" : 2,
+			"speed" : fast,
+			"tile_range" : 5,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
-			"size" : medium
+			"size" : small
 		},
-		"DemonicBlast_strong_medium_short" : {
+		"SmallDemonicBlast_mid_medium" : {
+			"inherit" : "SmallDemonicBlast_weak_fast",
+			"damage" : 60,
+			"speed" : slow,
+		},
+		"DemonicBlast_mid_slow" : {
 			"projectile" : "DemonicBlast",
 			"formula" : "0",
 			"damage" : 70,
 			"piercing" : false,
 			"wait" : 0,
 			"speed" : slow,
-			"tile_range" : 2,
+			"tile_range" : 9,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
 			"size" : medium
+		},
+		"DemonicBlast_strong_medium" : {
+			"inherit" : "DemonicBlast_mid_slow",
+			"damage" : 100,
+			"speed" : slow,
+		},
+		"DemonicBlast_strong_medium_short" : {
+			"inherit" : "DemonicBlast_mid_slow",
+			"damage" : 70,
+			"speed" : slow,
+			"tile_range" : 2,
 		},
 		"DemonicWave_mid_fast_short" : {
 			"projectile" : "DemonicWave",
@@ -970,7 +1043,7 @@ var projectile_databank = {
 	"GiantFlameArrow_strong_medium" : {
 		"projectile" : "GiantFlameArrow",
 		"formula" : "0",
-		"damage" : 320,
+		"damage" : 250,
 		"piercing" : true,
 		"wait" : 0,
 		"speed" : slow,
@@ -982,7 +1055,7 @@ var projectile_databank = {
 	"GiantFlameArrow_strong_fast" : {
 		"projectile" : "GiantFlameArrow",
 		"formula" : "0",
-		"damage" : 320,
+		"damage" : 225,
 		"piercing" : true,
 		"wait" : 0,
 		"speed" : med,
@@ -1018,7 +1091,7 @@ var projectile_databank = {
 	"FlameBlast_strong_slow" : {
 		"projectile" : "FlameBlast",
 		"formula" : "0",
-		"damage" : 170,
+		"damage" : 110,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : slow,
@@ -1030,7 +1103,7 @@ var projectile_databank = {
 	"FlameBlast_strong_fast" : {
 		"projectile" : "FlameBlast",
 		"formula" : "0",
-		"damage" : 170,
+		"damage" : 110,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : med,
@@ -1042,7 +1115,7 @@ var projectile_databank = {
 	"GiantFlameBlast_strong_fast" : {
 		"projectile" : "GiantFlameBlast",
 		"formula" : "0",
-		"damage" : 230,
+		"damage" : 200,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : fast,
@@ -1054,7 +1127,7 @@ var projectile_databank = {
 	"GiantFlameBlast_strong_medium" : {
 		"projectile" : "GiantFlameBlast",
 		"formula" : "0",
-		"damage" : 230,
+		"damage" : 200,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : med,
@@ -1074,38 +1147,6 @@ var projectile_databank = {
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
 		"size" : large
-	},
-	"GiantBlast_slow" : {
-		"projectile" : "GiantBlast",
-		"formula" : "0",
-		"damage" : 150,
-		"piercing" : true,
-		"wait" : 0,
-		"speed" : 8,
-		"tile_range" : 20,
-		"targeter" : "nearest",
-		"direction" : Vector2.ZERO,
-		"size" : large
-	},
-	"GiantBlast_medium" : {
-		"inherit" : "GiantBlast_slow",
-		"speed" : slow,
-	},
-	"GiantBlast_fast" : {
-		"inherit" : "GiantBlast_slow",
-		"speed" : med,
-	},
-	"SmallBlast_strong_fast" : {
-		"projectile" : "SmallBlast",
-		"formula" : "0",
-		"damage" : 80,
-		"piercing" : false,
-		"wait" : 0.1,
-		"speed" : fast,
-		"tile_range" : 15,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(-45),
-		"size" : medium
 	},
 	"Blast_strong_fast" : {
 		"projectile" : "Blast",
@@ -1158,42 +1199,6 @@ var projectile_databank = {
 		"targeter" : "nearest",
 		"direction" : DegreesToVector(0),
 		"size" : medium
-	},
-	"Wave_strong_fast" : {
-		"projectile" : "Wave",
-		"formula" : "0",
-		"damage" : 120,
-		"piercing" : true,
-		"wait" : 0,
-		"speed" : fast,
-		"tile_range" : 8,
-		"targeter" : "nearest",
-		"direction" : DegreesToVector(0),
-		"size" : medium
-	},
-	"Wave_mid_fast" : {
-		"inherit" : "Wave_strong_fast",
-		"damage" : 70,
-	},
-	"Wave_weak_fast" : {
-		"inherit" : "Wave_strong_fast",
-		"damage" : 30,
-	},
-	"Wave_strong_slow" : {
-		"inherit" : "Wave_strong_fast",
-		"damage" : 120,
-		"speed" : slow,
-	},
-	"Wave_mid_slow" : {
-		"inherit" : "Wave_strong_fast",
-		"damage" : 70,
-		"speed" : slow,
-		"tile_range" : 12,
-	},
-	"Wave_weak_slow" : {
-		"inherit" : "Wave_strong_fast",
-		"damage" : 30,
-		"speed" : slow,
 	},
 	"NeonArrow_mid_slow" : {
 		"projectile" : "NeonArrow",
@@ -1271,8 +1276,8 @@ var projectile_databank = {
 		"damage" : 160,
 		"piercing" : true,
 		"wait" : 0,
-		"speed" : fast,
-		"tile_range" : 12,
+		"speed" : med,
+		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
 		"size" : medium
@@ -1284,7 +1289,7 @@ var projectile_databank = {
 		"piercing" : true,
 		"wait" : 0,
 		"speed" : fast,
-		"tile_range" : 12,
+		"tile_range" : 6,
 		"targeter" : "nearest",
 		"direction" : Vector2(0,1),
 		"size" : medium
@@ -1476,12 +1481,12 @@ func _ready():
 				"chance" : low_chance,
 				"threshold" : 0.05,
 			})
-		if item.tier == "4" and not "Rexium" in item.name:
 			basic_loot_pools["encounter_2"].soulbound_loot.append({
 				"item" : item_id,
 				"chance" : decent_chance,
-				"threshold" : 0.3,
+				"threshold" : 0.05,
 			})
+		if item.tier == "4":
 			basic_loot_pools["encounter_2"].soulbound_loot.append({
 				"item" : item_id,
 				"chance" : low_chance,
@@ -2351,8 +2356,8 @@ var rulers = {
 			"Death" : [2],
 		},
 		
-		"health" : 40000,
-		"defense" : 50,
+		"health" : 70000,
+		"defense" : 10,
 		"exp" : 10000,
 		"behavior" : 0,
 		"speed" : 10,
@@ -2360,8 +2365,26 @@ var rulers = {
 			"rate" : 1,
 			"name" : "the_abyss"
 		},
-		"loot_pool" : special_loot_pools["salazar"],
+		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
+			{
+				"duration" : 13,
+				"behavior" : 0,
+				"speed" : 0,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [-100,0],
+				"attack_pattern" : [
+					{
+						"speech" : "Meet your fate in the abyss!",
+						"wait" : 3,
+					},
+					{
+						"speech" : "Meet your fate in the abyss!",
+						"wait" : 10,
+					},
+				]
+			},
 			{
 				"duration" : 1,
 				"max_uses" : 1,
@@ -2385,16 +2408,7 @@ var rulers = {
 				"health" : [99.99,100],
 				"attack_pattern" : [
 					{
-						"projectile" : "SmallBlast",
-						"formula" : "0",
-						"damage" : 0,
-						"piercing" : true,
 						"wait" : OS.get_system_time_secs(),
-						"speed" : slow,
-						"tile_range" : 0,
-						"targeter" : "nearest",
-						"direction" : Vector2(0,1),
-						"size" : large
 					},
 				]
 			},
@@ -2423,45 +2437,43 @@ var rulers = {
 				"duration" : 5,
 				"health" : [75,99.99],
 				"attack_pattern" : [
-					MakeProjectile("Dart_strong_fast", -40, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", -30, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", -20, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", -10, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 0, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 40, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 30, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 20, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 10, 2, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", -30, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", -10, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("FlameBlast_strong_fast", 10, 2, "nearest"),
 				]
 			},
 			{
 				"duration" : 5,
 				"health" : [75,99.99],
-				"attack_pattern" : CreateSpiral(4, "Star_strong_slow", 0.2)
+				"attack_pattern" : CreateSpiral(4, "FlameBurst_weak_fast", 0.2)
 			},
 			{
 				"duration" : 7,
 				"health" : [25,75],
 				"attack_pattern" : [
-					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*1, 0.1),
-					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*2, 0.1),
-					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*3, 0.1),
-					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*4, 0.1),
-					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*5, 0.1),
-					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*6, 0.1),
-					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*7, 0.1),
-					MakeProjectile("Spinner_strong_medium", (360.0/8.0)*8, 1),
-					MakeProjectile("GiantSpinner_strong_medium", 0, 0.1, "nearest"),
-					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
-					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
-					MakeProjectile("Spinner_strong_medium", 0, 0.1, "nearest"),
-					MakeProjectile("Spinner_strong_medium", 0, 0.8, "nearest"),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8.0)*1, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8.0)*2, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8.0)*3, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8.0)*4, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8.0)*5, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8.0)*6, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8.0)*7, 0.1),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8.0)*8, 1),
+					MakeProjectile("GiantFlameArrow_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.1, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.1, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.1, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.8, "nearest"),
 					
-					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*1, 0),
-					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*2, 0),
-					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*3, 0),
-					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*4, 0),
-					MakeProjectile("GiantSpinner_strong_medium", (360.0/5.0)*5, 0.8),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/5.0)*1, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/5.0)*2, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/5.0)*3, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/5.0)*4, 0),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/5.0)*5, 0.8),
 				]
 			},
 			{
@@ -2477,11 +2489,11 @@ var rulers = {
 					MakeProjectile("Fire2_strong_fast", 10, 0.1, "nearest"),
 					MakeProjectile("Fire3_strong_fast", -15, 0.1, "nearest"),
 					
-					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*1, 0),
-					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*2, 0),
-					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*3, 0),
-					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*4, 0),
-					MakeProjectile("GoldDart_strong_fast", (360.0/5.0)*5, 1),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/5.0)*1, 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/5.0)*2, 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/5.0)*3, 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/5.0)*4, 0),
+					MakeProjectile("GiantFlameArrow_strong_fast", (360.0/5.0)*5, 1),
 				]
 			},
 			{
@@ -2508,32 +2520,30 @@ var rulers = {
 			{
 				"duration" : 25,
 				"health" : [0,25],
-				"attack_pattern" : CreateSpiral(3, "Star_strong_medium", 0.2) + [
-					MakeProjectile("Dart_mid_fast", (360.0/8)*1, 0, "nearest"),
-					MakeProjectile("Dart_mid_fast", (360.0/8)*2, 0, "nearest"),
-					MakeProjectile("Dart_mid_fast", (360.0/8)*3, 0, "nearest"),
-					MakeProjectile("Dart_mid_fast", (360.0/8)*4, 0, "nearest"),
-					MakeProjectile("Dart_mid_fast", (360.0/8)*5, 0, "nearest"),
-					MakeProjectile("Dart_mid_fast", (360.0/8)*6, 0, "nearest"),
-					MakeProjectile("Dart_mid_fast", (360.0/8)*7, 0, "nearest"),
-					MakeProjectile("Dart_mid_fast", (360.0/8)*8, 1, "nearest"),
-					MakeProjectile("GoldDart_strong_fast", -5, 0.1, "nearest"),
-					MakeProjectile("GoldDart_strong_fast", 0, 0.1, "nearest"),
-					MakeProjectile("GoldDart_strong_fast", 5, 0.1, "nearest"),
-					MakeProjectile("Dart_strong_fast", -40, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", -30, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", -20, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", -10, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 0, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 40, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 30, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 20, 0, "nearest"),
-					MakeProjectile("Dart_strong_fast", 10, 0.2, "nearest"),
-					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
-					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
-					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
-					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
-					MakeProjectile("Dart_strong_fast", 0, 0.2, "nearest"),
+				"attack_pattern" : CreateSpiral(1, "FlameBurst_strong_slow", 0.1) + [
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8)*1, 0, "nearest"),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8)*2, 0, "nearest"),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8)*3, 0, "nearest"),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8)*4, 0, "nearest"),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8)*5, 0, "nearest"),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8)*6, 0, "nearest"),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8)*7, 0, "nearest"),
+					MakeProjectile("FlameArrow_mid_fast", (360.0/8)*8, 1, "nearest"),
+					MakeProjectile("GiantFlameArrow_strong_fast", -15, 0.1, "nearest"),
+					MakeProjectile("GiantFlameArrow_strong_fast", 0, 0.1, "nearest"),
+					MakeProjectile("GiantFlameArrow_strong_fast", 15, 0.1, "nearest"),
+					MakeProjectile("Fire1_strong_fast", -30, 0, "nearest"),
+					MakeProjectile("Fire2_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("Fire2_strong_fast", -10, 0, "nearest"),
+					MakeProjectile("Fire3_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("Fire2_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("Fire2_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Fire1_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.2, "nearest"),
+					MakeProjectile("FlameArrow_strong_fast_short", 0, 0.2, "nearest"),
 				]
 			},
 		]
@@ -2543,6 +2553,7 @@ var rulers = {
 		"res" : 18,
 		"height" : 16,
 		"rect" : Rect2(Vector2(162,52), Vector2(36,18)),
+		"custom_hitbox" : Vector2(0,0),
 		"animations" : {
 			"Idle" : [0],
 			"Attack" : [1],
@@ -2559,19 +2570,9 @@ var rulers = {
 				"duration" : 4,
 				"health" : [0,100],
 				"attack_pattern" : [
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*1, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*2, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*3, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*4, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*5, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*6, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*7, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*8, 1, "nearest"),
-					MakeProjectile("Stack_strong_medium", 20, 0, "nearest"),
-					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
-					MakeProjectile("Stack_strong_medium", 0, 0, "nearest"),
-					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
-					MakeProjectile("Stack_strong_medium", 20, 1, "nearest"),
+					{
+						"wait" : 10,
+					}
 				]
 			},
 		]
@@ -2581,6 +2582,7 @@ var rulers = {
 		"res" : 18,
 		"height" : 16,
 		"rect" : Rect2(Vector2(198,52), Vector2(36,18)),
+		"custom_hitbox" : Vector2(0,0),
 		"animations" : {
 			"Idle" : [0],
 			"Attack" : [1],
@@ -2597,19 +2599,9 @@ var rulers = {
 				"duration" : 4,
 				"health" : [0,100],
 				"attack_pattern" : [
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*1, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*2, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*3, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*4, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*5, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*6, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*7, 0, "nearest"),
-					MakeProjectile("Wave_mid_slow", (360.0/8.0)*8, 1, "nearest"),
-					MakeProjectile("Stack_strong_medium", 20, 0, "nearest"),
-					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
-					MakeProjectile("Stack_strong_medium", 0, 0, "nearest"),
-					MakeProjectile("Stack_strong_medium", 10, 0, "nearest"),
-					MakeProjectile("Stack_strong_medium", 20, 1, "nearest"),
+					{
+						"wait" : 10,
+					}
 				]
 			},
 		]
@@ -2790,6 +2782,32 @@ var tutorial_enemies = {
 	},
 }
 var realm_enemies = {
+	"whitebag_crab" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 7,
+		"rect" : Rect2(Vector2(0,0), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
+		"health" : 50,
+		"defense" : 1,
+		"exp" : 10,
+		"behavior" : 1,
+		"speed" : 10,
+		"loot_pool" : special_loot_pools["atlas"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Slash_1", 0, 1, "nearest"),
+				]
+			}
+		]
+	},
 	"crab" : {
 		"scale" : 0.9,
 		"res" : 10,
@@ -6068,13 +6086,14 @@ var frozen_fortress_enemies = {
 		"res" : 38,
 		"height" : 30,
 		"rect" : Rect2(Vector2(0,76), Vector2(190,38)),
+		"custom_hitbox" : Vector2(30,20),
 		"animations" : {
 			"Idle" : [0,1],
 			"Attack" : [2,3],
 			"Death" : [4],
 		},
 		
-		"health" : 140000,
+		"health" : 100000,
 		"defense" : 20,
 		"exp" : 5000,
 		"behavior" : 0,
@@ -6668,7 +6687,7 @@ var desert_catacombs_enemies = {
 		},
 		
 		"health" : 1000,
-		"defense" : 30,
+		"defense" : 20,
 		"exp" : 2000,
 		"behavior" : 1,
 		"speed" : 11,
@@ -7070,11 +7089,311 @@ var rocky_cave_enemies = {
 		]
 	},
 }
+var cloud_isles_enemies = {
+	"pohaku" : {
+		"scale" : 1.5,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(216,108), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 50000,
+		"defense" : 20,
+		"exp" : 4000,
+		"behavior" : 0,
+		"speed" : 5,
+		"loot_pool" : special_loot_pools["pohaku"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "gold_protector",
+						"summon_position" : DegreesToVector(0)*30,
+						"wait" : 0,
+					},
+					{
+						"summon" : "gold_protector",
+						"summon_position" : DegreesToVector(120)*30,
+						"wait" : 0,
+					},
+					{
+						"summon" : "gold_protector",
+						"summon_position" : DegreesToVector(240)*30,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : OS.get_system_time_secs(),
+				"health" : [99.99,100],
+				"attack_pattern" : [
+					{
+						"wait" : OS.get_system_time_secs(),
+					},
+				]
+			},
+			{
+				"on_spawn" : true,
+				"duration" : 1,
+				"health" : [0,100],
+				"on_signal" : ["protractors_active"],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 2,
+						"wait" : 1,
+					},
+				]
+			},
+			
+			{
+				"duration" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,99.99],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "You made it all the way up here by yourself?",
+						"wait" : 3,
+					},
+					{
+						"signal" : "activate_protectors_1",
+						"reciever" : "gold_protector",
+						"duration" : 5,
+						"wait" : 0,
+					},
+					{
+						"speech" : "Impressive! But the clouds belong to me, and you'll fall like all the rest!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : OS.get_system_time_secs(),
+				"health" : [66,99.99],
+				"attack_pattern" : [
+					MakeProjectile("GoldenArrow_weak_medium", 0, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_weak_medium", 0, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_weak_medium", 0, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_weak_medium", 0, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_weak_medium", 0, 0, "nearest"),
+					MakeProjectile("Wave_strong_slow", 20, 0.2, "nearest"),
+					MakeProjectile("Wave_strong_slow", 0, 0.2, "nearest"),
+					MakeProjectile("Wave_strong_slow", -20, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_weak_medium", 0, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_weak_medium", 0, 0.2, "nearest"),
+				] + CreateSpiral(1, "GiantBlast_fast", 0, null, 0, 6)
+			},
+			
+			{
+				"duration" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,66],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "What? You think you can damage me?",
+						"wait" : 3,
+					},
+					{
+						"signal" : "activate_protectors_2",
+						"reciever" : "gold_protector",
+						"duration" : 5,
+						"wait" : 0,
+					},
+					{
+						"speech" : "My body is a temple!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : OS.get_system_time_secs(),
+				"health" : [33,66],
+				"attack_pattern" : [
+					{"wait" : 0.2,},
+					MakeProjectile("GoldenArrow_mid_medium", 0, 0.2, "nearest"),
+					MakeProjectile("Wave_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_mid_medium", -10, 0.2, "nearest"),
+					MakeProjectile("Wave_strong_fast", 5, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_mid_medium", 15, 0.2, "nearest"),
+					MakeProjectile("Wave_strong_fast", -15, 0.2, "nearest"),
+					MakeProjectile("GoldenArrow_mid_medium", -5, 0.2, "nearest"),
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 3) + [
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 6) + [
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 9)
+			},
+			
+			{
+				"duration" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,33],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "Rahh!",
+						"wait" : 3,
+					},
+					{
+						"signal" : "activate_protectors_3",
+						"reciever" : "gold_protector",
+						"duration" : 5,
+						"wait" : 0,
+					},
+					{
+						"speech" : "I am worth my weight in gold!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : OS.get_system_time_secs(),
+				"health" : [0,33],
+				"attack_pattern" : [
+					{"wait" : 0.5,},
+					MakeProjectile("GiantBlast_medium", 0, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -10, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 5, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 15, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -15, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -5, 0.2, "nearest"),
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "GoldenArrow_mid_medium", 0, "SmallBlast_strong_fast", 0.4, 8) + [
+					{"wait" : 0.2,},
+					MakeProjectile("GiantBlast_medium", 0, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 10, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -10, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 5, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 15, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -15, 0.2, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -5, 0.2, "nearest"),
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 16) + [
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 20) + [
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 16) + [
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 20) + [
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 16) + [
+					{"wait" : 0.5,},
+				] + CreateSpiral(1, "Wave_strong_slow", 0, null, 0, 20) + [
+					{"wait" : 0.5,},
+				]
+			},
+		]
+	},
+	"gold_protector" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(252,108), Vector2(18,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0],
+		},
+		
+		"health" : 10000,
+		"defense" : 0,
+		"exp" : 100,
+		"anchor" : "parent",
+		"behavior" : 3,
+		"speed" : 6,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 2,
+						"wait" : 1,
+					},
+				]
+			},
+			{
+				"on_spawn" : true,
+				"duration" : OS.get_system_time_secs(),
+				"health" : [66,100],
+				"speed" : 6,
+				"on_signal" : ["activate_protectors_1"],
+				"attack_pattern" : [
+					{
+						"signal" : "protractors_active",
+						"reciever" : "parent",
+						"duration" : 0.6,
+						"wait" : 0.5,
+					},
+					MakeProjectile("Wave_mid_fast", 0, 0, "nearest")
+				] + CreateSpiral(1,"Wave_weak_slow",0,null,0.2,3)
+			},
+			{
+				"on_spawn" : true,
+				"duration" : OS.get_system_time_secs(),
+				"health" : [33,66],
+				"speed" : 10,
+				"on_signal" : ["activate_protectors_2"],
+				"attack_pattern" : [
+					{
+						"signal" : "protractors_active",
+						"reciever" : "parent",
+						"duration" : 0.6,
+						"wait" : 0.5,
+					},
+					MakeProjectile("Wave_strong_fast", 0, 0, "nearest")
+				] + CreateSpiral(1,"Wave_mid_slow",0,null,0.2,5)
+			},
+			{
+				"on_spawn" : true,
+				"duration" : OS.get_system_time_secs(),
+				"health" : [0,33],
+				"speed" : 12,
+				"on_signal" : ["activate_protectors_3"],
+				"attack_pattern" : [
+					{
+						"signal" : "protractors_active",
+						"reciever" : "parent",
+						"duration" : 0.6,
+						"wait" : 0.5,
+					},
+					MakeProjectile("Stack_strong_medium", 0, 0, "nearest")
+				] + CreateSpiral(1,"Wave_mid_fast",0,null,0.2,8)
+			},
+		]
+	},
+}
 var the_abyss_enemies = {
 	"salazar,_rex_of_the_abyss" : {
 		"scale" : 1,
 		"res" : 38,
-		"height" : 20,
+		"height" : 34,
 		"rect" : Rect2(Vector2(114,0), Vector2(114,38)),
 		"animations" : {
 			"Idle" : [0,1],
@@ -7082,7 +7401,7 @@ var the_abyss_enemies = {
 		},
 		
 		"health" : 100000,
-		"defense" : 30,
+		"defense" : 10,
 		"exp" : 12000,
 		"behavior" : 0,
 		"speed" : 40,
@@ -7380,7 +7699,7 @@ var ruined_temple_enemies = {
 		},
 		
 		"health" : 2000,
-		"defense" : 40,
+		"defense" : 10,
 		"exp" : 2500,
 		"behavior" : 2,
 		"speed" : 8,
@@ -7611,7 +7930,7 @@ var ruined_temple_enemies = {
 		},
 		
 		"health" : 100000,
-		"defense" : 30,
+		"defense" : 10,
 		"exp" : 7000,
 		"behavior" : 1,
 		"speed" : 5,
@@ -7991,6 +8310,7 @@ func CompileEnemies():
 	res.merge(the_abyss_enemies)
 	res.merge(ruined_temple_enemies)
 	res.merge(rocky_cave_enemies)
+	res.merge(cloud_isles_enemies)
 	return res
 
 var dungeons = {
@@ -8035,6 +8355,16 @@ var dungeons = {
 			8 : "ice_golem",
 			9 : "ice_troll_guardian",
 			10 : "ice_demon",
+		}
+	},
+	"cloud_isles" : {
+		"type" : "procedural",
+		"dungeon_boss" : "pohaku",
+		"basic_rooms" : ["Room1","Room2","Room3"],
+		"rooms_until_boss" : 3,
+		"room_size" : 26,
+		"tile_translation" : {
+			7 : "pohaku",
 		}
 	},
 	"desert_catacombs" : {
@@ -8099,15 +8429,35 @@ var dungeons = {
 }
 
 var items = {
-	0 : {
-		"name": "Ascension Stone",
-		"description" : "A precious gemstone, what will it awaken in you?",
+	-2 : {
+		"name": "Ascension Shard",
+		"description" : "A precious gem, what will it awaken in you?",
 		"tier" : "4",
 		"type" : "Consumable",
-		"use" : "ascend",
+		"use" : "ascend 1",
 		"slot" : "na",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,13)],
+	},
+	-1 : {
+		"name": "Ascension Stone",
+		"description" : "A precious gem, what will it awaken in you?",
+		"tier" : "4",
+		"type" : "Consumable",
+		"use" : "ascend 2",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,13)],
+	},
+	0 : {
+		"name": "Ascension Gemstone",
+		"description" : "A precious gem, what will it awaken in you?",
+		"tier" : "4",
+		"type" : "Consumable",
+		"use" : "ascend 5",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,13)],
 	},
 	1 : {
 		"name": "Timber",
@@ -8130,11 +8480,104 @@ var items = {
 	3 : {
 		"name": "Opal",
 		"description" : "A rare opal gemstone, can be used to build (/home)",
-		"tier" : "4",
+		"tier" : "5",
 		"type" : "Material",
 		"slot" : "na",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(5,13)],
+	},
+	4 : {
+		"name": "Gold Idol",
+		"description" : "A rare treasure, look but don't touch",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 0.5, "range" : 16},
+		},
+		"stats" : {
+			"vitality" : 15,
+		},
+		"tier" : "5",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,13)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(231.0, 211.0, 61.0),
+			"helmetMediumNew" : RgbToColor(207.0, 189.0, 56.0),
+			"helmetDarkNew" : RgbToColor(190.0, 168.0, 48.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	5 : {
+		"name": "Gold Idol",
+		"description" : "A rare treasure, look but don't touch",
+		"type" : "Cap",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"berserk" : { "duration" : 0.5, "range" : 16},
+		},
+		"stats" : {
+			"dexterity" : 15,
+		},
+		"tier" : "5",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,13)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(231.0, 211.0, 61.0),
+			"helmetMediumNew" : RgbToColor(207.0, 189.0, 56.0),
+			"helmetDarkNew" : RgbToColor(190.0, 168.0, 48.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	6 : {
+		"name": "Gold Idol",
+		"description" : "A rare treasure, look but don't touch",
+		"type" : "Helmet",
+		"slot" : "helmet",
+		
+		"cooldown" : 20,
+		"buffs" : {
+			"invincible" : { "duration" : 0.5, "range" : 16},
+		},
+		"stats" : {
+			"health" : 100,
+		},
+		"tier" : "5",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,13)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(231.0, 211.0, 61.0),
+			"helmetMediumNew" : RgbToColor(207.0, 189.0, 56.0),
+			"helmetDarkNew" : RgbToColor(190.0, 168.0, 48.0),
+		},
+		"textures" : {
+			
+		}
+	},
+	7 : {
+		"name": "Gold Flask",
+		"description" : "A rare treasure, look but don't touch",
+		"tier" : "5",
+		"type" : "Material",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(7,13)],
+	},
+	8 : {
+		"name": "Gold Coin",
+		"description" : "A rare treasure, look but don't touch",
+		"tier" : "5",
+		"type" : "Material",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(8,13)],
 	},
 	100 : {
 		"name": "Short Sword",
@@ -8288,7 +8731,7 @@ var items = {
 	},
 	105 : {
 		"name": "Hellrazor",
-		"description" : "A heavy axe, forged by the demon tribes for warriors of Naa'zorak",
+		"description" : "No tree, it is said, can grow to heaven unless its roots reach down to hell",
 		"type" : "Sword",
 		"slot" : "weapon",
 		"tier" : "UT",
@@ -8716,7 +9159,7 @@ var items = {
 		
 		"projectiles" : [
 			{
-				"damage" : [5,10],
+				"damage" : [10,20],
 				"projectile" : "Water1",
 				"formula" : "0",
 				"piercing" : false,
@@ -8726,7 +9169,7 @@ var items = {
 				"offset" : DegreesToVector(-40),
 			},
 			{
-				"damage" : [10,30],
+				"damage" : [20,30],
 				"projectile" : "Water2",
 				"formula" : "0",
 				"piercing" : false,
@@ -8746,7 +9189,7 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [10,30],
+				"damage" : [20,30],
 				"projectile" : "Water2",
 				"formula" : "0",
 				"piercing" : false,
@@ -8756,7 +9199,7 @@ var items = {
 				"offset" : DegreesToVector(20),
 			},
 			{
-				"damage" : [5,10],
+				"damage" : [10,20],
 				"projectile" : "Water1",
 				"formula" : "0",
 				"piercing" : false,
@@ -8789,7 +9232,7 @@ var items = {
 		
 		"projectiles" : [
 			{
-				"damage" : [40,50],
+				"damage" : [80,100],
 				"projectile" : "Fire3",
 				"formula" : "0",
 				"piercing" : false,
@@ -8800,7 +9243,7 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [20,25],
+				"damage" : [40,65],
 				"projectile" : "Fire2",
 				"formula" : "0",
 				"piercing" : false,
@@ -8811,7 +9254,7 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [20,25],
+				"damage" : [40,65],
 				"projectile" : "Fire2",
 				"formula" : "0",
 				"piercing" : false,
@@ -8860,9 +9303,9 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "UT",
 		
-		"rof" : 35,
+		"rof" : 63,
 		"stats" : {
-		
+			"health" : 400
 		},
 		
 		"projectiles" : [
@@ -9010,7 +9453,7 @@ var items = {
 				"speed" : 75,
 				"tile_range" : 5,
 				"size" : 3,
-				"offset" : DegreesToVector(-15),
+				"offset" : DegreesToVector(-7.5),
 			},
 			{
 				"damage" : [15,20],
@@ -9020,7 +9463,7 @@ var items = {
 				"speed" : 75,
 				"tile_range" : 5,
 				"size" : 3,
-				"offset" : DegreesToVector(15),
+				"offset" : DegreesToVector(7.5),
 			},
 		],
 		
@@ -9053,7 +9496,7 @@ var items = {
 				"speed" : 75,
 				"tile_range" : 5,
 				"size" : 3,
-				"offset" : DegreesToVector(15),
+				"offset" : DegreesToVector(7.5),
 			},
 			{
 				"damage" : [25,30],
@@ -9063,7 +9506,7 @@ var items = {
 				"speed" : 75,
 				"tile_range" : 5,
 				"size" : 3,
-				"offset" : DegreesToVector(-15),
+				"offset" : DegreesToVector(-7.5),
 			},
 		],
 		
@@ -9142,17 +9585,7 @@ var items = {
 		
 		"projectiles" : [
 			{
-				"damage" : [35,40],
-				"projectile" : "ShadowArrow",
-				"formula" : "0",
-				"piercing" : true,
-				"speed" : 75,
-				"tile_range" : 5,
-				"size" : 3,
-				"offset" : DegreesToVector(0),
-			},
-			{
-				"damage" : [35,40],
+				"damage" : [45,50],
 				"projectile" : "ShadowArrow",
 				"formula" : "0",
 				"piercing" : true,
@@ -9162,7 +9595,17 @@ var items = {
 				"offset" : DegreesToVector(-15),
 			},
 			{
-				"damage" : [35,40],
+				"damage" : [55,60],
+				"projectile" : "GiantShadowArrow",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 75,
+				"tile_range" : 5,
+				"size" : 3,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [45,50],
 				"projectile" : "ShadowArrow",
 				"formula" : "0",
 				"piercing" : true,
@@ -9199,7 +9642,7 @@ var items = {
 				"projectile" : "ArchaicArrow",
 				"formula" : "0",
 				"piercing" : true,
-				"speed" : 30,
+				"speed" : 50,
 				"tile_range" : 7,
 				"size" : 4,
 				"offset" : DegreesToVector(0),
@@ -9221,17 +9664,17 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "UT",
 		
-		"rof" : 10,
+		"rof" : 30,
 		"stats" : {
 		
 		},
 		
 		"projectiles" : [
 			{
-				"damage" : [100,600],
+				"damage" : [200,600],
 				"projectile" : "CannonBall",
 				"formula" : "0",
-				"piercing" : false,
+				"piercing" : true,
 				"speed" : 10,
 				"tile_range" : 5,
 				"size" : 4,
@@ -9615,6 +10058,29 @@ var items = {
 			
 		}
 	},
+	571 : {
+		"name": "Golden Tunic",
+		"description" : "A tunic carefully crafted to make the wearer extra light on their feet",
+		"type" : "Hide",
+		"slot" : "armor",
+		"tier" : "UT",
+		
+		"stats" : {
+			"speed" : 20,
+			"dexterity" : 5,
+			"defense" : 5,
+		},
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,6)],
+		"colors" : {
+			"bodyMediumNew" : RgbToColor(207.0, 189.0, 56.0),
+			"bodyLightNew" : RgbToColor(231.0, 211.0, 61.0),
+			"bandNew" : RgbToColor(78.0, 155.0, 36.0),
+		},
+		"textures" : {
+			
+		}
+	},
 	400 : {
 		"name": "Iron Helmet",
 		"description" : "A basic helmet that has seen many battles.",
@@ -9623,7 +10089,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 4, "range" : 5},
+			"armored" : { "duration" : 4, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 5,
@@ -9649,7 +10115,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 5, "range" : 5},
+			"armored" : { "duration" : 5, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 7,
@@ -9675,7 +10141,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 6, "range" : 5},
+			"armored" : { "duration" : 6, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 9,
@@ -9702,7 +10168,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 6.5, "range" : 5},
+			"armored" : { "duration" : 6.5, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 10,
@@ -9728,7 +10194,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 8, "range" : 5},
+			"armored" : { "duration" : 8, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 15,
@@ -9755,8 +10221,8 @@ var items = {
 		"cooldown" : 6,
 		"buffs" : {
 			"invincible" : { "duration" : 2, "range" : 0},
-			"healing" : { "duration" : 2, "range" : 0},
-			"armored" : { "duration" : 4, "range" : 3},
+			"healing" : { "duration" : 2, "range" : 6},
+			"armored" : { "duration" : 4, "range" : 6},
 		},
 		"stats" : {
 			"health" : 150,
@@ -9782,7 +10248,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 1.5, "range" : 3},
+			"healing" : { "duration" : 1.5, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 3,
@@ -9807,7 +10273,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 2, "range" : 3},
+			"healing" : { "duration" : 2, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 5,
@@ -9833,7 +10299,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 2.5, "range" : 3},
+			"healing" : { "duration" : 2.5, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 7,
@@ -9860,7 +10326,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 3, "range" : 3},
+			"healing" : { "duration" : 3, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 9,
@@ -9885,7 +10351,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 3.5, "range" : 3},
+			"healing" : { "duration" : 3.5, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 12,
@@ -9911,8 +10377,8 @@ var items = {
 		
 		"cooldown" : 2,
 		"buffs" : {
-			"healing" : { "duration" : 1, "range" : 2},
-			"damaging" : { "duration" : 1, "range" : 2},
+			"healing" : { "duration" : 1, "range" : 5},
+			"damaging" : { "duration" : 1, "range" : 5},
 		},
 		"stats" : {
 			"attack" : 10,
@@ -9938,7 +10404,7 @@ var items = {
 		
 		"cooldown" : 7,
 		"buffs" : {
-			"berserk" : { "duration" : 2, "range" : 4},
+			"berserk" : { "duration" : 2, "range" : 8},
 		},
 		"stats" : {
 			"dexterity" : 3,
@@ -9963,7 +10429,7 @@ var items = {
 		
 		"cooldown" : 7,
 		"buffs" : {
-			"berserk" : { "duration" : 2.5, "range" : 4},
+			"berserk" : { "duration" : 2.5, "range" : 8},
 		},
 		"stats" : {
 			"dexterity" : 4,
@@ -9988,7 +10454,7 @@ var items = {
 		
 		"cooldown" : 7,
 		"buffs" : {
-			"berserk" : { "duration" : 3, "range" : 4},
+			"berserk" : { "duration" : 3, "range" : 8},
 		},
 		"stats" : {
 			"dexterity" : 6,
@@ -10014,7 +10480,7 @@ var items = {
 		
 		"cooldown" : 7,
 		"buffs" : {
-			"berserk" : { "duration" : 3.5, "range" : 4},
+			"berserk" : { "duration" : 3.5, "range" : 8},
 		},
 		"stats" : {
 			"dexterity" : 7,
@@ -10039,7 +10505,7 @@ var items = {
 		
 		"cooldown" : 7,
 		"buffs" : {
-			"berserk" : { "duration" : 4, "range" : 4},
+			"berserk" : { "duration" : 4, "range" : 8},
 		},
 		"stats" : {
 			"dexterity" : 9,
@@ -10065,8 +10531,8 @@ var items = {
 		
 		"cooldown" : 10,
 		"buffs" : {
-			"berserk" : { "duration" : 4, "range" : 4},
-			"damaging" : { "duration" : 2, "range" : 2},
+			"berserk" : { "duration" : 4, "range" : 5},
+			"damaging" : { "duration" : 2, "range" : 5},
 		},
 		"stats" : {
 			"attack" : 8,
@@ -10083,15 +10549,16 @@ var items = {
 	},
 	499 : {
 		"name": "Holy Crown",
-		"description" : "No tree, it is said, can grow to heaven unless its roots reach down to hell.",
+		"description" : "No tree, it is said, can grow to heaven unless its roots reach down to hell",
 		"type" : "Helmet",
 		"slot" : "helmet",
 		
-		"cooldown" : 6,
+		"cooldown" : 10,
 		"buffs" : {
-			"invincible" : { "duration" : 2, "range" : 0},
-			"healing" : { "duration" : 3, "range" : 0},
-			"armored" : { "duration" : 4, "range" : 3},
+			"invincible" : { "duration" : 3, "range" : 0},
+			"healing" : { "duration" : 3, "range" : 6},
+			"berserk" : { "duration" : 3, "range" : 6},
+			"armored" : { "duration" : 3, "range" : 6},
 		},
 		"stats" : {
 			"health" : 100,
@@ -10459,6 +10926,12 @@ var projectiles = {
 		"rotation" : 45,
 		"spin" : false,
 		"scale" : 0.9,
+	},
+	"GiantShadowArrow" : {
+		"rect" : Rect2(40,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.1,
 	},
 	"ArchaicArrow" : {
 		"rect" : Rect2(50,20,10,10),

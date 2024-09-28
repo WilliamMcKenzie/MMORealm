@@ -10,4 +10,4 @@ func Update(_id, _classname, username):
 		$PlayerName/Icon.texture = $PlayerName/Icon.texture.duplicate()
 		$PlayerName/Icon.texture.region = Rect2(icon_coords, Vector2(10, 10))
 	
-	id = _ids
+	id = _id

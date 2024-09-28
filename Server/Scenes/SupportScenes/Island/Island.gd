@@ -111,7 +111,6 @@ func _physics_process(delta):
 					if chunks.has(chunk) and chunks[chunk]["E"].has(enemy_id):
 						chunks[chunk]["E"].erase(enemy_id)
 					enemy_list.erase(enemy_id)
-				continue
 		last_tick = running_time
 	
 	sync_clock_counter += 1
@@ -185,7 +184,10 @@ func GetIslandChunk(chunk):
 				if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk and not player_chunk:
 					var selection = enemy_spawn_points[Vector2(x,y)]["Selection"]
 					var enemy_index = round(rand_range(0, selection.size()-1))
-					if (chunks.has(chunk) and chunks[chunk]["P"].size() == 0) or not chunks.has(chunk):
+					
+					#For spawning bots. to laggy rn
+					#if false == true and (chunks.has(chunk) and chunks[chunk]["P"].size() == 0) or not chunks.has(chunk):
+					if false:
 						var container = PlayerVerification.CreateFakePlayerContainer(Vector2(x*8, y*8))
 						container.GiveEffect("invincible", 99999)
 						get_node("/root/Server").ForcedEnterInstance(name, int(container.name))

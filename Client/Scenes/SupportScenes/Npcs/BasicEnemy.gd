@@ -49,9 +49,17 @@ func Activate(_enemy_type):
 	#sprite_node.name = enemy_type
 	sprite_node.scale = Vector2(_scale,_scale)
 	sprite_node.position = Vector2(rect_variable/2,rect_variable/2)
+	hitbox_node.disabled = false
 	hitbox_node.shape = hitbox_node.shape.duplicate()
 	hitbox_node.shape.extents = Vector2((_res/2)*_scale, (_height/2)*_scale)
 	hitbox_node.position = Vector2(0,-(_height/2)*_scale)
+	if enemy_data.has("custom_hitbox"):
+		var hitbox = enemy_data.custom_hitbox
+		hitbox_node.shape = hitbox_node.shape.duplicate()
+		hitbox_node.shape.extents = Vector2(hitbox.x/2.0, hitbox.y/2.0)
+		hitbox_node.position = Vector2(0,hitbox.y/2.0)
+		if enemy_data.custom_hitbox == Vector2(0,0):
+			hitbox_node.disabled = true
 	
 	rect_size1 = Vector2(rect_variable,rect_variable-3)
 	rect_size2 = Vector2(rect_variable,rect_variable)
@@ -107,7 +115,7 @@ func _physics_process(delta):
 		if not $AnimationPlayer.is_playing():
 			$AnimationPlayer.play("Idle")
 	
-	if clock_sync_timer == 20:
+	if clock_sync_timer == 40:
 		clock_sync_timer = 0
 		SpeedModifiers()
 		UpdateStatusEffects(effects)
@@ -158,15 +166,19 @@ func ShootProjectile():
 	$AnimationPlayer.play("Attack")
 
 #Damage Taken section
+func DegreesToVector(degrees):
+	var radians = deg2rad(degrees)
+	var vector = Vector2(cos(radians), sin(radians))
+	return vector
 func OnHit(body):
-	if "damage" in body.get_parent() and body.get_parent().original == true:
-		Server.NPCHit(name,body.get_parent().damage)
-	if "damage" in body.get_parent():
-		ShowDamageIndicator(-1*body.get_parent().damage)
-		body.get_parent().interaction(self)
+	var node = body.get_parent()
+	if "damage" in node and node.original == true:
+		Server.NPCHit(name,node.damage)
+	if "damage" in node:
+		ShowDamageIndicator(-1*node.damage)
+		node.interaction(self)
 
 func ShowDamageIndicator(damage_amount):
-	$ParticleMaster.emitting = true
 	AudioManager.Play("hit")
 	var total_damage = floor(-damage_amount - ClientData.GetEnemy(enemy_type).defense)
 	if total_damage < damage_amount - damage_amount*0.9:

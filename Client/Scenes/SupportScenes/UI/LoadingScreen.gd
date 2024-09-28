@@ -2,6 +2,16 @@ extends CanvasLayer
 
 var waiting = false
 
+func Wave(gold, wave):
+	if gold == -1:
+		$Gold.visible = false
+		return
+	
+	$LoadingAnimations.play("Wave")
+	$Wave.text = "Wave " + str(wave)
+	$Gold/Gold.text = str(gold)
+	$Gold.visible = true
+
 func StartWaiting():
 	if $LoadingAnimations.is_playing():
 		return

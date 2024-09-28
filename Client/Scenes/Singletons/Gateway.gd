@@ -22,12 +22,21 @@ var html = true
 func _ready():
 	ConnectToServerHTML()
 
+var clock_sync_timer = 0
+var connected = false
+func _physics_process(delta):
+	clock_sync_timer += 1
+	if clock_sync_timer >= 60:
+		clock_sync_timer = 0
+		KeepAlive()
 func _process(delta):
-	if get_custom_multiplayer() == null:
-		return
-	if not custom_multiplayer.has_network_peer():
-		return
 	custom_multiplayer.poll()
+
+func KeepAlive():
+	connected = false
+	rpc_id(1, "KeepAlive")
+remote func StillAlive():
+	connected = true
 
 func ConnectToServerHTML():
 	# Connect to WebSocket server
@@ -35,30 +44,21 @@ func ConnectToServerHTML():
 	if connection_result == OK:
 		pass
 	else:
-		LoadingScreen.StartWaiting()
-		while(connection_result != OK):
-			yield(get_tree().create_timer(1), "timeout")
-			connection_result = html_network.connect_to_url(url, PoolStringArray(), true)
-			print("Failed to connect to WebSocket server.")
+		return
 	gateway_api = MultiplayerAPI.new()
 	
 	set_custom_multiplayer(gateway_api)
-	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(html_network)
-	custom_multiplayer.connect("connected_to_server", self, "_onConnectionSucceeded")
-
-var connected = false
-func _onConnectionSucceeded():
-	connected = true
 
 func GatewayRequest(_email, _password, _task):
 	email = _email
 	task = _task
 	password = _password
 	
-	while(not connected):
-		yield(get_tree().create_timer(1), "timeout")
+	if not connected:
+		ConnectToServerHTML()
+		yield(get_tree().create_timer(0.5), "timeout")
 	
 	if(task == 7):
 		ReviveCharacter()

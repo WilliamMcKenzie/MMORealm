@@ -13,7 +13,7 @@ var expression = Expression.new()
 var clock_sync_timer_2 = 0
 func _physics_process(delta):
 	clock_sync_timer_2 += 1
-	if GameUI.is_dead:
+	if not has_node("YSort") or GameUI.is_dead:
 		return
 	
 	var render_time = Server.client_clock - interpolation_offset
@@ -67,8 +67,9 @@ func _physics_process(delta):
 			
 			#Update objects
 			RefreshObjects(world_state_buffer[2]["O"])
-
+		
 		elif render_time > world_state_buffer[1]["T"]:
+			
 			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
 			
 			#Update players
@@ -232,8 +233,5 @@ func RefreshPlayers(players):
 		if not players.has(player_node.name):
 			DespawnPlayer(player_node.name)
 func DespawnPlayer(player_id):
-	if get_node("YSort/OtherPlayers").has_node(str(player_id)):
-		get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()
-	yield(get_tree().create_timer(0.2), "timeout")
 	if get_node("YSort/OtherPlayers").has_node(str(player_id)):
 		get_node("YSort/OtherPlayers/" + str(player_id)).queue_free()

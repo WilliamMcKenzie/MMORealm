@@ -95,7 +95,14 @@ func SetSpriteData(sprite, path):
 func _physics_process(delta):
 	if GameUI.is_dead:
 		return
-
+	
+	if "dungeon_name" in Server.GetCurrentInstanceNode() and Server.GetCurrentInstanceNode().dungeon_name == "cloud_isles":
+		$SkyBackgound.visible = true
+		$BlackBackground.visible = false
+	else:
+		$SkyBackgound.visible = false
+		$BlackBackground.visible = true
+	
 	UpdateStatusEffects()
 	MovePlayer(delta)
 	SpeedModifiers()
@@ -313,8 +320,7 @@ func ShowIndicator(type, amount):
 	var id = str(OS.get_system_time_msecs())
 	
 	indicator.name = id
-	if type == "damage" and amount < 0:
-		$ParticleMaster.emitting = true 
+	if type == "damage":
 		AudioManager.Play("hit")
 		if amount < 0:
 			indicator.get_node("Label").text = str(amount)

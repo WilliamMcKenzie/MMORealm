@@ -59,7 +59,8 @@ func Bot(enemy, tick_rate, root):
 	if DetermineCollisionSafePoint(pos, point, root, enemy["name"]):
 		enemy["position"] = point
 	return enemy
-#Wander
+
+#Wander around anchor point
 func Wander(enemy, tick_rate, root):
 	var target = enemy["target"]
 	var pos = enemy["position"]
@@ -79,6 +80,7 @@ func Wander(enemy, tick_rate, root):
 				enemy["target"] = point
 	return enemy
 
+#Chase after player
 func Chase(enemy, tick_rate, root):
 	var target = enemy["target"]
 	var pos = enemy["position"]
@@ -103,4 +105,20 @@ func Chase(enemy, tick_rate, root):
 					break
 			
 			enemy["target"] = point
+	return enemy
+
+#Rotate around anchor point, radius is whatever distance away it is on spawn
+func Rotate(enemy, tick_rate, root):
+	var target = enemy["target"]
+	var pos = enemy["position"]
+	var speed = enemy["speed"]
+	var anchor_pos = enemy["anchor_position"]
+	
+	var angle = (pos - anchor_pos).angle()
+	var radius = (pos - anchor_pos).length()
+	var angle_speed = (0.1 / tick_rate) * (speed / 200.0)
+	angle += angle_speed
+	
+	enemy["position"] = anchor_pos + Vector2(cos(angle), sin(angle)) * radius
+	
 	return enemy

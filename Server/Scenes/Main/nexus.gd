@@ -267,6 +267,8 @@ func _physics_process(delta):
 				enemy_data = Behaviors.Wander(enemy_data, tick_rate, self)
 			elif (behaviour == 2):
 				enemy_data = Behaviors.Chase(enemy_data, tick_rate, self)
+			elif (behaviour == 3):
+				enemy_data = Behaviors.Rotate(enemy_data, tick_rate, self)
 			
 			enemy_data["behavior"] = behaviour
 			enemy_data["effects"] = effects
@@ -295,7 +297,7 @@ func UpdatePlayer(player_id, player_state, fake = false):
 		if colliding:
 			for collision_data in collision:
 				if collision_data.collider.name == "TileMap":
-					get_node("/root/Server").network.disconnect_peer(int(player_id))
+					#get_node("/root/Server").html_network.disconnect_peer(int(player_id))
 					break
 
 func SpawnPlayer(player_container):
@@ -447,7 +449,7 @@ func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 		},
 	}
 	
-	if ServerData.GetEnemy(enemy.name).has("dungeon") and randf() < ServerData.GetEnemy(enemy.name).dungeon.rate:
+	if not template and ServerData.GetEnemy(enemy.name).has("dungeon") and randf() < ServerData.GetEnemy(enemy.name).dungeon.rate:
 		OpenPortal(ServerData.GetEnemy(enemy.name).dungeon.name, instance_tree, enemy.position)
 	
 	var player_pool = enemy["damage_tracker"]

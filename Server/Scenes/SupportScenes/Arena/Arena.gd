@@ -120,8 +120,10 @@ func _process(delta):
 	if wave_countdown < 0 and len(waves[arena_type]) == wave:
 		var server = get_node("/root/Server")
 		if wave-1 >= 0:
-			server.ShowIndicator(int(name.split(" ")[1]), "gold", waves[arena_type][wave-1].gold)
-			gold += waves[arena_type][wave-1].gold
+			var _gold = waves[arena_type][wave-1].gold
+			server.ShowIndicator(int(name.split(" ")[1]), "gold", _gold)
+			gold += _gold
+			server.rpc_id(int(name.split(" ")[1]),"Wave", gold, wave)
 		if $YSort/Players.get_child_count() > 0:
 			$YSort/Players.get_children()[0].DealDamage(999, "Gladius")
 	elif wave_countdown < 0:
@@ -130,6 +132,7 @@ func _process(delta):
 		if wave-1 >= 0:
 			server.ShowIndicator(int(name.split(" ")[1]), "gold", waves[arena_type][wave-1].gold)
 			gold += waves[arena_type][wave-1].gold
+			server.rpc_id(int(name.split(" ")[1]),"Wave", gold, wave)
 		
 		randomize()
 		var bosses = waves[arena_type][wave].bosses
@@ -161,6 +164,7 @@ func _ready():
 				enemy_spawnpoints.append(current_position)
 			if current_tile == 8:
 				boss_spawnpoints.append(current_position)
+	get_node("/root/Server").rpc_id(int(name.split(" ")[1]), "Wave", gold, wave)
 
 var sync_clock_counter = 1
 func _physics_process(delta):

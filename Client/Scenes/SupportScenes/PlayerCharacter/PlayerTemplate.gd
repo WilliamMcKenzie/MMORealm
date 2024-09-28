@@ -10,8 +10,11 @@ var last_sprite_data = {
 	}
 }
 
+var clock_sync_timer = 0
 func _physics_process(delta):
-	SpeedModifiers()
+	clock_sync_timer += 1
+	if clock_sync_timer >= 40:
+		SpeedModifiers()
 	if projectile_dict.size() > 0:
 		ShootProjectile()
 

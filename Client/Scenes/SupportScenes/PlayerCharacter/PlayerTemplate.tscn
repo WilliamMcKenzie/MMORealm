@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/PlayerTemplate.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=2]
@@ -6,9 +6,6 @@
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Effects.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/SupportScenes/UI/PlayerNametag.tscn" type="PackedScene" id=7]
-
-[sub_resource type="RectangleShape2D" id=108]
-extents = Vector2( 4, 4 )
 
 [sub_resource type="RectangleShape2D" id=109]
 extents = Vector2( 4, 4 )
@@ -357,12 +354,6 @@ frame = 12
 region_enabled = true
 region_rect = Rect2( 0, 160, 80, 40 )
 script = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 0, -4 )
-scale = Vector2( 0.9, 1.1 )
-shape = SubResource( 108 )
 
 [node name="ZContainer" parent="." instance=ExtResource( 5 )]
 visible = true

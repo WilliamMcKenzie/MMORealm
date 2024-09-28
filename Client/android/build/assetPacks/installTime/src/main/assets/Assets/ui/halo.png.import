@@ -2,19 +2,22 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/halo.png-3c01235bc5bc60a038c9e488625aac1d.stex"
+path.s3tc="res://.import/halo.png-3c01235bc5bc60a038c9e488625aac1d.s3tc.stex"
+path.etc="res://.import/halo.png-3c01235bc5bc60a038c9e488625aac1d.etc.stex"
+path.pvrtc="res://.import/halo.png-3c01235bc5bc60a038c9e488625aac1d.pvrtc.stex"
 metadata={
-"vram_texture": false
+"imported_formats": [ "s3tc", "etc", "pvrtc" ],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/ui/halo.png"
-dest_files=[ "res://.import/halo.png-3c01235bc5bc60a038c9e488625aac1d.stex" ]
+dest_files=[ "res://.import/halo.png-3c01235bc5bc60a038c9e488625aac1d.s3tc.stex", "res://.import/halo.png-3c01235bc5bc60a038c9e488625aac1d.etc.stex", "res://.import/halo.png-3c01235bc5bc60a038c9e488625aac1d.pvrtc.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

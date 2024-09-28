@@ -126,6 +126,7 @@ func EnterGame(character_index, character):
 	yield(get_tree().create_timer(0.3), "timeout")
 	
 	var nexus_instance = nexus.instance()
+	nexus_instance.add_child(load("res://Scenes/SupportScenes/Misc/YSort.tscn").instance())
 	nexus_instance.get_node("YSort/player").SetCharacter(character)
 	get_parent().add_child(nexus_instance)
 	GameUI.visible = true

@@ -136,6 +136,7 @@ var first_fetch = true
 remote func ReturnServerTime(server_time, client_time):
 	var _latency = (OS.get_system_time_msecs()-client_time)/2
 	var temp_latency = server_time - client_time - _latency
+	
 	if first_fetch or abs(latency-temp_latency) < 30:
 		first_fetch = false
 		latency = temp_latency
@@ -303,6 +304,8 @@ func UseAbility():
 	rpc_id(1, "UseAbility")
 
 #INSTANCES
+func GetCurrentInstanceNode():
+	return get_node("../SceneHandler/"+GetCurrentInstance())
 func GetCurrentInstance():
 	return current_instance_tree[current_instance_tree.size()-1]
 
@@ -327,7 +330,11 @@ remote func ConfirmNexus(spawnpoint = Vector2.ZERO):
 	yield(get_tree().create_timer(0.3), "timeout")
 	var nexus_instance = nexus.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
-	nexus_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
+	var ysort = map_instance.get_node("YSort")
+	for object in ysort.get_node("Objects/Npcs").get_children():
+		object.queue_free()
+	map_instance.remove_child(ysort)
+	nexus_instance.add_child(ysort)
 	nexus_instance.get_node("YSort/player").global_position = spawnpoint
 	
 	nexus_instance.name = "nexus"
@@ -357,7 +364,11 @@ remote func ReturnHouseData(instance_data):
 	var house_instance = house_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	
-	house_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
+	var ysort = map_instance.get_node("YSort")
+	for object in ysort.get_node("Objects/Npcs").get_children():
+		object.queue_free()
+	map_instance.remove_child(ysort)
+	house_instance.add_child(ysort)
 	house_instance.get_node("YSort/player").global_position = instance_data["Position"]
 	house_instance.name = instance_data["Id"]
 	house_instance.PopulateHouse(instance_data)
@@ -366,11 +377,18 @@ remote func ReturnHouseData(instance_data):
 	get_node("../SceneHandler").add_child(house_instance)
 	current_instance_tree = ["nexus", instance_data["Id"]]
 
+remote func Wave(gold, wave):
+	LoadingScreen.Wave(gold, wave)
+
 remote func ReturnArenaData(instance_data):
 	var arena_instance = arena_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	
-	arena_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
+	var ysort = map_instance.get_node("YSort")
+	for object in ysort.get_node("Objects/Npcs").get_children():
+		object.queue_free()
+	map_instance.remove_child(ysort)
+	arena_instance.add_child(ysort)
 	arena_instance.get_node("YSort/player").global_position = instance_data["Position"]
 	arena_instance.name = instance_data["Id"]
 	
@@ -383,8 +401,13 @@ remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 	
-	dungeon_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
+	var ysort = map_instance.get_node("YSort")
+	for object in ysort.get_node("Objects/Npcs").get_children():
+		object.queue_free()
+	map_instance.remove_child(ysort)
+	dungeon_instance.add_child(ysort)
 	dungeon_instance.get_node("YSort/player").global_position = instance_data["Position"]
+	
 	dungeon_instance.name = instance_data["Id"]
 	dungeon_instance.PopulateDungeon(instance_data)
 	
@@ -396,8 +419,11 @@ remote func ReturnIslandData(instance_data):
 	var island_instance = island_container.instance()
 	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
 
-	#island_instance.GenerateIslandMap(map_data["Tiles"], map_data["Objects"])
-	island_instance.get_node("YSort/player").SetCharacter(map_instance.get_node("YSort/player").character)
+	var ysort = map_instance.get_node("YSort")
+	for object in ysort.get_node("Objects/Npcs").get_children():
+		object.queue_free()
+	map_instance.remove_child(ysort)
+	island_instance.add_child(ysort)
 	island_instance.get_node("YSort/player").global_position = instance_data["Position"]
 	island_instance.name = instance_data["Id"]
 	

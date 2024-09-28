@@ -264,7 +264,7 @@ func HandleFake():
 			var distance =  player_data.position.distance_to(self.position)
 			if distance < closest_player and not player_data.fake:
 				closest_player = distance
-		if closest_player > 16*8:
+		if closest_player > 48*8:
 			despawned = true
 			Bots.used_names.erase(account_data.username)
 			server._Peer_Disconnected(int(name))
@@ -278,7 +278,7 @@ func HandleFake():
 				closest_pos = enemy_data.position
 		
 		if closest < 8:
-			target = closest_pos + (self.position - closest_pos).normalized() * 16
+			target = closest_pos - (self.position - closest_pos).normalized() * 16
 		elif closest < 7*8:
 			target = closest_pos
 		else:
@@ -510,8 +510,10 @@ func IncreaseStat(stat):
 			character.stats[stat] += 1
 		get_node("/root/Server").SendCharacterData(name, character)
 	
-func Max():
+func Max(limitless = false):
 	character.ascension_stones += ServerData.GetCharacter(character.class).ascension_stones - character.ascension_stones
+	if limitless:
+		character.ascension_stones += 999
 	
 	get_node("/root/Server").SendCharacterData(name, character)
 	get_node("/root/Server").SendMessage(int(name), "success", "You feel your strength grow...")
@@ -525,14 +527,14 @@ func UseItem(index):
 	if selected_item.type != "Consumable":
 		return
 	
-	if selected_item.use == "ascend" and character.ascension_stones < ServerData.GetCharacter(character.class).ascension_stones:
+	if "ascend" in selected_item.use and character.ascension_stones < ServerData.GetCharacter(character.class).ascension_stones:
 		if in_tutorial and tutorial_step == 5:
 			tutorial_step += 1
 			get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
-		character.ascension_stones += 1
+		character.ascension_stones += int(selected_item.use.split(" ")[1])
 		character.inventory[index] = null
 		get_node("/root/Server").SendMessage(int(name), "success", "You feel your strength grow...")
-	elif selected_item.use == "ascend":
+	elif "ascend" in selected_item.use:
 		if in_tutorial and tutorial_step == 5:
 			tutorial_step += 1
 			tutorial_step += 1
@@ -750,7 +752,7 @@ func AddExp(exp_amount, enemy_name, enemy_id):
 					"health" : 20,
 					"attack" : 1,
 					"defense" : 0,
-					"speed" : 0,
+					"speed" : 0.5,
 					"dexterity" : 1,
 					"vitality" : 1,
 				}
@@ -792,11 +794,12 @@ func DealDamage(damage, enemy_name):
 			health = character.stats.health
 			account_data.gold += instance_node.gold
 			account_data.time_tracker[instance_node.arena_type] = OS.get_datetime()
-			get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
-			get_node("/root/Server").SendAccountData(name, account_data)
-			get_node("/root/Server").SendCharacterData(name, character)
+			server_node.SetHealth(int(name), character.stats.health, health)
+			server_node.SendAccountData(name, account_data)
+			server_node.SendCharacterData(name, character)
 			server_node.ForcedNexus(int(name),  server_node.get_node("Instances/nexus").object_list["arena_master"].position - Vector2(24,0))
 			yield(get_tree().create_timer(1), "timeout")
+			server_node.rpc_id(int(name), "Wave", -1, 0)
 			server_node.Dialogue("FinishedArena", name)
 		else:
 			Death(enemy_name)

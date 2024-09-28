@@ -33,7 +33,7 @@ func _ready():
 	
 	#Open realm
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
-	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
 	var island_id = get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
@@ -376,7 +376,7 @@ remote func UseAbility():
 remote func FetchServerTime(client_time):
 	var player_id =  get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "ReturnServerTime", OS.get_system_time_msecs(), client_time)
-	
+
 remote func DetermineLatency(client_time):
 	var player_id =  get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "ReturnLatency", client_time)
@@ -457,10 +457,13 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 	var enemy_id = generate_unique_id()
 	
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
+		var instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 		var enemy_data = ServerData.GetEnemy(enemy_name)
+		var corrected_spawn_position = spawn_position + instance_node.position
+		var anchor = instance_node.enemy_list[origin].position if enemy_data.has("anchor") and enemy_data.anchor == "parent" else corrected_spawn_position
 		var enemy = {
 			"name":enemy_name,
-			"position":spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			"position":corrected_spawn_position,
 			"health":enemy_data.health,
 			"max_health":enemy_data.health,
 			"defense":enemy_data.defense,
@@ -474,8 +477,8 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 			"speed":enemy_data.speed,
 			"exp": enemy_data.exp,
 			"damage_tracker": {},
-			"target": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
-			"anchor_position": spawn_position + get_node("Instances/"+StringifyInstanceTree(instance_tree)).position,
+			"target": corrected_spawn_position,
+			"anchor_position": anchor,
 			"origin" : origin,
 			"effects" : {},
 			"signals" : {},
@@ -487,7 +490,7 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 			"used_phases" : {},
 			"dead" : false
 		}
-		get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnEnemy(enemy, enemy_id)
+		instance_node.SpawnEnemy(enemy, enemy_id)
 
 func OffsetProjectileAngle(base_direction, offset_vector):
 	var base_angle = base_direction.angle()
@@ -543,7 +546,8 @@ func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
 			rpc_id(player_id, "RecieveEnemyProjectile", projectile_data, instance_tree, enemy_id)
 func RemoveEnemyProjectile(projectile_id, instance_tree):
 	for player_id in player_instance_tracker[instance_tree]:
-		rpc_id(player_id, "RemoveEnemyProjectile", projectile_id, instance_tree)
+		if int(player_id) in get_tree().get_network_connected_peers():
+			rpc_id(player_id, "RemoveEnemyProjectile", projectile_id, instance_tree)
 
 remote func NPCHit(enemy_id, damage):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -800,6 +804,7 @@ remote func RecieveChatMessage(message):
 					for i in range(int(message_words[1])):
 						var container = PlayerVerification.CreateFakePlayerContainer(player_position)
 						container.GiveEffect("invincible", 99999)
+						ForcedNexus(int(container.name))
 						ForcedEnterInstance(instance_node.name, int(container.name))
 						container.position = player_position
 						instance_node.UpdatePlayer(container.name, {"T":OS.get_system_time_msecs(), "P":container.position, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams" : {}}}})
@@ -891,6 +896,8 @@ remote func RecieveChatMessage(message):
 					rpc_id(player_id, "RecieveChat", "Invalid loot id", "SystemERROR")
 			if message_words[0] == "/max" and message_words.size() == 1:
 				player_container.Max()
+			if message_words[0] == "/hypermax" and message_words.size() == 1:
+				player_container.Max(true)
 		else:
 			chat_messages.append({
 				"sender" : player_name,

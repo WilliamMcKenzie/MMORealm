@@ -8,7 +8,7 @@ var audio_files = {
 
 var clock_sync_timer = 0
 var playing_music = false
-func _process(delta):
+func _physics_process(delta):
 	return
 	clock_sync_timer += 1
 	if clock_sync_timer >= 30 and not playing_music and get_node("/root/SceneHandler").has_node("Home"):

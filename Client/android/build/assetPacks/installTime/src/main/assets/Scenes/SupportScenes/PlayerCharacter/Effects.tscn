@@ -94,6 +94,7 @@ texture = SubResource( 62 )
 stretch_mode = 5
 
 [node name="berserk" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+visible = false
 material = SubResource( 67 )
 margin_right = 10.0
 margin_bottom = 10.0
@@ -118,6 +119,7 @@ texture = SubResource( 71 )
 stretch_mode = 5
 
 [node name="healing" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+visible = false
 material = SubResource( 67 )
 margin_left = 13.0
 margin_right = 23.0

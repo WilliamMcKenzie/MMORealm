@@ -2,19 +2,22 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/quest_marker.png-e2c3538f8522b1efe244b50f7fd8f788.stex"
+path.s3tc="res://.import/quest_marker.png-e2c3538f8522b1efe244b50f7fd8f788.s3tc.stex"
+path.etc="res://.import/quest_marker.png-e2c3538f8522b1efe244b50f7fd8f788.etc.stex"
+path.pvrtc="res://.import/quest_marker.png-e2c3538f8522b1efe244b50f7fd8f788.pvrtc.stex"
 metadata={
-"vram_texture": false
+"imported_formats": [ "s3tc", "etc", "pvrtc" ],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Assets/ui/quest_marker.png"
-dest_files=[ "res://.import/quest_marker.png-e2c3538f8522b1efe244b50f7fd8f788.stex" ]
+dest_files=[ "res://.import/quest_marker.png-e2c3538f8522b1efe244b50f7fd8f788.s3tc.stex", "res://.import/quest_marker.png-e2c3538f8522b1efe244b50f7fd8f788.etc.stex", "res://.import/quest_marker.png-e2c3538f8522b1efe244b50f7fd8f788.pvrtc.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

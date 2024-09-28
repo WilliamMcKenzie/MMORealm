@@ -97,15 +97,15 @@ initial_velocity = 2.0
 color = Color( 0.862745, 0.313726, 0.364706, 1 )
 
 [node name="Control" type="Control" parent="."]
-margin_left = -7.0
-margin_top = -14.0
-margin_right = 7.0
+margin_left = -5.0
+margin_top = -10.0
+margin_right = 5.0
 rect_clip_content = true
 mouse_filter = 2
 
 [node name="Sprite" type="Sprite" parent="Control"]
 material = ExtResource( 1 )
-position = Vector2( 7, 9 )
+position = Vector2( 5, 5 )
 texture = ExtResource( 4 )
 hframes = 2
 region_enabled = true

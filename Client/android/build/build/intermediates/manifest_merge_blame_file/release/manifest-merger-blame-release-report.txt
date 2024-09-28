@@ -2,8 +2,8 @@
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.williamqm.mmorelam"
 4    android:installLocation="auto"
-5    android:versionCode="93"
-6    android:versionName="0.78" >
+5    android:versionCode="115"
+6    android:versionName="0.79" >
 7
 8    <uses-sdk
 9        android:minSdkVersion="19"
