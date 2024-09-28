@@ -16,11 +16,15 @@ func _process(delta):
 			if object.name == "apprentice_statue":
 				GiveStatueBuff(object, "health", 10, 120)
 			if object.name == "noble_statue":
-				GiveStatueBuff(object, "defense", 3, 120)
+				GiveStatueBuff(object, "defense", 1, 120)
 			if object.name == "nomad_statue":
-				GiveStatueBuff(object, "dexterity", 3, 120)
+				GiveStatueBuff(object, "speed", 1, 120)
 			if object.name == "scholar_statue":
-				GiveStatueBuff(object, "vitality", 3, 120)
+				GiveStatueBuff(object, "vitality", 1, 120)
+			if object.name == "dragon_statue":
+				GiveStatueBuff(object, "dexterity",5,120)
+			if object.name == "elemental_orb":
+				GiveStatueBuff(object,"attack",5,120)
 
 func GiveStatueBuff(object, buff, amount, time):
 	for player_id in player_list.keys():
@@ -213,7 +217,7 @@ func BuildBuilding(type):
 		return
 	
 	#Check if building is maxed out
-	if building.has("max") and house_data.inventory[building.type+"s"].has(type):
+	if building.has("max"):
 		var total = house_data.inventory[building.type+"s"][type]
 		for _building in house_data[building.type+"s"]:
 			if building.type == "object" and _building.type == type:
@@ -254,8 +258,6 @@ func BuildBuilding(type):
 			materials.erase(int(item.item))
 			player_container.character.inventory[index] = null
 	
-	if not house_data.inventory[building.type+"s"].has(type):
-		house_data.inventory[building.type+"s"][type] = 0
 	if building.type == "object":
 		house_data.inventory[building.type+"s"][type] += 1
 	if building.type == "tile":
