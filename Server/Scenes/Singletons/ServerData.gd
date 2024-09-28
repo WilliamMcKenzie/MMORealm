@@ -10745,6 +10745,26 @@ var buildings = {
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(90,40)],
 		"achievement" : "Trial By Fire",
 	},
+	"dragon_statue" : {
+		"name" : "Dragon Statue",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "Gives nearby players a ??? boost (2m).",
+		
+		"craftable" : true,
+		"materials" : [104,504,404,3],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,120)],
+	},
+	"elemental_orb" : {
+		"name" : "Elemental Orb",
+		"type" : "object",
+		"catagory" : "statue",
+		"description" : "Gives nearby players a ??? boost (2m).",
+		
+		"craftable" : true,
+		"materials" : [135,138,141,3],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,120)],
+	},
 }
 
 var projectiles = {

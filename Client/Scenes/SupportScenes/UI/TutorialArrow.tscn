@@ -1,7 +1,39 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
-[ext_resource path="res://Resources/WhiteOutlineRenderer.tres" type="Material" id=2]
+[ext_resource path="res://Resources/Outline.gdshader" type="Shader" id=2]
+
+[sub_resource type="ShaderMaterial" id=49]
+shader = ExtResource( 2 )
+shader_param/max_line_width = 0.8
+shader_param/min_line_width = -0.983
+shader_param/freq = 0.0
+shader_param/block_size = 22220.2
+shader_param/starting_colour = Plane( 1, 1, 1, 4 )
+shader_param/ending_colour = Plane( 1, 1, 1, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 1, 0, 1, 1 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 0, 0, 1, 1 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 0, 1, 1, 1 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
 
 [sub_resource type="AtlasTexture" id=47]
 atlas = ExtResource( 1 )
@@ -65,7 +97,7 @@ tracks/1/keys = {
 [node name="TutorialArrow" type="Node2D"]
 
 [node name="ArrowSprite" type="Sprite" parent="."]
-material = ExtResource( 2 )
+material = SubResource( 49 )
 rotation = 2.35619
 texture = SubResource( 47 )
 
