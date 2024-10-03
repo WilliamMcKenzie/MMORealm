@@ -22,6 +22,9 @@ func DetermineCollisionSafePoint(pos, point, root, enemy_type):
 	var enemy_data = ServerData.GetEnemy(enemy_type)
 	var dimensions = Vector2(enemy_data.res, enemy_data.height)
 	
+	if enemy_data.res == 38:
+		dimensions = Vector2(16, 16)
+	
 	var spots_to_check = [Vector2(0,-dimensions.y/2), Vector2(-dimensions.x/2,0), Vector2(dimensions.x/2,0), Vector2(-dimensions.x/2,-dimensions.y), Vector2(dimensions.x/2,-dimensions.y)]
 	for spot in spots_to_check:
 		var collisions = space_state.intersect_point(point+root.position+spot, 1, [], 1, true, true)

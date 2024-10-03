@@ -18,7 +18,7 @@ func ConnectToServer():
 
 func _onConnectionFailed():
 	print("Authentication server connection failed.")
-	
+
 func _onConnectionSucceeded():
 	print("Authentication server connection succeeded!")
 
@@ -28,6 +28,12 @@ func GenericRequest(email, password, player_id, destination):
 remote func ReturnAccountData(account_data, player_id):
 	print("Returning account data")
 	Gateway.ReturnAccountData(account_data, player_id)
+#Same as return account data except with email
+remote func ReturnAccountDataEmail(account_data, email):
+	if Gateway.player_id_by_email.has(email):
+		var player_id = Gateway.player_id_by_email[email]
+		Gateway.ReturnAccountData(account_data, player_id)
+
 
 remote func ReturnBuyCharacterSlotRequest(result, player_id):
 	Gateway.ReturnBuyCharacterSlotRequest(result, player_id)
@@ -55,3 +61,6 @@ remote func ReturnLeaderboardsResult(weekly, monthly, all_time, player_id):
 
 func ReviveCharacter(index, email, password, player_id):
 	rpc_id(1, "ReviveCharacter", index, email, password, player_id)
+
+func VerifyPurchase(token,type,value,username):
+	rpc_id(1, "VerifyPurchase", token,type,value,username)

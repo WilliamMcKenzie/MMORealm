@@ -57,7 +57,7 @@ func Activate(_enemy_type):
 		var hitbox = enemy_data.custom_hitbox
 		hitbox_node.shape = hitbox_node.shape.duplicate()
 		hitbox_node.shape.extents = Vector2(hitbox.x/2.0, hitbox.y/2.0)
-		hitbox_node.position = Vector2(0,hitbox.y/2.0)
+		hitbox_node.position = Vector2(0,-(hitbox.y/2.0))
 		if enemy_data.custom_hitbox == Vector2(0,0):
 			hitbox_node.disabled = true
 	
@@ -152,7 +152,7 @@ func MoveEnemy(new_position):
 		var old_position = position
 		set_position(theoretical_position)
 		
-		var can_flip = OS.get_system_time_msecs() - last_flip > 100
+		var can_flip = OS.get_system_time_msecs() - last_flip > 100 and not ("wing" in enemy_type)
 		if can_flip and new_position.x-old_position.x > 0 and sprite_node.flip_h:
 			last_flip = OS.get_system_time_msecs()
 			sprite_node.flip_h = false

@@ -1,16 +1,25 @@
 extends Node2D
 
+export var item_stand = false
 var object_id
 var loot
 
 func _ready():
 	$Area2D.connect("area_entered", self, "OnBag")
 	$Area2D.connect("area_exited", self, "OffBag")
+	UpdateLoot(loot)
 
 func UpdateLoot(_loot):
 	if (GameUI.get_node("Inventory").loot_container_id == object_id) and not UtilityFunctions.CompareArrays(loot, _loot):
 		loot = _loot
 		GameUI.get_node("Inventory").SetLoot(object_id, loot)
+		
+	if item_stand and loot[0]:
+		var item_coords = ClientData.GetItem(loot[0].item).path[3]
+		$Item.frame_coords = item_coords
+		$Item.visible = true
+	elif item_stand:
+		$Item.visible = false
 
 #Interface Section
 func OnBag(body):

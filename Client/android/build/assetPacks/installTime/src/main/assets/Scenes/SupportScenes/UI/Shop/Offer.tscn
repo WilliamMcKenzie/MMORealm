@@ -1,0 +1,149 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Resources/Renderer.tres" type="Material" id=2]
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=3]
+[ext_resource path="res://Assets/ui/rectangle_background_verticle.png" type="Texture" id=4]
+[ext_resource path="res://Resources/PillTexture.tres" type="StyleBox" id=5]
+[ext_resource path="res://Scenes/SupportScenes/UI/Shop/Offer.gd" type="Script" id=6]
+
+[sub_resource type="DynamicFont" id=25]
+size = 24
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=4]
+Label/fonts/font = SubResource( 25 )
+
+[sub_resource type="StyleBoxTexture" id=34]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 256, 384 )
+modulate_color = Color( 1, 1, 1, 0.313726 )
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 220.5, 10, 10 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 20
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxEmpty" id=32]
+
+[sub_resource type="StyleBoxEmpty" id=28]
+
+[sub_resource type="StyleBoxEmpty" id=29]
+
+[sub_resource type="StyleBoxEmpty" id=30]
+
+[sub_resource type="StyleBoxEmpty" id=31]
+
+[node name="Offer" type="PanelContainer"]
+margin_right = 192.0
+margin_bottom = 238.0
+mouse_filter = 2
+size_flags_horizontal = 3
+theme = SubResource( 4 )
+custom_styles/panel = SubResource( 34 )
+script = ExtResource( 6 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 192.0
+margin_bottom = 238.0
+mouse_filter = 2
+size_flags_horizontal = 3
+custom_constants/margin_right = 16
+custom_constants/margin_top = 8
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 8
+
+[node name="Container" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 16.0
+margin_top = 8.0
+margin_right = 176.0
+margin_bottom = 230.0
+mouse_filter = 2
+custom_constants/separation = 32
+
+[node name="Data" type="HBoxContainer" parent="MarginContainer/Container"]
+margin_right = 160.0
+margin_bottom = 30.0
+mouse_filter = 2
+custom_constants/separation = 32
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/Data"]
+margin_right = 124.0
+margin_bottom = 30.0
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Title" type="Label" parent="MarginContainer/Container/Data/HBoxContainer"]
+margin_top = 4.0
+margin_right = 90.0
+margin_bottom = 26.0
+text = "1000 Gold"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/Container/Data/HBoxContainer"]
+material = ExtResource( 2 )
+margin_left = 94.0
+margin_right = 124.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 30, 30 )
+texture = SubResource( 33 )
+expand = true
+stretch_mode = 5
+
+[node name="Description" type="Label" parent="MarginContainer/Container"]
+margin_top = 62.0
+margin_right = 160.0
+margin_bottom = 101.0
+rect_min_size = Vector2( 160, 0 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 8 )
+custom_styles/normal = SubResource( 32 )
+text = "1000 units of in game gold currency."
+autowrap = true
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Container"]
+margin_left = 70.0
+margin_top = 188.0
+margin_right = 160.0
+margin_bottom = 222.0
+size_flags_horizontal = 10
+size_flags_vertical = 10
+custom_styles/panel = ExtResource( 5 )
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelContainer"]
+margin_right = 90.0
+margin_bottom = 34.0
+custom_constants/margin_right = 14
+custom_constants/margin_top = 8
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 8
+
+[node name="BuyContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 8.0
+margin_right = 76.0
+margin_bottom = 26.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Buy" type="Button" parent="MarginContainer/Container/PanelContainer/MarginContainer/BuyContainer"]
+margin_right = 60.0
+margin_bottom = 18.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_colors/font_color_disabled = Color( 0.901961, 0.901961, 0.901961, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 0.843137, 0.843137, 0.843137, 1 )
+custom_fonts/font = SubResource( 8 )
+custom_styles/hover = SubResource( 28 )
+custom_styles/pressed = SubResource( 29 )
+custom_styles/focus = SubResource( 30 )
+custom_styles/disabled = SubResource( 31 )
+custom_styles/normal = SubResource( 32 )
+text = "10$ USD"

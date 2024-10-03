@@ -43,6 +43,7 @@ UtilityFunctions="*res://Scenes/Singletons/UtilityFunctions.gd"
 ErrorPopup="*res://Scenes/SupportScenes/UI/ErrorPopup.tscn"
 LoadingScreen="*res://Scenes/SupportScenes/UI/LoadingScreen.tscn"
 AudioManager="*res://Scenes/SupportScenes/AudioManager.gd"
+PlayBilling="*res://Scenes/Singletons/PlayBilling.gd"
 
 [debug]
 

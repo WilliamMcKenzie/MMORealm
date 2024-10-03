@@ -14,17 +14,17 @@ func _process(delta):
 		for object_id in object_list.keys():
 			var object = object_list[object_id]
 			if object.name == "apprentice_statue":
-				GiveStatueBuff(object, "health", 10, 120)
+				GiveStatueBuff(object, "health", 10, 300)
 			if object.name == "noble_statue":
-				GiveStatueBuff(object, "defense", 1, 120)
+				GiveStatueBuff(object, "defense", 1, 300)
 			if object.name == "nomad_statue":
-				GiveStatueBuff(object, "speed", 1, 120)
+				GiveStatueBuff(object, "speed", 1, 300)
 			if object.name == "scholar_statue":
-				GiveStatueBuff(object, "vitality", 1, 120)
+				GiveStatueBuff(object, "vitality", 1, 300)
 			if object.name == "dragon_statue":
-				GiveStatueBuff(object, "dexterity",5,120)
+				GiveStatueBuff(object, "dexterity",5,300)
 			if object.name == "elemental_orb":
-				GiveStatueBuff(object,"attack",5,120)
+				GiveStatueBuff(object,"attack",5,300)
 
 func GiveStatueBuff(object, buff, amount, time):
 	for player_id in player_list.keys():
@@ -54,7 +54,6 @@ func SetHouseData(account_data):
 
 func CreateStorage(object, index):
 	var storage_id = "loot "+get_node("/root/Server").generate_unique_id()+" "+str(index)
-	print(object.type)
 	if object.position is String:
 		var vector2_position = Vector2.ZERO
 		object.position = object.position.replace("(","").replace(")","").replace(",","").split(" ")
@@ -63,6 +62,7 @@ func CreateStorage(object, index):
 		object.position = vector2_position
 	object_list[storage_id] = {
 		"name": object.type,
+		"permanent":true,
 		"index" : index,
 		
 		"soulbound": true,
@@ -138,7 +138,11 @@ func RemoveBuilding(_position):
 		var object = object_list[object_id]
 		#Update the accountdata to save it to the database
 		if ServerData.buildings.has(object.name):
-			var items = object.type == "LootBags" and object.loot != [null,null,null,null,null,null,null,null]
+			var items = false
+			if object.type == "LootBags":
+				for item in object.loot:
+					if item:
+						items = true
 			
 			if (object.position.distance_to(_position) < 5) and not items:
 				var type = object.name
@@ -158,19 +162,13 @@ func PlaceBuilding(_type, _position):
 		return
 	elif building_data.type == "object" and house_data.inventory.objects[_type] > 0:
 		if building_data.catagory == "storage":
+			var loot = []
+			for slot in building_data.loot_slots:
+				loot.append(null)
 			var new_storage = {
 				"type" : _type,
 				"position" : _position,
-				"loot" : [
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-				],
+				"loot" : loot,
 			}
 			house_data.objects.append(new_storage)
 			house_data.inventory.objects[_type] -= 1
@@ -217,8 +215,12 @@ func BuildBuilding(type):
 		return
 	
 	#Check if building is maxed out
+	if not house_data.inventory[building.type+"s"].has(type) or not house_data.inventory[building.type+"s"][type]:
+		house_data.inventory[building.type+"s"][type] = 0
 	if building.has("max"):
 		var total = house_data.inventory[building.type+"s"][type]
+		if not total:
+			total = 0
 		for _building in house_data[building.type+"s"]:
 			if building.type == "object" and _building.type == type:
 				total += 1

@@ -111,13 +111,12 @@ remote func ReturnCreateAccountRequest(results, message):
 	print(results)
 	print(message)
 	if(results == true):
-		print("Account created successfully.")
 		get_node("../SceneHandler/Home/LoginPopup").LoginAttempt()
 	else:
 		if(message == 1):
-			print("Couldnt create account, please try again.")
+			ErrorPopup.OpenPopup("Couldnt create account, please try again.")
 		else:
-			print("Email in use, please try another.")
+			ErrorPopup.OpenPopup("Email in use, please try another.")
 		get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
 		get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
 
@@ -144,3 +143,6 @@ func ReviveCharacter():
 	if index != null:
 		rpc_id(1, "ReviveCharacter", index, email, password)
 		index = null
+
+func VerifyPurchase(token,type,value,username):
+	rpc_id(1, "VerifyPurchase", token,type,value,username)

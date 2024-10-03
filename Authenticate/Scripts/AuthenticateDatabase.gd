@@ -6,6 +6,7 @@ var network = NetworkedMultiplayerENet.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	VisualServer.render_loop_enabled = false
 	StartServer()
 
 func StartServer():
@@ -74,7 +75,7 @@ remote func CreateCharacter(email, password, player_id):
 		DatabaseInterface.CreateCharacter(email)
 		
 	rpc_id(gateway_id, "ReturnCreateCharacterRequest", result, DatabaseInterface.new_character, player_id)
-
+ 
 remote func ReviveCharacter(index, email, password, player_id):
 	var verification = DatabaseInterface.VerifyUser(email, password)
 	if not verification:
@@ -144,5 +145,6 @@ remote func GetLeaderboards(player_id):
 	var all_time = DatabaseInterface.all_time_leaderboard
 	
 	rpc_id(gateway_id, "ReturnLeaderboardsResult", weekly, monthly, all_time, player_id)
-	
-	
+
+remote func VerifyPurchase(token,type,value,username):
+	DatabaseInterface.HandlePayment(type,value,username)

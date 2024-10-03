@@ -173,7 +173,9 @@ func _physics_process(delta):
 						if new_phase.has("speed"):
 							enemy_data["speed"] = new_phase["speed"]
 				
-				while pattern_timer <= 0:
+				var loops = 0
+				while pattern_timer <= 0 and loops < 64:
+					loops += 1
 					var attack_pattern = phases[phase_index].attack_pattern
 					var current_attack = attack_pattern[pattern_index]
 					
@@ -436,12 +438,12 @@ func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 			"soulbound_loot" : [
 				{
 					"item" : 1,
-					"chance" : 0.1,
+					"chance" : 0.01,
 					"threshold" : 0.1,
 				},
 				{
 					"item" : 2,
-					"chance" : 0.1,
+					"chance" : 0.01,
 					"threshold" : 0.1,
 				},
 			],

@@ -2,11 +2,11 @@
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.williamqm.mmorelam"
 4    android:installLocation="auto"
-5    android:versionCode="115"
+5    android:versionCode="160"
 6    android:versionName="0.79" >
 7
 8    <uses-sdk
-9        android:minSdkVersion="19"
+9        android:minSdkVersion="21"
 10        android:targetSdkVersion="34" />
 11
 12    <supports-screens
@@ -34,104 +34,197 @@
 23        android:required="true" />
 23-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:21:9-32
 24
-25    <application
-25-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:5-94:19
-26        android:allowBackup="false"
-26-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:68-95
-27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-27-->[androidx.core:core:1.2.0] C:\Users\willi\.gradle\caches\transforms-3\9bcb1a65f5938aad264f4d73e9a06f28\transformed\core-1.2.0\AndroidManifest.xml:24:18-86
-28        android:hasFragileUserData="false"
-28-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:118-152
-29        android:icon="@mipmap/icon"
-29-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:238-265
-30        android:isGame="true"
-30-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:96-117
-31        android:label="@string/godot_project_name_string"
-31-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:18-67
-32        android:requestLegacyExternalStorage="false" >
-32-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:153-197
-33        <activity
-33-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:65:9-88:20
-34            android:name="com.godot.game.GodotApp"
-34-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:66:13-37
-35            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
-35-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:73:13-141
-36            android:excludeFromRecents="false"
-36-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:70:13-47
-37            android:exported="true"
-37-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:71:13-36
-38            android:label="@string/godot_project_name_string"
-38-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:67:13-62
-39            android:launchMode="singleTask"
-39-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:69:13-44
-40            android:resizeableActivity="true"
-40-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:74:13-47
-41            android:screenOrientation="landscape"
-41-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:72:13-50
-42            android:theme="@style/GodotAppSplashTheme" >
-42-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:68:13-55
-43            <intent-filter>
-43-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:80:13-87:29
-44                <action android:name="android.intent.action.MAIN" />
-44-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:81:17-69
-44-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:81:25-66
-45
-46                <category android:name="android.intent.category.LAUNCHER" />
-46-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:82:17-77
-46-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:82:27-74
-47
-48                <!--
-49                Enable access to OpenXR on Oculus mobile devices, no-op on other Android
-50                platforms.
-51                -->
-52                <category android:name="com.oculus.intent.category.VR" />
-52-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:86:17-74
-52-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:86:27-71
-53            </intent-filter>
-54        </activity>
-55        <!-- Records the version of the Godot editor used for building -->
-56        <meta-data
-57            android:name="org.godotengine.editor.version"
-58            android:value="3.5.3.stable" /> <!-- Records the version of the Godot library -->
-59        <meta-data
-59-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:14:9-16:44
-60            android:name="org.godotengine.library.version"
-60-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:15:13-59
-61            android:value="3.5.3.stable" />
-61-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:16:13-41
-62
-63        <service android:name="org.godotengine.godot.GodotDownloaderService" />
-63-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:18:9-80
-63-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:18:18-77
-64
-65        <activity
-65-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:20:9-24:75
-66            android:name="org.godotengine.godot.utils.ProcessPhoenix"
-66-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:21:13-70
-67            android:exported="false"
-67-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:22:13-37
-68            android:process=":phoenix"
-68-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:23:13-39
-69            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-69-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:24:13-72
-70
-71        <provider
-71-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:26:9-34:20
-72            android:name="androidx.core.content.FileProvider"
-72-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:27:13-62
-73            android:authorities="com.williamqm.mmorelam.fileprovider"
-73-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:28:13-64
-74            android:exported="false"
-74-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:29:13-37
-75            android:grantUriPermissions="true" >
-75-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:30:13-47
-76            <meta-data
-76-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:31:13-33:64
-77                android:name="android.support.FILE_PROVIDER_PATHS"
-77-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:32:17-67
-78                android:resource="@xml/godot_provider_paths" />
-78-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:33:17-61
-79        </provider>
-80    </application>
+25    <uses-permission android:name="com.android.vending.BILLING" />
+25-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:10:5-67
+25-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:10:22-64
+26
+27    <queries>
+27-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:12:5-16:15
+28        <intent>
+28-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:13:9-15:18
+29            <action android:name="com.android.vending.billing.InAppBillingService.BIND" />
+29-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:14:13-91
+29-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:14:21-88
+30        </intent>
+31    </queries>
+32
+33    <application
+33-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:5-94:19
+34        android:allowBackup="false"
+34-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:68-95
+35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+35-->[androidx.core:core:1.2.0] C:\Users\willi\.gradle\caches\transforms-3\9bcb1a65f5938aad264f4d73e9a06f28\transformed\core-1.2.0\AndroidManifest.xml:24:18-86
+36        android:hasFragileUserData="false"
+36-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:118-152
+37        android:icon="@mipmap/icon"
+37-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:238-265
+38        android:isGame="true"
+38-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:96-117
+39        android:label="@string/godot_project_name_string"
+39-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:18-67
+40        android:requestLegacyExternalStorage="false" >
+40-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:30:153-197
+41        <activity
+41-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:65:9-88:20
+42            android:name="com.godot.game.GodotApp"
+42-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:66:13-37
+43            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
+43-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:73:13-141
+44            android:excludeFromRecents="false"
+44-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:70:13-47
+45            android:exported="true"
+45-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:71:13-36
+46            android:label="@string/godot_project_name_string"
+46-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:67:13-62
+47            android:launchMode="singleTask"
+47-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:69:13-44
+48            android:resizeableActivity="true"
+48-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:74:13-47
+49            android:screenOrientation="landscape"
+49-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:72:13-50
+50            android:theme="@style/GodotAppSplashTheme" >
+50-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:68:13-55
+51            <intent-filter>
+51-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:80:13-87:29
+52                <action android:name="android.intent.action.MAIN" />
+52-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:81:17-69
+52-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:81:25-66
+53
+54                <category android:name="android.intent.category.LAUNCHER" />
+54-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:82:17-77
+54-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:82:27-74
+55
+56                <!--
+57                Enable access to OpenXR on Oculus mobile devices, no-op on other Android
+58                platforms.
+59                -->
+60                <category android:name="com.oculus.intent.category.VR" />
+60-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:86:17-74
+60-->C:\Users\willi\OneDrive\Documents\mobiledevelopment\MMORealm\MMORealm\Client\android\build\AndroidManifest.xml:86:27-71
+61            </intent-filter>
+62        </activity>
+63        <!-- Records the version of the Godot editor used for building -->
+64        <meta-data
+65            android:name="org.godotengine.editor.version"
+66            android:value="3.5.3.stable" />
+67        <meta-data
+67-->[GodotGooglePlayBilling-6.2.1-release.aar] C:\Users\willi\.gradle\caches\transforms-3\689fbe717a647be7196320ec3ca04e4d\transformed\jetified-GodotGooglePlayBilling-6.2.1-release\AndroidManifest.xml:9:9-11:91
+68            android:name="org.godotengine.plugin.v1.GodotGooglePlayBilling"
+68-->[GodotGooglePlayBilling-6.2.1-release.aar] C:\Users\willi\.gradle\caches\transforms-3\689fbe717a647be7196320ec3ca04e4d\transformed\jetified-GodotGooglePlayBilling-6.2.1-release\AndroidManifest.xml:10:13-76
+69            android:value="com.magikelle.godotgoogleplaybilling.GodotGooglePlayBilling" /> <!-- Records the version of the Godot library -->
+69-->[GodotGooglePlayBilling-6.2.1-release.aar] C:\Users\willi\.gradle\caches\transforms-3\689fbe717a647be7196320ec3ca04e4d\transformed\jetified-GodotGooglePlayBilling-6.2.1-release\AndroidManifest.xml:11:13-88
+70        <meta-data
+70-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:14:9-16:44
+71            android:name="org.godotengine.library.version"
+71-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:15:13-59
+72            android:value="3.5.3.stable" />
+72-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:16:13-41
+73
+74        <service android:name="org.godotengine.godot.GodotDownloaderService" />
+74-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:18:9-80
+74-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:18:18-77
+75
+76        <activity
+76-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:20:9-24:75
+77            android:name="org.godotengine.godot.utils.ProcessPhoenix"
+77-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:21:13-70
+78            android:exported="false"
+78-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:22:13-37
+79            android:process=":phoenix"
+79-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:23:13-39
+80            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+80-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:24:13-72
 81
-82</manifest>
+82        <provider
+82-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:26:9-34:20
+83            android:name="androidx.core.content.FileProvider"
+83-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:27:13-62
+84            android:authorities="com.williamqm.mmorelam.fileprovider"
+84-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:28:13-64
+85            android:exported="false"
+85-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:29:13-37
+86            android:grantUriPermissions="true" >
+86-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:30:13-47
+87            <meta-data
+87-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:31:13-33:64
+88                android:name="android.support.FILE_PROVIDER_PATHS"
+88-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:32:17-67
+89                android:resource="@xml/godot_provider_paths" />
+89-->[godot-lib.release.aar] C:\Users\willi\.gradle\caches\transforms-3\c204f6256ab1c893863f649b4d178444\transformed\jetified-godot-lib.release\AndroidManifest.xml:33:17-61
+90        </provider>
+91
+92        <meta-data
+92-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:19:9-21:37
+93            android:name="com.google.android.play.billingclient.version"
+93-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:20:13-73
+94            android:value="6.2.1" />
+94-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:21:13-34
+95
+96        <activity
+96-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:23:9-27:75
+97            android:name="com.android.billingclient.api.ProxyBillingActivity"
+97-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:24:13-78
+98            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+98-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:25:13-96
+99            android:exported="false"
+99-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:26:13-37
+100            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+100-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:27:13-72
+101        <activity
+101-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:28:9-32:75
+102            android:name="com.android.billingclient.api.ProxyBillingActivityV2"
+102-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:29:13-80
+103            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+103-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:30:13-96
+104            android:exported="false"
+104-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:31:13-37
+105            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+105-->[com.android.billingclient:billing:6.2.1] C:\Users\willi\.gradle\caches\transforms-3\9c07b8656747439ab0ce4f35bc84d5e5\transformed\jetified-billing-6.2.1\AndroidManifest.xml:32:13-72
+106        <activity
+106-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\willi\.gradle\caches\transforms-3\7dd47ca6f312c7faad86d2e60f205bd9\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:20:9-22:45
+107            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+107-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\willi\.gradle\caches\transforms-3\7dd47ca6f312c7faad86d2e60f205bd9\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:20:19-85
+108            android:exported="false"
+108-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\willi\.gradle\caches\transforms-3\7dd47ca6f312c7faad86d2e60f205bd9\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:22:19-43
+109            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+109-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\willi\.gradle\caches\transforms-3\7dd47ca6f312c7faad86d2e60f205bd9\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:21:19-78
+110
+111        <meta-data
+111-->[com.google.android.gms:play-services-basement:18.3.0] C:\Users\willi\.gradle\caches\transforms-3\d76569a1617f2e3f04b37e86aba17e3d\transformed\jetified-play-services-basement-18.3.0\AndroidManifest.xml:21:9-23:69
+112            android:name="com.google.android.gms.version"
+112-->[com.google.android.gms:play-services-basement:18.3.0] C:\Users\willi\.gradle\caches\transforms-3\d76569a1617f2e3f04b37e86aba17e3d\transformed\jetified-play-services-basement-18.3.0\AndroidManifest.xml:22:13-58
+113            android:value="@integer/google_play_services_version" />
+113-->[com.google.android.gms:play-services-basement:18.3.0] C:\Users\willi\.gradle\caches\transforms-3\d76569a1617f2e3f04b37e86aba17e3d\transformed\jetified-play-services-basement-18.3.0\AndroidManifest.xml:23:13-66
+114
+115        <service
+115-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\c1d61a5ef759b915cef02f9e161dab9d\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:28:9-34:19
+116            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+116-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\c1d61a5ef759b915cef02f9e161dab9d\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:29:13-103
+117            android:exported="false" >
+117-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\c1d61a5ef759b915cef02f9e161dab9d\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:30:13-37
+118            <meta-data
+118-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\c1d61a5ef759b915cef02f9e161dab9d\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:31:13-33:39
+119                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+119-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\c1d61a5ef759b915cef02f9e161dab9d\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:32:17-94
+120                android:value="cct" />
+120-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\c1d61a5ef759b915cef02f9e161dab9d\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:33:17-36
+121        </service>
+122        <service
+122-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\3c62263488b8813960af3191752748c5\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:26:9-30:19
+123            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+123-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\3c62263488b8813960af3191752748c5\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:27:13-117
+124            android:exported="false"
+124-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\3c62263488b8813960af3191752748c5\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:28:13-37
+125            android:permission="android.permission.BIND_JOB_SERVICE" >
+125-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\3c62263488b8813960af3191752748c5\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:29:13-69
+126        </service>
+127
+128        <receiver
+128-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\3c62263488b8813960af3191752748c5\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:32:9-34:40
+129            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+129-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\3c62263488b8813960af3191752748c5\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:33:13-132
+130            android:exported="false" />
+130-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\willi\.gradle\caches\transforms-3\3c62263488b8813960af3191752748c5\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:34:13-37
+131    </application>
+132
+133</manifest>

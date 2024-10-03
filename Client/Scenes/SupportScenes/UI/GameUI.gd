@@ -92,6 +92,7 @@ func GoHome():
 	LoadingScreen.Transition("")
 	yield(get_tree().create_timer(0.3), "timeout")
 	
+	Server.first_fetch = true
 	Server.html_network.disconnect_from_host()
 	var scene_handler = get_node("/root/SceneHandler")
 	var home_instance = load("res://Scenes/MainScenes/Home/Home.tscn").instance()

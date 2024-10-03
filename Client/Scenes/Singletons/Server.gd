@@ -20,7 +20,6 @@ var token
 var projectile_pool_amount = 500
 #Clock sync
 var latency = 0
-var latency_array = []
 var delta_latency = 0
 var client_clock = 0
 var decimal_collector : float = 0

@@ -44,7 +44,6 @@ func CreatePlayerContainer(player_id, email, character_index):
 	FillPlayerContainer(player_id, email)
 	get_node("/root/Server").CreateHouse(player_id)
 
-
 func CreateFakePlayerContainer(position = Vector2(rand_range(-25,25), rand_range(-25,25))):
 	var instance_tree = ["nexus"]
 	var new_player_container = player_container_scene.instance()

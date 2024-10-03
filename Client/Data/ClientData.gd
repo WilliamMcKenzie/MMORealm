@@ -289,6 +289,81 @@ var mid = 100
 var strong = 150
 
 var projectile_databank = {
+	"RockBlastSmall_mid_fast" : {
+		"projectile" : "RockBlastSmall",
+		"formula" : "0",
+		"damage" : 20,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : fast,
+		"tile_range" : 3,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : medium
+	},
+	"RockBlastSmall_strong_medium" : {
+		"projectile" : "RockBlastSmall",
+		"formula" : "0",
+		"damage" : 50,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : slow,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : small
+	},
+	"RockBlast_strong_medium" : {
+		"projectile" : "RockBlast",
+		"formula" : "0",
+		"damage" : 150,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : slow,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : medium
+	},
+	"RockBlast_strong_fast" : {
+		"projectile" : "RockBlast",
+		"formula" : "0",
+		"damage" : 150,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : med,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : medium
+	},
+	"RockBlast_mid_medium" : {
+		"projectile" : "RockBlast",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : slow,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : medium
+	},
+	
+	
+	"Nature1_mid_medium" : {
+		"projectile" : "Nature1",
+		"formula" : "0",
+		"damage" : mid,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : med,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : small
+	},
+	
 	"GoldenArrow_weak_medium" : {
 		"projectile" : "GoldenArrow",
 		"formula" : "0",
@@ -1754,7 +1829,7 @@ var rulers = {
 				"duration" : 6,
 				"health" : [25,100],
 				"behavior" : 2,
-				"speed" : 20,
+				"speed" : 12,
 				"attack_pattern" : [
 					MakeProjectile("GiantBlast_fast", 0, 0.2, "nearest"),
 					{
@@ -2782,32 +2857,6 @@ var tutorial_enemies = {
 	},
 }
 var realm_enemies = {
-	"whitebag_crab" : {
-		"scale" : 0.9,
-		"res" : 10,
-		"height" : 7,
-		"rect" : Rect2(Vector2(0,0), Vector2(20,10)),
-		"animations" : {
-			"Idle" : [0],
-			"Attack" : [0,1],
-		},
-		
-		"health" : 50,
-		"defense" : 1,
-		"exp" : 10,
-		"behavior" : 1,
-		"speed" : 10,
-		"loot_pool" : special_loot_pools["atlas"],
-		"phases" : [
-			{
-				"duration" : 10,
-				"health" : [0,100],
-				"attack_pattern" : [
-					MakeProjectile("Slash_1", 0, 1, "nearest"),
-				]
-			}
-		]
-	},
 	"crab" : {
 		"scale" : 0.9,
 		"res" : 10,
@@ -2873,7 +2922,7 @@ var realm_enemies = {
 		
 		"health" : 300,
 		"defense" : 3,
-		"exp" : 43,
+		"exp" : 33,
 		"behavior" : 1,
 		"speed" : 10,
 		"loot_pool" :  basic_loot_pools["lowlands_2"],
@@ -2981,7 +3030,7 @@ var realm_enemies = {
 		
 		"health" : 40,
 		"defense" : 0,
-		"exp" : 10,
+		"exp" : 5,
 		"behavior" : 1,
 		"speed" : 6,
 		"loot_pool" : basic_loot_pools["none"],
@@ -3019,7 +3068,7 @@ var realm_enemies = {
 		"variations" : ["nature_sprite_stationary"],
 		"health" : 10,
 		"defense" : 0,
-		"exp" : 10,
+		"exp" : 5,
 		"behavior" : 2,
 		"speed" : slow,
 		"loot_pool" : basic_loot_pools["none"],
@@ -3093,7 +3142,7 @@ var realm_enemies = {
 		
 		"health" : 30,
 		"defense" : 0,
-		"exp" : 10,
+		"exp" : 5,
 		"behavior" : 2,
 		"speed" : 5,
 		"loot_pool" :  basic_loot_pools["lowlands_1"],
@@ -3154,7 +3203,7 @@ var realm_enemies = {
 		
 		"health" : 20,
 		"defense" : 1000,
-		"exp" : 45,
+		"exp" : 35,
 		"behavior" : 1,
 		"speed" : 5,
 		"loot_pool" : {
@@ -3347,7 +3396,7 @@ var realm_enemies = {
 		},
 		"health" : 300,
 		"defense" : 5,
-		"exp" : 89,
+		"exp" : 50,
 		"behavior" : 1,
 		"speed" : 6,
 		"loot_pool" : basic_loot_pools["midlands_2"],
@@ -3571,7 +3620,7 @@ var realm_enemies = {
 		
 		"health" : 100,
 		"defense" : 0,
-		"exp" : 35,
+		"exp" : 11,
 		"behavior" : 2,
 		"speed" : 8,
 		"loot_pool" : basic_loot_pools["midlands_1"],
@@ -3632,7 +3681,7 @@ var realm_enemies = {
 		
 		"health" : 100,
 		"defense" : 0,
-		"exp" : 35,
+		"exp" : 11,
 		"behavior" : 2,
 		"speed" : 7,
 		"loot_pool" : basic_loot_pools["midlands_1"],
@@ -3684,7 +3733,7 @@ var realm_enemies = {
 		},
 		"health" : 200,
 		"defense" : 0,
-		"exp" : 43,
+		"exp" : 34,
 		"behavior" : 1,
 		"speed" : 10,
 		"loot_pool" :  basic_loot_pools["midlands_2"],
@@ -3914,7 +3963,7 @@ var realm_enemies = {
 		},
 		"health" : 300,
 		"defense" : 5,
-		"exp" : 64,
+		"exp" : 45,
 		"behavior" : 1,
 		"speed" : 5,
 		"loot_pool" :  basic_loot_pools["midlands_2"],
@@ -4052,8 +4101,8 @@ var realm_enemies = {
 		},
 		
 		"health" : 100,
-		"defense" : 6,
-		"exp" : 24,
+		"defense" : 21,
+		"exp" : 3,
 		"behavior" : 2,
 		"speed" : slow,
 		"loot_pool" :  basic_loot_pools["highlands_1"],
@@ -4114,7 +4163,7 @@ var realm_enemies = {
 		
 		"health" : 250,
 		"defense" : 0,
-		"exp" : 24,
+		"exp" : 5,
 		"behavior" : 1,
 		"speed" : 5,
 		"loot_pool" : basic_loot_pools["highlands_1"],
@@ -4176,9 +4225,9 @@ var realm_enemies = {
 			"rate" : 0.2,
 			"name" : "desert_catacombs"
 		},
-		"health" : 600,
-		"defense" : 4,
-		"exp" : 200,
+		"health" : 900,
+		"defense" : 9,
+		"exp" : 65,
 		"behavior" : 1,
 		"speed" : 10,
 		"loot_pool" : basic_loot_pools["highlands_2"],
@@ -4305,9 +4354,9 @@ var realm_enemies = {
 			"rate" : 0.2,
 			"name" : "desert_catacombs"
 		},
-		"health" : 1200,
+		"health" : 1800,
 		"defense" : 12,
-		"exp" : 340,
+		"exp" : 95,
 		"behavior" : 2,
 		"speed" : 5,
 		"loot_pool" : basic_loot_pools["highlands_2"],
@@ -4501,9 +4550,9 @@ var realm_enemies = {
 			"Attack" : [0,2],
 		},
 		
-		"health" : 180,
+		"health" : 190,
 		"defense" : 0,
-		"exp" : 140,
+		"exp" : 20,
 		"behavior" : 2,
 		"speed" : slow,
 		"loot_pool" : basic_loot_pools["highlands_1"],
@@ -4562,11 +4611,11 @@ var realm_enemies = {
 			"Attack" : [1],
 		},
 		
-		"health" : 1000,
+		"health" : 2000,
 		"defense" : 0,
-		"exp" : 150,
+		"exp" : 80,
 		"behavior" : 1,
-		"speed" : slow,
+		"speed" : 8,
 		"loot_pool" : basic_loot_pools["highlands_2"],
 		"phases" : [
 			{
@@ -4726,7 +4775,7 @@ var realm_enemies = {
 			"Attack" : [1],
 		},
 		
-		"health" : 300,
+		"health" : 600,
 		"defense" : 22,
 		"exp" : 200,
 		"behavior" : 1,
@@ -4912,7 +4961,7 @@ var realm_enemies = {
 		},
 		
 		"health" : 180,
-		"defense" : 22,
+		"defense" : 13,
 		"exp" : 35,
 		"behavior" : 2,
 		"speed" : slow,
@@ -5008,12 +5057,16 @@ var realm_enemies = {
 			"Idle" : [0],
 			"Attack" : [1],
 		},
+		"dungeon" : {
+			"rate" : 0.1,
+			"name" : "cloud_isles"
+		},
 		
 		"health" : 1200,
 		"defense" : 12,
 		"exp" : 200,
 		"behavior" : 2,
-		"speed" : slow,
+		"speed" : 16,
 		"loot_pool" : basic_loot_pools["godlands_1"],
 		"phases" : [
 			{
@@ -5166,6 +5219,10 @@ var realm_enemies = {
 			"Attack" : [2],
 		},
 		
+		"dungeon" : {
+			"rate" : 0.2,
+			"name" : "cloud_isles"
+		},
 		"health" : 1000,
 		"defense" : 18,
 		"exp" : 250,
@@ -6086,7 +6143,7 @@ var frozen_fortress_enemies = {
 		"res" : 38,
 		"height" : 30,
 		"rect" : Rect2(Vector2(0,76), Vector2(190,38)),
-		"custom_hitbox" : Vector2(30,20),
+		"custom_hitbox" : Vector2(24,24),
 		"animations" : {
 			"Idle" : [0,1],
 			"Attack" : [2,3],
@@ -6993,17 +7050,62 @@ var rocky_cave_enemies = {
 		"loot_pool" : special_loot_pools["rokk_the_rough"],
 		"phases" : [
 			{
-				"duration" : 16,
-				"health" : [0,100],
+				"duration" : 7,
+				"health" : [33,100],
 				"attack_pattern" : [
-					MakeProjectile("RoyalSlash_weak_medium", 20, 0, "nearest"),
-					MakeProjectile("RoyalSlash_weak_medium", 0, 0, "nearest"),
-					MakeProjectile("RoyalSlash_weak_medium", -20, 0.5, "nearest"),
-					MakeProjectile("Wave_weak_fast", 20, 0, "nearest"),
-					MakeProjectile("Wave_weak_fast", 0, 0, "nearest"),
-					MakeProjectile("Wave_weak_fast", -20, 2, "nearest"),
+					MakeProjectile("Wave_mid_fast", 20, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("Wave_mid_fast", -20, 0.5, "nearest"),
+					MakeProjectile("RockBlastSmall_mid_fast", 20, 0, "nearest"),
+					MakeProjectile("RockBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("RockBlastSmall_mid_fast", -20, 2, "nearest"),
 				]
 			},
+			{
+				"duration" : 7,
+				"health" : [33,100],
+				"attack_pattern" : CreateSpiral(2, "RockBlastSmall_strong_medium", 0.1, "RockBlastSmall_mid_fast", 0.8)
+			},
+			{
+				"duration" : 7,
+				"health" : [0,33],
+				"behavior" : 2,
+				"speed" : 5,
+				"attack_pattern" :  [
+					{
+						"summon" : "rock_sprite_rotating",
+						"summon_position" : DegreesToVector(0)*30,
+						"wait" : 1,
+					},
+				] + CreateSpiral(2, "RockBlast_strong_fast", 0.3, "RockBlastSmall_mid_fast", 0.8)
+			},
+		]
+	},
+	"rock_sprite_rotating" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(220,40), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [],
+		},
+		
+		"health" : 100,
+		"defense" : 5,
+		"exp" : 30,
+		"behavior" : 3,
+		"anchor" : "parent",
+		"speed" : 15,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_weak_fast", 0, 0.4, "nearest"),
+				]
+			}
 		]
 	},
 	"lil_rock_golem" : {
@@ -7385,6 +7487,268 @@ var cloud_isles_enemies = {
 					},
 					MakeProjectile("Stack_strong_medium", 0, 0, "nearest")
 				] + CreateSpiral(1,"Wave_mid_fast",0,null,0.2,8)
+			},
+		]
+	},
+	"blue_basalisk" : {
+		"scale" : 1.1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(90,108), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
+		"health" : 3400,
+		"defense" : 18,
+		"exp" : 500,
+		"behavior" : 2,
+		"speed" : 6,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 0.8,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : medium
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : medium
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : medium
+					},
+				]
+			},
+		]
+	},
+	"giant_vermin" : {
+		"scale" : 1.1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(144,108), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 4000,
+		"defense" : 10,
+		"exp" : 500,
+		"behavior" : 1,
+		"speed" : 6,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : CreateSpiral(1, "Nature1_mid_medium", 0, null, 0, 8) + [
+					{
+						"wait" : 0.5
+					},
+					{
+						"projectile" : "Nature3",
+						"formula" : "0",
+						"damage" : 100,
+						"piercing" : true,
+						"wait" : 0.5,
+						"speed" : fast,
+						"tile_range" : 6,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : medium
+					},
+				]
+			},
+		]
+	},
+	"gold_guardian" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(180,108), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 4000,
+		"defense" : 20,
+		"exp" : 500,
+		"behavior" : 0,
+		"speed" : 6,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "gold_idol",
+						"summon_position" : DegreesToVector(0)*12,
+						"wait" : 0,
+					},
+					{
+						"summon" : "gold_idol",
+						"summon_position" : DegreesToVector(120)*12,
+						"wait" : 0,
+					},
+					{
+						"summon" : "gold_idol",
+						"summon_position" : DegreesToVector(240)*12,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : CreateSpiral(2, "Blast_strong_fast", 0.2, "GoldenArrow_mid_medium", 0.5, 32)
+			},
+		]
+	},
+	"gold_idol" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(20,50), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 100,
+		"defense" : 100,
+		"exp" : 100,
+		"anchor" : "parent",
+		"behavior" : 3,
+		"speed" : 6,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("SmallBlast_strong_fast", 0, 1, "nearest")
+				] + CreateSpiral(1,"Wave_weak_fast",0,null,0.2,5)
+			},
+		]
+	},
+	"cloud_sprite" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(0,50), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 300,
+		"defense" : 0,
+		"exp" : 100,
+		"behavior" : 2,
+		"speed" : 15,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Wave_weak_slow", 0, 0, "nearest"),
+					MakeProjectile("Wave_weak_fast", 0, 1, "nearest"),
+				]
 			},
 		]
 	},
@@ -8365,6 +8729,10 @@ var dungeons = {
 		"room_size" : 26,
 		"tile_translation" : {
 			7 : "pohaku",
+			8 : "blue_basalisk",
+			9 : "giant_vermin",
+			10 : "gold_guardian",
+			11 : "cloud_sprite",
 		}
 	},
 	"desert_catacombs" : {
@@ -8432,7 +8800,7 @@ var items = {
 	-2 : {
 		"name": "Ascension Shard",
 		"description" : "A precious gem, what will it awaken in you?",
-		"tier" : "4",
+		"tier" : "5",
 		"type" : "Consumable",
 		"use" : "ascend 1",
 		"slot" : "na",
@@ -8442,7 +8810,7 @@ var items = {
 	-1 : {
 		"name": "Ascension Stone",
 		"description" : "A precious gem, what will it awaken in you?",
-		"tier" : "4",
+		"tier" : "5",
 		"type" : "Consumable",
 		"use" : "ascend 2",
 		"slot" : "na",
@@ -8452,7 +8820,7 @@ var items = {
 	0 : {
 		"name": "Ascension Gemstone",
 		"description" : "A precious gem, what will it awaken in you?",
-		"tier" : "4",
+		"tier" : "5",
 		"type" : "Consumable",
 		"use" : "ascend 5",
 		"slot" : "na",
@@ -8462,7 +8830,7 @@ var items = {
 	1 : {
 		"name": "Timber",
 		"description" : "A few logs, can be used to build (/home)",
-		"tier" : "4",
+		"tier" : "5",
 		"type" : "Material",
 		"slot" : "na",
 		
@@ -8471,7 +8839,7 @@ var items = {
 	2 : {
 		"name": "Stones",
 		"description" : "A few stones, can be used to build (/home)",
-		"tier" : "4",
+		"tier" : "5",
 		"type" : "Material",
 		"slot" : "na",
 		
@@ -9664,18 +10032,18 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "UT",
 		
-		"rof" : 30,
+		"rof" : 10,
 		"stats" : {
 		
 		},
 		
 		"projectiles" : [
 			{
-				"damage" : [200,600],
+				"damage" : [500,700],
 				"projectile" : "CannonBall",
 				"formula" : "0",
-				"piercing" : true,
-				"speed" : 10,
+				"piercing" : false,
+				"speed" : 100,
 				"tile_range" : 5,
 				"size" : 4,
 				"offset" : DegreesToVector(0),
@@ -10248,7 +10616,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 1.5, "range" : 8},
+			"healing" : { "duration" : 1, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 3,
@@ -10273,7 +10641,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 2, "range" : 8},
+			"healing" : { "duration" : 1.5, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 5,
@@ -10299,7 +10667,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 2.5, "range" : 8},
+			"healing" : { "duration" : 2, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 7,
@@ -10326,7 +10694,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 3, "range" : 8},
+			"healing" : { "duration" : 2.5, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 9,
@@ -10351,7 +10719,7 @@ var items = {
 		
 		"cooldown" : 4,
 		"buffs" : {
-			"healing" : { "duration" : 3.5, "range" : 8},
+			"healing" : { "duration" : 3, "range" : 8},
 		},
 		"stats" : {
 			"attack" : 12,
@@ -10587,6 +10955,7 @@ var buildings = {
 		"name" : "Storage Chest",
 		"type" : "object",
 		"catagory" : "storage",
+		"loot_slots" : 8,
 		"description" : "For storing up to 8 items.",
 		
 		"craftable" : true,
@@ -10662,7 +11031,7 @@ var buildings = {
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,100)],
 	},
 	"wooden_chair" : {
-		"name" : "Wooden Bench",
+		"name" : "Wooden Chair",
 		"type" : "object",
 		"catagory" : "statue",
 		"description" : "A place to sit",
@@ -10672,34 +11041,37 @@ var buildings = {
 		"materials" : [1],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,100)],
 	},
-	"rexium_sword_display" : {
-		"name" : "Rexium Sword Display",
+	"item_stand" : {
+		"name" : "Item Stand",
 		"type" : "object",
-		"catagory" : "statue",
-		"description" : "A display of cutting power",
+		"catagory" : "storage",
+		"loot_slots" : 1,
+		"description" : "A place to display items.",
 		
 		"craftable" : true,
-		"materials" : [1,104],
-		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,110)],
-	},
-	"rexium_armor_display" : {
-		"name" : "Rexium Armor Display",
-		"type" : "object",
-		"catagory" : "statue",
-		"description" : "A display of constitution",
-		
-		"craftable" : true,
-		"materials" : [1,504],
+		"materials" : [0,1,1,1],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,110)],
 	},
-	"rexium_helmet_display" : {
-		"name" : "Rexium Helmet Display",
+	"item_pillar" : {
+		"name" : "Item Pillar",
 		"type" : "object",
-		"catagory" : "statue",
-		"description" : "A display of style",
+		"catagory" : "storage",
+		"loot_slots" : 1,
+		"description" : "A place to display rare items.",
 		
 		"craftable" : true,
-		"materials" : [1,404],
+		"materials" : [0,2,2,2],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,110)],
+	},
+	"item_monument" : {
+		"name" : "Item Monument",
+		"type" : "object",
+		"catagory" : "storage",
+		"loot_slots" : 1,
+		"description" : "Wheres my crown, thats my bling",
+		
+		"craftable" : true,
+		"materials" : [0,0,-1,-1,-2,-2],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(20,110)],
 	},
 	"apprentice_statue" : {
@@ -10753,7 +11125,7 @@ var buildings = {
 		
 		"craftable" : true,
 		"materials" : [104,504,404,3],
-		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,120)],
+		"path" : ["objects/objects_16x16.png", 15, 15, Vector2(18,18)],
 	},
 	"elemental_orb" : {
 		"name" : "Elemental Orb",
@@ -10763,7 +11135,7 @@ var buildings = {
 		
 		"craftable" : true,
 		"materials" : [135,138,141,3],
-		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(0,120)],
+		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(10,120)],
 	},
 }
 
@@ -10825,6 +11197,18 @@ var projectiles = {
 	},
 	"SandBlastSmall" : {
 		"rect" : Rect2(170,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.3,
+	},
+	"RockBlast" : {
+		"rect" : Rect2(160,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1.5,
+	},
+	"RockBlastSmall" : {
+		"rect" : Rect2(170,20,10,10),
 		"rotation" : 45,
 		"spin" : false,
 		"scale" : 1,
@@ -11587,7 +11971,7 @@ var characters = {
 		},
 		"description" : "The Knight's high health and mighty armor make them an immovable force.",
 		"teaser" : "Discover by enduring the trials of the battlefield.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 	"Paladin" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -11620,7 +12004,7 @@ var characters = {
 		},
 		"description" : "The Paladin's high regen and health make them the ultimate tank.",
 		"teaser" : "Discover by using your head.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 	"Marauder" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -11656,7 +12040,7 @@ var characters = {
 		},
 		"description" : "The Marauder's sharp blade and swift blows make them a unstoppable force.",
 		"teaser" : "Discover by truly conquering the abyss.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 	"Ranger" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -11692,7 +12076,7 @@ var characters = {
 		},
 		"description" : "The Ranger's extreme power and precision make them a feared marksman.",
 		"teaser" : "Discover by hunting the biggest prey in the island.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 	"Sentinel" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -11728,7 +12112,7 @@ var characters = {
 		},
 		"description" : "The Sentinel's thick hide make them a robust marksman.",
 		"teaser" : "Discover by enduring the trials of the battlefield.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 	"Scout" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -11764,7 +12148,7 @@ var characters = {
 		},
 		"description" : "The Sentinel's thick hide make them a robust marksman.",
 		"teaser" : "Discover by venturing far AND wide.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 	"Magician" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -11800,7 +12184,7 @@ var characters = {
 		},
 		"description" : "The Magician's quick thinking make for a cunning opponent.",
 		"teaser" : "Discover by pulling too many rabbits out of your hat.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 	"Druid" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -11836,7 +12220,7 @@ var characters = {
 		},
 		"description" : "The Druid's extreme durability and regeneration can outlast anyone.",
 		"teaser" : "Discover by putting out some serious fire.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 	"Warlock" : {
 		"path" : ["characters/characters_8x8.png", 4, 4, Vector2(0,0)],
@@ -11873,7 +12257,7 @@ var characters = {
 		},
 		"description" : "The Warlocks mastery of both sword and staff make them a feared mage.",
 		"teaser" : "Discover by killing everything in sight.",
-		"ascension_stones" : 50,
+		"ascension_stones" : 75,
 	},
 }
 

@@ -35,7 +35,7 @@ func InspectBuilding(_type):
 	
 	var spriteTexture = load("res://Assets/"+building.path[0])
 	building_sprite.texture.atlas = spriteTexture
-	building_sprite.texture.region = Rect2(building.path[3], Vector2(10,10))
+	building_sprite.texture.region = Rect2(building.path[3], Vector2(260/building.path[2],260/building.path[2]))
 	
 	if building.has("wall"):
 		building_sprite.texture.region = Rect2(building.path[3], Vector2(10,20))

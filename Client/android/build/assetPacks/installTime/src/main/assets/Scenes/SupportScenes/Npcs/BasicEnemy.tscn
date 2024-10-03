@@ -1,14 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Effects.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/SupportScenes/Npcs/BasicEnemy.gd" type="Script" id=3]
 [ext_resource path="res://Assets/npcs/enemies_8x8.png" type="Texture" id=4]
-[ext_resource path="res://Assets/ui/particles.png" type="Texture" id=5]
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 5 )
-region = Rect2( 0, 0, 26, 26 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "Attack"
@@ -79,22 +74,6 @@ extents = Vector2( 5, 5 )
 
 [node name="0" type="Node2D"]
 script = ExtResource( 3 )
-
-[node name="ParticleMaster" type="CPUParticles2D" parent="."]
-position = Vector2( 0, -4 )
-scale = Vector2( 0.05, 0.05 )
-z_index = 1
-emitting = false
-amount = 10
-lifetime = 20.0
-one_shot = true
-speed_scale = 64.0
-texture = SubResource( 6 )
-direction = Vector2( 0, 0 )
-spread = 180.0
-gravity = Vector2( 0, -0.1 )
-initial_velocity = 2.0
-color = Color( 0.862745, 0.313726, 0.364706, 1 )
 
 [node name="Control" type="Control" parent="."]
 margin_left = -5.0

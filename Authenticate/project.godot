@@ -35,6 +35,7 @@ config/icon="res://icon.png"
 PlayerData="*res://Scenes/Singletons/PlayerData.gd"
 GameServers="*res://Scenes/Singletons/GameServers.gd"
 DatabaseInterface="*res://Scripts/DatabaseInterface.gd"
+StripePayments="*res://Scripts/StripePayments.gd"
 
 [gui]
 

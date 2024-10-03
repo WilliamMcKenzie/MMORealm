@@ -3,12 +3,6 @@ extends Node
 var database = PostgreSQLClient.new()
 var database_connected = false
 
-var database_name = "postgres"
-var db_username = "postgres.xxdqgjmbxaufkpwzzvkm"
-var db_password = "$ronMan72!s"
-var host = "aws-0-us-east-1.pooler.supabase.com"
-var port = 6543
-
 var weekly_leaderboard = []
 var monthly_leaderboard = []
 var all_time_leaderboard = []
@@ -139,9 +133,6 @@ var new_character = {
 }
 
 func Connect():
-	#var connection_string = "postgresql://%s:%s@%s:%d/%s" % [
-	#	db_username, db_password, host, port, database_name
-	#]
 	var connection_string = "postgresql://postgres.xxdqgjmbxaufkpwzzvkm:$ronMan72!s@aws-0-us-east-1.pooler.supabase.com:5432/postgres"
 	database.connect_to_host(connection_string, false)
 
@@ -364,6 +355,32 @@ func ConfirmUsername(username, player_id):
 	return result
 
 #Utility functions
+
+func HandlePayment(type, value, username):
+	var user
+	var command = """
+		BEGIN;
+		SELECT * FROM users WHERE account_data->>'username' = '%s';
+	""" % [username]
+	
+	var data_arr = database.execute(command)
+	
+	for _data in data_arr:
+		var data = _data.data_row
+		if data != []:
+			var result = data[0]
+			user = {
+				"email" : result[0],
+				"account_data" : JSON.parse(result[2]).result
+			}
+	
+	if user:
+		var account_data = user.account_data
+		if type == "gold":
+			account_data.gold += value
+		
+		UpdateUser(user.email, account_data)
+		get_node("/root/Authenticate").rpc_id(0, "ReturnAccountDataEmail", account_data, user.email)
 
 func generate_unique_id():
 	var timestamp = OS.get_unix_time()

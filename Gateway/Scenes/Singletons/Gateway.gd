@@ -9,8 +9,10 @@ var current_network
 
 var gateway_api = MultiplayerAPI.new()
 var gateway_html_api = MultiplayerAPI.new()
+var player_id_by_email = {}
 
 func _ready():
+	VisualServer.render_loop_enabled = false
 	current_network = html_network
 	#StartServer()
 	StartHTMLServer()
@@ -55,7 +57,9 @@ remote func KeepAlive():
 
 remote func FetchAccountData(email, password):
 	var player_id = custom_multiplayer.get_rpc_sender_id()
+	player_id_by_email[email] = player_id
 	Authenticate.GenericRequest(email.to_lower(), password, player_id, "FetchAccountData")
+
 func ReturnAccountData(account_data, player_id):
 	rpc_id(player_id, "ReturnAccountData", account_data)
 
@@ -130,3 +134,6 @@ func ReturnToken(token, player_id):
 remote func ReviveCharacter(index, email, password):
 	var player_id = custom_multiplayer.get_rpc_sender_id()
 	Authenticate.ReviveCharacter(index, email, password, player_id)
+
+remote func VerifyPurchase(token,type,value,username):
+	Authenticate.VerifyPurchase(token,type,value,username)

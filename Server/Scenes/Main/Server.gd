@@ -33,7 +33,7 @@ func _ready():
 	
 	#Open realm
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
-	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
 	var island_id = get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
@@ -41,6 +41,9 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(100,100), "tutorial_troll_king")
 	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
+	
+	
+	
 	for i in range(0):
 		var container = PlayerVerification.CreateFakePlayerContainer()
 		container.GiveEffect("invincible", 99999)
@@ -152,10 +155,12 @@ remote func DialogueResponse(response):
 	if response == "Basic Mechanics":
 		StartTutorial(player_id)
 	if response == "Daily Arena" and (not time_tracker.has(response) or (day != time_tracker[response]["day"])):
+		time_tracker[response] = time
 		ForcedEnterInstance(CreateArena(player_id, "daily"), player_id)
 	elif response == "Daily Arena":
 		Dialogue("ArenaToSoon", player_id)
 	if response == "Monthly Arena" and (not time_tracker.has(response) or (month != time_tracker[response]["month"])):
+		time_tracker[response] = time
 		ForcedEnterInstance(CreateArena(player_id, "monthly"), player_id)
 	elif response == "Monthly Arena":
 		Dialogue("ArenaToSoon", player_id)
@@ -537,7 +542,8 @@ remote func SendPlayerProjectile(projectile_data):
 		"Size":projectile.size,
 	})
 	
-	rpc_id(0, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
+	for id in player_instance_tracker[instance_tree]:
+		rpc_id(id, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
 	
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
 	var peers = get_tree().get_network_connected_peers()
@@ -786,8 +792,13 @@ func EnemySpeech(enemy_name, enemy_id, message):
 
 var chat_messages = []
 remote func RecieveChatMessage(message):
+	print(message)
+	
 	var message_words = message.split(" ")
 	var player_id = get_tree().get_rpc_sender_id()
+	
+	if not player_state_collection.has(player_id) or not player_name_by_id.has(player_id):
+		return
 	
 	var instance_tree = player_state_collection[player_id]["I"]
 	var instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
@@ -796,33 +807,39 @@ remote func RecieveChatMessage(message):
 	var player_position = player_state_collection[player_id]["P"]
 	var player_container = instance_node.get_node("YSort/Players/"+str(player_id))
 	
+	if not player_container:
+		return
+	
+	var admin = player_container.account_data.has("admin")
 	if len(message) >= 1:
+		var home_alternatives = ["/home","/house","/h","/abode","/domacile"]
+		var players_online_alternatives = ["/players","/online","/characters","/p","/c"]
 		if message[0] == "/":
-			if message_words[0] == "/bot":
-				var multiple_enemies = message_words.size() > 1 and int(message_words[1])
-				if multiple_enemies:
-					for i in range(int(message_words[1])):
-						var container = PlayerVerification.CreateFakePlayerContainer(player_position)
-						container.GiveEffect("invincible", 99999)
-						ForcedNexus(int(container.name))
-						ForcedEnterInstance(instance_node.name, int(container.name))
-						container.position = player_position
-						instance_node.UpdatePlayer(container.name, {"T":OS.get_system_time_msecs(), "P":container.position, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams" : {}}}})
-					rpc_id(player_id, "RecieveChat", "Here come the bots!", "System")
-				else:
-					rpc_id(player_id, "RecieveChat", "Error spawning bots", "SystemERROR")
-			if message_words[0] == "/class" and message_words.size() == 2 and player_container.account_data.classes.has(message_words[1]):
-				player_container.character.class = message_words[1]
-				SendCharacterData(player_id, player_container.character)
-			if message_words[0] == "/exp" and message_words.size() == 2 and int(message_words[1]):
-				player_container.AddExp(int(message_words[1]), "Ghoul", "123")
-			if message_words[0] == "/invincible":
-				player_container.GiveEffect("invincible", 99999)
-			if message_words[0] == "/home" and message_words.size() == 1:
+			if message_words[0] == "/help":
+				var commands = ["Commands:", "/help (command list)", "/home (go to your house)", "/home username (go to username's house if you are allowed)", "/players (list of online players)", "/trade username (send trade offer to username)", "/tp username (teleport to username)"]
+				for command in commands:
+					rpc_id(player_id, "RecieveChat", command, "System")
+			if players_online_alternatives.has(message_words[0]):
+				var connected_players = get_tree().get_network_connected_peers()
+				var players_online = ""
+				var count = 0
+				for username in player_id_by_name.keys():
+					if not connected_players.has(player_id_by_name[username]):
+						continue
+					
+					count += 1
+					if count < 10:
+						players_online += username
+						players_online += ", "
+				players_online.erase(players_online.length() - 2, 2)
+				if count >= 10:
+					players_online += "..."
+				rpc_id(player_id, "RecieveChat", "There are " + str(count) + " players online: " + str(players_online), "System")
+			if home_alternatives.has(message_words[0]) and message_words.size() == 1:
 				EnterHouse(player_id, player_id)
-			elif message_words[0] == "/home":
+			elif home_alternatives.has(message_words[0]):
 				var selected_player_name = message.substr(6,-1)
-				if player_id_by_name.has(selected_player_name):
+				if player_id_by_name.has(selected_player_name) and get_tree().get_network_connected_peers().has(player_id_by_name[selected_player_name]):
 					var selected_player_id = player_id_by_name[selected_player_name]
 					EnterHouse(player_id, selected_player_id)
 				else:
@@ -852,52 +869,73 @@ remote func RecieveChatMessage(message):
 						rpc_id(player_id, "MovePlayer", player_state_collection[player_id]["P"])
 						rpc_id(player_id, "RecieveChat", "You have teleported to " + selected_player_name, "System")
 					else:
-						rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "System")
+						rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "SystemERROR")
 				else:
 					rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "SystemERROR")
-			if message_words[0] == "/d":
-				if message.substr(3,-1) in ServerData.dungeons.keys():
-					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal(message.substr(3,-1), instance_tree, player_position)
-					rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
-				else:
-					rpc_id(player_id, "RecieveChat", "Error spawning dungeon", "SystemERROR")
-			if message_words[0] == "/spawn" and message_words.size() > 1:
-				var valid_enemy = message_words[1] in ServerData.enemies
-				var multiple_enemies = message_words.size() > 2 and int(message_words[2])
-				
-				if valid_enemy and multiple_enemies:
-					for _i in range(int(message_words[2])):
+			if message[0] == "/" and admin:
+				if message_words[0] == "/bot":
+					var multiple_enemies = message_words.size() > 1 and int(message_words[1])
+					if multiple_enemies:
+						for i in range(int(message_words[1])):
+							var container = PlayerVerification.CreateFakePlayerContainer(player_position)
+							container.GiveEffect("invincible", 99999)
+							ForcedNexus(int(container.name))
+							ForcedEnterInstance(instance_node.name, int(container.name))
+							container.position = player_position
+							instance_node.UpdatePlayer(container.name, {"T":OS.get_system_time_msecs(), "P":container.position, "A":{ "A" : "Idle", "C" : Vector2.ZERO }, "S":{ "R" : Rect2(Vector2(0,0), Vector2(80,40)), "C" : "Apprentice", "P" : {"ColorParams" : {}, "TextureParams" : {}}}})
+						rpc_id(player_id, "RecieveChat", "Here come the bots!", "System")
+					else:
+						rpc_id(player_id, "RecieveChat", "Error spawning bots", "SystemERROR")
+				if message_words[0] == "/class" and message_words.size() == 2 and player_container.account_data.classes.has(message_words[1]):
+					player_container.character.class = message_words[1]
+					SendCharacterData(player_id, player_container.character)
+				if message_words[0] == "/exp" and message_words.size() == 2 and int(message_words[1]):
+					player_container.AddExp(int(message_words[1]), "Ghoul", "123")
+				if message_words[0] == "/invincible":
+					player_container.GiveEffect("invincible", 99999)
+				if message_words[0] == "/d":
+					if message.substr(3,-1) in ServerData.dungeons.keys():
+						get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal(message.substr(3,-1), instance_tree, player_position)
+						rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")
+					else:
+						rpc_id(player_id, "RecieveChat", "Error spawning dungeon", "SystemERROR")
+				if message_words[0] == "/spawn" and message_words.size() > 1:
+					var valid_enemy = message_words[1] in ServerData.enemies
+					var multiple_enemies = message_words.size() > 2 and int(message_words[2])
+					
+					if valid_enemy and multiple_enemies:
+						for _i in range(int(message_words[2])):
+							SpawnNPC(message_words[1], instance_tree, player_position - (get_node("Instances/"+StringifyInstanceTree(instance_tree)).position))
+						rpc_id(player_id, "RecieveChat", "You have spawned " + message_words[2] + message.substr(7,-1) + "s", "System")
+					elif valid_enemy:
 						SpawnNPC(message_words[1], instance_tree, player_position - (get_node("Instances/"+StringifyInstanceTree(instance_tree)).position))
-					rpc_id(player_id, "RecieveChat", "You have spawned " + message_words[2] + message.substr(7,-1) + "s", "System")
-				elif valid_enemy:
-					SpawnNPC(message_words[1], instance_tree, player_position - (get_node("Instances/"+StringifyInstanceTree(instance_tree)).position))
-					rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
-				else:
-					rpc_id(player_id, "RecieveChat", "Error spawning NPC", "SystemERROR")
-			if message_words[0] == "/loot" and message_words.size() == 2:
-				var valid = int(message_words[1]) in ServerData.items
-				var item = ServerData.GetItem(int(message_words[1]))
-				
-				if valid and (item.tier == "UT" or int(item.tier) > 1):
-					get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnLootBag([ 
-					{
-						"item" : int(message_words[1]),
-						"id" : generate_unique_id()
-					}], player_id, instance_tree, player_position)
-					rpc_id(player_id, "RecieveChat", "You have looted a " + message_words[1], "System")
-				elif valid:
-					get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnLootBag([ 
-					{
-						"item" : int(message_words[1]),
-						"id" : generate_unique_id()
-					}], null, instance_tree, player_position)
-					rpc_id(player_id, "RecieveChat", "You have looted a " + message_words[1], "System")
-				else:
-					rpc_id(player_id, "RecieveChat", "Invalid loot id", "SystemERROR")
-			if message_words[0] == "/max" and message_words.size() == 1:
-				player_container.Max()
-			if message_words[0] == "/hypermax" and message_words.size() == 1:
-				player_container.Max(true)
+						rpc_id(player_id, "RecieveChat", "You have spawned a " + message.substr(7,-1), "System")
+					else:
+						rpc_id(player_id, "RecieveChat", "Error spawning NPC", "SystemERROR")
+				if message_words[0] == "/loot" and message_words.size() == 2:
+					var valid = int(message_words[1]) in ServerData.items
+					var item = ServerData.GetItem(int(message_words[1]))
+					
+					if valid and (item.tier == "UT" or int(item.tier) > 1):
+						get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnLootBag([ 
+						{
+							"item" : int(message_words[1]),
+							"id" : generate_unique_id()
+						}], player_id, instance_tree, player_position)
+						rpc_id(player_id, "RecieveChat", "You have looted a " + message_words[1], "System")
+					elif valid:
+						get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnLootBag([ 
+						{
+							"item" : int(message_words[1]),
+							"id" : generate_unique_id()
+						}], null, instance_tree, player_position)
+						rpc_id(player_id, "RecieveChat", "You have looted a " + message_words[1], "System")
+					else:
+						rpc_id(player_id, "RecieveChat", "Invalid loot id", "SystemERROR")
+				if message_words[0] == "/max" and message_words.size() == 1:
+					player_container.Max()
+				if message_words[0] == "/hypermax" and message_words.size() == 1:
+					player_container.Max(true)
 		else:
 			chat_messages.append({
 				"sender" : player_name,
@@ -919,6 +957,7 @@ func IdentifierToString(identifier):
 	proper_string = proper_string.strip_edges()
 	
 	return proper_string
+
 func NotifyDeath(player_id, enemy_name):
 	var instance_tree = player_state_collection[int(player_id)]["I"]
 	

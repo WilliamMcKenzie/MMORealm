@@ -71,7 +71,8 @@ func SetBuilding(_type, _quantity):
 	type = _type
 	quantity = _quantity
 	
-	$ResizeContainer/BuildingQuantity.text = "x" + str(quantity)
+	if quantity != null:
+		$ResizeContainer/BuildingQuantity.text = "x" + str(quantity)
 	$BuildingIcon.texture = $BuildingIcon.texture.duplicate()
 	SetSpriteData($BuildingIcon, ClientData.GetBuilding(type).path, ClientData.GetBuilding(type).has("wall"))
 
@@ -80,7 +81,7 @@ func SetSpriteData(sprite, path, wall):
 	sprite.texture = AtlasTexture.new()
 	
 	sprite.texture.atlas = spriteTexture
-	sprite.texture.region = Rect2(path[3], Vector2(10,10))
+	sprite.texture.region = Rect2(path[3], Vector2(260/path[2],260/path[2]))
 	
 	if wall:
 		sprite.texture.region = Rect2(path[3], Vector2(10,20))

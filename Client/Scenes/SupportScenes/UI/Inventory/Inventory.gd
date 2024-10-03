@@ -276,10 +276,14 @@ func SetLoot(_loot_container_id, _loot):
 	var i = 0
 	
 	for slot in loot_slots:
-		slot.SetItem(loot[i], 1)
-		slot.index = i
-		slot.parent = loot_container_id
-		i += 1
+		if len(loot) > i:
+			slot.visible = true
+			slot.SetItem(loot[i], 1)
+			slot.index = i
+			slot.parent = loot_container_id
+			i += 1
+		else:
+			slot.visible = false
 
 func UseItem(i):
 	Server.UseItem(i)

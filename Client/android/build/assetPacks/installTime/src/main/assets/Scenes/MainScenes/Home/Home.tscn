@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=9]
 [ext_resource path="res://Scenes/SupportScenes/UI/Graveyard/Graveyard.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/SupportScenes/UI/Logout/Logout.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/SupportScenes/UI/Shop/Shop.tscn" type="PackedScene" id=13]
 
 [sub_resource type="TileSet" id=30]
 0/name = "tileset.png 0"
@@ -93,6 +94,9 @@ visible = false
 [node name="Graveyard" parent="." instance=ExtResource( 10 )]
 visible = false
 
+[node name="Shop" parent="." instance=ExtResource( 13 )]
+visible = false
+
 [node name="LoginPopup" parent="." instance=ExtResource( 4 )]
 
 [node name="CharacterSelection" parent="." instance=ExtResource( 3 )]
@@ -162,4 +166,15 @@ grow_horizontal = 0
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 18 )
 text = "9999999"
+align = 2
+
+[node name="Plus" type="Label" parent="UI/Gold"]
+margin_left = 21.0
+margin_top = 13.0
+margin_right = 33.0
+margin_bottom = 35.0
+grow_horizontal = 0
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 18 )
+text = "+"
 align = 2

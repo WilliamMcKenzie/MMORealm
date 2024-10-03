@@ -3,10 +3,10 @@ extends Node
 var island_preloads = {}
 var at_spire = false
 var bosses_status = {
-	"oranix" : true,
-	"vajira" : true,
-	"raa'sloth" : true,
-	"salazar" : false,
+	"oranix" : false,
+	"vajira" : false,
+	"raa'sloth" : false,
+	"salazar" : true,
 }
 
 func CreateIslandTemplate(map_size = Vector2(750,750)):

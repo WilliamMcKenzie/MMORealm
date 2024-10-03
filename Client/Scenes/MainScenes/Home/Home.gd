@@ -6,9 +6,19 @@ var email
 var password
 var gold
 
+func HideEverything(except):
+	get_node("CharacterSelection").visible = false
+	get_node("LoginPopup").visible = false
+	get_node("Graveyard").visible = false
+	get_node("Shop").visible = false
+	get_node("UI").visible = false
+	
+	get_node(except).visible = true
+
 func _ready():
 	$UI/Leaderboard.connect("button_down", self, "OpenLeaderboard")
 	$UI/Graveyard.connect("button_down", self, "OpenGraveyard")
+	$UI/Gold.connect("button_down", self, "OpenShop")
 	$UI/Logout.connect("button_down", self, "OpenLogout")
 	
 	if ClientAuth.cached_email and ClientAuth.cached_password:
@@ -26,8 +36,10 @@ func AuthenticatedUser():
 func UpdateGold():
 	var ui = get_node("UI")
 	var graveyard = get_node("Graveyard")
+	var shop = get_node("Shop")
 	ui.get_node("Gold/Gold").text = str(gold)
 	graveyard.get_node("Gold/Gold").text = str(gold)
+	shop.get_node("Gold/Gold").text = str(gold)
 
 func OpenLogout():
 	get_node("Logout").visible = true
@@ -53,16 +65,11 @@ func Logout():
 	graveyard.graveyard = []
 	graveyard.can_revive = false
 	graveyard.SwitchGraveyard(graveyard.current)
-	
-	selection_screen.visible = false
-	get_node("Graveyard").visible = false
-	get_node("UI").visible = false
-	get_node("LoginPopup").visible = true
-	
 	gold = 0
 	Server.token = null
 	UpdateGold()
 	
+	HideEverything("LoginPopup")
 	get_node("LoginPopup").email = ""
 	get_node("LoginPopup").password = ""
 	get_node("LoginPopup/VBoxContainer/EmailContainer/Email/MarginContainer/Email").text = ""
@@ -86,6 +93,15 @@ func OpenGraveyard():
 	get_node("CharacterSelection").visible = false
 	get_node("Graveyard").visible = true
 
+func CloseShop():
+	get_node("UI").visible = true
+	get_node("CharacterSelection").visible = true
+	get_node("Shop").visible = false
+func OpenShop():
+	get_node("UI").visible = false
+	get_node("CharacterSelection").visible = false
+	get_node("Shop").visible = true
+
 func SelectionScreen(account_data):
 	if not account_data:
 		return
@@ -108,7 +124,7 @@ func SelectionScreen(account_data):
 	graveyard.can_revive = account_data.character_slots > account_data.characters.size()
 	graveyard.SwitchGraveyard(graveyard.current)
 	
-	if not get_node("Graveyard").visible:
+	if not get_node("Graveyard").visible and not get_node("Shop").visible:
 		selection_screen.visible = true
 		get_node("LoginPopup").visible = false
 		get_node("UI").visible = true
