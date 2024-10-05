@@ -41,6 +41,7 @@ var tutorial_step_translation = ["Intro", "Controls", "Backpack", "Ability", "Qu
 
 var clock_sync_timer = 0
 var clock_sync_timer_2 = 0
+var save_sync_timer = 0
 var last_position
 
 #For fake player containers
@@ -61,8 +62,17 @@ func _physics_process(delta):
 	
 	clock_sync_timer += 1
 	clock_sync_timer_2 += 1
+	save_sync_timer += 1
 	if not character:
 		return
+	
+	if save_sync_timer >= 60*10:
+		save_sync_timer = 0
+		var house_id = "house " + str(name)
+		var instance_tree = ["nexus", house_id]
+		get_node("/root/Server").get_node("Instances/nexus/"+house_id).SaveData()
+		
+		HubConnection.UpdateAccountData(email, account_data)
 	
 	if clock_sync_timer % 10 == 0:
 		for slot in gear.keys():
@@ -448,7 +458,7 @@ func UseAbility():
 		get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 	
 	character.ability_cooldown = gear.helmet.cooldown
-	
+	UpdateStatistics("ability_used", 1)
 	var server_node = get_node("/root/Server")
 	var instance_tree = server_node.player_state_collection[int(name)]["I"]
 	var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
@@ -819,7 +829,8 @@ func Death(enemy_name):
 	if account_data.graveyard.size() > 10:
 		account_data.graveyard.pop_front()
 	
-	HubConnection.UpdateLeaderboard(username, character)
+	if not account_data.has("admin"):
+		HubConnection.UpdateLeaderboard(username, character)
 	get_node("/root/Server").NotifyDeath(int(name), enemy_name)
 	is_dead = true
 func DetermineReviveCost(reputation):

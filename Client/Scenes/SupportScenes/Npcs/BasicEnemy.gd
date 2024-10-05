@@ -34,6 +34,7 @@ func Activate(_enemy_type):
 	var _texture
 	
 	#Nodes
+	var chat_node = get_node("EnemyChatBubble")
 	var indicator_node = get_node("IndicatorPlaceholder")
 	var effects_node = get_node("ZContainer")
 	var hitbox_node = get_node("Area2D/Hitbox")
@@ -47,6 +48,7 @@ func Activate(_enemy_type):
 		_texture = texture_32x32
 	
 	#sprite_node.name = enemy_type
+	chat_node.position = Vector2(0,-_height*_scale)
 	sprite_node.scale = Vector2(_scale,_scale)
 	sprite_node.position = Vector2(rect_variable/2,rect_variable/2)
 	hitbox_node.disabled = false

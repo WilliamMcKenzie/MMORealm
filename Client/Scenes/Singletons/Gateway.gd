@@ -56,7 +56,7 @@ func GatewayRequest(_email, _password, _task):
 	task = _task
 	password = _password
 	
-	if not connected:
+	while not connected:
 		ConnectToServerHTML()
 		yield(get_tree().create_timer(0.5), "timeout")
 	

@@ -33,7 +33,7 @@ func _physics_process(delta):
 			
 			var alive_time = Server.client_clock/1000.0 - projectile_data.start_time
 			var vertical_move_vector = projectile_data.speed * projectile_data.direction.normalized() * last_active_time
-			var horizontal_move_vector = Vector2(-velocity.y, velocity.x) * expression.execute([time * 50]) * 0.05
+			var horizontal_move_vector = Vector2(-velocity.y, velocity.x) * expression.execute([time * 20]) * 0.05
 			
 			projectile_data.path += vertical_move_vector
 			position = projectile_data.path + horizontal_move_vector

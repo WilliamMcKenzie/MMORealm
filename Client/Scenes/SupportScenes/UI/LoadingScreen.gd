@@ -44,3 +44,9 @@ func Transition(place):
 
 func Countdown():
 	$LoadingAnimations.play("Countdown")
+
+func RealmClosed():
+	$LoadingAnimations.play("RealmClosed")
+func RealmClosedEnd():
+	$WhiteBG.modulate = Color(0,0,0,0)
+	$WhiteBG.visible = false

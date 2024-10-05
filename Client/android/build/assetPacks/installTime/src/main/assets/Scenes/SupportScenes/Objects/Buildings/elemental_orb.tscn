@@ -39,7 +39,7 @@ animations = [ {
 "frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
 "loop": true,
 "name": "default",
-"speed": 5.0
+"speed": 3.0
 } ]
 
 [node name="Statue" type="Node2D"]
@@ -64,5 +64,8 @@ shape = SubResource( 3 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 material = ExtResource( 2 )
-position = Vector2( 0, -4 )
+position = Vector2( 0, -7 )
+scale = Vector2( 1.4, 1.4 )
 frames = SubResource( 4 )
+frame = 3
+playing = true

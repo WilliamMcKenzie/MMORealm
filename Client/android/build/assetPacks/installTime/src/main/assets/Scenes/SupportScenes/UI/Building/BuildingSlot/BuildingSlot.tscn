@@ -54,7 +54,7 @@ font_data = ExtResource( 1 )
 [node name="0" type="TextureButton"]
 margin_right = 40.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
+rect_min_size = Vector2( 56, 40 )
 size_flags_vertical = 4
 expand = true
 script = ExtResource( 4 )
@@ -92,4 +92,4 @@ margin_top = -1.66667
 margin_right = 42.5
 margin_bottom = 26.3333
 custom_fonts/font = SubResource( 12 )
-text = "x20"
+text = "x0"

@@ -27,7 +27,7 @@ func DetermineCollisionSafePoint(pos, point, root, enemy_type):
 	
 	var spots_to_check = [Vector2(0,-dimensions.y/2), Vector2(-dimensions.x/2,0), Vector2(dimensions.x/2,0), Vector2(-dimensions.x/2,-dimensions.y), Vector2(dimensions.x/2,-dimensions.y)]
 	for spot in spots_to_check:
-		var collisions = space_state.intersect_point(point+root.position+spot, 1, [], 1, true, true)
+		var collisions = space_state.intersect_point(point+root.global_position+spot, 1, [], 1, true, true)
 		if collisions.size() > 0:
 			for collision in collisions:
 				if collision.collider.name == "TileMap":

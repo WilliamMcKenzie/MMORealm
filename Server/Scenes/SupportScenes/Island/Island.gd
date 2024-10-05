@@ -36,7 +36,7 @@ var loaded_chunks = {}
 # warning-ignore:unused_argument
 var sync_clock_counter = 0
 var sync_clock_counter_2 = 0
-var island_close_timer = 10
+var island_close_timer = 5
 var island_closed = false
 
 #Handle ruler
@@ -76,6 +76,10 @@ func HandleRuler(delta):
 	
 	if island_close_timer <= 0 and not island_closed and ServerData.GetEnemy(ruler).has("dungeon"):
 		island_closed = true
+		if GameplayLoop.bosses_status.has(ruler):
+			GameplayLoop.bosses_status[ruler] = false
+		GameplayLoop.Update()
+		
 		if get_parent().object_list.has(name):
 			get_parent().object_list.erase(name)
 		var dungeon = ServerData.GetEnemy(ruler).dungeon.name
@@ -99,11 +103,15 @@ func _physics_process(delta):
 			var enemy_data = enemy_list[enemy_id]
 			if(enemy_data["health"] < 1):
 				if enemy_data["name"] == ruler and ServerData.GetEnemy(ruler).has("dungeon"):
-					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
-					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
+					if not enemy_list[enemy_id]["dead"]:
+						var server = get_node("/root/Server")
+						for player_id in player_list.keys():
+							get_node("YSort/Players").get_node(player_id).GiveEffect("invincible", 10)
+							server.rpc_id(int(player_id), "RealmClosed", ruler_id, ServerData.GetEnemy(ruler).dungeon.name)
+					
 					enemy_list[enemy_id]["dead"] = true
-					if GameplayLoop.bosses_status.has(ruler):
-						GameplayLoop.bosses_status[ruler] = false
+					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
+					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()
 				else:
 					CalculateLootPool(enemy_data, enemy_id)
 					var chunk = CalculateChunk(enemy_data["position"])

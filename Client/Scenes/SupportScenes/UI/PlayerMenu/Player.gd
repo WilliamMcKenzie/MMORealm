@@ -17,11 +17,7 @@ func SetCharacter(character_data):
 	var level_node = root.get_node("VBoxContainer/HBoxContainer/Label2")
 	var level_text = ""
 	var gear_node = root.get_node("VBoxContainer/GearContainer")
-	
-	if character_data.level > 20:
-		level_text = "Lv. 20"
-	else:
-		level_text = "Lv. " + str(character_data.level)
+	level_text = "Lv. " + str(character_data.level)
 	
 	name_node.text = character_data.name
 	level_node.text = level_text

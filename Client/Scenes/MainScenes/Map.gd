@@ -1,4 +1,4 @@
-extends Node2D
+extends YSort
 
 var player_spawn = preload("res://Scenes/SupportScenes/PlayerCharacter/PlayerTemplate.tscn")
 var last_world_state = 0
@@ -181,7 +181,7 @@ func RefreshObjects(objects):
 		var scene_name = objects[object]["name"]+".tscn"
 		
 		#Loot bags
-		if type == "LootBags" and objects[object]["soulbound"] == true and objects[object]["name"] != "storage" and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
+		if type == "LootBags" and objects[object]["soulbound"] == true and not objects[object].has("permanent") and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
 			continue
 		
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):

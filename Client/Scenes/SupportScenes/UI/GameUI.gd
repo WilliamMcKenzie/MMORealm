@@ -65,20 +65,23 @@ func SetQuest(current_quest_data):
 		get_node("QuestMarker").RemoveQuest()
 
 func UpdateEnemyChatBubbles(id, text):
-	var base_node = get_node("ChatBubbles")
-	if not base_node.has_node(id):
-		var chat_bubble_instance = load("res://Scenes/SupportScenes/UI/EnemyChatBubble.tscn").instance()
-		chat_bubble_instance.name = id
-		base_node.add_child(chat_bubble_instance)
-	base_node.get_node(id).Update(id, text)
+	if id and Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()):
+		var scene = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance())
+		
+		if scene.has_node("YSort/Enemies/"+id):
+			var node = scene.get_node("YSort/Enemies/"+id+"/EnemyChatBubble")
+			node.Update(id,text)
 
 func UpdateChatBubbles(id, text):
-	var base_node = get_node("ChatBubbles")
-	if not base_node.has_node(id):
-		var chat_bubble_instance = load("res://Scenes/SupportScenes/UI/ChatBubble.tscn").instance()
-		chat_bubble_instance.name = id
-		base_node.add_child(chat_bubble_instance)
-	base_node.get_node(id).Update(id, text)
+	if id and Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()):
+		var scene = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance())
+		
+		if scene.has_node("YSort/OtherPlayers/"+id):
+			var node = scene.get_node("YSort/OtherPlayers/"+id+"/ChatBubble")
+			node.Update(id,text)
+		elif id == str(get_tree().get_network_unique_id()):
+			var node = scene.get_node("YSort/player/ChatBubble")
+			node.Update(id,text)
 	
 func UpdateNametags(id, classname, username):
 	var base_node = get_node("Nametags")

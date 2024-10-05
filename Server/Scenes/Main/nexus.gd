@@ -80,6 +80,9 @@ func _physics_process(delta):
 		
 		for enemy_id in enemy_list.keys():
 			var enemy_data = enemy_list[enemy_id]
+			var max_health = enemy_data["max_health"]
+			var health = enemy_data["health"]
+			
 			var enemy_name = enemy_data["name"]
 			var enemy_position = enemy_data["position"]
 			var behaviour = enemy_data["behavior"]
@@ -91,6 +94,13 @@ func _physics_process(delta):
 			var pattern_index = enemy_data["pattern_index"]
 			var phase_timer = enemy_data["phase_timer"]
 			var phase_index = enemy_data["phase_index"]
+			
+			if enemy_info.has("health_scaling"):
+				var ratio = health/max_health
+				var new_max_health = len(player_list.keys())*enemy_info.health_scaling + enemy_info.health
+				if new_max_health != max_health:
+					enemy_data["max_health"] = new_max_health
+					enemy_data["health"] = new_max_health*ratio
 			
 			for _effect in effects.keys():
 				effects[_effect] -= tick_rate
@@ -121,7 +131,7 @@ func _physics_process(delta):
 						_phase_index += 1
 						var used_phases = enemy_data["used_phases"]
 						var health_ratio = (enemy_data.health/enemy_data.max_health)*100
-						var health = health_ratio >= phase.health[0] and health_ratio <= phase.health[1] 
+						var health_okay = health_ratio >= phase.health[0] and health_ratio <= phase.health[1] 
 						
 						var used_before = used_phases.has(_phase_index)
 						var use_limit = phase.has("max_uses")
@@ -129,7 +139,7 @@ func _physics_process(delta):
 						var on_spawn = phase.has("on_spawn")
 						var possible = not use_limit or not used_before or (used_before and phase.max_uses > used_phases[_phase_index])
 						
-						if on_signal and health and possible:
+						if on_signal and health_okay and possible:
 							var has_signals = true
 							for _signal in phase["on_signal"]:
 								if not enemy_data["signals"].has(_signal):
@@ -143,10 +153,10 @@ func _physics_process(delta):
 						elif on_signal:
 							continue
 						
-						if on_spawn and health and possible:
+						if on_spawn and health_okay and possible:
 							possible_phases = [_phase_index]
 							break;
-						if health and possible:
+						if health_okay and possible:
 							possible_phases.append(_phase_index)
 					
 					if len(possible_phases) > 0:
@@ -172,7 +182,6 @@ func _physics_process(delta):
 							behaviour = new_phase["behavior"]
 						if new_phase.has("speed"):
 							enemy_data["speed"] = new_phase["speed"]
-				
 				var loops = 0
 				while pattern_timer <= 0 and loops < 64:
 					loops += 1
@@ -431,19 +440,21 @@ class SortByValue:
 		if a[1] < b[1]:
 			return true
 		return false
+
+var rng = RandomNumberGenerator.new()
 func CalculateLootPool(enemy, enemy_id, template = false, type = null):
-	randomize()
+	rng.randomize()
 	var templates = {
 		"building_materials" : {
 			"soulbound_loot" : [
 				{
 					"item" : 1,
-					"chance" : 0.01,
+					"chance" : 20,
 					"threshold" : 0.1,
 				},
 				{
 					"item" : 2,
-					"chance" : 0.01,
+					"chance" : 40,
 					"threshold" : 0.1,
 				},
 			],
@@ -489,7 +500,7 @@ func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 		}
 		
 		for item in loot_pool.soulbound_loot:
-			if randf() < item.chance and damage_percent > item.threshold:
+			if rng.randi_range(1,item.chance) == item.chance and damage_percent > item.threshold:
 				loot_bag.loot.append({
 					"item" : item.item,
 					"id" : get_node("/root/Server").generate_unique_id()
@@ -503,7 +514,7 @@ func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 		"loot" : []
 	}
 	for item in loot_pool.loot:
-		if randf() < item.chance:
+		if rng.randi_range(1,item.chance) == item.chance:
 			loot_bag.loot.append({
 				"item" : item.item,
 				"id" : get_node("/root/Server").generate_unique_id()
@@ -536,7 +547,7 @@ func GetBoatSpawnpoints():
 	taken_points.append(index)
 	return res[index]
 	
-func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750), ruler = "salazar_the_red"):
+func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750), ruler = null):
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if "island" in portal_name:
 		instance_id = portal_name + " " + instance_id
@@ -596,7 +607,8 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		dungeon_instance.name = instance_id
 		dungeon_instance.map = instance_map
 		dungeon_instance.dungeon_name = portal_name
-		dungeon_instance.dungeon_boss = ServerData.dungeons[portal_name].dungeon_boss
+		if ServerData.dungeons[portal_name].has("dungeon_boss"):
+			dungeon_instance.dungeon_boss = ServerData.dungeons[portal_name].dungeon_boss
 		dungeon_instance.room_size = ServerData.dungeons[portal_name].room_size
 		dungeon_instance.tile_translation = tile_translation
 		dungeon_instance.position = Instances.GetFreeInstancePosition()
@@ -613,11 +625,11 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		Instances.AddInstanceToTracker(instance_tree, instance_id)
 		return instance_id
 
-func SpawnNPC(npc_name, instance_tree, position):
+func SpawnNPC(npc_name, instance_tree, pos):
 	object_list[npc_name] = {
 		"name": npc_name,
 		"type":"Npcs",
 		"end_time": OS.get_system_time_msecs()+OS.get_system_time_msecs(),
-		"position": position,
+		"position": pos,
 		"instance_tree": instance_tree
 	}

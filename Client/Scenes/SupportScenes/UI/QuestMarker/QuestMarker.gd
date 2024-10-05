@@ -66,8 +66,9 @@ func OutsideScreen(ui_node):
 
 func SetQuest(quest):
 	visible = true
+	var level = GameUI.last_character.level
 	
-	if Server.GetCurrentInstance() == "nexus":
+	if Server.GetCurrentInstance() == "nexus" and level >= 16:
 		quest = {}
 		quest.position = Vector2(0,-25*8)
 		if {"docks":true} != current_quest:
@@ -75,6 +76,15 @@ func SetQuest(quest):
 			get_node("MarginContainer/TextureRect").texture.region = Rect2(Vector2.ZERO, Vector2(18,18))
 		current_quest = {"docks":true}
 		if Server.IsWithinRange(Vector2(0,-25*8), 13):
+			visible = false
+	elif Server.GetCurrentInstance() == "nexus" and level < 16:
+		quest = {}
+		quest.position = Vector2(-19*8,-39*8)
+		if {"docks":true} != current_quest:
+			get_node("MarginContainer/TextureRect").texture.atlas = load("res://Assets/objects/objects_16x16.png")
+			get_node("MarginContainer/TextureRect").texture.region = Rect2(Vector2.ZERO, Vector2(18,18))
+		current_quest = {"docks":true}
+		if Server.IsWithinRange(Vector2(-19*8,-39*8), 13):
 			visible = false
 	else:
 		var enemies_container = Server.get_node("../SceneHandler/"+Server.GetCurrentInstance()+"/YSort/Enemies")

@@ -42,7 +42,7 @@ points = PoolVector2Array( 9, 9, 1, 9, 1, 1, 9, 1 )
 "shape": SubResource( 2 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
-0/z_index = 1
+0/z_index = 0
 
 [node name="SpawnRoom" type="Node2D"]
 script = ExtResource( 2 )

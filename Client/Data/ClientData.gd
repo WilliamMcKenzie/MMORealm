@@ -41,7 +41,7 @@ var basic_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : -2,
-				"chance" : 0.05,
+				"chance" : 20,
 				"threshold" : 0.5,
 			},
 		],
@@ -51,7 +51,7 @@ var basic_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : -1,
-				"chance" : 0.3,
+				"chance" : 3,
 				"threshold" : 0.05,
 			},
 		],
@@ -61,7 +61,7 @@ var basic_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : -1,
-				"chance" : 0.5,
+				"chance" : 2,
 				"threshold" : 0.05,
 			},
 			{
@@ -81,7 +81,7 @@ var basic_loot_pools = {
 			},
 			{
 				"item" : 0,
-				"chance" : 0.5,
+				"chance" : 2,
 				"threshold" : 0.1,
 			},
 		],
@@ -99,37 +99,37 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 143,
-				"chance" : 0.003,
+				"chance" : 300,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 571,
-				"chance" : 0.003,
+				"chance" : 300,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 4,
-				"chance" : 0.01,
+				"chance" : 100,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 5,
-				"chance" : 0.01,
+				"chance" : 100,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 6,
-				"chance" : 0.01,
+				"chance" : 100,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 7,
-				"chance" : 0.05,
+				"chance" : 100,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 8,
-				"chance" : 0.05,
+				"chance" : 100,
 				"threshold" : 0.05,
 			},
 		],
@@ -140,7 +140,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 505,
-				"chance" : 0.003,
+				"chance" : 300,
 				"threshold" : 0.05,
 			},
 		],
@@ -151,7 +151,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 471,
-				"chance" : 0.003,
+				"chance" : 300,
 				"threshold" : 0.05,
 			},
 		],
@@ -162,7 +162,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 173,
-				"chance" : 0.005,
+				"chance" : 500,
 				"threshold" : 0.05,
 			},
 		],
@@ -178,7 +178,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 438,
-				"chance" : 0.003,
+				"chance" : 500,
 				"threshold" : 0.05,
 			},
 		],
@@ -189,12 +189,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 171,
-				"chance" : 0.0025,
-				"threshold" : 0.05,
-			},
-			{
-				"item" : 173,
-				"chance" : 0.01,
+				"chance" : 300,
 				"threshold" : 0.05,
 			},
 		],
@@ -205,7 +200,7 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 171,
-				"chance" : 0.005,
+				"chance" : 300,
 				"threshold" : 0.05,
 			},
 		],
@@ -216,12 +211,12 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 405,
-				"chance" : 0.006,
+				"chance" : 300,
 				"threshold" : 0.1,
 			},
 			{
 				"item" : 106,
-				"chance" : 0.006,
+				"chance" : 300,
 				"threshold" : 0.1,
 			},
 		],
@@ -232,12 +227,12 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 105,
-				"chance" : 0.004,
+				"chance" : 400,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 438,
-				"chance" : 0.01,
+				"chance" : 150,
 				"threshold" : 0.05,
 			},
 		],
@@ -253,22 +248,22 @@ var special_loot_pools = {
 		"soulbound_loot" : [
 			{
 				"item" : 142,
-				"chance" : 0.01,
+				"chance" : 250,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 104,
-				"chance" : 0.1,
+				"chance" : 10,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 404,
-				"chance" : 0.1,
+				"chance" : 10,
 				"threshold" : 0.05,
 			},
 			{
 				"item" : 504,
-				"chance" : 0.1,
+				"chance" : 10,
 				"threshold" : 0.05,
 			}
 		],
@@ -561,7 +556,7 @@ var projectile_databank = {
 		"DemonicWave_strong_medium" : {
 			"inherit" : "DemonicWave_mid_fast",
 			"damage" : 100,
-			"speed" : slow,
+			"speed" : med,
 			"tile_range" : 6,
 		},
 		"GiantDemonicBlast_strong_slow" : {
@@ -615,12 +610,12 @@ var projectile_databank = {
 		"DemonicBlast_strong_medium" : {
 			"inherit" : "DemonicBlast_mid_slow",
 			"damage" : 100,
-			"speed" : slow,
+			"speed" : med,
 		},
 		"DemonicBlast_strong_medium_short" : {
 			"inherit" : "DemonicBlast_mid_slow",
 			"damage" : 70,
-			"speed" : slow,
+			"speed" : med,
 			"tile_range" : 2,
 		},
 		"DemonicWave_mid_fast_short" : {
@@ -629,7 +624,7 @@ var projectile_databank = {
 			"damage" : 40,
 			"piercing" : false,
 			"wait" : 0,
-			"speed" : fast,
+			"speed" : 70,
 			"tile_range" : 2,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
@@ -1253,7 +1248,7 @@ var projectile_databank = {
 		"damage" : 100,
 		"piercing" : false,
 		"wait" : 0,
-		"speed" : fast,
+		"speed" : 70,
 		"tile_range" : 8,
 		"targeter" : "nearest",
 		"direction" : Vector2.ZERO,
@@ -1292,7 +1287,7 @@ var projectile_databank = {
 		"damage" : 70,
 		"piercing" : true,
 		"wait" : 0,
-		"speed" : fast,
+		"speed" : 70,
 		"tile_range" : 10,
 		"direction" : DegreesToVector(0),
 		"size" : small
@@ -1489,10 +1484,10 @@ func _ready():
 	
 	#Loot pools
 	
-	var high_chance = 0.15
-	var decent_chance = 0.1
-	var low_chance = 0.05
-	var rare_chance = 0.01
+	var high_chance = 6
+	var decent_chance = 10
+	var low_chance = 20
+	var rare_chance = 100
 	
 	for item_id in items.keys():
 		var item = items[item_id]
@@ -2857,6 +2852,32 @@ var tutorial_enemies = {
 	},
 }
 var realm_enemies = {
+	"whitebag_crab" : {
+		"scale" : 0.9,
+		"res" : 10,
+		"height" : 7,
+		"rect" : Rect2(Vector2(0,0), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
+		"health" : 50,
+		"defense" : 1,
+		"exp" : 10,
+		"behavior" : 1,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["lowlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Slash_1", 0, 1, "nearest"),
+				]
+			}
+		]
+	},
 	"crab" : {
 		"scale" : 0.9,
 		"res" : 10,
@@ -3210,7 +3231,7 @@ var realm_enemies = {
 			"soulbound_loot" : [
 				{
 					"item" : 172,
-					"chance" : 0.01,
+					"chance" : 1000,
 					"threshold" : 0.5,
 				},
 			],
@@ -5993,7 +6014,7 @@ var orc_vigil_enemies = {
 			},
 			{
 				"duration" : 8,
-				"health" : [25,75],
+				"health" : [0,50],
 				"behavior" : 2,
 				"speed" : 5,
 				"attack_pattern" : [
@@ -6005,18 +6026,30 @@ var orc_vigil_enemies = {
 					MakeProjectile("VigilBlastSmall_strong_fast", 45+90, 0, "nearest"),
 					MakeProjectile("VigilBlastSmall_strong_fast", 45+180, 0, "nearest"),
 					MakeProjectile("VigilBlastSmall_strong_fast", 45+270, 0, "nearest"),
-					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
-					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
-					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
-					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
-					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
-					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
-					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					
+					MakeProjectile("NeonArrow_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 30, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", -30, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 15, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", -15, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 30, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", -30, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 15, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", -15, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 30, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", -30, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 15, 0, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", -15, 0.2, "nearest"),
 				]
 			},
 			{
 				"duration" : 8,
-				"health" : [0,25],
+				"health" : [0,50],
 				"behavior" : 2,
 				"speed" : 10,
 				"attack_pattern" : [
@@ -6031,13 +6064,13 @@ var orc_vigil_enemies = {
 					
 					MakeProjectile("GiantBlast_fast", -25, 0.1, "nearest"),
 					MakeProjectile("NeonStar_strong_fast", 180, 0, "nearest"),
-					MakeProjectile("SmallBlast_strong_fast", -45, 0.1, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -45, 0, "nearest"),
 					MakeProjectile("Blast_strong_fast", -5, 0.1, "nearest"),
 					MakeProjectile("NeonStar_strong_fast", 220, 0, "nearest"),
 					MakeProjectile("SmallBlast_strong_fast", 0, 0.1, "nearest"),
 					MakeProjectile("GiantBlast_fast", 25, 0.1, "nearest"),
 					MakeProjectile("NeonStar_strong_fast", 160, 0, "nearest"),
-					MakeProjectile("SmallBlast_strong_fast", 30, 0.1, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 30, 0, "nearest"),
 					MakeProjectile("NeonStar_strong_fast", 200, 0, "nearest"),
 					MakeProjectile("Blast_strong_fast", -10, 0.1, "nearest"),
 				]
@@ -6112,8 +6145,8 @@ var frozen_fortress_enemies = {
 		"loot_pool" : {
 			"soulbound_loot" : [
 				{
-					"item" : 142,
-					"chance" : 0.002,
+					"item" : 106,
+					"chance" : 1000,
 					"threshold" : 0.5,
 				},
 			],
@@ -6141,7 +6174,7 @@ var frozen_fortress_enemies = {
 	"og_the_treacherous" : {
 		"scale" : 1,
 		"res" : 38,
-		"height" : 30,
+		"height" : 28,
 		"rect" : Rect2(Vector2(0,76), Vector2(190,38)),
 		"custom_hitbox" : Vector2(24,24),
 		"animations" : {
@@ -6713,7 +6746,7 @@ var desert_catacombs_enemies = {
 			"soulbound_loot" : [
 				{
 					"item" : 538,
-					"chance" : 0.001,
+					"chance" : 1000,
 					"threshold" : 0.5,
 				},
 			],
@@ -9167,14 +9200,14 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "UT",
 		
-		"rof" : 150,
+		"rof" : 200,
 		"stats" : {},
 		
 		"projectiles" : [
 			{
-				"damage" : [70,80],
+				"damage" : [60,70],
 				"projectile" : "IceSlash",
-				"formula" : "0",
+				"formula" : "sin(x)",
 				"piercing" : false,
 				"speed" : fast,
 				"tile_range" : 2,
@@ -9765,6 +9798,39 @@ var items = {
 		},
 		"textures" : {
 			"weaponTexture" : "h'jek_naga"
+		}
+	},
+	144 : {
+		"name": "Sceptre of The Void",
+		"description" : "A powerful sceptre with a dark spell",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "4",
+		
+		"rof" : 20,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [500,600],
+				"projectile" : "GiantVoid",
+				"formula" : "0",
+				"piercing" : true,
+				"speed" : 20,
+				"tile_range" : 7,
+				"size" : 7,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(11,6)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(232.0, 210.0, 65.0),
+			"weaponNew" : RgbToColor(154.0, 35.0, 193.0)
+		},
+		"textures" : {
 		}
 	},
 	166 : {
@@ -11389,6 +11455,12 @@ var projectiles = {
 		"rect" : Rect2(80,30,10,10),
 		"rotation" : 45,
 		"spin" : false,
+	},
+	"GiantVoid" : {
+		"rect" : Rect2(90,30,10,10),
+		"rotation" : 90,
+		"spin" : true,
+		"scale" : 1.4,
 	},
 	"Void1" : {
 		"rect" : Rect2(90,30,10,10),

@@ -17,13 +17,13 @@ modulate_color = Color( 0.752941, 0.184314, 0.184314, 1 )
 font_data = ExtResource( 1 )
 
 [node name="EnemyChatBubble" type="Node2D"]
-visible = false
 script = ExtResource( 3 )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_left = -78.0
-margin_top = -68.0
-margin_right = 78.0
+margin_left = -80.0
+margin_top = -100.0
+margin_right = 76.0
+margin_bottom = -32.0
 grow_vertical = 0
 custom_styles/panel = SubResource( 4 )
 

@@ -39,7 +39,7 @@ var projectile = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Project
 var projectile_pool = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Pool.tscn")
 
 #For player hierarchy
-var ysort = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
+var ysort_scene = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
 
 func Init():
 	current_instance_tree = ["nexus"]
@@ -148,7 +148,43 @@ remote func ReturnTokenVerificationResults(results):
 	else:
 		ErrorPopup.OpenPopup("Login failed")
 
-#Tutorial
+#REALM CLOSE
+remote func RealmClosed(ruler_id, dungeon_name):
+	var ysort = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort")
+	var enemies = ysort.get_node("Enemies")
+	
+	LoadingScreen.RealmClosed()
+	if ruler_id and enemies.has_node(ruler_id):
+		var enemy = enemies.get_node(ruler_id)
+		var camera = ysort.get_node("player/Camera2D").duplicate(true)
+		camera.set_script(load("res://Scenes/SupportScenes/PlayerCharacter/CameraShake.gd"))
+		enemy.add_child(camera)
+		camera.target = enemy
+		
+		var original_instance = current_instance_tree[len(current_instance_tree)-1]
+		camera.add_trauma(0.3)
+		while(current_instance_tree[len(current_instance_tree)-1] == original_instance):
+			camera.add_trauma(rand_range(0.1,0.25))
+			yield(get_tree().create_timer(0.1), "timeout")
+		
+		camera.queue_free()
+		ysort.get_node("player/Camera2D").current = true
+	else:
+		var camera = ysort.get_node("player/Camera2D")
+		camera.target = ysort.get_node("player")
+		
+		var original_instance = current_instance_tree[len(current_instance_tree)-1]
+		camera.add_trauma(0.3)
+		while(current_instance_tree[len(current_instance_tree)-1] == original_instance):
+			camera.add_trauma(rand_range(0.1,0.25))
+			yield(get_tree().create_timer(0.1), "timeout")
+		
+		camera.add_trauma(0)
+	LoadingScreen.Transition(IdentifierToString(dungeon_name))
+	yield(get_tree().create_timer(0.3), "timeout")
+	LoadingScreen.RealmClosedEnd()
+	
+#TUTORIAL
 func DialogueResponse(response):
 	rpc_id(1, "DialogueResponse", response)
 remote func StartTutorial():
@@ -240,9 +276,9 @@ func IncreaseStat(stat):
 #PLAYER SPAWNING
 remote func SpawnNewPlayer(player_id, spawn_position):
 	return
-	get_node("../SceneHandler/"+GetCurrentInstance()).SpawnNewPlayer(player_id, spawn_position)
+	GetCurrentInstanceNode().SpawnNewPlayer(player_id, spawn_position)
 remote func DespawnPlayer(player_id):
-	get_node("../SceneHandler/"+GetCurrentInstance()).DespawnPlayer(player_id)
+	GetCurrentInstanceNode().DespawnPlayer(player_id)
 
 #WORLD SYNCING
 func SendProjectile(projectile_data):
@@ -266,7 +302,7 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 		pass
 	elif has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
 		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)).ShootProjectile()
-	if get_node("../SceneHandler/"+GetCurrentInstance()).has_node("Pool"):
+	if GetCurrentInstanceNode().has_node("Pool"):
 		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
 			if child.is_active == false:
 				child.projectile_data = projectile_data
@@ -285,7 +321,7 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 remote func RemoveEnemyProjectile(id, instance_tree):
 	if instance_tree != current_instance_tree:
 		pass
-	if has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort") and get_node("../SceneHandler/"+GetCurrentInstance()).has_node("Pool"):
+	if has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort") and GetCurrentInstanceNode().has_node("Pool"):
 		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
 			if child.projectile_data and child.projectile_data.id == id:
 				child.DeActivate()
@@ -296,8 +332,8 @@ func SendPlayerState(player_state):
 		rpc_unreliable_id(1, "RecievePlayerState", player_state)
 
 remote func RecieveWorldState(world_state):
-	if get_node("../SceneHandler/"+GetCurrentInstance()):
-		get_node("../SceneHandler/"+GetCurrentInstance()).UpdateWorldState(world_state)
+	if GetCurrentInstanceNode():
+		GetCurrentInstanceNode().UpdateWorldState(world_state)
 	
 func UseAbility():
 	rpc_id(1, "UseAbility")
@@ -320,7 +356,7 @@ var last_nexus = 0
 func Nexus():
 	if GameUI.get_node("NpcDialogue").subject == "Final":
 		GameUI.get_node("GameButtons/HomeButton/TutorialArrow").visible = false
-	if "nexus" == GetCurrentInstance() or OS.get_system_time_msecs()-last_nexus < 100:
+	if "nexus" == GetCurrentInstance() or OS.get_system_time_msecs()-last_nexus < 500:
 		return
 	rpc_id(1, "Nexus")
 	last_nexus = OS.get_system_time_msecs()
@@ -328,7 +364,7 @@ remote func ConfirmNexus(spawnpoint = Vector2.ZERO):
 	LoadingScreen.Transition("")
 	yield(get_tree().create_timer(0.3), "timeout")
 	var nexus_instance = nexus.instance()
-	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	var map_instance = GetCurrentInstanceNode()
 	var ysort = map_instance.get_node("YSort")
 	for object in ysort.get_node("Objects/Npcs").get_children():
 		object.queue_free()
@@ -337,7 +373,7 @@ remote func ConfirmNexus(spawnpoint = Vector2.ZERO):
 	nexus_instance.get_node("YSort/player").global_position = spawnpoint
 	
 	nexus_instance.name = "nexus"
-	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
+	GetCurrentInstanceNode().queue_free()
 	get_node("../SceneHandler").add_child(nexus_instance)
 	current_instance_tree = ["nexus"]
 
@@ -355,13 +391,13 @@ remote func UpdateHouseData(house_data):
 	GameUI.get_node("Building").SetHouseData(house_data)
 
 remote func UpdateHouseTiles(tiles):
-	var house_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	var house_instance = GetCurrentInstanceNode()
 	house_instance.UpdateTiles(tiles)
 	
 remote func ReturnHouseData(instance_data):
 	LoadingScreen.Transition(instance_data.Name + "'s House")
 	var house_instance = house_container.instance()
-	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	var map_instance = GetCurrentInstanceNode()
 	
 	var ysort = map_instance.get_node("YSort")
 	for object in ysort.get_node("Objects/Npcs").get_children():
@@ -372,7 +408,7 @@ remote func ReturnHouseData(instance_data):
 	house_instance.name = instance_data["Id"]
 	house_instance.PopulateHouse(instance_data)
 	
-	get_node("../SceneHandler").remove_child(get_node("../SceneHandler/"+GetCurrentInstance()))
+	get_node("../SceneHandler").remove_child(GetCurrentInstanceNode())
 	get_node("../SceneHandler").add_child(house_instance)
 	current_instance_tree = ["nexus", instance_data["Id"]]
 
@@ -381,7 +417,7 @@ remote func Wave(gold, wave):
 
 remote func ReturnArenaData(instance_data):
 	var arena_instance = arena_container.instance()
-	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	var map_instance = GetCurrentInstanceNode()
 	
 	var ysort = map_instance.get_node("YSort")
 	for object in ysort.get_node("Objects/Npcs").get_children():
@@ -391,14 +427,14 @@ remote func ReturnArenaData(instance_data):
 	arena_instance.get_node("YSort/player").global_position = instance_data["Position"]
 	arena_instance.name = instance_data["Id"]
 	
-	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
+	GetCurrentInstanceNode().queue_free()
 	get_node("../SceneHandler").add_child(arena_instance)
 	current_instance_tree.append(instance_data["Id"])
 	LoadingScreen.Countdown()
 
 remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
-	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	var map_instance = GetCurrentInstanceNode()
 	
 	var ysort = map_instance.get_node("YSort")
 	for object in ysort.get_node("Objects/Npcs").get_children():
@@ -406,17 +442,18 @@ remote func ReturnDungeonData(instance_data):
 	map_instance.remove_child(ysort)
 	dungeon_instance.add_child(ysort)
 	dungeon_instance.get_node("YSort/player").global_position = instance_data["Position"]
+	dungeon_instance.get_node("YSort/player/Camera2D").current = true
 	
 	dungeon_instance.name = instance_data["Id"]
 	dungeon_instance.PopulateDungeon(instance_data)
 	
-	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
+	GetCurrentInstanceNode().queue_free()
 	get_node("../SceneHandler").add_child(dungeon_instance)
 	current_instance_tree.append(instance_data["Id"])
 
 remote func ReturnIslandData(instance_data):
 	var island_instance = island_container.instance()
-	var map_instance = get_node("../SceneHandler/"+GetCurrentInstance())
+	var map_instance = GetCurrentInstanceNode()
 
 	var ysort = map_instance.get_node("YSort")
 	for object in ysort.get_node("Objects/Npcs").get_children():
@@ -426,7 +463,7 @@ remote func ReturnIslandData(instance_data):
 	island_instance.get_node("YSort/player").global_position = instance_data["Position"]
 	island_instance.name = instance_data["Id"]
 	
-	get_node("../SceneHandler/"+GetCurrentInstance()).queue_free()
+	GetCurrentInstanceNode().queue_free()
 	get_node("../SceneHandler").add_child(island_instance)
 	current_instance_tree.append(instance_data["Id"])
 
@@ -448,14 +485,14 @@ func BuildBuilding(type):
 func FetchIslandChunk(chunk):
 	rpc_id(1, "FetchIslandChunk", chunk)
 remote func ReturnIslandChunk(chunk_data, chunk):
-	get_node("../SceneHandler/"+GetCurrentInstance()).GenerateChunk(chunk_data, chunk)
+	GetCurrentInstanceNode().GenerateChunk(chunk_data, chunk)
 
 #For enemies and stuff
 #Called 20 times per second
 func FetchChunkData(chunk):
 	rpc_id(1, "FetchChunkData", chunk)
 remote func ReturnChunkData(chunk_data, chunk):
-	get_node("../SceneHandler/"+GetCurrentInstance()).UpdateChunk(chunk_data, chunk)
+	GetCurrentInstanceNode().UpdateChunk(chunk_data, chunk)
 
 remote func ShowExpIndicator(xp):
 	get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").ShowExpIndicator(xp)
@@ -474,8 +511,8 @@ func NPCHit(enemy_id, damage):
 	
 func CreatePool(amount):
 	var new_pool = projectile_pool.instance()
-	get_node("../SceneHandler/"+GetCurrentInstance()).add_child(new_pool)
-	get_node("../SceneHandler/"+GetCurrentInstance()).move_child(new_pool, 0)
+	GetCurrentInstanceNode().add_child(new_pool)
+	GetCurrentInstanceNode().move_child(new_pool, 0)
 	for i in range(amount):
 		new_pool.add_child(projectile.instance())
 

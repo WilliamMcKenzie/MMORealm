@@ -25,6 +25,7 @@ var player_name_by_id = {}
 var player_id_by_name = {}
 
 func _ready():
+	randomize()
 	VisualServer.render_loop_enabled = false
 	StartHTMLServer()
 	GameplayLoop.CreateIslandTemplate()
@@ -34,6 +35,7 @@ func _ready():
 	#Open realm
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
 	#get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "salazar")
+	#var island_id = null
 	var island_id = get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
@@ -41,8 +43,6 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(100,100), "tutorial_troll_king")
 	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
-	
-	
 	
 	for i in range(0):
 		var container = PlayerVerification.CreateFakePlayerContainer()
@@ -146,7 +146,6 @@ remote func DialogueResponse(response):
 	var current_instance_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 	var player_container = current_instance_node.get_node("YSort/Players/"+str(player_id))
 	
-	player_container.account_data.time_tracker = {}
 	var time_tracker = player_container.account_data.time_tracker
 	var time = OS.get_datetime()
 	var day = time["day"]
@@ -527,7 +526,7 @@ remote func SendPlayerProjectile(projectile_data):
 	var player_id = get_tree().get_rpc_sender_id()
 	var instance_tree = player_state_collection[player_id]["I"]
 	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
-	if not player_container:
+	if not player_container or not player_container.gear.has("weapon"):
 		return
 	
 	var weapon = player_container.gear.weapon
@@ -568,7 +567,7 @@ remote func NPCHit(enemy_id, damage):
 			which_achievement = "staff_projectiles"
 		if weapon_type == "Sword":
 			which_achievement = "sword_projectiles"
-
+	
 	if get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list.has(str(enemy_id)):
 		var enemy_container = get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]
 		var total_damage = floor(damage - ServerData.GetEnemy(enemy_container.name).defense)
@@ -819,19 +818,27 @@ remote func RecieveChatMessage(message):
 				var commands = ["Commands:", "/help (command list)", "/home (go to your house)", "/home username (go to username's house if you are allowed)", "/players (list of online players)", "/trade username (send trade offer to username)", "/tp username (teleport to username)"]
 				for command in commands:
 					rpc_id(player_id, "RecieveChat", command, "System")
+			if message_words[0] == "/closerealm":
+					rpc_id(player_id, "MovePlayer", instance_node.enemy_list[instance_node.ruler_id]["position"]+Vector2(0,50))
+					yield(get_tree().create_timer(2), "timeout")
+					instance_node.enemy_list[instance_node.ruler_id]["health"] = 0
+			if message_words[0] == "/closeallrealms":
+					for node in instance_node.get_children():
+						if "island" in node.name and node.ruler_id:
+							node.enemy_list[node.ruler_id]["health"] = 0
+			if message_words[0] == "/roll" and message_words.size() > 2:
+				for i in range(int(message_words[2])):
+					instance_node.CalculateLootPool({ "position" : player_position, "name" : message_words[1], "damage_tracker" : { player_id : 123 }, "max_health" : 1 }, 12312)
 			if players_online_alternatives.has(message_words[0]):
 				var connected_players = get_tree().get_network_connected_peers()
 				var players_online = ""
 				var count = 0
-				for username in player_id_by_name.keys():
-					if not connected_players.has(player_id_by_name[username]):
-						continue
-					
-					count += 1
-					if count < 10:
-						players_online += username
-						players_online += ", "
-				players_online.erase(players_online.length() - 2, 2)
+				for id in connected_players:
+					if player_name_by_id.has(id):
+						count += 1
+						if count < 10:
+							players_online += player_name_by_id[id]
+							players_online += ", "
 				if count >= 10:
 					players_online += "..."
 				rpc_id(player_id, "RecieveChat", "There are " + str(count) + " players online: " + str(players_online), "System")
@@ -893,7 +900,9 @@ remote func RecieveChatMessage(message):
 					player_container.AddExp(int(message_words[1]), "Ghoul", "123")
 				if message_words[0] == "/invincible":
 					player_container.GiveEffect("invincible", 99999)
-				if message_words[0] == "/d":
+				if message_words[0] == "/d" and message_words[1] == "island" and len(message_words) == 3:
+					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal("island", instance_tree, player_position, Vector2(750,750), message_words[2])
+				elif message_words[0] == "/d":
 					if message.substr(3,-1) in ServerData.dungeons.keys():
 						get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal(message.substr(3,-1), instance_tree, player_position)
 						rpc_id(player_id, "RecieveChat", "You have opened a " + message.substr(3,-1), "System")

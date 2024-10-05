@@ -36,13 +36,13 @@ func WallCollision(area):
 
 func _physics_process(delta):
 	if ClientData.GetProjectile(projectile).spin:
-		$Sprite.rotation_degrees += delta
+		rotation_degrees += 5
 	
 	time += delta
 	expression.parse(formula,["x"])
 	var initial_offset = velocity * delta
 	path = path + initial_offset
-	var pattern_offset = Vector2(-velocity.y, velocity.x) * expression.execute([time * 50]) * 0.05
+	var pattern_offset = Vector2(-velocity.y, velocity.x) * expression.execute([time * 20]) * 0.05
 	position = path + pattern_offset
 	if (position - initial_position).length()/8 > tile_range:
 		queue_free()
