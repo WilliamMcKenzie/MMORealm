@@ -72,6 +72,7 @@ func _physics_process(delta):
 		var instance_tree = ["nexus", house_id]
 		get_node("/root/Server").get_node("Instances/nexus/"+house_id).SaveData()
 		
+		account_data.last_online = OS.get_datetime()
 		HubConnection.UpdateAccountData(email, account_data)
 	
 	if clock_sync_timer % 10 == 0:
@@ -301,7 +302,7 @@ func HandleFake():
 func ManageHealing():
 	heal_rate = 4.0/(character.stats.vitality*6*(character.stats.health/500.0))
 	if status_effects.has("healing"):
-		heal_rate = 4.0/(character.stats.vitality*18*(character.stats.health/500.0))
+		heal_rate = 4.0/(character.stats.vitality*10*(character.stats.health/500.0))
 	for i in range(floor((running_time-last_tick)/heal_rate)):
 		last_tick = running_time
 		if health < character.stats.health:
@@ -318,6 +319,17 @@ var other_player_container
 var other_player_inventory = []
 var other_player_selection = [false,false,false,false,false,false,false,false]
 var selection = [false,false,false,false,false,false,false,false]
+
+func GiveItem(item_id, delay = 0):
+	yield(get_tree().create_timer(delay), "timeout")
+	
+	var server = get_node("/root/Server")
+	var instance_tree = server.player_state_collection[int(name)]["I"]
+	server.get_node("Instances/"+server.StringifyInstanceTree(instance_tree)).SpawnLootBag([ 
+		{
+			"item" : item_id,
+			"id" : server.generate_unique_id()
+		}], int(name), instance_tree, self.position)
 
 func StartTrade(other_player_name):
 	ResetTrade()

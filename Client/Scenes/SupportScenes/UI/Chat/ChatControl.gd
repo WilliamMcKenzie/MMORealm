@@ -83,6 +83,7 @@ func _unhandled_input(event):
 		chat_input.visible = true
 
 func _physics_process(delta):
+	interacted = false
 	if not interacted:
 		scroll_container.scroll_vertical = scroll_container.get_v_scrollbar().max_value
 	if scroll_container.scroll_vertical == scroll_container.get_v_scrollbar().max_value:
@@ -109,3 +110,13 @@ func _physics_process(delta):
 		chat_input.caret_position = chat_input.text.length()
 		if GameUI.is_in_menu and GameUI.last_menu != "trade":
 			GameUI.Toggle(GameUI.last_menu)
+
+func _on_ScrollContainer_scroll_started():
+	print("s")
+	interacted = true
+func _on_ScrollContainer_mouse_entered():
+	$PanelContainer/VBoxContainer/ScrollContainer.emit_signal("focus_entered")
+	#print("What")
+
+func _on_ScrollContainer_focus_entered():
+	interacted = true

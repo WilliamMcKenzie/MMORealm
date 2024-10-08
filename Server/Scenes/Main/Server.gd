@@ -819,7 +819,7 @@ remote func RecieveChatMessage(message):
 				for command in commands:
 					rpc_id(player_id, "RecieveChat", command, "System")
 			if message_words[0] == "/closerealm":
-					rpc_id(player_id, "MovePlayer", instance_node.enemy_list[instance_node.ruler_id]["position"]+Vector2(0,50))
+					#rpc_id(player_id, "MovePlayer", instance_node.enemy_list[instance_node.ruler_id]["position"]+Vector2(0,50))
 					yield(get_tree().create_timer(2), "timeout")
 					instance_node.enemy_list[instance_node.ruler_id]["health"] = 0
 			if message_words[0] == "/closeallrealms":
@@ -829,6 +829,8 @@ remote func RecieveChatMessage(message):
 			if message_words[0] == "/roll" and message_words.size() > 2:
 				for i in range(int(message_words[2])):
 					instance_node.CalculateLootPool({ "position" : player_position, "name" : message_words[1], "damage_tracker" : { player_id : 123 }, "max_health" : 1 }, 12312)
+			if message_words[0] == "/giveitem":
+				player_container.GiveItem(int(message_words[1]))
 			if players_online_alternatives.has(message_words[0]):
 				var connected_players = get_tree().get_network_connected_peers()
 				var players_online = ""

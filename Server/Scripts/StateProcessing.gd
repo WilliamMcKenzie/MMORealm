@@ -42,6 +42,9 @@ func _physics_process(delta):
 func SendIslandData(instance_tree):
 	var server = get_node("/root/Server")
 	var world_state_base = { "E" : {}, "P" : {}, "O" : {}, "T" : OS.get_system_time_msecs() }
+	if not has_node("/root/Server/Instances/"+server.StringifyInstanceTree(instance_tree)):
+		return
+	
 	var node = get_node("/root/Server/Instances/"+server.StringifyInstanceTree(instance_tree))
 	node.object_list = CleanObjects(node.object_list).duplicate(true)
 	

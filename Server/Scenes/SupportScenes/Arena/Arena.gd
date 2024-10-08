@@ -125,6 +125,8 @@ func _process(delta):
 			gold += _gold
 			server.rpc_id(int(name.split(" ")[1]),"Wave", gold, wave)
 		if $YSort/Players.get_child_count() > 0:
+			if arena_type == "monthly":
+				$YSort/Players.get_children()[0].GiveItem(499, 1)
 			$YSort/Players.get_children()[0].DealDamage(999, "Gladius")
 	elif wave_countdown < 0:
 		wave_countdown = 2

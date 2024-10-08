@@ -92,6 +92,7 @@ func StartSubject(_subject):
 	subject = _subject
 	speech_index = 0
 	last_start = OS.get_system_time_msecs()
+	
 	$Character.texture.region.position = subject_data[subject].character_rect
 	Talk()
 

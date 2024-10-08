@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
@@ -425,6 +425,34 @@ tracks/21/keys = {
 "values": [ Color( 1, 1, 1, 0 ) ]
 }
 
+[sub_resource type="Animation" id=20]
+resource_name = "RealmClosed"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("WhiteBG:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("WhiteBG:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
 [sub_resource type="Animation" id=5]
 resource_name = "Transition"
 length = 2.0
@@ -685,6 +713,7 @@ autoplay = "BootSplash"
 anims/BootSplash = SubResource( 7 )
 anims/Countdown = SubResource( 11 )
 anims/RESET = SubResource( 4 )
+anims/RealmClosed = SubResource( 20 )
 anims/Transition = SubResource( 5 )
 anims/Waiting = SubResource( 3 )
 anims/Wave = SubResource( 16 )

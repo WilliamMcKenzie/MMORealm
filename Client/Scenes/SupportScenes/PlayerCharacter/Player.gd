@@ -59,7 +59,7 @@ func SetCharacter(_character):
 				stats[stat] += gear[slot].stats[stat]
 	
 	if gear.has("weapon"):
-		time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100.0)
+		time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 100)) / (gear.weapon.rof/100.0)
 		if character.status_effects.has("berserk"):
 			time_between_shots /= (125.0/100.0)
 	else:
@@ -305,7 +305,7 @@ func ShootProjectile(projectile_data, projectile_index):
 	get_parent().get_node(projectile_instance.name).look_at(position+100*OffsetProjectileAngle(direction, offset))
 
 func CalculateDamageWithMultiplier(damage):
-	var base_damage = (damage*(0.5 + (float(stats.attack)/float(50))))
+	var base_damage = (damage*(0.5 + (float(stats.attack)/float(100))))
 	var multipliers = ClientData.GetMultiplier(character.gear["weapon"].item)
 	
 	if multipliers.has("damage"):

@@ -1080,12 +1080,6 @@ bg_color = Color( 0, 0, 0, 0.682353 )
 [node name="GameUI" type="CanvasLayer"]
 script = ExtResource( 3 )
 
-[node name="ChatBubbles" type="Control" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-
 [node name="QuestMarker" parent="." instance=ExtResource( 30 )]
 visible = false
 margin_left = 669.0

@@ -1,7 +1,8 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Effects.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/Player.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/CameraShake.gd" type="Script" id=3]
 [ext_resource path="res://Assets/characters/characters_8x8.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/SupportScenes/PlayerCharacter/ColorGear.gd" type="Script" id=5]
 [ext_resource path="res://Assets/ui/bluesky.png" type="Texture" id=6]
@@ -9,6 +10,7 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/attack_joystick.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/MoveJoystick.gd" type="Script" id=9]
 [ext_resource path="res://Scenes/SupportScenes/UI/Joystick/AttackJoystick.gd" type="Script" id=10]
+[ext_resource path="res://Scenes/SupportScenes/UI/ChatBubble.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=12]
 
 [sub_resource type="AnimationNodeAnimation" id=81]
@@ -399,11 +401,11 @@ region_rect = Rect2( 0, 200, 80, 40 )
 script = ExtResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 0, 7 )
-offset = Vector2( 0, -12.396 )
+position = Vector2( 0, -5 )
 current = true
 zoom = Vector2( 0.2, 0.2 )
 process_mode = 0
+script = ExtResource( 3 )
 
 [node name="Axis" type="Area2D" parent="."]
 visible = false
@@ -424,6 +426,10 @@ position = Vector2( -0.5, -10 )
 
 [node name="ZContainer" parent="." instance=ExtResource( 1 )]
 visible = true
+
+[node name="ChatBubble" parent="." instance=ExtResource( 11 )]
+position = Vector2( 0, 4.76837e-07 )
+scale = Vector2( 0.2, 0.2 )
 
 [node name="Joysticks" type="CanvasLayer" parent="."]
 

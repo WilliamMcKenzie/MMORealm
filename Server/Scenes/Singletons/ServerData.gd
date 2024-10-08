@@ -275,13 +275,13 @@ var small = 3
 var medium = 4
 var large = 5
 
-var fast = 50
-var med = 30
+var fast = 70
+var med = 40
 var slow = 20
 
 var weak = 50
-var mid = 100
-var strong = 150
+var mid = 120
+var strong = 160
 
 var projectile_databank = {
 	"RockBlastSmall_mid_fast" : {
@@ -8767,8 +8767,16 @@ func CompileEnemies():
 	return res
 
 var dungeons = {
-	"island" : {},
+	"island" : {
+		"difficulty" : "NA",
+		"dungeon_boss" : "salazar",
+		"portal_rect" : [0,0,"objects_16x16"],
+		"enemies" : [realm_enemies, rulers]
+	},
 	"orc_vigil" : {
+		"difficulty" : "Medium",
+		"group_size" : "1-10",
+		"portal_rect" : [10,0,"objects_8x8"],
 		"type" : "encounter",
 		"dungeon_boss" : "vigil_guardian",
 		"room_size" : 100,
@@ -8779,6 +8787,9 @@ var dungeons = {
 		}
 	},
 	"orc_vigil_sanctum" : {
+		"difficulty" : "Hard",
+		"group_size" : "5-20",
+		"portal_rect" : [20,0,"objects_8x8"],
 		"type" : "encounter",
 		"dungeon_boss" : "atlas",
 		"room_size" : 100,
@@ -8788,6 +8799,9 @@ var dungeons = {
 		}
 	},
 	"the_abyss" : {
+		"difficulty" : "Hard",
+		"group_size" : "5-20",
+		"portal_rect" : [90,0,"objects_8x8"],
 		"type" : "encounter",
 		"dungeon_boss" : "salazar,_rex_of_the_abyss",
 		"room_size" : 100,
@@ -8797,6 +8811,9 @@ var dungeons = {
 		}
 	},
 	"frozen_fortress" : {
+		"difficulty" : "Hard",
+		"group_size" : "5-20",
+		"portal_rect" : [30,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "frozen_monolith",
 		"basic_rooms" : ["Room1","Room2"],
@@ -8811,6 +8828,9 @@ var dungeons = {
 		}
 	},
 	"cloud_isles" : {
+		"difficulty" : "Medium",
+		"group_size" : "1-10",
+		"portal_rect" : [80,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "pohaku",
 		"basic_rooms" : ["Room1","Room2","Room3"],
@@ -8825,6 +8845,9 @@ var dungeons = {
 		}
 	},
 	"desert_catacombs" : {
+		"difficulty" : "Medium",
+		"group_size" : "1-10",
+		"portal_rect" : [40,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "mummified_king",
 		"basic_rooms" : ["Room1", "Room2", "Room3"],
@@ -8838,6 +8861,9 @@ var dungeons = {
 		}
 	},
 	"rocky_cave" : {
+		"difficulty" : "Easy",
+		"group_size" : "1-3",
+		"portal_rect" : [60,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "rokk_the_rough",
 		"basic_rooms" : ["Room1", "Room2", "Room3"],
@@ -8851,6 +8877,9 @@ var dungeons = {
 		}
 	},
 	"ruined_temple" : {
+		"difficulty" : "Hard",
+		"group_size" : "5-20",
+		"portal_rect" : [50,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "eye_of_naa'zorak",
 		"basic_rooms" : ["Room1", "Room2", "Room3"],
@@ -9709,37 +9738,26 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [40,65],
-				"projectile" : "Fire2",
+				"damage" : [20,30],
+				"projectile" : "Fire1",
 				"formula" : "0",
 				"piercing" : false,
 				"speed" : med,
 				"tile_range" : 5,
 				"size" : 3,
-				"offset_variation" : 30,
+				"offset_variation" : 45,
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [10,20],
+				"damage" : [20,30],
 				"projectile" : "Fire1",
 				"formula" : "0",
 				"piercing" : false,
 				"speed" : med,
-				"tile_range" : 4,
+				"tile_range" : 5,
 				"size" : 3,
-				"offset_variation" : 20,
-				"offset" : DegreesToVector(-25),
-			},
-			{
-				"damage" : [10,20],
-				"projectile" : "Fire1",
-				"formula" : "0",
-				"piercing" : false,
-				"speed" : med,
-				"tile_range" : 4,
-				"size" : 3,
-				"offset_variation" : 20,
-				"offset" : DegreesToVector(25),
+				"offset_variation" : 45,
+				"offset" : DegreesToVector(0),
 			},
 		],
 		
@@ -9861,7 +9879,7 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "4",
 		
-		"rof" : 20,
+		"rof" : 13,
 		"stats" : {
 					
 		},
@@ -10293,7 +10311,7 @@ var items = {
 		"stats" : {
 			"defense" : 14,
 			"vitality" : 5,
-			"health" : 50
+			"health" : 100
 		},
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,4)],
@@ -11043,18 +11061,14 @@ var items = {
 		
 		"cooldown" : 10,
 		"buffs" : {
-			"invincible" : { "duration" : 3, "range" : 0},
 			"healing" : { "duration" : 3, "range" : 6},
 			"berserk" : { "duration" : 3, "range" : 6},
 			"armored" : { "duration" : 3, "range" : 6},
 		},
 		"stats" : {
-			"health" : 100,
-			"vitality" : 10,
-			"attack" : 10,
-			"dexterity" : 10,
-			"speed" : 10,
-			"defense" : 10,
+			"dexterity" : 5,
+			"vitality" : 5,
+			"defense" : 5,
 		},
 		"tier" : "UT",
 		
@@ -11514,7 +11528,7 @@ var projectiles = {
 		"rect" : Rect2(90,30,10,10),
 		"rotation" : 90,
 		"spin" : true,
-		"scale" : 2,
+		"scale" : 1.6,
 	},
 	"Void1" : {
 		"rect" : Rect2(90,30,10,10),
@@ -12464,3 +12478,21 @@ func GetAchievement(achievement):
 		return achievements[achievement]
 	else:
 		return null
+
+func CompileJSON():
+	var result = {
+		"Enemies" : enemies,
+		"Dungeons" : dungeons,
+		"Achievements" : achievements,
+		"Projectiles" : projectiles,
+		"ProjectileDatabase" : projectile_databank,
+		"Classes" : characters,
+		"AchievementCatagories" : achievement_catagories,
+		"Items" : items,
+		"Buildings" : buildings
+	}
+	
+	var f = File.new()
+	f.open("res://Data/Data.json", File.WRITE)
+	f.store_string(JSON.print(result, "  ", true))
+	f.close()

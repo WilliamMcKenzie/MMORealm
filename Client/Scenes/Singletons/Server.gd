@@ -47,6 +47,10 @@ func Init():
 var player_position
 var latency_timer = 59
 func _physics_process(delta):
+	if (html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED ||
+		html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
+		html_network.poll();
+	
 	latency_timer += 1
 	client_clock = OS.get_system_time_msecs()+latency
 	
@@ -66,11 +70,6 @@ func UpdateLeftJoystick(output):
 #Check if vector is within a certain range of player
 func IsWithinRange(_vector, _range = 16):
 	return true if (player_position.distance_to(_vector) <= _range*8) else false
-
-func _process(delta):
-	if (html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED ||
-		html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
-		html_network.poll();
 
 func ConnectToServerHTML():
 	if not token:

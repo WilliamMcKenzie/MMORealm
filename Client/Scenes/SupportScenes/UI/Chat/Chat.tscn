@@ -264,7 +264,6 @@ rect_clip_content = true
 margin_right = 240.0
 margin_bottom = 140.0
 rect_min_size = Vector2( 180, 140 )
-mouse_filter = 2
 theme = SubResource( 21 )
 follow_focus = true
 scroll_horizontal_enabled = false
@@ -512,5 +511,9 @@ anims/Hide = SubResource( 25 )
 anims/RESET = SubResource( 26 )
 anims/Show = SubResource( 28 )
 
+[connection signal="focus_entered" from="PanelContainer/VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_focus_entered"]
+[connection signal="mouse_entered" from="PanelContainer/VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_mouse_entered"]
+[connection signal="scroll_ended" from="PanelContainer/VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_scroll_ended"]
+[connection signal="scroll_started" from="PanelContainer/VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_scroll_started"]
 [connection signal="text_entered" from="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput" to="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput" method="_on_ChatInput_text_entered"]
 [connection signal="text_entered" from="HiddenContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput" to="HiddenContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput" method="_on_ChatInput_text_entered"]

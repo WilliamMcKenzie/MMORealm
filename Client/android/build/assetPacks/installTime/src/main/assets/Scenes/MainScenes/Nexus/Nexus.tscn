@@ -3,13 +3,14 @@
 [ext_resource path="res://Resources/nexus_tilemap.tres" type="TileSet" id=2]
 [ext_resource path="res://Scenes/MainScenes/Map.gd" type="Script" id=3]
 
-[node name="nexus" type="Node2D"]
+[node name="nexus" type="YSort"]
 script = ExtResource( 3 )
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 8, 8 )
 cell_custom_transform = Transform2D( 8, 0, 0, 8, 0, 0 )
+cell_tile_origin = 2
 centered_textures = true
 collision_mask = 23
 format = 1
@@ -19,6 +20,8 @@ tile_data = PoolIntArray( -5439500, 0, 0, -5439499, 0, 0, -5439498, 0, 0, -54394
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 8, 8 )
 cell_custom_transform = Transform2D( 8, 0, 0, 8, 0, 0 )
+cell_tile_origin = 2
+cell_y_sort = true
 show_collision = true
 centered_textures = true
 collision_mask = 23

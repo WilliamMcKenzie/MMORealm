@@ -1560,7 +1560,7 @@ func _ready():
 			basic_loot_pools["encounter_2"].soulbound_loot.append({
 				"item" : item_id,
 				"chance" : low_chance,
-				"threshold" : 0.05,
+				"threshold" : 0.2,
 			})
 	
 	for enemy_name in special_loot_pools.keys():
@@ -1626,6 +1626,7 @@ var rulers = {
 			"Death" : [4],
 		},
 		
+		"health_scaling" : 10000,
 		"health" : 50000,
 		"defense" : 10,
 		"exp" : 2000,
@@ -2054,6 +2055,7 @@ var rulers = {
 			"Death" : [4],
 		},
 		
+		"health_scaling" : 10000,
 		"health" : 30000,
 		"defense" : 10,
 		"exp" : 2000,
@@ -2248,6 +2250,7 @@ var rulers = {
 			"Death" : [4],
 		},
 		
+		"health_scaling" : 10000,
 		"health" : 25000,
 		"defense" : 20,
 		"exp" : 2000,
@@ -2426,6 +2429,7 @@ var rulers = {
 			"Death" : [2],
 		},
 		
+		"health_scaling" : 10000,
 		"health" : 70000,
 		"defense" : 10,
 		"exp" : 10000,
@@ -5720,7 +5724,8 @@ var orc_vigil_enemies = {
 			"Attack" : [1],
 		},
 		
-		"health" : 20000,
+		"health_scaling" : 10000,
+		"health" : 50000,
 		"defense" : 20,
 		"exp" : 6000,
 		"behavior" : 0,
@@ -5878,6 +5883,7 @@ var orc_vigil_enemies = {
 			"Attack" : [1],
 		},
 		
+		"health_scaling" : 1000,
 		"health" : 2000,
 		"defense" : 1,
 		"exp" : 2000,
@@ -5920,6 +5926,7 @@ var orc_vigil_enemies = {
 			"Attack" : [1,2],
 		},
 		
+		"health_scaling" : 20000,
 		"health" : 140000,
 		"defense" : 10,
 		"exp" : 10000,
@@ -5954,6 +5961,28 @@ var orc_vigil_enemies = {
 			},
 			{
 				"duration" : 4,
+				"health" : [0,25],
+				"behavior" : 0,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 1,
+					},
+					{
+						"speech" : "Only by death is a true warrior defeated...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "Only by death is a true victor crowned!",
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 4,
 				"max_uses" : 1,
 				"behavior" : 0,
 				"health" : [0,100],
@@ -5976,7 +6005,7 @@ var orc_vigil_enemies = {
 			},
 			{
 				"duration" : 6,
-				"health" : [75,100],
+				"health" : [50,100],
 				"behavior" : 1,
 				"attack_pattern" : [
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*1, 0),
@@ -5995,7 +6024,7 @@ var orc_vigil_enemies = {
 			},
 			{
 				"duration" : 8,
-				"health" : [75,100],
+				"health" : [50,100],
 				"behavior" : 2,
 				"speed" : 15,
 				"attack_pattern" : [
@@ -6014,7 +6043,31 @@ var orc_vigil_enemies = {
 			},
 			{
 				"duration" : 8,
-				"health" : [0,50],
+				"health" : [25,50],
+				"behavior" : 2,
+				"speed" : 5,
+				"attack_pattern" : [
+					MakeProjectile("VigilBlast_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 90, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 180, 0, "nearest"),
+					MakeProjectile("VigilBlast_strong_fast", 270, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+0, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+90, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+180, 0, "nearest"),
+					MakeProjectile("VigilBlastSmall_strong_fast", 45+270, 0, "nearest"),
+					
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("NeonArrow_mid_fast", 0, 0.2, "nearest"),
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [0,25],
 				"behavior" : 2,
 				"speed" : 5,
 				"attack_pattern" : [
@@ -6064,13 +6117,13 @@ var orc_vigil_enemies = {
 					
 					MakeProjectile("GiantBlast_fast", -25, 0.1, "nearest"),
 					MakeProjectile("NeonStar_strong_fast", 180, 0, "nearest"),
-					MakeProjectile("SmallBlast_strong_fast", -45, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", -45, 0.1, "nearest"),
 					MakeProjectile("Blast_strong_fast", -5, 0.1, "nearest"),
 					MakeProjectile("NeonStar_strong_fast", 220, 0, "nearest"),
 					MakeProjectile("SmallBlast_strong_fast", 0, 0.1, "nearest"),
 					MakeProjectile("GiantBlast_fast", 25, 0.1, "nearest"),
 					MakeProjectile("NeonStar_strong_fast", 160, 0, "nearest"),
-					MakeProjectile("SmallBlast_strong_fast", 30, 0, "nearest"),
+					MakeProjectile("SmallBlast_strong_fast", 30, 0.1, "nearest"),
 					MakeProjectile("NeonStar_strong_fast", 200, 0, "nearest"),
 					MakeProjectile("Blast_strong_fast", -10, 0.1, "nearest"),
 				]
@@ -6087,6 +6140,7 @@ var orc_vigil_enemies = {
 			"Attack" : [1],
 		},
 		
+		"health_scaling" : 1000,
 		"health" : 2000,
 		"defense" : 1,
 		"exp" : 1000,
@@ -6137,6 +6191,7 @@ var frozen_fortress_enemies = {
 			"Attack" : [],
 		},
 		
+		"health_scaling" : 1000,
 		"health" : 2000,
 		"defense" : 1,
 		"exp" : 2000,
@@ -6183,6 +6238,7 @@ var frozen_fortress_enemies = {
 			"Death" : [4],
 		},
 		
+		"health_scaling" : 20000,
 		"health" : 100000,
 		"defense" : 20,
 		"exp" : 5000,
@@ -7827,7 +7883,7 @@ var the_abyss_enemies = {
 			},
 			{
 				"duration" : 8,
-				"health" : [75,100],
+				"health" : [0,88],
 				"max_uses" : 1,
 				"on_spawn" : true,
 				"behavior" : 1,
@@ -7841,7 +7897,7 @@ var the_abyss_enemies = {
 			},
 			{
 				"duration" : 8,
-				"health" : [25,75],
+				"health" : [0,55],
 				"max_uses" : 1,
 				"on_spawn" : true,
 				"behavior" : 1,
@@ -7855,7 +7911,7 @@ var the_abyss_enemies = {
 			},
 			{
 				"duration" : 8,
-				"health" : [0,25],
+				"health" : [0,33],
 				"max_uses" : 1,
 				"on_spawn" : true,
 				"behavior" : 1,
@@ -7957,7 +8013,7 @@ var the_abyss_enemies = {
 					MakeProjectile("GiantFlameArrow_strong_fast", 40+((360.0/4.0)*1), 0),
 					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*1), 0),
 					MakeProjectile("GiantFlameArrow_strong_fast", 40+((360.0/4.0)*3), 0),
-					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*3), 2),
+					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*3), 0.5),
 					
 					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*2, 0),
 					MakeProjectile("FlameArrow_mid_fast", (360.0/4.0)*4, 1),
@@ -7980,11 +8036,11 @@ var the_abyss_enemies = {
 					MakeProjectile("GiantFlameArrow_strong_fast", 40+((360.0/4.0)*2), 0),
 					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*2), 0),
 					MakeProjectile("GiantFlameArrow_strong_fast", 40+((360.0/4.0)*4), 0),
-					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*4), 2),
+					MakeProjectile("GiantFlameArrow_strong_fast", -40+((360.0/4.0)*4), 0.5),
 				]
 			},
 			{
-				"duration" : 8,
+				"duration" : 5,
 				"health" : [25,75],
 				"behavior" : 2,
 				"speed" : 15,
@@ -8002,7 +8058,7 @@ var the_abyss_enemies = {
 					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*1, 0, "nearest"),
 					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*2, 0, "nearest"),
 					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*3, 0, "nearest"),
-					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*4, 0.5, "nearest"),
+					MakeProjectile("GiantFlameBlast_strong_medium", (360.0/4.0)*4, 0.2, "nearest"),
 					MakeProjectile("GiantFlameBlast_strong_fast", 45+(360.0/4.0)*1, 0, "nearest"),
 					MakeProjectile("GiantFlameBlast_strong_fast", 45+(360.0/4.0)*2, 0, "nearest"),
 					MakeProjectile("GiantFlameBlast_strong_fast", 45+(360.0/4.0)*3, 0, "nearest"),
@@ -8030,7 +8086,7 @@ var the_abyss_enemies = {
 						"wait" : 3,
 					},
 					{
-						"speech" : "I will destroy this very abyss if I have to!",
+						"speech" : "In this kingdom, I alone am the strongest!",
 						"wait" : 4,
 					},
 				]
@@ -8428,17 +8484,17 @@ var ruined_temple_enemies = {
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/3.0)*1)*60,
+						"summon_position" : DegreesToVector((360.0/3.0)*1)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/3.0)*2)*60,
+						"summon_position" : DegreesToVector((360.0/3.0)*2)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/3.0)*3)*60,
+						"summon_position" : DegreesToVector((360.0/3.0)*3)*50,
 						"wait" : 0,
 					},
 				]
@@ -8449,7 +8505,7 @@ var ruined_temple_enemies = {
 				"behavior" : 0,
 				"on_signal" : ["monolith_active"],
 				"on_spawn" : true,
-				"attack_pattern" : CreateSpiral(2, "DemonicBlast_mid_slow", 0.3, null, 0.2, 32, true)
+				"attack_pattern" : CreateSpiral(4, "DemonicBlast_mid_slow", 0.3, null, 0.2, 32, true)
 			},
 			
 			{
@@ -8520,27 +8576,27 @@ var ruined_temple_enemies = {
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/5.0)*1)*60,
+						"summon_position" : DegreesToVector((360.0/5.0)*1)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/5.0)*2)*60,
+						"summon_position" : DegreesToVector((360.0/5.0)*2)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/5.0)*3)*60,
+						"summon_position" : DegreesToVector((360.0/5.0)*3)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/5.0)*4)*60,
+						"summon_position" : DegreesToVector((360.0/5.0)*4)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/5.0)*5)*60,
+						"summon_position" : DegreesToVector((360.0/5.0)*5)*50,
 						"wait" : 0,
 					},
 				]
@@ -8551,7 +8607,7 @@ var ruined_temple_enemies = {
 				"behavior" : 0,
 				"on_signal" : ["monolith_active"],
 				"on_spawn" : true,
-				"attack_pattern" : CreateSpiral(3, "DemonicBlast_mid_slow", 0.3, "Dart_mid_medium", 0.2, 32, true)
+				"attack_pattern" : CreateSpiral(5, "DemonicBlast_mid_slow", 0.3, "Dart_mid_medium", 0.2, 32, true)
 			},
 			
 			{
@@ -8603,32 +8659,32 @@ var ruined_temple_enemies = {
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/6.0)*1)*60,
+						"summon_position" : DegreesToVector((360.0/6.0)*1)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/5.0)*2)*60,
+						"summon_position" : DegreesToVector((360.0/5.0)*2)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/6.0)*3)*60,
+						"summon_position" : DegreesToVector((360.0/6.0)*3)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/6.0)*4)*60,
+						"summon_position" : DegreesToVector((360.0/6.0)*4)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/6.0)*5)*60,
+						"summon_position" : DegreesToVector((360.0/6.0)*5)*50,
 						"wait" : 0,
 					},
 					{
 						"summon" : "demonic_monolith",
-						"summon_position" : DegreesToVector((360.0/6.0)*6)*60,
+						"summon_position" : DegreesToVector((360.0/6.0)*6)*50,
 						"wait" : 0,
 					},
 				]
@@ -8639,7 +8695,7 @@ var ruined_temple_enemies = {
 				"behavior" : 0,
 				"on_signal" : ["monolith_active"],
 				"on_spawn" : true,
-				"attack_pattern" : CreateSpiral(4, "DemonicBlast_mid_slow", 0.4, "Dart_mid_medium", 0.3, 32, true)
+				"attack_pattern" : CreateSpiral(6, "DemonicBlast_mid_slow", 0.4, "Dart_mid_medium", 0.3, 32, true)
 			},
 		]
 	},
@@ -8711,8 +8767,16 @@ func CompileEnemies():
 	return res
 
 var dungeons = {
-	"island" : {},
+	"island" : {
+		"difficulty" : "NA",
+		"dungeon_boss" : "salazar",
+		"portal_rect" : [0,0,"objects_16x16"],
+		"enemies" : [realm_enemies, rulers]
+	},
 	"orc_vigil" : {
+		"difficulty" : "Medium",
+		"group_size" : "1-10",
+		"portal_rect" : [10,0,"objects_8x8"],
 		"type" : "encounter",
 		"dungeon_boss" : "vigil_guardian",
 		"room_size" : 100,
@@ -8723,6 +8787,9 @@ var dungeons = {
 		}
 	},
 	"orc_vigil_sanctum" : {
+		"difficulty" : "Hard",
+		"group_size" : "5-20",
+		"portal_rect" : [20,0,"objects_8x8"],
 		"type" : "encounter",
 		"dungeon_boss" : "atlas",
 		"room_size" : 100,
@@ -8732,6 +8799,9 @@ var dungeons = {
 		}
 	},
 	"the_abyss" : {
+		"difficulty" : "Hard",
+		"group_size" : "5-20",
+		"portal_rect" : [90,0,"objects_8x8"],
 		"type" : "encounter",
 		"dungeon_boss" : "salazar,_rex_of_the_abyss",
 		"room_size" : 100,
@@ -8741,6 +8811,9 @@ var dungeons = {
 		}
 	},
 	"frozen_fortress" : {
+		"difficulty" : "Hard",
+		"group_size" : "5-20",
+		"portal_rect" : [30,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "frozen_monolith",
 		"basic_rooms" : ["Room1","Room2"],
@@ -8755,6 +8828,9 @@ var dungeons = {
 		}
 	},
 	"cloud_isles" : {
+		"difficulty" : "Medium",
+		"group_size" : "1-10",
+		"portal_rect" : [80,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "pohaku",
 		"basic_rooms" : ["Room1","Room2","Room3"],
@@ -8769,6 +8845,9 @@ var dungeons = {
 		}
 	},
 	"desert_catacombs" : {
+		"difficulty" : "Medium",
+		"group_size" : "1-10",
+		"portal_rect" : [40,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "mummified_king",
 		"basic_rooms" : ["Room1", "Room2", "Room3"],
@@ -8782,6 +8861,9 @@ var dungeons = {
 		}
 	},
 	"rocky_cave" : {
+		"difficulty" : "Easy",
+		"group_size" : "1-3",
+		"portal_rect" : [60,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "rokk_the_rough",
 		"basic_rooms" : ["Room1", "Room2", "Room3"],
@@ -8795,6 +8877,9 @@ var dungeons = {
 		}
 	},
 	"ruined_temple" : {
+		"difficulty" : "Hard",
+		"group_size" : "5-20",
+		"portal_rect" : [50,0,"objects_8x8"],
 		"type" : "procedural",
 		"dungeon_boss" : "eye_of_naa'zorak",
 		"basic_rooms" : ["Room1", "Room2", "Room3"],
@@ -8819,12 +8904,10 @@ var dungeons = {
 	},
 	
 	"test_dungeon" : {
-		"type" : "procedural",
-		"basic_rooms" : ["Room1", "Room2"],
-		"rooms_until_boss" : 5,
-		"room_size" : 20,
+		"type" : "encounter",
+		"room_size" : 100,
+		"spawnpoint" : Vector2(0,0),
 		"tile_translation" : {
-			5 : "crab",
 		}
 	},
 }
@@ -9137,7 +9220,7 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "UT",
 		
-		"rof" : 75,
+		"rof" : 80,
 		"stats" : {},
 		
 		"projectiles" : [
@@ -9655,37 +9738,26 @@ var items = {
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [40,65],
-				"projectile" : "Fire2",
+				"damage" : [20,30],
+				"projectile" : "Fire1",
 				"formula" : "0",
 				"piercing" : false,
 				"speed" : med,
 				"tile_range" : 5,
 				"size" : 3,
-				"offset_variation" : 30,
+				"offset_variation" : 45,
 				"offset" : DegreesToVector(0),
 			},
 			{
-				"damage" : [10,20],
+				"damage" : [20,30],
 				"projectile" : "Fire1",
 				"formula" : "0",
 				"piercing" : false,
 				"speed" : med,
-				"tile_range" : 4,
+				"tile_range" : 5,
 				"size" : 3,
-				"offset_variation" : 20,
-				"offset" : DegreesToVector(-25),
-			},
-			{
-				"damage" : [10,20],
-				"projectile" : "Fire1",
-				"formula" : "0",
-				"piercing" : false,
-				"speed" : med,
-				"tile_range" : 4,
-				"size" : 3,
-				"offset_variation" : 20,
-				"offset" : DegreesToVector(25),
+				"offset_variation" : 45,
+				"offset" : DegreesToVector(0),
 			},
 		],
 		
@@ -9807,14 +9879,14 @@ var items = {
 		"slot" : "weapon",
 		"tier" : "4",
 		
-		"rof" : 20,
+		"rof" : 13,
 		"stats" : {
-					
+		
 		},
 		
 		"projectiles" : [
 			{
-				"damage" : [500,600],
+				"damage" : [400,500],
 				"projectile" : "GiantVoid",
 				"formula" : "0",
 				"piercing" : true,
@@ -10239,7 +10311,7 @@ var items = {
 		"stats" : {
 			"defense" : 14,
 			"vitality" : 5,
-			"health" : 50
+			"health" : 100
 		},
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,4)],
@@ -10989,18 +11061,14 @@ var items = {
 		
 		"cooldown" : 10,
 		"buffs" : {
-			"invincible" : { "duration" : 3, "range" : 0},
 			"healing" : { "duration" : 3, "range" : 6},
 			"berserk" : { "duration" : 3, "range" : 6},
 			"armored" : { "duration" : 3, "range" : 6},
 		},
 		"stats" : {
-			"health" : 100,
-			"vitality" : 10,
-			"attack" : 10,
-			"dexterity" : 10,
-			"speed" : 10,
-			"defense" : 10,
+			"dexterity" : 5,
+			"vitality" : 5,
+			"defense" : 5,
 		},
 		"tier" : "UT",
 		
@@ -11460,7 +11528,7 @@ var projectiles = {
 		"rect" : Rect2(90,30,10,10),
 		"rotation" : 90,
 		"spin" : true,
-		"scale" : 1.4,
+		"scale" : 1.6,
 	},
 	"Void1" : {
 		"rect" : Rect2(90,30,10,10),
@@ -12410,3 +12478,21 @@ func GetAchievement(achievement):
 		return achievements[achievement]
 	else:
 		return null
+
+func CompileJSON():
+	var result = {
+		"Enemies" : enemies,
+		"Dungeons" : dungeons,
+		"Achievements" : achievements,
+		"Projectiles" : projectiles,
+		"ProjectileDatabase" : projectile_databank,
+		"Classes" : characters,
+		"AchievementCatagories" : achievement_catagories,
+		"Items" : items,
+		"Buildings" : buildings
+	}
+	
+	var f = File.new()
+	f.open("res://Data/Data.json", File.WRITE)
+	f.store_string(JSON.print(result, "  ", true))
+	f.close()

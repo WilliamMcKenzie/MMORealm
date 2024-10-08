@@ -37,7 +37,10 @@ func SetHouseData(account_data):
 	whitelist = []
 	object_list = {}
 	
-	whitelist.append(account_data.username)
+	if len(whitelist) > 20:
+		whitelist = [account_data.username]
+	if not whitelist.has(account_data.username):
+		whitelist.append(account_data.username)
 	whitelist += house_data.whitelist
 	open_mode = house_data.open_mode
 	tiles = house_data.tiles

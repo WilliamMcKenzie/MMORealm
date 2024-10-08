@@ -10,7 +10,7 @@ var all_time_leaderboard = []
 var default_account_data = {
 	"username" : "[unset]",
 	"character_slots": 1,
-	"gold": 5000,
+	"gold": 200,
 	"finished_tutorial": false,
 	"time_tracker" : {},
 	"achievements": {
