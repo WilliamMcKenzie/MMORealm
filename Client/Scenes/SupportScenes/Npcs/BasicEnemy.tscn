@@ -74,6 +74,7 @@ tracks/0/keys = {
 extents = Vector2( 5, 5 )
 
 [node name="0" type="Node2D"]
+visible = false
 script = ExtResource( 3 )
 
 [node name="Control" type="Control" parent="."]
@@ -114,5 +115,6 @@ position = Vector2( 0, -8 )
 visible = true
 
 [node name="EnemyChatBubble" parent="." instance=ExtResource( 5 )]
+visible = false
 position = Vector2( 0, -9 )
 scale = Vector2( 0.2, 0.2 )

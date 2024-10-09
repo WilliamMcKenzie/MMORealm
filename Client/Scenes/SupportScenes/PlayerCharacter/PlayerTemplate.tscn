@@ -398,6 +398,5 @@ anims/walk_up = SubResource( 107 )
 scale = Vector2( 0.18, 0.18 )
 
 [node name="ChatBubble" parent="." instance=ExtResource( 6 )]
-visible = true
 position = Vector2( 0, 4.76837e-07 )
 scale = Vector2( 0.2, 0.2 )

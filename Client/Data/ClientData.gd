@@ -157,33 +157,6 @@ var special_loot_pools = {
 		],
 		"loot" : []
 	},
-	"oranix" : {
-		"override" : "ruler_1",
-		"soulbound_loot" : [
-			{
-				"item" : 173,
-				"chance" : 500,
-				"threshold" : 0.05,
-			},
-		],
-		"loot" : []
-	},
-	"vajira" : {
-		"override" : "ruler_1",
-		"soulbound_loot" : [],
-		"loot" : []
-	},
-	"raa'sloth" : {
-		"override" : "ruler_1",
-		"soulbound_loot" : [
-			{
-				"item" : 438,
-				"chance" : 500,
-				"threshold" : 0.05,
-			},
-		],
-		"loot" : []
-	},
 	"vigil_guardian" : {
 		"override" : "encounter_1",
 		"soulbound_loot" : [
@@ -275,13 +248,13 @@ var small = 3
 var medium = 4
 var large = 5
 
-var fast = 50
-var med = 30
+var fast = 70
+var med = 40
 var slow = 20
 
 var weak = 50
-var mid = 100
-var strong = 150
+var mid = 120
+var strong = 160
 
 var projectile_databank = {
 	"RockBlastSmall_mid_fast" : {
@@ -407,6 +380,19 @@ var projectile_databank = {
 		"direction" : DegreesToVector(-45),
 		"size" : medium
 	},
+	
+	"Wave_strong_fast_short" : {
+		"projectile" : "Wave",
+		"formula" : "0",
+		"damage" : 220,
+		"piercing" : true,
+		"wait" : 0,
+		"speed" : fast,
+		"tile_range" : 0.5,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : medium
+	},
 	"Wave_strong_fast" : {
 		"projectile" : "Wave",
 		"formula" : "0",
@@ -501,12 +487,12 @@ var projectile_databank = {
 		},
 		"Dart_strong_medium" : {
 			"inherit" : "Dart_mid_medium",
-			"damage" : 80,
+			"damage" : 120,
 			"speed" : med,
 		},
 		"Dart_strong_medium_short" : {
 			"inherit" : "Dart_mid_medium",
-			"damage" : 60,
+			"damage" : 90,
 			"speed" : med,
 			"tile_range" : 2,
 			"size" : medium
@@ -555,7 +541,7 @@ var projectile_databank = {
 		},
 		"DemonicWave_strong_medium" : {
 			"inherit" : "DemonicWave_mid_fast",
-			"damage" : 100,
+			"damage" : 120,
 			"speed" : med,
 			"tile_range" : 6,
 		},
@@ -565,7 +551,7 @@ var projectile_databank = {
 			"damage" : 240,
 			"piercing" : false,
 			"wait" : 0,
-			"speed" : 10,
+			"speed" : med,
 			"tile_range" : 7,
 			"targeter" : "nearest",
 			"direction" : Vector2.ZERO,
@@ -592,13 +578,13 @@ var projectile_databank = {
 		},
 		"SmallDemonicBlast_mid_medium" : {
 			"inherit" : "SmallDemonicBlast_weak_fast",
-			"damage" : 60,
-			"speed" : slow,
+			"damage" : 80,
+			"speed" : med
 		},
 		"DemonicBlast_mid_slow" : {
 			"projectile" : "DemonicBlast",
 			"formula" : "0",
-			"damage" : 70,
+			"damage" : 100,
 			"piercing" : false,
 			"wait" : 0,
 			"speed" : slow,
@@ -609,12 +595,12 @@ var projectile_databank = {
 		},
 		"DemonicBlast_strong_medium" : {
 			"inherit" : "DemonicBlast_mid_slow",
-			"damage" : 100,
+			"damage" : 130,
 			"speed" : med,
 		},
 		"DemonicBlast_strong_medium_short" : {
 			"inherit" : "DemonicBlast_mid_slow",
-			"damage" : 70,
+			"damage" : 130,
 			"speed" : med,
 			"tile_range" : 2,
 		},
@@ -633,7 +619,7 @@ var projectile_databank = {
 		"BloodSpinner_weak_fast_short" : {
 			"projectile" : "BloodSpinner",
 			"formula" : "0",
-			"damage" : 40,
+			"damage" : 100,
 			"piercing" : false,
 			"wait" : 0,
 			"speed" : fast,
@@ -1273,18 +1259,18 @@ var projectile_databank = {
 	"NeonArrow_mid_slow" : {
 		"projectile" : "NeonArrow",
 		"formula" : "0",
-		"damage" : 40,
+		"damage" : 120,
 		"piercing" : true,
 		"wait" : 0,
-		"speed" : slow,
+		"speed" : 60,
 		"tile_range" : 10,
 		"direction" : DegreesToVector(0),
-		"size" : small
+		"size" : medium
 	},
 	"NeonArrow_mid_fast" : {
 		"projectile" : "NeonArrow",
 		"formula" : "0",
-		"damage" : 70,
+		"damage" : 100,
 		"piercing" : true,
 		"wait" : 0,
 		"speed" : 70,
@@ -1636,7 +1622,7 @@ var rulers = {
 			"rate" : 0,
 			"name" : "orc_vigil"
 		},
-		"loot_pool" : special_loot_pools["oranix"],
+		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
 			{
 				"duration" : 13,
@@ -2065,7 +2051,7 @@ var rulers = {
 			"rate" : 0,
 			"name" : "frozen_fortress"
 		},
-		"loot_pool" : special_loot_pools["vajira"],
+		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
 			{
 				"duration" : 13,
@@ -2260,7 +2246,7 @@ var rulers = {
 			"rate" : 0,
 			"name" : "ruined_temple"
 		},
-		"loot_pool" : special_loot_pools["raa'sloth"],
+		"loot_pool" : basic_loot_pools["none"],
 		"phases" : [
 			{
 				"duration" : 13,
@@ -4380,7 +4366,7 @@ var realm_enemies = {
 			"name" : "desert_catacombs"
 		},
 		"health" : 1800,
-		"defense" : 12,
+		"defense" : 6,
 		"exp" : 95,
 		"behavior" : 2,
 		"speed" : 5,
@@ -4801,7 +4787,7 @@ var realm_enemies = {
 		},
 		
 		"health" : 600,
-		"defense" : 22,
+		"defense" : 5,
 		"exp" : 200,
 		"behavior" : 1,
 		"speed" : 10,
@@ -5743,6 +5729,12 @@ var orc_vigil_enemies = {
 				"on_spawn" : true,
 				"attack_pattern" : [
 					{
+						"signal" : "stage_1",
+						"reciever" : "orc_monolith",
+						"duration" : OS.get_system_time_secs(),
+						"wait" : 0,
+					},
+					{
 						"effect" : "invincible",
 						"duration" : 16,
 						"wait" : 12,
@@ -5881,6 +5873,7 @@ var orc_vigil_enemies = {
 		"animations" : {
 			"Idle" : [0],
 			"Attack" : [1],
+			"Death" : [1],
 		},
 		
 		"health_scaling" : 1000,
@@ -5905,13 +5898,40 @@ var orc_vigil_enemies = {
 				]
 			},
 			{
+				"duration" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"dead" : false,
+						"wait" : 0,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : OS.get_system_time_secs(),
+						"wait" : 0.5,
+					},
+				]
+			},
+			{
 				"duration" : 10,
 				"health" : [0,100],
+				"on_signal" : ["stage_1"],
 				"attack_pattern" : [
 					MakeProjectile("NeonArrow_mid_slow", 0, 0),
 					MakeProjectile("NeonArrow_mid_slow", 90, 0),
 					MakeProjectile("NeonArrow_mid_slow", 180, 0),
-					MakeProjectile("NeonArrow_mid_slow", 270, 1),
+					MakeProjectile("NeonArrow_mid_slow", 270, 0.3),
+				]
+			},
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"on_signal" : ["stage_2"],
+				"attack_pattern" : [
+					{
+						"dead" : true,
+						"wait" : 1,
+					},
 				]
 			}
 		]
@@ -5976,6 +5996,12 @@ var orc_vigil_enemies = {
 						"wait" : 2,
 					},
 					{
+						"signal" : "stage_2",
+						"reciever" : "orc_monolith",
+						"duration" : OS.get_system_time_secs(),
+						"wait" : 0,
+					},
+					{
 						"speech" : "Only by death is a true victor crowned!",
 						"wait" : 2,
 					},
@@ -6013,19 +6039,22 @@ var orc_vigil_enemies = {
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*3, 0),
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*4, 0),
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*5, 0),
-					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*6, 2),
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*6, 0),
+					
+					] + CreateSpiral(1, "VigilBlastSmall_strong_fast", 0, null, 0.2, 7) + [{"wait" : 0.5}] + CreateSpiral(1, "VigilBlastSmall_strong_fast", 0, null, 0.2, 8) + [{"wait" : 0.5}] + CreateSpiral(1, "VigilBlastSmall_strong_fast", 0, null, 0.2, 7) + [{"wait" : 0.5}] + CreateSpiral(1, "VigilBlastSmall_strong_fast", 0, null, 0.2, 8) + [{"wait" : 0.5}] + [
+					
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*7, 0),
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*8, 0),
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*9, 0),
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*10, 0),
 					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*11, 0),
-					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*12, 2),
-				]
+					MakeProjectile("VigilBlast_strong_fast", (360.0/12.0)*12, 0),
+				] + CreateSpiral(1, "VigilBlastSmall_strong_fast", 0, null, 0.2, 7) + [{"wait" : 0.5}] + CreateSpiral(1, "VigilBlastSmall_strong_fast", 0, null, 0.2, 8) + [{"wait" : 0.5}] + CreateSpiral(1, "VigilBlastSmall_strong_fast", 0, null, 0.2, 7) + [{"wait" : 0.5}] + CreateSpiral(1, "VigilBlastSmall_strong_fast", 0, null, 0.2, 8) + [{"wait" : 0.5}]
 			},
 			{
 				"duration" : 8,
 				"health" : [50,100],
-				"behavior" : 2,
+				"behavior" : 3,
 				"speed" : 15,
 				"attack_pattern" : [
 					MakeProjectile("GiantBlast_fast", -25, 0.1, "nearest"),
@@ -6044,8 +6073,8 @@ var orc_vigil_enemies = {
 			{
 				"duration" : 8,
 				"health" : [25,50],
-				"behavior" : 2,
-				"speed" : 5,
+				"behavior" : 1,
+				"speed" : 17,
 				"attack_pattern" : [
 					MakeProjectile("VigilBlast_strong_fast", 0, 0, "nearest"),
 					MakeProjectile("VigilBlast_strong_fast", 90, 0, "nearest"),
@@ -6068,8 +6097,8 @@ var orc_vigil_enemies = {
 			{
 				"duration" : 8,
 				"health" : [0,25],
-				"behavior" : 2,
-				"speed" : 5,
+				"behavior" : 1,
+				"speed" : 20,
 				"attack_pattern" : [
 					MakeProjectile("VigilBlast_strong_fast", 0, 0, "nearest"),
 					MakeProjectile("VigilBlast_strong_fast", 90, 0, "nearest"),
@@ -6103,7 +6132,7 @@ var orc_vigil_enemies = {
 			{
 				"duration" : 8,
 				"health" : [0,50],
-				"behavior" : 2,
+				"behavior" : 3,
 				"speed" : 10,
 				"attack_pattern" : [
 					MakeProjectile("VigilBlast_strong_fast", 0, 0, "nearest"),
@@ -6165,7 +6194,7 @@ var orc_vigil_enemies = {
 				"duration" : 10,
 				"health" : [0,100],
 				"behavior" : 2,
-				"speed" : slow,
+				"speed" : 25,
 				"attack_pattern" : [
 					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*1, 0, "nearest"),
 					MakeProjectile("VigilBlastSmall_strong_fast", (360.0/8.0)*2, 0, "nearest"),
@@ -6223,6 +6252,46 @@ var frozen_fortress_enemies = {
 					MakeProjectile("IceSlash_weak_medium", (360.0/3.0)*2, 0, "nearest"),
 					MakeProjectile("IceSlash_weak_medium", (360.0/3.0)*3, 1, "nearest"),
 				]
+			},
+		]
+	},
+	"frozen_barrier" : {
+		"scale" : 0.9,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(90,72), Vector2(18,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"health" : 1,
+		"defense" : 1,
+		"exp" : 0,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 5,
+				"health" : [0,100],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : OS.get_system_time_msecs(),
+						"wait" : 5,
+					},
+				]
+			},
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"attack_pattern" : [{"wait" : 0.5}] + CreateSpiral(1, "Wave_strong_fast_short", 0, null, 0.2, 8)
 			},
 		]
 	},
@@ -6308,16 +6377,12 @@ var frozen_fortress_enemies = {
 			},
 			{
 				"duration" : 14,
-				"behavior" : 1,
-				"speed" : 5,
 				"on_spawn" : true,
 				"max_uses" : 1,
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"effect" : "invincible",
-						"duration" : 14,
-						"wait" : 4,
+						"wait" : 5,
 					},
 					{
 						"speech" : "Yes! My power! I feel it returning...",
@@ -6354,6 +6419,86 @@ var frozen_fortress_enemies = {
 					{
 						"speech" : "Thank you mortals, but unfourtunately...",
 						"wait" : 3,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(11*8,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(11*8,8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(11*8,16),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(11*8,-8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(-11*8,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(-11*8,8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(-11*8,16),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(-11*8,-8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(0,11*8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(8,11*8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(16,11*8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(-8,11*8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(0,-11*8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(8,-11*8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(-8,-11*8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "frozen_barrier",
+						"summon_position" : Vector2(16,-11*8),
+						"wait" : 0,
 					},
 					{
 						"speech" : "I cannot risk you telling the trolls of my freedom! Feel the power of winter!",
@@ -6987,7 +7132,7 @@ var desert_catacombs_enemies = {
 		},
 		
 		"health" : 30000,
-		"defense" : 10,
+		"defense" : 5,
 		"exp" : 5000,
 		"behavior" : 0,
 		"speed" : 25,
@@ -7131,8 +7276,8 @@ var rocky_cave_enemies = {
 			"Attack" : [2],
 		},
 		
-		"health" : 10000,
-		"defense" : 20,
+		"health" : 6000,
+		"defense" : 0,
 		"exp" : 2000,
 		"behavior" : 1,
 		"speed" : 5,
@@ -7208,7 +7353,7 @@ var rocky_cave_enemies = {
 		},
 		
 		"health" : 200,
-		"defense" : 10,
+		"defense" : 0,
 		"exp" : 30,
 		"behavior" : 2,
 		"speed" : 4,
@@ -7264,7 +7409,7 @@ var rocky_cave_enemies = {
 		},
 		
 		"health" : 200,
-		"defense" : 15,
+		"defense" : 0,
 		"exp" : 60,
 		"behavior" : 2,
 		"speed" : 7,
@@ -8392,6 +8537,7 @@ var ruined_temple_enemies = {
 			{
 				"duration" : 7,
 				"health" : [66, 100],
+				"behavior" : 1,
 				"attack_pattern" : [
 					MakeProjectile("Dart_strong_medium", (360.0/8.0)*1, 0, "nearest"),
 					MakeProjectile("Dart_strong_medium", (360.0/8.0)*2, 0, "nearest"),
@@ -8424,6 +8570,7 @@ var ruined_temple_enemies = {
 			{
 				"duration" : 7,
 				"health" : [66, 100],
+				"behavior" : 1,
 				"attack_pattern" : [
 					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*1, 0),
 					MakeProjectile("GiantDemonicBlast_strong_slow", (360.0/5.0)*2, 0),
@@ -8617,6 +8764,10 @@ var ruined_temple_enemies = {
 				"attack_pattern" : [
 					MakeProjectile("GiantDemonicBlast_strong_fast", -20, 0.3, "nearest"),
 					MakeProjectile("GiantDemonicBlast_strong_fast", 20, 0.3, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_fast", -40, 0.1, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_fast", 40, 0.1, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_fast", -60, 0.1, "nearest"),
+					MakeProjectile("GiantDemonicBlast_strong_fast", 60, 0.1, "nearest"),
 					
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*1, 0, "nearest"),
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*2, 0, "nearest"),
@@ -8625,7 +8776,7 @@ var ruined_temple_enemies = {
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*5, 0, "nearest"),
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*6, 0, "nearest"),
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*7, 0, "nearest"),
-					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*8, 1, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*8, 0.5, "nearest"),
 					
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*9, 0, "nearest"),
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*10, 0, "nearest"),
@@ -8634,7 +8785,7 @@ var ruined_temple_enemies = {
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*13, 0, "nearest"),
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*14, 0, "nearest"),
 					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*15, 0, "nearest"),
-					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*16, 1, "nearest"),
+					MakeProjectile("DemonicWave_strong_medium", (360.0/16.0)*16, 0.5, "nearest"),
 				] + CreateSpiral(1, "DemonicBlast_mid_slow", 0, null, 0.2, 24)
 			},
 			{
@@ -8742,11 +8893,7 @@ var ruined_temple_enemies = {
 						"duration" : 2,
 						"wait" : 0,
 					},
-					MakeProjectile("Dart_strong_medium_short", (360.0/4.0)*1, 0),
-					MakeProjectile("Dart_strong_medium_short", (360.0/4.0)*2, 0),
-					MakeProjectile("Dart_strong_medium_short", (360.0/4.0)*3, 0),
-					MakeProjectile("Dart_strong_medium_short", (360.0/4.0)*4, 1.5),
-				]
+				] + CreateSpiral(1, "Dart_strong_medium_short", 0, null, 0.2, 8) + [{"wait" : 1.5}]
 			}
 		]
 	},
@@ -8796,6 +8943,7 @@ var dungeons = {
 		"spawnpoint" : Vector2(10,10)*8,
 		"tile_translation" : {
 			5 : "atlas",
+			6 : "orc_monolith",
 		}
 	},
 	"the_abyss" : {
@@ -9881,7 +10029,7 @@ var items = {
 		
 		"rof" : 13,
 		"stats" : {
-		
+					
 		},
 		
 		"projectiles" : [

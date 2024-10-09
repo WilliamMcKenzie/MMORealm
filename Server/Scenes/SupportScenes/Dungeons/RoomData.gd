@@ -24,7 +24,7 @@ func SpawnEnemies():
 					var enemy_name = tile_translation[current_tile]
 					if not tile_translation[current_tile] is String:
 						enemy_name = tile_translation[randi() % len(tile_translation)]
-					get_node("/root/Server").SpawnNPC(enemy_name, instance_node.instance_tree, current_position)
+					get_node("/root/Server").SpawnNPC(enemy_name, instance_node.instance_tree, current_position-Vector2(4,0))
 				else:
 					var obstacle_name = tile_translation[current_tile]
 					if not tile_translation[current_tile] is String:

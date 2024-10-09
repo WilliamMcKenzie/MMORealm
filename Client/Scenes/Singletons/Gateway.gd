@@ -1,7 +1,7 @@
 extends Node
 
-var url = "wss://gameserver.lagso.com/port20201/"
-#var url = "ws://159.203.0.78:20201"
+#var url = "wss://gameserver.lagso.com/port20201/"
+var url = "ws://159.203.0.78:20201"
 #var url = "ws://localhost:20201"
 
 var ip_address = "159.203.0.78"
@@ -26,7 +26,7 @@ var clock_sync_timer = 0
 var connected = false
 func _physics_process(delta):
 	clock_sync_timer += 1
-	if clock_sync_timer >= 60:
+	if clock_sync_timer >= 30:
 		clock_sync_timer = 0
 		KeepAlive()
 func _process(delta):
@@ -51,13 +51,21 @@ func ConnectToServerHTML():
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(html_network)
 
+var last_gateway_request = 0
+var last_task = 0
 func GatewayRequest(_email, _password, _task):
+	if OS.get_system_time_msecs() - last_gateway_request < 200 and last_task == _task:
+		return
+	last_gateway_request = OS.get_system_time_msecs()
+	last_task = _task
+	
 	email = _email
 	task = _task
 	password = _password
 	
-	while not connected:
-		ConnectToServerHTML()
+	if not connected:
+		if !html_network.get_connected_host():
+			ConnectToServerHTML()
 		yield(get_tree().create_timer(0.5), "timeout")
 	
 	if(task == 7):
@@ -117,8 +125,6 @@ remote func ReturnCreateAccountRequest(results, message):
 			ErrorPopup.OpenPopup("Couldnt create account, please try again.")
 		else:
 			ErrorPopup.OpenPopup("Email in use, please try another.")
-		get_node("../SceneHandler/Home/LoginPopup").loginButton.disabled = false
-		get_node("../SceneHandler/Home/LoginPopup").signupButton.disabled = false
 
 func RequestLogin():
 	LoadingScreen.StartWaiting()
