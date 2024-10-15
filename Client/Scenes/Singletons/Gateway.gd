@@ -1,11 +1,11 @@
 extends Node
 
 #var url = "wss://gameserver.lagso.com/port20201/"
-var url = "ws://159.203.0.78:20201"
-#var url = "ws://localhost:20201"
+#var url = "ws://159.203.0.78:20201"
+var url = "ws://localhost:20201"
 
-var ip_address = "159.203.0.78"
-#var ip_address = "localhost"
+#var ip_address = "159.203.0.78"
+var ip_address = "localhost"
 var port = 20201
 var network = NetworkedMultiplayerENet.new()
 var html_network = WebSocketClient.new();
@@ -66,7 +66,7 @@ func GatewayRequest(_email, _password, _task):
 	if not connected:
 		if !html_network.get_connected_host():
 			ConnectToServerHTML()
-		yield(get_tree().create_timer(0.5), "timeout")
+		yield(get_tree().create_timer(1), "timeout")
 	
 	if(task == 7):
 		ReviveCharacter()

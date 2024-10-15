@@ -9,6 +9,23 @@ func _ready():
 		cached_email = result.email
 		cached_password = result.password
 
+func SaveSettings(settings):
+	var config = ConfigFile.new()
+	
+	for key in settings.keys():
+		config.set_value("settings", key, settings[key])
+	config.save("user://settings.cfg")
+
+func LoadSettings():
+	var config = ConfigFile.new()
+	var error = config.load("user://settings.cfg")
+	if error == OK and config.has_section("settings"):
+		var settings = {}
+		for key in config.get_section_keys("settings"):
+			settings[key] = config.get_value("settings", key)
+		return settings
+	return {}
+
 func DeleteUser():
 	var config = ConfigFile.new()
 	var error = config.load("user://login.cfg")

@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Login/Login.gd" type="Script" id=1]
 [ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/ui/rectangle_background_long.png" type="Texture" id=3]
 [ext_resource path="res://Assets/ui/pill_background.png" type="Texture" id=4]
+[ext_resource path="res://Assets/ui/rectangle_background.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=2]
 size = 26
@@ -27,6 +28,42 @@ size = 20
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxEmpty" id=17]
+
+[sub_resource type="StyleBoxEmpty" id=18]
+
+[sub_resource type="StyleBoxEmpty" id=19]
+
+[sub_resource type="StyleBoxEmpty" id=20]
+
+[sub_resource type="StyleBoxEmpty" id=21]
+
+[sub_resource type="StyleBoxTexture" id=22]
+texture = ExtResource( 5 )
+region_rect = Rect2( 0, 0, 384, 128 )
+modulate_color = Color( 1, 1, 1, 0.313726 )
+
+[sub_resource type="DynamicFont" id=23]
+size = 20
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=24]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxEmpty" id=25]
+
+[sub_resource type="StyleBoxEmpty" id=26]
+
+[sub_resource type="StyleBoxEmpty" id=27]
+
+[sub_resource type="StyleBoxEmpty" id=28]
+
+[sub_resource type="StyleBoxEmpty" id=29]
 
 [node name="LoginPopup" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -55,7 +92,7 @@ size_flags_horizontal = 4
 margin_right = 350.0
 margin_bottom = 23.0
 custom_fonts/font = SubResource( 2 )
-text = "Email"
+text = "User"
 
 [node name="Email" type="PanelContainer" parent="VBoxContainer/EmailContainer"]
 margin_top = 27.0
@@ -181,6 +218,103 @@ custom_fonts/font = SubResource( 16 )
 text = "Signup"
 align = 1
 valign = 1
+
+[node name="Guest" type="Button" parent="."]
+self_modulate = Color( 1, 1, 1, 0.784314 )
+margin_left = 677.0
+margin_top = 7.0
+margin_right = 795.0
+margin_bottom = 31.0
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 16 )
+custom_styles/hover = SubResource( 17 )
+custom_styles/pressed = SubResource( 18 )
+custom_styles/focus = SubResource( 19 )
+custom_styles/disabled = SubResource( 20 )
+custom_styles/normal = SubResource( 21 )
+text = "Play as guest"
+
+[node name="PanelContainer" type="PanelContainer" parent="Guest"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -186.0
+margin_top = 31.0
+margin_right = -5.0
+margin_bottom = 177.0
+grow_horizontal = 2
+custom_styles/panel = SubResource( 22 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Guest/PanelContainer"]
+margin_right = 181.0
+margin_bottom = 146.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Guest/PanelContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 165.0
+margin_bottom = 146.0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Guest/PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 149.0
+margin_bottom = 76.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="Guest/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 64.0
+margin_bottom = 18.0
+size_flags_horizontal = 0
+custom_fonts/font = SubResource( 23 )
+text = "Warning:"
+
+[node name="ErrorName" type="Label" parent="Guest/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_top = 28.0
+margin_right = 149.0
+margin_bottom = 76.0
+rect_min_size = Vector2( 100, 0 )
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.67451, 0.67451, 0.67451, 1 )
+text = "For guests, all saved data will be cleared once you logout."
+valign = 1
+autowrap = true
+
+[node name="Options" type="HBoxContainer" parent="Guest/PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 80.0
+margin_right = 149.0
+margin_bottom = 130.0
+
+[node name="Yes" type="Button" parent="Guest/PanelContainer/MarginContainer/VBoxContainer/Options"]
+margin_right = 72.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 24 )
+custom_styles/hover = SubResource( 25 )
+custom_styles/pressed = SubResource( 26 )
+custom_styles/focus = SubResource( 27 )
+custom_styles/disabled = SubResource( 28 )
+custom_styles/normal = SubResource( 29 )
+text = "Proceed"
+icon_align = 1
+
+[node name="Cancel" type="Button" parent="Guest/PanelContainer/MarginContainer/VBoxContainer/Options"]
+margin_left = 76.0
+margin_right = 149.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 24 )
+custom_styles/hover = SubResource( 25 )
+custom_styles/pressed = SubResource( 26 )
+custom_styles/focus = SubResource( 27 )
+custom_styles/disabled = SubResource( 28 )
+custom_styles/normal = SubResource( 29 )
+text = "Cancel"
+icon_align = 1
 
 [connection signal="text_changed" from="VBoxContainer/EmailContainer/Email/MarginContainer/Email" to="." method="_on_Email_text_changed"]
 [connection signal="text_changed" from="VBoxContainer/PasswordContainer/Password/MarginContainer/Password" to="." method="_on_Password_text_changed"]

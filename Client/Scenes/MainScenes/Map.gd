@@ -4,10 +4,6 @@ var player_spawn = preload("res://Scenes/SupportScenes/PlayerCharacter/PlayerTem
 var last_world_state = 0
 
 var world_state_buffer = []
-const interpolation_offset = 100
-
-var active_projectiles = []
-
 var expression = Expression.new()
 
 var clock_sync_timer_2 = 0
@@ -16,61 +12,72 @@ func _physics_process(delta):
 	if not has_node("YSort") or GameUI.is_dead:
 		return
 	
-	var render_time = Server.client_clock - interpolation_offset
+	var render_time = Server.client_clock - Settings.interpolation_offset
+	var other_players_node = get_node("YSort/OtherPlayers")
+	var enemies_node = get_node("YSort/Enemies")
+	
 	if world_state_buffer.size() > 1:
-		#Remove excess worldstates, leaving only usable ones
 		while(world_state_buffer.size() > 2 and render_time > world_state_buffer[2].T):
 			world_state_buffer.remove(0)
 		
-		#Loop through and update specific world elements
 		if world_state_buffer.size() > 2:
-			var interpolation_factor = float(render_time - world_state_buffer[1]["T"]) / float(world_state_buffer[2]["T"] - world_state_buffer[1]["T"])
+			RefreshPlayers(world_state_buffer[2]["P"])
+			RefreshEnemies(world_state_buffer[2]["E"])
+			RefreshObjects(world_state_buffer[2]["O"])
+			
+			var t1 = world_state_buffer[1]["T"]
+			var t2 = world_state_buffer[2]["T"]
+			var interpolation_factor = float(render_time - t1) / max(float(t2 - t1), 1)
 			var lost = 0
 			
-			#Update players
-			for player in world_state_buffer[2]["P"].keys():
+			for player_id in world_state_buffer[2]["P"].keys():
 				var players1 = world_state_buffer[1]["P"]
 				var players2 = world_state_buffer[2]["P"]
 				
-				var current_player = player == str(get_tree().get_network_unique_id())
-				var lost_player = not players1.has(player)
+				var player_data1 = players1[player_id] if players1.has(player_id) else null
+				var player_data2 = players2[player_id] if players2.has(player_id) else null
 				
-				if current_player or lost_player:
+				var current_player = player_id == str(get_tree().get_network_unique_id())
+				var other_player = other_players_node.get_node_or_null(str(player_id))
+				
+				if current_player or not player_data1 or not player_data2:
 					continue;
-				elif get_node("YSort/OtherPlayers").has_node(str(player)):
-					var new_position = lerp(players1[player]["position"], players2[player]["position"], interpolation_factor)
-					get_node("YSort/OtherPlayers/" + str(player)).MovePlayer(new_position, players2[player]["animation"], players2[player]["sprite"])
-					get_node("YSort/OtherPlayers/" + str(player)).UpdateStatusEffects(players2[player]["status_effects"])
+				elif other_player:
+					var new_position = lerp(player_data1["position"], player_data2["position"], interpolation_factor)
+					other_player.MovePlayer(new_position, player_data2["animation"], player_data2["sprite"])
+					other_player.UpdateStatusEffects(player_data2["status_effects"])
 				else:
-					SpawnNewPlayer(player, players2[player]["position"], players2[player]["sprite"]["C"], players2[player]["name"])
-			RefreshPlayers(world_state_buffer[2]["P"])
+					SpawnNewPlayer(player_id, player_data2["position"], player_data2["sprite"]["C"], player_data2["name"])
 			
-			#Update enemies
-			for enemy in world_state_buffer[2]["E"].keys():
+			for enemy_id in world_state_buffer[2]["E"].keys():
 				var enemies1 = world_state_buffer[1]["E"]
 				var enemies2 = world_state_buffer[2]["E"]
 				
-				var lost_enemy1 = not enemies2.has(enemy)
-				var lost_enemy2 = not enemies1.has(enemy)
+				var enemy_data1 = enemies1[enemy_id] if enemies1.has(enemy_id) else null
+				var enemy_data2 = enemies2[enemy_id]if enemies2.has(enemy_id) else null
+				var enemy = enemies_node.get_node_or_null(str(enemy_id))
 				
-				if lost_enemy1 or lost_enemy2:
+				if not enemy_data1 or not enemy_data2:
 					pass
-				elif get_node("YSort/Enemies").has_node(str(enemy)):
-					var new_position = lerp(enemies1[enemy]["position"], enemies2[enemy]["position"], interpolation_factor)
-					get_node("YSort/Enemies/"+str(enemy)).MoveEnemy(new_position)
-					get_node("YSort/Enemies/"+str(enemy)).effects = enemies2[enemy]["effects"]
-					if enemies2[enemy].has("dead"):
-						get_node("YSort/Enemies/"+str(enemy)).death_stance = enemies2[enemy]["dead"]
-				else:
-					SpawnNewEnemy(enemy, enemies2[enemy]["position"], enemies2[enemy]["name"])
-			RefreshEnemies(world_state_buffer[2]["E"])
-			
-			#Update objects
-			RefreshObjects(world_state_buffer[2]["O"])
+				elif enemy:
+					var new_position = lerp(enemy_data1["position"], enemy_data2["position"], interpolation_factor)
+					
+					#Update position
+					if enemy.theoretical_position != new_position:
+						var flip = enemy_data1["flip"] if enemy_data1.has("flip") else -1
+						enemy.MoveEnemy(new_position, flip)
+					
+					#Update everything else
+					enemy.effects = enemy_data2["effects"]
+					if enemy_data2.has("dead"):
+						enemy.death_stance = enemy_data2["dead"]
+				elif not dead_enemies.has(enemy_id):
+					SpawnNewEnemy(enemy_id, enemy_data2["position"], enemy_data2["name"])
 		
 		elif render_time > world_state_buffer[1]["T"]:
-			
-			var extrapolation_factor = float(render_time - world_state_buffer[0]["T"]) / float(world_state_buffer[1]["T"] - world_state_buffer[0]["T"]) - 1.00
+			var t1 = world_state_buffer[0]["T"]
+			var t2 = world_state_buffer[1]["T"]
+			var extrapolation_factor = float(render_time - t1) / max(float(t2 - t1), 1) - 1.00
 			
 			#Update players
 			for player in world_state_buffer[1]["P"].keys():
@@ -78,7 +85,7 @@ func _physics_process(delta):
 				var players1 = world_state_buffer[1]["P"]
 				
 				var current_player = player == str(get_tree().get_network_unique_id())
-				var lost_player = not players1.has(player) or not players0.has(player)
+				var lost_player = not players1.has(player) or not players0.has(player) or not players1[player] or not players0[player]
 				
 				if current_player or lost_player:
 					continue;
@@ -103,43 +110,33 @@ func _physics_process(delta):
 				elif get_node("YSort/Enemies").has_node(str(enemy)):
 					var position_delta = (enemies1[enemy]["position"] - enemies0[enemy]["position"])
 					var new_position = enemies1[enemy]["position"] + (position_delta * extrapolation_factor)
-					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position)
-				else:
+					var flip = enemies1[enemy]["flip"] if enemies1[enemy].has("flip") else -1
+					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position, flip)
+				elif not dead_enemies.has(enemy):
 					SpawnNewEnemy(enemy, enemies1[enemy]["position"], enemies1[enemy]["name"])
-			
-			#Refresh Objects
-			RefreshObjects(world_state_buffer[1]["O"])
-	
-	for i in active_projectiles:
-		if get_node("YSort/Pool")[i].visible == true:
-			if Server.client_clock - get_node("YSort/Pool")[i].projectile_data["start_time"] < get_node("YSort/Pool")[i].projectile_data["lifespan"]:
-				var time_difference =  Server.client_clock - get_node("YSort/Pool")[i].projectile_data["start_time"]
-				get_node("YSort/Pool")[i].projectile_data["path"] = get_node("YSort/Pool")[i].projectile_data["speed"] * get_node("YSort/Pool")[i].projectile_data["direction"] * time_difference
-				var perpendicular_vector = Vector2(-get_node("YSort/Pool")[i].projectile_data["position"].y, get_node("YSort/Pool")[i].projectile_data["position"].x)
-				var perpendicular_move = get_node("YSort/Pool")[i].projectile_data["direction"] * expression.parse(get_node("YSort/Pool")[i],["x"])
-				var move = perpendicular_move + get_node("YSort/Pool")[i].projectile_data["path"]
-				get_node("YSort/Pool")[i].position = move
-				get_node("YSort/Pool")[i].projectile_data["position"] = move
-			else:
-				get_node("YSort/Pool")[i].visible = false
-	
 	if clock_sync_timer_2 >= 20:
 		var enemies = get_node("YSort/Enemies")
 		clock_sync_timer_2 = 0
 		for child in enemies.get_children():
-			if child.visible == true and not child.is_active and len(world_state_buffer) > 2 and world_state_buffer[2]["E"].has(child.name):
+			var is_visible = child.visible
+			var is_active = child.is_active
+			
+			if is_visible and not is_active and len(world_state_buffer) > 2 and world_state_buffer[2]["E"].has(child.name) and not dead_enemies.has(child.name):
 				child.Activate(child.enemy_type)
-			elif child.visible == true and not child.is_active:
+			elif is_visible and not is_active:
 				child.DeActivate()
-			elif child.visible == true and child.is_active and len(world_state_buffer) > 2 and not world_state_buffer[2]["E"].has(child.name):
+			elif is_visible and is_active and len(world_state_buffer) > 2 and not world_state_buffer[2]["E"].has(child.name):
 				child.DeActivate()
 
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:
+		world_state["T"] = Server.client_clock
 		last_world_state = world_state["T"]
 		world_state_buffer.append(world_state)
 
 #Enemy nodes
+var enemy_scene = preload("res://Scenes/SupportScenes/Npcs/BasicEnemy.tscn")
+var dead_enemies = {}
 var living_enemies = []
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 	if not living_enemies.has(enemy_id):
@@ -151,22 +148,32 @@ func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
 				child.is_active = true
 				child.Activate(enemy_name)
 				return
-		SpawnNewEnemyLegacy(enemy_id, enemy_position, enemy_name)
+		CreateEnemy(30)
+		SpawnNewEnemy(enemy_id, enemy_position, enemy_name)
+
+func CreateEnemy(amount):
+	for i in range(amount):
+		var child = enemy_scene.instance()
+		child.name = str(i)
+		get_node("YSort/Enemies").add_child(child)
+
 func SpawnNewEnemyLegacy(enemy_id, enemy_position, enemy_name):
 	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
-		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/"+enemy_name+".tscn")
-		if not enemy_scene:
-			return
-		var enemy_instance = enemy_scene.instance()
-		enemy_instance.name = enemy_id
-		enemy_instance.position = enemy_position
-		get_node("YSort/Enemies").add_child(enemy_instance)
+		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/BasicEnemy.tscn")
+		var child = enemy_scene.instance()
+		child.name = enemy_id
+		child.position = enemy_position
+		child.is_active = true
+		get_node("YSort/Enemies").add_child(child)
+		child.Activate(enemy_name)
 
 func RefreshEnemies(enemies):
+	var enemies_node = get_node("YSort/Enemies")
 	for enemy_id in living_enemies:
-		if not enemies.has(enemy_id) and has_node("YSort/Enemies/"+enemy_id):
-			living_enemies.erase(enemy_id)
-			get_node("YSort/Enemies/"+enemy_id).DeActivate()
+		var enemy_node = enemies_node.get_node_or_null(enemy_id)
+		living_enemies.erase(enemy_id)
+		if enemy_node:
+			enemy_node.DeActivate()
  
 #Object nodes
 func RefreshObjects(objects):
@@ -177,43 +184,43 @@ func RefreshObjects(objects):
 	]
 	
 	for object in objects.keys():
-		var type = objects[object]["type"]
-		var scene_name = objects[object]["name"]+".tscn"
+		var object_data = objects[object]
+		var type = object_data["type"]
+		var scene_name = object_data["name"]+".tscn"
 		
 		#Loot bags
-		if type == "LootBags" and objects[object]["soulbound"] == true and not objects[object].has("permanent") and objects[object]["player_id"] != str(Server.get_tree().get_network_unique_id()):
+		if type == "LootBags" and object_data["soulbound"] == true and not object_data.has("permanent") and object_data["player_id"] != str(Server.get_tree().get_network_unique_id()):
 			continue
-		
 		if not get_node("YSort/Objects/"+type).has_node(str(object)):
 			var object_scene = load("res://Scenes/SupportScenes/Objects/"+type+"/"+scene_name)
 			var object_instance = object_scene.instance()
 			
-			if objects[object]["position"] is String:
-				var xy = (objects[object]["position"].replace("(","").replace(")","")).split(",")
-				objects[object]["position"] = Vector2(int(xy[0]), int(xy[1]))
+			if object_data["position"] is String:
+				var xy = (object_data["position"].replace("(","").replace(")","")).split(",")
+				object_data["position"] = Vector2(int(xy[0]), int(xy[1]))
 			
 			object_instance.name = str(object)
 			object_instance.object_id = str(object)
-			object_instance.position = objects[object]["position"]
+			object_instance.position = object_data["position"]
 			
 			if type == "DungeonPortals":
-				object_instance.portal_name = objects[object]["name"]
-				if objects[object]["name"] == "island" and objects[object]["ruler"]:
-					object_instance.portal_name = objects[object]["ruler"] + "'s_island"
-					object_instance.ruler = objects[object]["ruler"]
-				elif objects[object]["name"] == "island":
-					object_instance.portal_name = "training_island"
+				object_instance.portal_name = object_data["name"]
+				if object_data["name"] == "island" and object_data["ruler"]:
+					object_instance.portal_name = object_data["ruler"] + "'s_kingdom"
+					object_instance.ruler = object_data["ruler"]
+				elif object_data["name"] == "island":
+					object_instance.portal_name = "training_kingdom"
 					object_instance.ruler = null
 			if type == "LootBags":
-				object_instance.loot = objects[object]["loot"]
+				object_instance.loot = object_data["loot"]
 			
 			get_node("YSort/Objects/"+type).add_child(object_instance)
 	for type in expiring_types:
-		for object_node in get_node("YSort/Objects/"+type).get_children():
+		var objects_node = get_node("YSort/Objects/"+type)
+		for object_node in objects_node.get_children():
 			
 			if not objects.has(object_node.name):
-				get_node("YSort/Objects/"+type+"/"+object_node.name).queue_free()
-			#Loot bags
+				objects_node.get_node(object_node.name).queue_free()
 			elif type == "LootBags":
 				object_node.UpdateLoot(objects[object_node.name]["loot"])
 

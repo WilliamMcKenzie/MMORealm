@@ -1,18 +1,7 @@
 extends HBoxContainer
 
 func _ready():
-	var timer = Timer.new()
-	timer.wait_time = 10
-	timer.one_shot = true
-	add_child(timer)
-	timer.start()
-	yield(timer, "timeout")
-	
+	yield(get_tree().create_timer(10), "timeout")
 	$AnimationPlayer.play("Remove")
-	
-	timer.wait_time = 0.5
-	timer.one_shot = true
-	timer.start()
-	yield(timer, "timeout")
-	
+	yield(get_tree().create_timer(0.5), "timeout")
 	queue_free()

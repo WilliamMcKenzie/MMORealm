@@ -32,13 +32,13 @@ func _ready():
 	else:
 		instance_tree = ["nexus"]
 
-var clock_sync_timer = 0
 func _physics_process(delta):
 	
 	#Clock sync
 	running_time += delta
-	if not get_world_2d():
+	if not get_world_2d() or not get_parent():
 		return
+	var self_reference = get_parent().get_node(name)
 	for i in range(floor((running_time-last_tick)/tick_rate)):
 		var time = OS.get_system_time_msecs()
 		for projectile_id in projectile_list.keys():
@@ -62,9 +62,15 @@ func _physics_process(delta):
 			var collision = space_state.intersect_point(projectile_position+self.global_position, 1, [], 1, true, true)
 			var valid_collision = collision.size() > 0 and collision[0].collider.name != "PlayerHitbox"
 			var max_range = projectile["start_position"].distance_to(path) >= projectile["tile_range"]*8
+			var chunk_players = null
+			if "island" in name:
+				var chunk = self_reference.CalculateChunk(projectile["position"])
+				var chunk_exists = self_reference.chunks.has(chunk)
+				chunk_players = self_reference.chunks[chunk]["P"] if chunk_exists else null
+			var players = player_list if not chunk_players else chunk_players
 			
-			for player_id in player_list.keys():
-				if (player_list[player_id]["position"]+Vector2(0,-4)).distance_to(projectile_position) <= projectile["size"] and not projectile["hit_players"].has(player_id):
+			for player_id in players.keys():
+				if (players[player_id]["position"]+Vector2(0,-4)).distance_to(projectile_position) <= projectile["size"] and not projectile["hit_players"].has(player_id):
 					if has_node("YSort/Players/"+player_id):
 						projectile["hit_players"][player_id] = true
 						get_node("YSort/Players/"+player_id).DealDamage(projectile["damage"], projectile["enemy_name"])
@@ -118,7 +124,8 @@ func _physics_process(delta):
 				var _health_ratio = (enemy_data.health/enemy_data.max_health)*100
 				var _health = _health_ratio >= _phase.health[0] and _health_ratio <= _phase.health[1]
 				
-				if not _health:
+				if not _health or (_phase.has("on_signal") and not enemy_data["signals"].has(_phase["on_signal"][0])):
+					print(enemy_data["signals"])
 					phase_timer = 0
 				
 				pattern_timer -= tick_rate
@@ -196,8 +203,14 @@ func _physics_process(delta):
 							pass
 						elif current_attack["targeter"] == "nearest":
 							var closest = 9999999
-							for player_id in player_list.keys():
-								var player_position = player_list[player_id]["position"]+Vector2(0,-4)
+							var chunk_players = null
+							if "island" in name:
+								var chunk = self_reference.CalculateChunk(enemy_data["position"])
+								var chunk_exists = self_reference.chunks.has(chunk)
+								chunk_players = self_reference.chunks[chunk]["P"] if chunk_exists else null
+							var players = player_list if not chunk_players else chunk_players
+							for player_id in players.keys():
+								var player_position = players[player_id]["position"]+Vector2(0,-4)
 								if player_position.distance_to(enemy_position) <= closest:
 									closest = player_position.distance_to(enemy_position)
 									direction = enemy_position.direction_to((player_position))
@@ -227,7 +240,8 @@ func _physics_process(delta):
 					
 					elif current_attack.has("summon"):
 						var summon_position = current_attack["summon_position"] + enemy_position
-						get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_id)
+						var flip = current_attack.flip if current_attack.has("flip") else -1
+						get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_id, flip)
 					
 					elif current_attack.has("speech"):
 						var message = current_attack["speech"]
@@ -295,11 +309,14 @@ func _physics_process(delta):
 
 func UpdatePlayer(player_id, player_state, fake = false):
 	if player_list.has(str(player_id)):
+		var container = get_node_or_null("YSort/Players/"+str(player_id))
+		
 		player_list[str(player_id)]["fake"] = fake
 		player_list[str(player_id)]["position"] = player_state["P"]
 		player_list[str(player_id)]["animation"] = player_state["A"]
 		player_list[str(player_id)]["sprite"] = player_state["S"]
-		get_node("YSort/Players/"+str(player_id)).position = player_list[str(player_id)]["position"]
+		container.position = player_list[str(player_id)]["position"]
+		container.last_updated = OS.get_system_time_secs()
 		
 		var space_state = get_world_2d().direct_space_state
 		var collision = space_state.intersect_point(player_list[str(player_id)]["position"]+position, 1, [], 1, true, true)
@@ -483,7 +500,8 @@ func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 	#Handle loot drops
 	var ordered_pairs = []
 	for player_id in player_pool.keys():
-		ordered_pairs.append([player_id, player_pool[player_id]])
+		if !(enemy.name == "tutorial_troll_king" and not get_parent().get_node(name).GemstoneDrop(int(player_id))):
+			ordered_pairs.append([player_id, player_pool[player_id]])
 	
 	ordered_pairs.sort_custom(SortByValue, "sort_ascending")
 	
@@ -547,7 +565,7 @@ func GetBoatSpawnpoints():
 	taken_points.append(index)
 	return res[index]
 	
-func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750), ruler = null):
+func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750), ruler = null, which = null):
 	var instance_id = get_node("/root/Server").generate_unique_id()
 	if "island" in portal_name:
 		instance_id = portal_name + " " + instance_id
@@ -570,12 +588,17 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 			island_instance = load("res://Scenes/SupportScenes/Island/Island.tscn").instance()
 			if portal_name == "tutorial_island":
 				island_instance = load("res://Scenes/SupportScenes/Island/TutorialIsland.tscn").instance()
+			if portal_name == "special_island":
+				island_instance = load("res://Scenes/SupportScenes/Island/SpecialIsland.tscn").instance()
 		
 			island_instance.server_ref = get_node("/root/Server")
 			island_instance.map_size = map_size
 			island_instance.GenerateIslandMap()
 			GameplayLoop.island_preloads[map_size] = [island_instance.duplicate()]
 		
+		if portal_name == "special_island":
+			portal_name = "island"
+			island_instance.which = which
 		island_instance.ruler = ruler
 		island_instance.name = instance_id
 		object_list[instance_id] = {

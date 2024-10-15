@@ -4,9 +4,7 @@ func _ready():
 	$MarginContainer/TextureButton.connect("pressed", self, "OpenHome")
 
 func OpenHome():
-	print("Home")
-	GameUI.GoHome()
+	GameUI.Toggle("settings")
 
 func _on_TouchScreenButton_pressed():
-	print("Home")
-	GameUI.GoHome()
+	GameUI.Toggle("settings")

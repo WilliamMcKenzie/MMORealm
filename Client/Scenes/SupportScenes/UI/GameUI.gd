@@ -226,7 +226,8 @@ func Toggle(which):
 		"death" : get_node("DeathScreen"),
 		"nearby" : get_node("Nearby"),
 		"trade" : get_node("TradingMenu"),
-		"building" : get_node("Building")
+		"building" : get_node("Building"),
+		"settings" : get_node("Settings")
 	}
 	
 	var node

@@ -149,14 +149,14 @@ func InspectItem(_item):
 						bonus.text = "(+" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
 						bonus.add_color_override("font_color", bonus_color)
 					elif multipliers.has("stats"):
-						node.visible = false
+						bonus.visible = false
 				else:
 					amount.text = str(item_stats[stat])
 					if multipliers.has("stats") and floor(item_stats[stat]*multipliers.stats)-item_stats[stat] != 0:
 						bonus.text = "(" + str(floor(item_stats[stat]*multipliers.stats)-item_stats[stat])+")"
 						bonus.add_color_override("font_color", bonus_color)
 					elif multipliers.has("stats"):
-						node.visible = false
+						bonus.visible = false
 			else:
 				node.visible = false
 	else:

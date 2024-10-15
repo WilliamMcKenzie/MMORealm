@@ -1,0 +1,528 @@
+[gd_scene load_steps=48 format=2]
+
+[ext_resource path="res://Scenes/SupportScenes/UI/Leaderboard/ScrollContainer.gd" type="Script" id=1]
+[ext_resource path="res://Resources/main_theme.tres" type="Theme" id=2]
+[ext_resource path="res://Scenes/SupportScenes/UI/Building/Building.gd" type="Script" id=3]
+[ext_resource path="res://Assets/ui/square_background.png" type="Texture" id=4]
+[ext_resource path="res://Assets/items/items_8x8.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/SupportScenes/UI/Building/BuildingBackground.gd" type="Script" id=6]
+[ext_resource path="res://Assets/ui/rectangle_background.png" type="Texture" id=7]
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Resources/Outline.gdshader" type="Shader" id=9]
+[ext_resource path="res://Assets/ui/rectangle_background_verticle.png" type="Texture" id=10]
+[ext_resource path="res://Scenes/SupportScenes/UI/Building/Guest/Guest.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Assets/objects/objects_8x8.png" type="Texture" id=12]
+[ext_resource path="res://Resources/Renderer.tres" type="Material" id=13]
+[ext_resource path="res://Scenes/SupportScenes/UI/Building/Material/Material.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/SupportScenes/UI/Building/Remover.gd" type="Script" id=15]
+
+[sub_resource type="StyleBoxTexture" id=2]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 128, 128 )
+modulate_color = Color( 1, 1, 1, 0.313726 )
+
+[sub_resource type="AtlasTexture" id=72]
+atlas = ExtResource( 12 )
+region = Rect2( 50, 40, 10, 10 )
+
+[sub_resource type="DynamicFont" id=33]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="Theme" id=32]
+default_font = SubResource( 33 )
+Label/fonts/font = SubResource( 33 )
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.313726 )
+
+[sub_resource type="StyleBoxEmpty" id=58]
+
+[sub_resource type="StyleBoxEmpty" id=59]
+
+[sub_resource type="StyleBoxEmpty" id=60]
+
+[sub_resource type="StyleBoxEmpty" id=61]
+
+[sub_resource type="StyleBoxEmpty" id=62]
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=54]
+
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=55]
+
+[sub_resource type="Theme" id=56]
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/decrement_pressed = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/icons/increment_pressed = null
+HScrollBar/styles/grabber = SubResource( 58 )
+HScrollBar/styles/grabber_highlight = SubResource( 59 )
+HScrollBar/styles/grabber_pressed = SubResource( 60 )
+HScrollBar/styles/scroll = SubResource( 61 )
+HScrollBar/styles/scroll_focus = SubResource( 62 )
+VScrollBar/styles/grabber = SubResource( 10 )
+VScrollBar/styles/grabber_highlight = SubResource( 54 )
+VScrollBar/styles/grabber_pressed = SubResource( 12 )
+VScrollBar/styles/scroll = SubResource( 13 )
+VScrollBar/styles/scroll_focus = SubResource( 55 )
+
+[sub_resource type="StyleBoxEmpty" id=57]
+
+[sub_resource type="AtlasTexture" id=76]
+atlas = ExtResource( 5 )
+region = Rect2( 160, 230, 10, 10 )
+
+[sub_resource type="StyleBoxTexture" id=71]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 256, 384 )
+modulate_color = Color( 1, 1, 1, 0.313726 )
+
+[sub_resource type="StyleBoxTexture" id=14]
+texture = ExtResource( 7 )
+region_rect = Rect2( 0, 0, 384, 128 )
+modulate_color = Color( 1, 1, 1, 0.313726 )
+
+[sub_resource type="DynamicFont" id=48]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="StyleBoxEmpty" id=49]
+
+[sub_resource type="StyleBoxEmpty" id=50]
+
+[sub_resource type="StyleBoxEmpty" id=51]
+
+[sub_resource type="StyleBoxEmpty" id=52]
+
+[sub_resource type="StyleBoxEmpty" id=53]
+
+[sub_resource type="ShaderMaterial" id=70]
+shader = ExtResource( 9 )
+shader_param/max_line_width = 0.8
+shader_param/min_line_width = -0.983
+shader_param/freq = 0.0
+shader_param/block_size = 22220.2
+shader_param/starting_colour = Plane( 0, 0, 0, 4 )
+shader_param/ending_colour = Plane( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
+
+[sub_resource type="AtlasTexture" id=47]
+atlas = ExtResource( 5 )
+region = Rect2( 150, 230, 10, 10 )
+
+[sub_resource type="DynamicFont" id=63]
+font_data = ExtResource( 8 )
+
+[sub_resource type="Animation" id=73]
+resource_name = "DeInspectBuilding"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("InspectBuilding:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=74]
+resource_name = "InspectBuilding"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("InspectBuilding:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=75]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("InspectBuilding:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="Building" type="CanvasLayer"]
+script = ExtResource( 3 )
+
+[node name="StorageTween" type="Tween" parent="."]
+
+[node name="InfoTween" type="Tween" parent="."]
+
+[node name="BuildingBackground" type="TextureButton" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 400, 180 )
+expand = true
+script = ExtResource( 6 )
+
+[node name="InspectBuilding" type="PanelContainer" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -101.0
+margin_top = 20.0
+margin_right = 103.0
+margin_bottom = 206.0
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 2 )
+
+[node name="MarginContainer" type="MarginContainer" parent="InspectBuilding"]
+margin_right = 204.0
+margin_bottom = 270.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InspectBuilding/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 188.0
+margin_bottom = 254.0
+
+[node name="BuildingName" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer"]
+margin_right = 172.0
+margin_bottom = 14.0
+text = "Vault Chest"
+align = 1
+
+[node name="BuildingSpriteContainer" type="HBoxContainer" parent="InspectBuilding/MarginContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 172.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 30, 30 )
+alignment = 1
+
+[node name="BuildingSprite" type="TextureRect" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingSpriteContainer"]
+material = ExtResource( 13 )
+margin_left = 71.0
+margin_right = 101.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 30, 30 )
+texture = SubResource( 72 )
+expand = true
+stretch_mode = 5
+
+[node name="BuildingDescription" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer"]
+margin_top = 52.0
+margin_right = 172.0
+margin_bottom = 66.0
+text = "For storing up to 8 items."
+align = 1
+autowrap = true
+
+[node name="BuildingMaterials" type="VBoxContainer" parent="InspectBuilding/MarginContainer/VBoxContainer"]
+margin_top = 70.0
+margin_right = 172.0
+margin_bottom = 238.0
+theme = SubResource( 32 )
+
+[node name="Uncraftable" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+visible = false
+margin_right = 172.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 0, 28 )
+text = "[Uncraftable]"
+align = 1
+valign = 2
+
+[node name="Craftable" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+margin_right = 172.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 0, 28 )
+text = "[Double Click To Craft]"
+align = 1
+valign = 2
+
+[node name="Max" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+margin_top = 32.0
+margin_right = 172.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 28 )
+text = "[1/20]"
+align = 1
+valign = 2
+
+[node name="Tag" type="Label" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+margin_top = 64.0
+margin_right = 172.0
+margin_bottom = 92.0
+rect_min_size = Vector2( 0, 28 )
+text = "Materials required:"
+align = 1
+valign = 2
+
+[node name="MaterialsContainer" type="GridContainer" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials"]
+margin_left = 12.0
+margin_top = 96.0
+margin_right = 160.0
+margin_bottom = 168.0
+size_flags_horizontal = 4
+columns = 4
+
+[node name="Material" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+
+[node name="Material2" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_left = 38.0
+margin_right = 72.0
+
+[node name="Material3" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_left = 76.0
+margin_right = 110.0
+
+[node name="Material4" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_left = 114.0
+margin_right = 148.0
+
+[node name="Material5" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_top = 38.0
+margin_bottom = 72.0
+
+[node name="Material6" parent="InspectBuilding/MarginContainer/VBoxContainer/BuildingMaterials/MaterialsContainer" instance=ExtResource( 14 )]
+margin_left = 38.0
+margin_top = 38.0
+margin_right = 72.0
+margin_bottom = 72.0
+
+[node name="StorageContainer" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = 60.0
+rect_clip_content = true
+
+[node name="PanelContainer2" type="PanelContainer" parent="StorageContainer"]
+margin_right = 800.0
+margin_bottom = 60.0
+rect_clip_content = true
+size_flags_horizontal = 3
+theme = ExtResource( 2 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="StorageContainer/PanelContainer2"]
+margin_right = 800.0
+margin_bottom = 60.0
+rect_clip_content = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="StorageContainer/PanelContainer2/MarginContainer"]
+margin_right = 800.0
+margin_bottom = 60.0
+theme = SubResource( 56 )
+custom_styles/bg = SubResource( 57 )
+scroll_vertical_enabled = false
+script = ExtResource( 1 )
+
+[node name="ResizeContainer" type="HBoxContainer" parent="StorageContainer/PanelContainer2/MarginContainer/ScrollContainer"]
+margin_right = 56.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="remover" type="TextureButton" parent="StorageContainer/PanelContainer2/MarginContainer/ScrollContainer/ResizeContainer"]
+modulate = Color( 0.509804, 0.509804, 0.509804, 1 )
+material = ExtResource( 13 )
+margin_top = 10.0
+margin_right = 56.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 56, 40 )
+size_flags_vertical = 4
+texture_normal = SubResource( 76 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 15 )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_top = 7.0
+margin_right = 152.0
+margin_bottom = 241.0
+custom_styles/panel = SubResource( 71 )
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+margin_right = 152.0
+margin_bottom = 234.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 144.0
+margin_bottom = 226.0
+custom_constants/separation = 8
+
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 136.0
+margin_bottom = 30.0
+custom_styles/panel = SubResource( 14 )
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/PanelContainer2"]
+margin_right = 136.0
+margin_bottom = 30.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="ExitButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 128.0
+margin_bottom = 22.0
+custom_fonts/font = SubResource( 48 )
+custom_styles/hover = SubResource( 49 )
+custom_styles/pressed = SubResource( 50 )
+custom_styles/focus = SubResource( 51 )
+custom_styles/disabled = SubResource( 52 )
+custom_styles/normal = SubResource( 53 )
+text = "Exit"
+
+[node name="OpenContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 38.0
+margin_right = 136.0
+margin_bottom = 58.0
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer"]
+margin_top = 6.0
+margin_right = 72.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "State:"
+
+[node name="StateContainer" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer"]
+margin_left = 76.0
+margin_right = 136.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 60, 0 )
+size_flags_horizontal = 9
+flat = true
+align = 0
+icon_align = 2
+expand_icon = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer"]
+margin_right = 62.0
+margin_bottom = 20.0
+size_flags_vertical = 0
+
+[node name="CurrentState" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer/HBoxContainer"]
+margin_top = 6.0
+margin_right = 38.0
+margin_bottom = 20.0
+size_flags_vertical = 8
+custom_colors/font_color = Color( 0.0823529, 0.819608, 0.231373, 1 )
+text = "Closed"
+
+[node name="Switch" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer/HBoxContainer"]
+material = SubResource( 70 )
+margin_left = 42.0
+margin_right = 62.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 20, 20 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource( 47 )
+expand = true
+stretch_mode = 5
+
+[node name="GuestlistContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 66.0
+margin_right = 136.0
+margin_bottom = 218.0
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer"]
+margin_right = 136.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+text = "Guestlist:"
+valign = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer"]
+margin_top = 34.0
+margin_right = 136.0
+margin_bottom = 134.0
+rect_min_size = Vector2( 0, 100 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer/MarginContainer"]
+margin_right = 136.0
+margin_bottom = 100.0
+theme = SubResource( 56 )
+custom_styles/bg = SubResource( 57 )
+scroll_horizontal_enabled = false
+script = ExtResource( 1 )
+
+[node name="Guestlist" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer/MarginContainer/ScrollContainer"]
+margin_right = 136.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+
+[node name="0" parent="PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer/MarginContainer/ScrollContainer/Guestlist" instance=ExtResource( 11 )]
+
+[node name="Input" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer"]
+margin_top = 138.0
+margin_right = 136.0
+margin_bottom = 152.0
+custom_fonts/font = SubResource( 63 )
+
+[node name="BuildingAnimations" type="AnimationPlayer" parent="."]
+anims/DeInspectBuilding = SubResource( 73 )
+anims/InspectBuilding = SubResource( 74 )
+anims/RESET = SubResource( 75 )
+
+[connection signal="text_entered" from="PanelContainer/MarginContainer/VBoxContainer/GuestlistContainer/Input" to="." method="_on_Input_text_entered"]

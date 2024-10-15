@@ -1,0 +1,337 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/ui/achievement_icons.png" type="Texture" id=3]
+[ext_resource path="res://Resources/Outline.gdshader" type="Shader" id=4]
+[ext_resource path="res://Scenes/SupportScenes/Animations/UnlockAchievement/UnlockAchievement.gd" type="Script" id=6]
+[ext_resource path="res://Assets/ui/halo.png" type="Texture" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = ExtResource( 4 )
+shader_param/max_line_width = 0.8
+shader_param/min_line_width = -0.983
+shader_param/freq = 0.0
+shader_param/block_size = 22220.2
+shader_param/starting_colour = Plane( 0, 0, 0, 12 )
+shader_param/ending_colour = Plane( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 10, 10, 10 )
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = ExtResource( 4 )
+shader_param/max_line_width = 0.8
+shader_param/min_line_width = -0.983
+shader_param/freq = 0.0
+shader_param/block_size = 22220.2
+shader_param/starting_colour = Plane( 0, 0, 0, 12 )
+shader_param/ending_colour = Plane( 0, 0, 0, 0 )
+shader_param/helmetTextureActive = false
+shader_param/bodyTextureActive = false
+shader_param/weaponTextureActive = false
+shader_param/helmetDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/helmetLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyDarkNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyMediumNew = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bodyLightNew = Color( 33, 53, 23, 0.2 )
+shader_param/bandOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/bandNew = Color( 33, 53, 23, 0.2 )
+shader_param/buckleOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/buckleNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponNew = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryOrigin = Color( 33, 53, 23, 0.2 )
+shader_param/weaponSecondaryNew = Color( 33, 53, 23, 0.2 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "Discovery"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Container:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.5, 2.4, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Container/HBoxContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Container/Halo:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 360.0, -180.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Container/Halo:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 1.8, 2.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0.313726 ), Color( 0, 0, 0, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Container/TextureRect:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.5, 0.7, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Container/TextureRect:rect_size")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.5, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 36, 36 ), Vector2( 52, 52 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Container:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Container/HBoxContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Container/Halo:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 360.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Container/Halo:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0.313726 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Container/TextureRect:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Container/TextureRect:rect_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Container/TextureRect:rect_size")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 36, 36 ) ]
+}
+
+[node name="UnlockAchievement" type="CanvasLayer"]
+script = ExtResource( 6 )
+
+[node name="Container" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -76.0
+margin_top = -123.0
+margin_right = 82.0
+margin_bottom = -99.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 1 )
+align = 1
+
+[node name="Container" type="Label" parent="Container"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -81.0
+margin_top = -21.0
+margin_right = 77.0
+margin_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 1 )
+text = "Achievement Unlocked!"
+align = 1
+
+[node name="Halo" type="Sprite" parent="Container"]
+modulate = Color( 0, 0, 0, 0.313726 )
+position = Vector2( 78, 78 )
+rotation = 6.28319
+scale = Vector2( 0.07, 0.07 )
+z_index = -1
+texture = ExtResource( 7 )
+
+[node name="TextureRect" type="TextureRect" parent="Container"]
+material = SubResource( 8 )
+margin_left = 63.0
+margin_top = 56.0
+margin_right = 99.0
+margin_bottom = 92.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 30, 30 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource( 7 )
+stretch_mode = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -99.0
+margin_top = 89.0
+margin_right = 110.0
+margin_bottom = 129.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Achievement" type="Label" parent="Container/HBoxContainer"]
+margin_left = 4.0
+margin_top = 11.0
+margin_right = 170.0
+margin_bottom = 29.0
+custom_fonts/font = SubResource( 1 )
+text = "Starlight, Starbright"
+align = 1
+
+[node name="TextureRect" type="TextureRect" parent="Container/HBoxContainer"]
+material = SubResource( 9 )
+margin_left = 174.0
+margin_top = 5.0
+margin_right = 204.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 30, 30 )
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource( 7 )
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Discovery"
+anims/Discovery = SubResource( 3 )
+anims/RESET = SubResource( 4 )

@@ -35,10 +35,10 @@ font_data = ExtResource( 5 )
 [node name="AchievementButton" type="TextureButton"]
 material = ExtResource( 2 )
 margin_right = 446.0
-margin_bottom = 40.0
+margin_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
-rect_min_size = Vector2( 40, 40 )
+rect_min_size = Vector2( 40, 50 )
 expand = true
 script = ExtResource( 4 )
 

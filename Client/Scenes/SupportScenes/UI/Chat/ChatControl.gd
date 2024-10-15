@@ -8,6 +8,8 @@ var interacted = false
 onready var scroll_container = $PanelContainer/VBoxContainer/ScrollContainer
 
 func _ready():
+	$HiddenContainer/VBoxContainer/ScrollContainer.parent_ref = self
+	$HiddenContainer/VBoxContainer/ScrollContainer/_v_scroll.connect("scrolling", self, "Interacted")
 	chat_input.connect("focus_entered", self, "EnterChat")
 	chat_input.connect("focus_exited", self, "ExitChat")
 	
@@ -77,17 +79,23 @@ func AddChat(message,username,classname,id):
 	
 	get_node("PanelContainer/VBoxContainer/ScrollContainer/ChatVerticalContainer").add_child(chat_message,1)
 	
-func _unhandled_input(event):
-	if event is InputEventMouseButton:
-		chat_input.visible = false
-		chat_input.visible = true
-
-func _physics_process(delta):
-	interacted = false
+	last_added = OS.get_system_time_msecs()
 	if not interacted:
+		switch = true
+
+var switch = false
+var last_scroll = 0
+var last_added = 0
+func _physics_process(delta):
+	if switch:
 		scroll_container.scroll_vertical = scroll_container.get_v_scrollbar().max_value
-	if scroll_container.scroll_vertical == scroll_container.get_v_scrollbar().max_value:
+		switch = false
+	if scroll_container.scroll_vertical == scroll_container.get_v_scrollbar().max_value-140:
 		interacted = false
+	
+	if last_scroll != scroll_container.scroll_vertical and OS.get_system_time_msecs() - last_added > 20:
+		interacted = true
+	last_scroll = scroll_container.scroll_vertical
 	
 	if(Input.is_action_just_pressed ("chat")) and chat_input.has_focus():
 		chat_input.grab_focus()
@@ -110,13 +118,3 @@ func _physics_process(delta):
 		chat_input.caret_position = chat_input.text.length()
 		if GameUI.is_in_menu and GameUI.last_menu != "trade":
 			GameUI.Toggle(GameUI.last_menu)
-
-func _on_ScrollContainer_scroll_started():
-	print("s")
-	interacted = true
-func _on_ScrollContainer_mouse_entered():
-	$PanelContainer/VBoxContainer/ScrollContainer.emit_signal("focus_entered")
-	#print("What")
-
-func _on_ScrollContainer_focus_entered():
-	interacted = true

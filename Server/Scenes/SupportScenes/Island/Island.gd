@@ -12,6 +12,7 @@ var noise
 var chunk_size = 16
 var tile_cap = 0.5
 var environment_caps = Vector3(0.4, 0.3, 0.04)
+var player_spawnpoint_tile_id = 2
 
 var map_as_array = []
 var map_objects = {}
@@ -89,7 +90,7 @@ func HandleRuler(delta):
 			get_node("/root/Server").ForcedEnterInstance(instance_id, int(player_id))
 	
 	if island_close_timer <= 0 and not ServerData.GetEnemy(ruler).has("dungeon"):
-		island_close_timer = 10
+		island_close_timer = 30
 		get_node("/root/Server").SpawnNPC(ruler, instance_tree, map_size/2*8-position)
 
 #Handle standard stuff
@@ -177,9 +178,7 @@ func GetMapSpawnpoint():
 func GetIslandChunk(chunk):
 	var result = []
 	var objects = []
-	
-	var full_chunk = chunks.has(chunk) and chunks[chunk]["E"].size() > 10000
-	var player_chunk = chunks.has(chunk) and chunks[chunk]["P"].size() == 0
+	var empty_chunk = IsChunkRadiusEmpty(chunk)
 	
 	for x in range(chunk.x-(chunk_size/2), chunk.x+(chunk_size/2)):
 		result.append([])
@@ -189,7 +188,7 @@ func GetIslandChunk(chunk):
 				if map_objects.has(Vector2(x*8, y*8)):
 					objects.append(map_objects[Vector2(x*8, y*8)])
 				
-				if enemy_spawn_points.has(Vector2(x,y)) and not full_chunk and not player_chunk:
+				if enemy_spawn_points.has(Vector2(x,y)) and empty_chunk:
 					var selection = enemy_spawn_points[Vector2(x,y)]["Selection"]
 					var enemy_index = round(rand_range(0, selection.size()-1))
 					
@@ -230,6 +229,8 @@ func _ready():
 func GenerateIslandMap():
 	if get_script().resource_path.get_file().get_basename() == "TutorialIsland" and has_method("TutorialInit"):
 		self_ref.TutorialInit()
+	if get_script().resource_path.get_file().get_basename() == "SpecialIsland" and has_method("SpecialInit"):
+		self_ref.SpecialInit()
 	
 	noise = OpenSimplexNoise.new()
 	noise.octaves = 1.0
@@ -347,8 +348,8 @@ func ArrayToTiles():
 			if tile_points.has(map_tile):
 				tile_points[map_tile].append(Vector2(x*8, y*8))
 			else:
-				tile_points[map_tile] = [Vector2(x*8, y*8)]
-			if map_tile == 2:
+				tile_points[map_tile] = [Vector2(x*8, y*8)] 
+			if map_tile == player_spawnpoint_tile_id:
 				spawn_points.append(Vector2(x*8, y*8))
 			
 			if not spawnpoint_tile:

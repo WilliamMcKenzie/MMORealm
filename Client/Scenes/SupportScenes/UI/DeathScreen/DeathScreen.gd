@@ -25,7 +25,7 @@ func _physics_process(delta):
 		
 	if reputation < reputation_end:
 		reputation += reputation_per_tick
-	if reputation > reputation_end:
+	if reputation >= reputation_end:
 		$Container/HomeButton.modulate = Color(1,1,1,1)
 		reputation = reputation_end
 	

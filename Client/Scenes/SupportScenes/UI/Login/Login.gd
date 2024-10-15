@@ -2,6 +2,7 @@ extends CanvasLayer
 
 onready var loginButton = $VBoxContainer/HBoxContainer/Login
 onready var signupButton = $VBoxContainer/HBoxContainer/Signup
+onready var guestButton = $Guest
 
 var email = ""
 var password = ""
@@ -9,7 +10,23 @@ var password = ""
 func _ready():
 	loginButton.connect("pressed", self, "LoginAttempt")
 	signupButton.connect("pressed", self, "SignupAttempt")
+	guestButton.connect("pressed", self, "GuestRequest")
 	
+	$Guest/PanelContainer/MarginContainer/VBoxContainer/Options/Yes.connect("pressed", self, "GuestSignup")
+	$Guest/PanelContainer/MarginContainer/VBoxContainer/Options/Cancel.connect("pressed", self, "GuestCancel")
+
+func GuestRequest():
+	$Guest/PanelContainer.visible = true
+func GuestSignup():
+	$Guest/PanelContainer.visible = false
+	password = str(randf()).sha256_text()
+	email = str(randf()).sha256_text()
+	$VBoxContainer/PasswordContainer/Password/MarginContainer/Password.text = password
+	$VBoxContainer/EmailContainer/Email/MarginContainer/Email.text = email
+	Gateway.GatewayRequest(email, password, 1)
+func GuestCancel():
+	$Guest/PanelContainer.visible = false
+
 func SignupAttempt():
 	password = $VBoxContainer/PasswordContainer/Password/MarginContainer/Password.text
 	email = $VBoxContainer/EmailContainer/Email/MarginContainer/Email.text

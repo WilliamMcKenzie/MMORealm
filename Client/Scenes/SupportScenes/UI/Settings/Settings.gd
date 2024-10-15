@@ -1,56 +1,104 @@
 extends CanvasLayer
 
-var achievement_button = preload("res://Scenes/SupportScenes/UI/Achievements/Achievement.tscn")
+var saved_settings = {}
+var settings = [
+	{
+		"title" : "Max FPS",
+		"description" : "Lower max fps provides more constistency.",
+		"data" : {
+			"type" : "input",
+			"default" : 60,
+		}
+	},
+	{
+		"title" : "Show FPS",
+		"description" : "Have your FPS show up on the screen.",
+		"data" : {
+			"type" : "checkbox",
+			"default" : false,
+		}
+	},
+	{
+		"title" : "Show Ping",
+		"description" : "Have your ping show up on the screen.",
+		"data" : {
+			"type" : "checkbox",
+			"default" : false,
+		}
+	},
+	{
+		"title" : "VSync",
+		"description" : "VSync can reduce screen tearing, may lower performance.",
+		"data" : {
+			"type" : "checkbox",
+			"default" : true,
+		}
+	},
+	{
+		"title" : "Hide Players",
+		"description" : "Hiding other players can improve performance.",
+		"data" : {
+			"type" : "checkbox",
+			"default" : false,
+		}
+	},
+	{
+		"title" : "Hide Player Shots",
+		"description" : "Hiding other players shots can improve performance.",
+		"data" : {
+			"type" : "checkbox",
+			"default" : false,
+		}
+	},
+]
+var setting_scenes = {
+	"checkbox" : preload("res://Scenes/SupportScenes/UI/Settings/SettingScenes/CheckboxSetting.tscn"),
+	"input" : preload("res://Scenes/SupportScenes/UI/Settings/SettingScenes/InputSetting.tscn"),
+	"slider" : preload("res://Scenes/SupportScenes/UI/Settings/SettingScenes/SliderSetting.tscn"),
+}
 
 func _ready():
-	$ExitButton.connect("pressed", self, "ToggleAchievements")
-	$ExitButton/TouchScreenButton.connect("pressed", self, "ToggleAchievements")
+	$MarginContainer/Container/Categories/Home.connect("pressed", self, "GoHome")
+	$ExitButton.connect("pressed", self, "Toggle")
+	
+	saved_settings = ClientAuth.LoadSettings()
+	for setting in settings:
+		var exists = saved_settings.has(setting.title)
+		if exists:
+			setting.data.default = saved_settings[setting.title]
+		
+		var scene = setting_scenes[setting.data.type].instance()
+		scene.SetSettings(setting.title, setting.description, setting.data.default)
+		$MarginContainer/Container/ScrollContainer/SettingsRoot.add_child(scene)
+	
+	for setting in saved_settings.keys():
+		ChangeValue(setting, saved_settings[setting])
 
-func ToggleAchievements():
-	get_parent().Toggle("achievements")
+func ChangeValue(which, value):
+	saved_settings[which] = value
+	ClientAuth.SaveSettings(saved_settings)
+	
+	if which == settings[0].title:
+		Engine.target_fps = max(value, 10)
+	if which == settings[1].title:
+		Settings.show_fps = value
+	if which == settings[2].title:
+		Settings.show_ping = value
+	if which == settings[3].title:
+		OS.vsync_enabled = value
+	if which == settings[4].title:
+		Settings.hide_players = value
+	if which == settings[5].title:
+		Settings.hide_player_shots = value
+
+func GoHome():
+	GameUI.GoHome()
+
+func Toggle():
+	GameUI.Toggle("settings")
 
 func Open():
 	self.visible = true
-	var account_data = GameUI.account_data
-	var categories = ClientData.achievement_catagories
-	var categories_node = $MarginContainer/Container/Categories
-	
-	for child in categories_node.get_children():
-		if not child is HBoxContainer:
-			categories_node.remove_child(child)
-	for catagory in categories.keys():
-		var category_instance = category_button.instance()
-		category_instance.SetCategory(catagory)
-		category_instance.name = catagory
-		category_instance.connect("pressed", self, "SetCategory", [catagory])
-		categories_node.add_child(category_instance)
-		
-	SetCategory("Classes")
 
 func Close():
 	self.visible = false
-
-func SetCategory(category_name):
-	var categories_node = $MarginContainer/Container/Categories
-	var achievements_node = $MarginContainer/Container/ScrollContainer/AchievementsRoot
-	var achievements = ClientData.achievement_catagories[category_name].achievements
-	
-	for child in categories_node.get_children():
-		if not child is HBoxContainer:
-			child.Disable()
-	categories_node.get_node(category_name).Activate()
-	
-	for child in achievements_node.get_children():
-		achievements_node.remove_child(child)
-	for achievement in achievements:
-		var achievement_instance = achievement_button.instance()
-		achievement_instance.name = achievement
-		achievement_instance.SetAchievement(achievement)
-		
-		if GameUI.account_data.achievements.has(achievement) and GameUI.account_data.achievements[achievement]:
-			achievement_instance.Disable()
-		else:
-			achievement_instance.Activate()
-		
-		achievements_node.add_child(achievement_instance)
-

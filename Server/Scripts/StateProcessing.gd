@@ -4,9 +4,8 @@ var sync_clock_counter = 0
 var world_state
 
 func _physics_process(delta):
-	
 	sync_clock_counter += 1
-	if sync_clock_counter ==  3:
+	if sync_clock_counter ==  6:
 		sync_clock_counter = 0
 		var server = get_node("/root/Server")
 		for instance_tree in server.player_instance_tracker.keys():
@@ -33,7 +32,8 @@ func _physics_process(delta):
 					"name": enemy.name,
 					"position": enemy.position,
 					"effects": enemy.effects,
-					"dead": enemy.dead
+					"dead": enemy.dead,
+					"flip": enemy.flip,
 				}
 			
 			for id in server.player_instance_tracker[instance_tree]:
@@ -79,7 +79,8 @@ func SendIslandData(instance_tree):
 					"name": enemy.name,
 					"position": enemy.position,
 					"effects": enemy.effects,
-					"dead": enemy.dead
+					"dead": enemy.dead,
+					"flip": enemy.flip,
 				}
 			
 			for id in players:

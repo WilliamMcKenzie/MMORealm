@@ -41,23 +41,23 @@ texture = ExtResource( 6 )
 region_rect = Rect2( 0, 0, 128, 128 )
 modulate_color = Color( 1, 1, 1, 0.313726 )
 
-[sub_resource type="StyleBoxTexture" id=5]
+[sub_resource type="StyleBoxTexture" id=29]
 texture = ExtResource( 3 )
 region_rect = Rect2( 0, 0, 384, 128 )
 modulate_color = Color( 1, 1, 1, 0.313726 )
 
 [sub_resource type="Theme" id=3]
-PanelContainer/styles/panel = SubResource( 5 )
+PanelContainer/styles/panel = SubResource( 29 )
 
 [sub_resource type="StyleBoxEmpty" id=23]
 
 [sub_resource type="Theme" id=4]
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=30]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [sub_resource type="Theme" id=2]
-LineEdit/styles/normal = SubResource( 1 )
+LineEdit/styles/normal = SubResource( 30 )
 
 [sub_resource type="DynamicFont" id=14]
 font_data = ExtResource( 9 )
@@ -247,7 +247,7 @@ visible = false
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 204.0
+margin_right = 264.0
 margin_bottom = 204.0
 rect_clip_content = true
 mouse_filter = 2
@@ -271,8 +271,9 @@ scroll_vertical = 10
 script = ExtResource( 10 )
 
 [node name="ChatVerticalContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+margin_top = -10.0
 margin_right = 240.0
-margin_bottom = 150.0
+margin_bottom = 140.0
 rect_min_size = Vector2( 0, 150 )
 rect_clip_content = true
 mouse_filter = 2
@@ -357,7 +358,7 @@ script = ExtResource( 2 )
 [node name="HiddenContainer" type="PanelContainer" parent="."]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 204.0
+margin_right = 264.0
 margin_bottom = 204.0
 rect_clip_content = true
 mouse_filter = 2
@@ -366,13 +367,13 @@ custom_styles/panel = SubResource( 27 )
 [node name="VBoxContainer" type="VBoxContainer" parent="HiddenContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 188.0
+margin_right = 248.0
 margin_bottom = 188.0
 rect_clip_content = true
 mouse_filter = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HiddenContainer/VBoxContainer"]
-margin_right = 180.0
+margin_right = 240.0
 margin_bottom = 140.0
 rect_min_size = Vector2( 180, 140 )
 mouse_filter = 2
@@ -384,7 +385,7 @@ script = ExtResource( 10 )
 
 [node name="ChatVerticalContainer" type="VBoxContainer" parent="HiddenContainer/VBoxContainer/ScrollContainer"]
 margin_top = -10.0
-margin_right = 180.0
+margin_right = 240.0
 margin_bottom = 140.0
 rect_min_size = Vector2( 0, 150 )
 rect_clip_content = true
@@ -395,7 +396,7 @@ alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HiddenContainer/VBoxContainer"]
 margin_top = 144.0
-margin_right = 180.0
+margin_right = 240.0
 margin_bottom = 180.0
 
 [node name="Open" type="PanelContainer" parent="HiddenContainer/VBoxContainer/HBoxContainer"]
@@ -511,9 +512,5 @@ anims/Hide = SubResource( 25 )
 anims/RESET = SubResource( 26 )
 anims/Show = SubResource( 28 )
 
-[connection signal="focus_entered" from="PanelContainer/VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_focus_entered"]
-[connection signal="mouse_entered" from="PanelContainer/VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_mouse_entered"]
-[connection signal="scroll_ended" from="PanelContainer/VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_scroll_ended"]
-[connection signal="scroll_started" from="PanelContainer/VBoxContainer/ScrollContainer" to="." method="_on_ScrollContainer_scroll_started"]
 [connection signal="text_entered" from="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput" to="PanelContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput" method="_on_ChatInput_text_entered"]
 [connection signal="text_entered" from="HiddenContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput" to="HiddenContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer/MarginContainer/ChatInput" method="_on_ChatInput_text_entered"]

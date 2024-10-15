@@ -16,8 +16,8 @@ func Verify(player_id, token, character_index):
 		if main_interface.expected_tokens.has(token):
 			
 			#Check if same account is already in the game
-			#if(verified_emails.has(main_interface.expected_tokens[token])):
-				#break
+			if(verified_emails.has(main_interface.expected_tokens[token])):
+				break
 			
 			token_verification = true
 			CreatePlayerContainer(player_id, main_interface.expected_tokens[token], character_index)

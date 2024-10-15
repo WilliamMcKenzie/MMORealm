@@ -97,18 +97,18 @@ var waves = {
 			"gold" : 20,
 		},
 		{
-			"monsters" : ["imp_general","demonic_beast","ice_demon","cacodemon","imp_warrior","imp_warrior"],
+			"monsters" : ["demonic_beast","demonic_fledgling","demonic_fledgling","demonic_beast","demonic_fledgling"],
 			"bosses" : ["raa'sloth","eye_of_naa'zorak"],
 			"gold" : 30,
 		},
 		{
-			"monsters" : ["basalisk","basalisk","basalisk","orc_monolith","orc_monolith","orc_monolith","orc_monolith","orc_monolith"],
+			"monsters" : ["basalisk","basalisk","basalisk","vigil_guardian","vigil_guardian"],
 			"bosses" : ["atlas"],
 			"gold" : 30,
 		},
 		{
-			"monsters" : ["phoenix","phoenix","phoenix","phoenix","fire_druid","fire_druid","archmage",],
-			"bosses" : ["atlas","eye_of_naa'zorak","og_the_treacherous"],
+			"monsters" : ["vajira","ice_demon","ice_demon","raa'sloth","oranix"],
+			"bosses" : ["og_the_treacherous"],
 			"gold" : 50,
 		},
 	]
@@ -125,7 +125,7 @@ func _process(delta):
 			gold += _gold
 			server.rpc_id(int(name.split(" ")[1]),"Wave", gold, wave)
 		if $YSort/Players.get_child_count() > 0:
-			if arena_type == "monthly":
+			if arena_type == "monthly" and rand_range(0, 10) > 9:
 				$YSort/Players.get_children()[0].GiveItem(499, 1)
 			$YSort/Players.get_children()[0].DealDamage(999, "Gladius")
 	elif wave_countdown < 0:

@@ -61,7 +61,7 @@ func SetCharacter(_character):
 	if gear.has("weapon"):
 		time_between_shots = (1 / (6.5 * (stats.dexterity + 17.3) / 100)) / (gear.weapon.rof/100.0)
 		if character.status_effects.has("berserk"):
-			time_between_shots /= (125.0/100.0)
+			time_between_shots /= (150.0/100.0)
 	else:
 		time_between_shots = INF
 	

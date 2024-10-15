@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=2]
+[gd_scene load_steps=74 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/UI/Inventory/Inventory.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/SupportScenes/UI/Chat/Chat.tscn" type="PackedScene" id=2]
@@ -34,6 +34,8 @@
 [ext_resource path="res://Scenes/SupportScenes/UI/Building/Building.tscn" type="PackedScene" id=32]
 [ext_resource path="res://Scenes/SupportScenes/UI/TalkNpc.gd" type="Script" id=33]
 [ext_resource path="res://Scenes/SupportScenes/UI/TutorialArrow.tscn" type="PackedScene" id=34]
+[ext_resource path="res://Scenes/SupportScenes/UI/Settings/Settings.tscn" type="PackedScene" id=35]
+[ext_resource path="res://Scenes/SupportScenes/UI/Ping.gd" type="Script" id=36]
 
 [sub_resource type="Animation" id=34]
 resource_name = "Ability"
@@ -1072,7 +1074,7 @@ region = Rect2( 180, 220, 10, 10 )
 
 [sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 9 )
-region = Rect2( 0, 250, 10, 10 )
+region = Rect2( 130, 220, 10, 10 )
 
 [sub_resource type="StyleBoxFlat" id=39]
 bg_color = Color( 0, 0, 0, 0.682353 )
@@ -1098,13 +1100,20 @@ anims/Start = SubResource( 37 )
 anims/Stats = SubResource( 35 )
 
 [node name="FPS" type="Label" parent="."]
-visible = false
 margin_left = 635.0
 margin_top = 11.0
 margin_right = 677.0
 margin_bottom = 30.0
 text = "FPS:0"
 script = ExtResource( 19 )
+
+[node name="Ping" type="Label" parent="."]
+margin_left = 635.0
+margin_top = 32.0
+margin_right = 677.0
+margin_bottom = 51.0
+text = "Ping:0"
+script = ExtResource( 36 )
 
 [node name="Nametags" type="Control" parent="."]
 anchor_left = 0.5
@@ -1462,14 +1471,14 @@ scale = Vector2( 3.22222, 3 )
 z_index = 22
 normal = SubResource( 30 )
 
-[node name="HomeButton" type="PanelContainer" parent="UtilityButtons/Column2"]
+[node name="SettingsButton" type="PanelContainer" parent="UtilityButtons/Column2"]
 margin_top = 84.0
 margin_right = 38.0
 margin_bottom = 122.0
 custom_styles/panel = SubResource( 15 )
 script = ExtResource( 21 )
 
-[node name="MarginContainer" type="MarginContainer" parent="UtilityButtons/Column2/HomeButton"]
+[node name="MarginContainer" type="MarginContainer" parent="UtilityButtons/Column2/SettingsButton"]
 margin_right = 38.0
 margin_bottom = 38.0
 custom_constants/margin_right = 4
@@ -1477,7 +1486,7 @@ custom_constants/margin_top = 4
 custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
-[node name="TextureButton" type="TextureButton" parent="UtilityButtons/Column2/HomeButton/MarginContainer"]
+[node name="TextureButton" type="TextureButton" parent="UtilityButtons/Column2/SettingsButton/MarginContainer"]
 modulate = Color( 1, 1, 1, 0 )
 material = SubResource( 4 )
 margin_left = 4.0
@@ -1489,7 +1498,7 @@ texture_normal = SubResource( 31 )
 texture_hover = SubResource( 5 )
 expand = true
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="UtilityButtons/Column2/HomeButton/MarginContainer"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="UtilityButtons/Column2/SettingsButton/MarginContainer"]
 position = Vector2( 4, 5 )
 scale = Vector2( 3, 3 )
 z_index = 22
@@ -1559,6 +1568,9 @@ visible = false
 layer = 25
 visible = false
 
+[node name="Settings" parent="." instance=ExtResource( 35 )]
+visible = false
+
 [node name="TradeRequest" parent="." instance=ExtResource( 18 )]
 visible = false
 
@@ -1608,4 +1620,4 @@ align = 1
 [connection signal="pressed" from="UtilityButtons/Column1/StatsButton/MarginContainer/TouchScreenButton" to="UtilityButtons/Column1/StatsButton" method="_on_TouchScreenButton_pressed"]
 [connection signal="pressed" from="UtilityButtons/Column2/AchievementsButton/MarginContainer/TouchScreenButton" to="UtilityButtons/Column2/AchievementsButton" method="_on_TouchScreenButton_pressed"]
 [connection signal="pressed" from="UtilityButtons/Column2/ClassesButton/MarginContainer/TouchScreenButton" to="UtilityButtons/Column2/ClassesButton" method="_on_TouchScreenButton_pressed"]
-[connection signal="pressed" from="UtilityButtons/Column2/HomeButton/MarginContainer/TouchScreenButton" to="UtilityButtons/Column2/HomeButton" method="_on_TouchScreenButton_pressed"]
+[connection signal="pressed" from="UtilityButtons/Column2/SettingsButton/MarginContainer/TouchScreenButton" to="UtilityButtons/Column2/SettingsButton" method="_on_TouchScreenButton_pressed"]

@@ -147,6 +147,7 @@ expand = true
 stretch_mode = 5
 
 [node name="Audio" type="TextureButton" parent="MarginContainer/Container/Categories"]
+visible = false
 margin_top = 34.0
 margin_right = 116.0
 margin_bottom = 74.0
@@ -178,9 +179,10 @@ custom_fonts/font = SubResource( 36 )
 text = "Audio"
 
 [node name="Graphics" type="TextureButton" parent="MarginContainer/Container/Categories"]
-margin_top = 78.0
+visible = false
+margin_top = 34.0
 margin_right = 116.0
-margin_bottom = 118.0
+margin_bottom = 74.0
 rect_min_size = Vector2( 40, 40 )
 expand = true
 stretch_mode = 4
@@ -255,7 +257,6 @@ margin_right = 540.0
 margin_bottom = 344.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 32
 
 [node name="ExitButton" type="TextureButton" parent="."]
 anchor_left = 1.0

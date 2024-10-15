@@ -1,6 +1,7 @@
 extends Node
 
 var email
+var last_updated = OS.get_system_time_secs()
 
 var account_data = null
 var character = null
@@ -60,6 +61,9 @@ func _physics_process(delta):
 		HandleFake()
 		return
 	
+	#if OS.get_system_time_secs() - last_updated > 6:
+		#get_node("/root/Server").html_network.disconnect_peer(int(name))
+	
 	clock_sync_timer += 1
 	clock_sync_timer_2 += 1
 	save_sync_timer += 1
@@ -82,14 +86,13 @@ func _physics_process(delta):
 	
 	if clock_sync_timer < 30:
 		pass
-	elif clock_sync_timer >= 30 and "island" in get_parent().get_parent().get_parent().name:
+	elif clock_sync_timer >= 10 and "island" in get_parent().get_parent().get_parent().name:
 		clock_sync_timer = 0
 		
 		var server_node = get_node("/root/Server")
 		var instance_tree = server_node.player_state_collection[int(name)]["I"]
 		var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
 		var nearby_enemies = {}
-		
 		var quest_enemies = []
 		var tile
 		if character.level < 2:
@@ -127,10 +130,10 @@ func _physics_process(delta):
 		elif tile and quest_enemies.size() > 0 and instance_node.tile_points.has(tile):
 			var tile_list = instance_node.tile_points[tile]
 			current_quest_data = {
-			"name":quest_enemies[0],
-			"position":tile_list[0],
-			"id" : "null"
-		}
+				"name":quest_enemies[0],
+				"position":tile_list[0],
+				"id" : "null"
+			}
 		
 		#Tutorial
 		if instance_node.ruler == "tutorial_troll_king" and tutorial_step == 4:
@@ -142,7 +145,7 @@ func _physics_process(delta):
 			current_quest_data = null
 		
 		server_node.SendQuestData(name, current_quest_data)
-	elif clock_sync_timer >= 30 and "dungeon" in get_parent().get_parent().get_parent().name:
+	elif clock_sync_timer >= 10 and "dungeon" in get_parent().get_parent().get_parent().name:
 		clock_sync_timer = 0
 		
 		var server_node = get_node("/root/Server")
@@ -163,7 +166,8 @@ func _physics_process(delta):
 			current_quest_data.id = current_quest
 		
 		server_node.SendQuestData(name, current_quest_data)
-	elif clock_sync_timer >= 30:
+	elif clock_sync_timer >= 10:
+		clock_sync_timer = 0
 		current_quest = null
 		get_node("/root/Server").SendQuestData(name, null)
 	
@@ -273,13 +277,13 @@ func HandleFake():
 		for player_id in instance_node.player_list.keys():
 			var player_data = instance_node.player_list[player_id]
 			var distance =  player_data.position.distance_to(self.position)
-			if distance < closest_player and not player_data.fake:
+			if distance < closest_player and not "fake" in player_data:
 				closest_player = distance
-		if closest_player > 48*8:
-			despawned = true
-			Bots.used_names.erase(account_data.username)
-			server._Peer_Disconnected(int(name))
-			return
+		#if closest_player > 48*8:
+			#despawned = true
+			#Bots.used_names.erase(account_data.username)
+			#server._Peer_Disconnected(int(name))
+			#return
 		
 		for enemy_id in instance_node.enemy_list.keys():
 			var enemy_data = instance_node.enemy_list[enemy_id]
@@ -495,7 +499,7 @@ func GiveEffect(effect, duration):
 	var server_node = get_node("/root/Server")
 	var instance_tree = server_node.player_state_collection[int(name)]["I"]
 	var instance_node = server_node.get_node("Instances/"+server_node.StringifyInstanceTree(instance_tree))
-	if status_effects.has(effect) and status_effects[effect] > duration:
+	if not character or (status_effects.has(effect) and status_effects[effect] > duration):
 		return
 	
 	status_effects[effect] = duration
@@ -549,7 +553,33 @@ func UseItem(index):
 	if selected_item.type != "Consumable":
 		return
 	
-	if "ascend" in selected_item.use and character.ascension_stones < ServerData.GetCharacter(character.class).ascension_stones:
+	if "gift" in selected_item.use:
+		var gifts = {
+			"halloween" : {
+				9 : 4, 
+				10 : 4, 
+				11 : 4,
+				12 : 4,
+				406 : 1,
+			}
+		}
+		var gift_pool = gifts[selected_item.use.split(" ")[1]]
+		var gift_arr = []
+		for gift_id in gift_pool.keys():
+			for i in range(gift_pool[gift_id]):
+				gift_arr.append(gift_id)
+		character.inventory[index] = {
+			"item" : gift_arr[randi() % len(gift_arr)],
+			"id" : get_node("/root/Server").generate_unique_id()
+		}
+	elif "buff" in selected_item.use:
+		var data = selected_item.use.split(" ")
+		var which = data[1]
+		var amount = int(data[2])
+		var duration = int(data[3])
+		GiveBuff(amount, which, duration)
+		character.inventory[index] = null
+	elif "ascend" in selected_item.use and character.ascension_stones < ServerData.GetCharacter(character.class).ascension_stones:
 		if in_tutorial and tutorial_step == 5:
 			tutorial_step += 1
 			get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
@@ -780,9 +810,9 @@ func AddExp(exp_amount, enemy_name, enemy_id):
 				}
 				for stat in character.stats:
 					character.stats[stat] += stat_rolls[stat]
-	
 	get_node("/root/Server").SetHealth(int(name), character.stats.health, health)
 	get_node("/root/Server").SendCharacterData(name, character)
+	get_node("/root/Server").rpc_id(int(name), "RemoveEnemy", enemy_id)
 
 func DealDamage(damage, enemy_name):
 	if not character:
@@ -794,12 +824,8 @@ func DealDamage(damage, enemy_name):
 		if item.stats.has("defense"):
 			practical_defense += item.stats.defense
 	
-	var total_damage = floor(damage - practical_defense)
-	if status_effects.has("armored"):
-		total_damage = floor(damage - (practical_defense*2))
-	
-	if total_damage < damage - damage*0.9:
-		total_damage = ceil(damage - damage*0.9)
+	if status_effects.has("armored"): practical_defense *= 1.5
+	var total_damage = ceil(damage/(1+(practical_defense/100)))
 	
 	if status_effects.has("invincible"):
 		total_damage = 0

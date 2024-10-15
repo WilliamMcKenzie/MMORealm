@@ -31,6 +31,7 @@ run/main_scene="res://SceneHandler.tscn"
 boot_splash/image="res://Assets/ui/whitebg.png"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://Assets/MMORealm.png"
+config/quit_on_go_back=false
 
 [autoload]
 
@@ -44,10 +45,11 @@ ErrorPopup="*res://Scenes/SupportScenes/UI/ErrorPopup.tscn"
 LoadingScreen="*res://Scenes/SupportScenes/UI/LoadingScreen.tscn"
 AudioManager="*res://Scenes/SupportScenes/AudioManager.gd"
 PlayBilling="*res://Scenes/Singletons/PlayBilling.gd"
+Settings="*res://Scenes/SupportScenes/UI/Settings/SettingsSingleton.gd"
 
 [debug]
 
-settings/fps/force_fps=50
+settings/fps/force_fps=60
 
 [display]
 
@@ -77,6 +79,14 @@ theme/custom="res://Resources/main_theme.tres"
 
 [input]
 
+ui_accept={
+"deadzone": 0.5,
+"events": [  ]
+}
+ui_select={
+"deadzone": 0.5,
+"events": [  ]
+}
 up={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":87,"unicode":0,"echo":false,"script":null)

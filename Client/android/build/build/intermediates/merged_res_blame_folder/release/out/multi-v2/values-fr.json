@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.godot.game-mergeReleaseResources-12:/values-fr/values-fr.xml",
+            "outputFile": "C:\\Users\\willi\\.gradle\\daemon\\7.4.2\\com.godot.game-mergeReleaseResources-12:\\values-fr\\values-fr.xml",
             "map": [
                 {
                     "source": "C:\\Users\\willi\\.gradle\\caches\\transforms-3\\7dd47ca6f312c7faad86d2e60f205bd9\\transformed\\jetified-play-services-base-18.3.0\\res\\values-fr\\values.xml",
@@ -62,6 +62,73 @@
                         "startOffsets": "55",
                         "endColumns": "100",
                         "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "21",
+                        "startColumns": "4",
+                        "startOffsets": "2527",
+                        "endColumns": "100",
+                        "endOffsets": "2623"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.godot.game-mergeReleaseResources-12:/values-fr/values-fr.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\willi\\.gradle\\caches\\transforms-3\\7dd47ca6f312c7faad86d2e60f205bd9\\transformed\\jetified-play-services-base-18.3.0\\res\\values-fr\\values.xml",
+                    "from": {
+                        "startLines": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+                        "startColumns": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",
+                        "startOffsets": "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,161,341,471,580,751,884,1005,1283,1461,1573,1758,1894,2054,2233,2306,2373",
+                        "endColumns": "105,179,129,108,170,132,120,112,177,111,184,135,159,178,72,66,83",
+                        "endOffsets": "156,336,466,575,746,879,1000,1113,1456,1568,1753,1889,2049,2228,2301,2368,2452"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\willi\\.gradle\\caches\\transforms-3\\d76569a1617f2e3f04b37e86aba17e3d\\transformed\\jetified-play-services-basement-18.3.0\\res\\values-fr\\values.xml",
+                    "from": {
+                        "startLines": "-1",
+                        "startColumns": "-1",
+                        "startOffsets": "-1"
+                    },
+                    "to": {
+                        "startLines": "10",
+                        "startColumns": "4",
+                        "startOffsets": "1118",
+                        "endColumns": "164",
+                        "endOffsets": "1278"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\willi\\OneDrive\\Documents\\mobiledevelopment\\MMORealm\\MMORealm\\Client\\android\\build\\res\\values-fr\\godot_project_name_string.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "1",
+                        "startOffsets": "112",
+                        "endColumns": "66",
+                        "endOffsets": "177"
+                    },
+                    "to": {
+                        "startLines": "20",
+                        "startColumns": "4",
+                        "startOffsets": "2457",
+                        "endColumns": "69",
+                        "endOffsets": "2522"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\willi\\.gradle\\caches\\transforms-3\\9bcb1a65f5938aad264f4d73e9a06f28\\transformed\\core-1.2.0\\res\\values-fr\\values-fr.xml",
+                    "from": {
+                        "startLines": "-1",
+                        "startColumns": "-1",
+                        "startOffsets": "-1"
                     },
                     "to": {
                         "startLines": "21",

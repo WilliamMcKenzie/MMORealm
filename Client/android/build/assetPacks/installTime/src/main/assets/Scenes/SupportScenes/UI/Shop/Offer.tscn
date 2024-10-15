@@ -108,7 +108,7 @@ text = "1000 units of in game gold currency."
 autowrap = true
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Container"]
-margin_left = 70.0
+margin_left = 80.0
 margin_top = 188.0
 margin_right = 160.0
 margin_bottom = 222.0
@@ -117,7 +117,7 @@ size_flags_vertical = 10
 custom_styles/panel = ExtResource( 5 )
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Container/PanelContainer"]
-margin_right = 90.0
+margin_right = 80.0
 margin_bottom = 34.0
 custom_constants/margin_right = 14
 custom_constants/margin_top = 8
@@ -127,14 +127,15 @@ custom_constants/margin_bottom = 8
 [node name="BuyContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelContainer/MarginContainer"]
 margin_left = 16.0
 margin_top = 8.0
-margin_right = 76.0
+margin_right = 66.0
 margin_bottom = 26.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Buy" type="Button" parent="MarginContainer/Container/PanelContainer/MarginContainer/BuyContainer"]
-margin_right = 60.0
+margin_right = 50.0
 margin_bottom = 18.0
+rect_min_size = Vector2( 50, 0 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 custom_colors/font_color_disabled = Color( 0.901961, 0.901961, 0.901961, 1 )
@@ -146,4 +147,4 @@ custom_styles/pressed = SubResource( 29 )
 custom_styles/focus = SubResource( 30 )
 custom_styles/disabled = SubResource( 31 )
 custom_styles/normal = SubResource( 32 )
-text = "10$ USD"
+text = "10$"

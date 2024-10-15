@@ -23,7 +23,9 @@ func _ready():
 var is_active = false
 var collision_connected = false
 
-func Activate(_enemy_type):	
+var finished_propogating = false
+func Activate(_enemy_type):
+	is_active = true
 	enemy_type = _enemy_type
 	var enemy_data = ClientData.GetEnemy(enemy_type)
 	var _animations = enemy_data.animations
@@ -96,15 +98,17 @@ func Activate(_enemy_type):
 	
 	$Area2D.connect("area_entered", self, "OnHit")
 	set_physics_process(true)
-	is_active = true
+	SpeedModifiers()
+	finished_propogating = true
 	self.visible = true
 
 func DeActivate():
+	is_active = false
 	if $Area2D.is_connected("area_entered", self, "OnHit"):
 		$Area2D.disconnect("area_entered", self, "OnHit")
 	set_physics_process(false)
 	self.visible = false
-	is_active = false
+	finished_propogating = false
 
 var clock_sync_timer = 0
 var death_stance
@@ -112,6 +116,11 @@ func _physics_process(delta):
 	clock_sync_timer += 1
 	
 	if clock_sync_timer % 10:
+		if death_stance:
+			$Area2D/Hitbox.disabled = true
+		else:
+			$Area2D/Hitbox.disabled = false
+		
 		if death_stance:
 			$AnimationPlayer.play("Death")
 		if not $AnimationPlayer.is_playing():
@@ -137,7 +146,7 @@ func SpeedModifiers():
 	var tile_coords = tilemap.world_to_map(position)
 	var tile_index = tilemap.get_cell(tile_coords.x, tile_coords.y)
 
-	if tile_index != TileMap.INVALID_CELL and ClientData.unique_tiles.has(tile_index):
+	if tile_index != TileMap.INVALID_CELL and ClientData.unique_tiles.has(tile_index) and not ClientData.GetEnemy(enemy_type).has("no_sink"):
 		$Control.rect_size = rect_size1
 		$Control.rect_position = rect_position1
 	else:
@@ -146,13 +155,16 @@ func SpeedModifiers():
 
 var theoretical_position = position
 var last_flip = 0
-func MoveEnemy(new_position):
+func MoveEnemy(new_position, flip = -1):
 	theoretical_position = new_position
 	if Server.IsWithinRange(new_position):
-		if not self.visible:
-				self.visible = true
+		self.visible = true
 		var old_position = position
 		set_position(theoretical_position)
+		
+		if flip != -1:
+			sprite_node.flip_h = flip == 1
+			return
 		
 		var can_flip = OS.get_system_time_msecs() - last_flip > 100 and not ("wing" in enemy_type)
 		if can_flip and new_position.x-old_position.x > 0 and sprite_node.flip_h:
@@ -161,7 +173,7 @@ func MoveEnemy(new_position):
 		elif can_flip and new_position.x-old_position.x < 0 and not sprite_node.flip_h:
 			last_flip = OS.get_system_time_msecs()
 			sprite_node.flip_h = true
-	elif self.visible:
+	else:
 		self.visible = false
 
 func ShootProjectile():

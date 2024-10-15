@@ -1,6 +1,13 @@
 extends "res://Scenes/SupportScenes/Island/Island.gd"
 
 var boss_is_alive = false
+var dropped_gemstone = {}
+func GemstoneDrop(player_id):
+	if dropped_gemstone.has(player_id):
+		return false
+	
+	dropped_gemstone[player_id] = true
+	return true
 
 func PopulateTiles():
 	var center = map_size / 2
@@ -37,6 +44,7 @@ func PopulateTiles():
 				map_as_array[x][y] = 0
 
 func TutorialInit():
+	island_close_timer = 30
 	ruler = "tutorial_troll_king"
 	
 	beach_enemies = ["tutorial_crab"]

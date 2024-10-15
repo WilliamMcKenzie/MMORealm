@@ -1,11 +1,11 @@
 extends Node
 
 #var url = "wss://gameserver.lagso.com"
-var url = "ws://159.203.0.78:20200"
-#var url = "ws://localhost:20200"
+#var url = "ws://159.203.0.78:20200"
+var url = "ws://localhost:20200"
 
-var ip_address = "159.203.0.78"
-#var ip_address = "localhost"
+#var ip_address = "159.203.0.78"
+var ip_address = "localhost"
 var port = 20200
 
 var network = NetworkedMultiplayerENet.new()
@@ -20,7 +20,7 @@ var token
 var projectile_pool_amount = 500
 #Clock sync
 var latency = 0
-var delta_latency = 0
+var server_delay = 0
 var client_clock = 0
 var decimal_collector : float = 0
 var sync_clock_counter = 0
@@ -47,12 +47,12 @@ func Init():
 var player_position
 var latency_timer = 59
 func _physics_process(delta):
+	client_clock = OS.get_system_time_msecs()-latency
+	
+	latency_timer += 1
 	if (html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED ||
 		html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
 		html_network.poll();
-	
-	latency_timer += 1
-	client_clock = OS.get_system_time_msecs()+latency
 	
 	if latency_timer % 20 == 0 and get_node("../SceneHandler").has_node(GetCurrentInstance()):
 		player_position = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/player").position
@@ -116,7 +116,6 @@ func ConnectToServer():
 	get_tree().network_peer = network
 	
 	get_tree().connect("connection_failed", self, "_onConnectionFailed")
-	get_tree().connect("connected_to_server", self, "_onConnectionSucceeded")
 	get_tree().connect("network_peer_disconnected", self, "_Disconnected")
 	get_tree().connect("server_disconnected", self, "_Disconnected")
 
@@ -124,16 +123,11 @@ func _Disconnected():
 	ErrorPopup.OpenPopup("Disconnected")
 func _onConnectionFailed():
 	ErrorPopup.OpenPopup("Connection failed")
-func _onConnectionSucceeded():
-	var timer = Timer.new()
-	timer.wait_time = 0.5
-	timer.autostart = true
-	self.add_child(timer)
 
 var first_fetch = true
 remote func ReturnServerTime(server_time, client_time):
-	var _latency = (OS.get_system_time_msecs()-client_time)/2
-	var temp_latency = server_time - client_time - _latency
+	server_delay = (OS.get_system_time_msecs()-client_time)/2
+	var temp_latency = abs(server_time - client_time - server_delay)
 	
 	if first_fetch or abs(latency-temp_latency) < 30:
 		first_fetch = false
@@ -161,9 +155,7 @@ remote func RealmClosed(ruler_id, dungeon_name):
 		camera.target = enemy
 		
 		var original_instance = current_instance_tree[len(current_instance_tree)-1]
-		camera.add_trauma(0.3)
 		while(current_instance_tree[len(current_instance_tree)-1] == original_instance):
-			camera.add_trauma(rand_range(0.1,0.25))
 			yield(get_tree().create_timer(0.1), "timeout")
 		
 		camera.queue_free()
@@ -171,18 +163,14 @@ remote func RealmClosed(ruler_id, dungeon_name):
 	else:
 		var camera = ysort.get_node("player/Camera2D")
 		camera.target = ysort.get_node("player")
-		
 		var original_instance = current_instance_tree[len(current_instance_tree)-1]
-		camera.add_trauma(0.3)
 		while(current_instance_tree[len(current_instance_tree)-1] == original_instance):
-			camera.add_trauma(rand_range(0.1,0.25))
 			yield(get_tree().create_timer(0.1), "timeout")
-		
-		camera.add_trauma(0)
+	
 	LoadingScreen.Transition(IdentifierToString(dungeon_name))
 	yield(get_tree().create_timer(0.3), "timeout")
 	LoadingScreen.RealmClosedEnd()
-	
+
 #TUTORIAL
 func DialogueResponse(response):
 	rpc_id(1, "DialogueResponse", response)
@@ -284,23 +272,26 @@ func SendProjectile(projectile_data):
 	rpc_id(1, "SendPlayerProjectile", projectile_data)
 
 remote func ReceivePlayerProjectile(projectile_data, instance_tree, player_id):
-	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree:
+	if player_id == get_tree().get_network_unique_id() or instance_tree != current_instance_tree or Settings.hide_player_shots:
 		return
-	if get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers").has_node(str(player_id)):
-		var node = get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id))
-		if node.projectile_dict.has(OS.get_system_time_msecs()):
+	
+	var player_node = get_node_or_null("../SceneHandler/"+GetCurrentInstance()+"/YSort/OtherPlayers/"+str(player_id))
+	if player_node:
+		var projectile_dict = player_node.projectile_dict
+		if projectile_dict.has(OS.get_system_time_msecs()):
 			var add = OS.get_system_time_msecs() 
-			while(node.projectile_dict.has(add)):
+			while(projectile_dict.has(add)):
 				add += 1
-			node.projectile_dict[add] = [projectile_data]
+			projectile_dict[add] = [projectile_data]
 		else:
-			node.projectile_dict[OS.get_system_time_msecs()] = [projectile_data]
+			projectile_dict[OS.get_system_time_msecs()] = [projectile_data]
 
 remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
+	var enemy_node = get_node_or_null("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id))
 	if instance_tree != current_instance_tree:
 		pass
-	elif has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)):
-		get_node("../SceneHandler/"+GetCurrentInstance()+"/YSort/Enemies/"+str(enemy_id)).ShootProjectile()
+	elif enemy_node:
+		enemy_node.ShootProjectile()
 	if GetCurrentInstanceNode().has_node("Pool"):
 		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
 			if child.is_active == false:
@@ -325,6 +316,14 @@ remote func RemoveEnemyProjectile(id, instance_tree):
 			if child.projectile_data and child.projectile_data.id == id:
 				child.DeActivate()
 				break
+
+remote func RemoveEnemy(enemy_id):
+	var instance = get_node_or_null("../SceneHandler/"+GetCurrentInstance())
+	var enemy_node = instance.get_node_or_null("/YSort/Enemies/"+str(enemy_id))
+	
+	instance.dead_enemies[enemy_id] = true
+	if enemy_node:
+		enemy_node.DeActivate()
 
 func SendPlayerState(player_state):
 	if html_network.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED:
@@ -450,9 +449,12 @@ remote func ReturnDungeonData(instance_data):
 	get_node("../SceneHandler").add_child(dungeon_instance)
 	current_instance_tree.append(instance_data["Id"])
 
-remote func ReturnIslandData(instance_data):
+remote func ReturnIslandData(instance_data, which=null):
 	var island_instance = island_container.instance()
 	var map_instance = GetCurrentInstanceNode()
+	
+	if which:
+		island_instance.SetSpecialIsland(which)
 
 	var ysort = map_instance.get_node("YSort")
 	for object in ysort.get_node("Objects/Npcs").get_children():

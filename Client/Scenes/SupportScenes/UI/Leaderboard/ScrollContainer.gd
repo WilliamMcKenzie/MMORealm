@@ -1,5 +1,6 @@
 extends ScrollContainer
 
+var parent_ref = null
 var swiping = false
 var swipe_start
 var swipe_mouse_start
@@ -7,6 +8,9 @@ var swipe_mouse_times = []
 var swipe_mouse_positions = []
 
 func _input(ev):
+	if str(OS.get_model_name()) == 'GenericDevice':
+		return
+	
 	if ev is InputEventMouseButton:
 		if ev.pressed:
 			swiping = true
@@ -34,6 +38,8 @@ func _input(ev):
 				tween.interpolate_method(self, 'set_h_scroll', source.x, target.x, flick_dur, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 				tween.interpolate_method(self, 'set_v_scroll', source.y, target.y, flick_dur, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 				tween.interpolate_callback(tween, flick_dur, 'queue_free')
+				if parent_ref:
+					parent_ref.interacted = true
 				tween.start()
 			swiping = false
 	elif swiping and ev is InputEventMouseMotion:

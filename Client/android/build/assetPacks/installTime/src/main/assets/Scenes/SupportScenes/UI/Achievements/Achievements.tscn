@@ -141,43 +141,43 @@ script = ExtResource( 3 )
 
 [node name="AchievementsRoot" type="VBoxContainer" parent="MarginContainer/Container/ScrollContainer"]
 margin_right = 483.0
-margin_bottom = 472.0
+margin_bottom = 446.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 32
+custom_constants/separation = 16
 
 [node name="AchievementButton" parent="MarginContainer/Container/ScrollContainer/AchievementsRoot" instance=ExtResource( 9 )]
 margin_right = 483.0
 
 [node name="AchievementButton2" parent="MarginContainer/Container/ScrollContainer/AchievementsRoot" instance=ExtResource( 9 )]
-margin_top = 72.0
+margin_top = 66.0
 margin_right = 483.0
-margin_bottom = 112.0
+margin_bottom = 116.0
 
 [node name="AchievementButton5" parent="MarginContainer/Container/ScrollContainer/AchievementsRoot" instance=ExtResource( 9 )]
-margin_top = 144.0
+margin_top = 132.0
 margin_right = 483.0
-margin_bottom = 184.0
+margin_bottom = 182.0
 
 [node name="AchievementButton7" parent="MarginContainer/Container/ScrollContainer/AchievementsRoot" instance=ExtResource( 9 )]
-margin_top = 216.0
+margin_top = 198.0
 margin_right = 483.0
-margin_bottom = 256.0
+margin_bottom = 248.0
 
 [node name="AchievementButton4" parent="MarginContainer/Container/ScrollContainer/AchievementsRoot" instance=ExtResource( 9 )]
-margin_top = 288.0
+margin_top = 264.0
 margin_right = 483.0
-margin_bottom = 328.0
+margin_bottom = 314.0
 
 [node name="AchievementButton6" parent="MarginContainer/Container/ScrollContainer/AchievementsRoot" instance=ExtResource( 9 )]
-margin_top = 360.0
+margin_top = 330.0
 margin_right = 483.0
-margin_bottom = 400.0
+margin_bottom = 380.0
 
 [node name="AchievementButton3" parent="MarginContainer/Container/ScrollContainer/AchievementsRoot" instance=ExtResource( 9 )]
-margin_top = 432.0
+margin_top = 396.0
 margin_right = 483.0
-margin_bottom = 472.0
+margin_bottom = 446.0
 
 [node name="ExitButton" type="TextureButton" parent="."]
 anchor_left = 1.0

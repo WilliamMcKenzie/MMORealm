@@ -48,7 +48,7 @@ var subject_data = {
 	},
 	
 	"Arena" : {
-		"text" : ["Hey there! The arena is a place to endlessly battle monsters...", "It starts easy, and gets harder the more waves you clear.", "Each wave also nets you gold! Don't worry about dying, if you die it will just send you to the nexus."],
+		"text" : ["Hey there! The arena is a place to endlessly battle monsters...", "It starts easy, and gets harder the more waves you clear.", "Each wave also nets you gold! Don't worry about dying, if you die it will just send you to the port."],
 		"question" : ["Daily Arena", "Monthly Arena"],
 		"character_rect" : Vector2(20,0),
 	},
@@ -60,6 +60,24 @@ var subject_data = {
 		"text" : ["Haha! You put on a good show out there.", "Here's your gold, I'll be seeing ya!"],
 		"character_rect" : Vector2(20,0),
 	},
+	
+	"Tutorial" : {
+		"text" : ["I am the tutorial master...", "Anything you would like to know?"],
+		"question" : ["Classes/Ascension", "Gameplay", "Death"],
+		"character_rect" : Vector2(0,0),
+	},
+	"Death" : {
+		"text" : ["When you die in game you will lose your character permanently...", "Each character can be revived for gold, but only once.", "I recommend storing valuable items in your home for when you die. You can enter the house portal to my left."],
+		"character_rect" : Vector2(0,0),
+	},
+	"Gameplay" : {
+		"text" : ["You can sail on boats to different kingdoms, which have been overtaken by monsters...", "By defeating them you can get items and level up!", "Each kingdom has a ruler at the center of the map which you need to defeat.", "If you are a beginner, I recommend following your quests around...", "They are the dark arrows pointing where you should go. Good luck!"],
+		"character_rect" : Vector2(0,0),
+	},
+	"Classes/Ascension" : {
+		"text" : ["Ascension allows you to increase your stats even further beyond level 20...", "To ascend, you need to consume ascension stones.", "Each tier of class has a max ascension limit:", "Tier 1 (apprentice) has a cap of 5 stones...", "Tier 2 has a cap of 50...", "And tier 3 has a cap of 75.", "Think about these classes like a tree...","You start with the apprentice (tier 1), then you can evolve into another class (tier 2), then that class can evolve into another class (tier 3)...", "You get the idea. To evolve you have to do certain quests like killing 3000 enemies...","you can find hints underneath each of the 3 evolutions in the classes page.", "To see the classes page click on the helmet button in the top right."],
+		"character_rect" : Vector2(0,0),
+	}
 }
 var subject = null
 var speech_index = null

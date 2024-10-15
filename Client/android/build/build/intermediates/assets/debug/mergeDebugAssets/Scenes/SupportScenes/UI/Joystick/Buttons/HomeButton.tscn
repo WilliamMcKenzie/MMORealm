@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/ui/home_button.png" type="Texture" id=1]
+[ext_resource path="res://Assets/ui/home_button_pressed.png" type="Texture" id=2]
+[ext_resource path="res://Resources/Roboto.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Scenes/SupportScenes/UI/Joystick/Buttons/HomeButton.gd" type="Script" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 3 )
+
+[node name="HomeButton" type="TouchScreenButton"]
+modulate = Color( 1, 1, 1, 0.784314 )
+normal = ExtResource( 1 )
+pressed = ExtResource( 2 )
+script = ExtResource( 4 )
+
+[node name="R" type="Label" parent="."]
+visible = false
+margin_left = 11.0
+margin_top = 76.0
+margin_right = 101.0
+margin_bottom = 109.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "[R]"
+align = 1
+
+[node name="TextureButton" type="TextureButton" parent="."]
+margin_right = 200.0
+margin_bottom = 200.0
+
+[connection signal="mouse_entered" from="TextureButton" to="." method="_on_TextureButton_mouse_entered"]
+[connection signal="mouse_exited" from="TextureButton" to="." method="_on_TextureButton_mouse_exited"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]

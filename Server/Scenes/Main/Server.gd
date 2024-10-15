@@ -31,6 +31,7 @@ func _ready():
 	GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
+	#GameplayLoop.CreateIslandTemplate(Vector2(501,501), "halloween")
 	
 	#Open realm
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
@@ -41,8 +42,10 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
 	get_node("Instances/nexus").OpenPortal("island", ["nexus"], Vector2(-19*8, -37*8), Vector2(750,750), null)
 	get_node("Instances/nexus").OpenPortal("tutorial_island", ["nexus"], Vector2.ZERO, Vector2(100,100), "tutorial_troll_king")
-	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
+	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-7*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
+	get_node("Instances/nexus").SpawnNPC("tutorial_master", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
+	#get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(501,501), "pumpkin_tyrant", "halloween")
 	
 	for i in range(0):
 		var container = PlayerVerification.CreateFakePlayerContainer()
@@ -91,7 +94,7 @@ func _Peer_Connected(id):
 	print("User " + str(id) + " has connected!")
 	PlayerVerification.Start(id)
 func _Peer_Disconnected(id):
-	if player_state_collection.has(id) and player_instance_tracker[player_state_collection[id]["I"]].has(id) and get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])+"/YSort/Players/"+str(id)):
+	if player_state_collection.has(id) and player_instance_tracker[player_state_collection[id]["I"]].has(id) and get_node_or_null("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])+"/YSort/Players/"+str(id)):
 		print("User " + str(id) + " has disconnected!")
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
@@ -153,16 +156,18 @@ remote func DialogueResponse(response):
 	
 	if response == "Basic Mechanics":
 		StartTutorial(player_id)
-	if response == "Daily Arena" and (not time_tracker.has(response) or (day != time_tracker[response]["day"])):
+	elif response == "Daily Arena" and (not time_tracker.has(response) or (day != time_tracker[response]["day"])):
 		time_tracker[response] = time
 		ForcedEnterInstance(CreateArena(player_id, "daily"), player_id)
 	elif response == "Daily Arena":
 		Dialogue("ArenaToSoon", player_id)
-	if response == "Monthly Arena" and (not time_tracker.has(response) or (month != time_tracker[response]["month"])):
+	elif response == "Monthly Arena":
 		time_tracker[response] = time
 		ForcedEnterInstance(CreateArena(player_id, "monthly"), player_id)
 	elif response == "Monthly Arena":
 		Dialogue("ArenaToSoon", player_id)
+	else:
+		Dialogue(response, player_id)
 
 remote func ChooseUsername(username):
 	var player_id = get_tree().get_rpc_sender_id()
@@ -413,8 +418,7 @@ remote func RecievePlayerState(player_state):
 		player_state_collection[player_id] = player_state
 
 func SendWorldState(id, world_state, instance_tree):
-	if int(id) in get_tree().get_network_connected_peers():
-		var error = rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
+	rpc_unreliable_id(int(id), "RecieveWorldState", world_state)
 
 #TOKENS
 func _on_TokenExpiration_timeout():
@@ -449,15 +453,15 @@ func ReturnTokenVerificationResults(player_id, result):
 
 #CHARACTERS
 func SendQuestData(player_id, current_quest_data):
-	rpc_id(int(player_id), "RecieveQuestData", current_quest_data)
+	rpc_unreliable_id(int(player_id), "RecieveQuestData", current_quest_data)
 func SendCharacterData(player_id, character):
-	rpc_id(int(player_id), "RecieveCharacterData", character)
+	rpc_unreliable_id(int(player_id), "RecieveCharacterData", character)
 func SendAccountData(player_id, account_data):
 	rpc_id(int(player_id), "RecieveAccountData", account_data)
 
 #NPCS/ENEMIES
 
-func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
+func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player", flip=-1):
 	var enemy_id = generate_unique_id()
 	
 	if get_node("Instances/"+StringifyInstanceTree(instance_tree)):
@@ -472,6 +476,7 @@ func SpawnNPC(enemy_name, instance_tree, spawn_position, origin="player"):
 			"max_health":enemy_data.health,
 			"defense":enemy_data.defense,
 			"state":"Idle",
+			"flip" : flip,
 			
 			"behavior": enemy_data.behavior,
 			"current_direction" : null,
@@ -542,8 +547,9 @@ remote func SendPlayerProjectile(projectile_data):
 	})
 	
 	for id in player_instance_tracker[instance_tree]:
-		rpc_id(id, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
-	
+		if(player_state_collection[id]["P"].distance_to(player_state_collection[player_id]["P"]) < 16*8):
+			rpc_id(id, "ReceivePlayerProjectile", projectile_data, instance_tree, player_id)
+
 func SendEnemyProjectile(projectile_data, instance_tree, enemy_id):
 	var peers = get_tree().get_network_connected_peers()
 	for player_id in player_instance_tracker[instance_tree]:
@@ -570,9 +576,7 @@ remote func NPCHit(enemy_id, damage):
 	
 	if get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list.has(str(enemy_id)):
 		var enemy_container = get_node("Instances/" + StringifyInstanceTree(instance_tree)).enemy_list[str(enemy_id)]
-		var total_damage = floor(damage - ServerData.GetEnemy(enemy_container.name).defense)
-		if total_damage < damage - damage*0.9:
-			total_damage = floor(damage - damage*0.9)
+		var total_damage = ceil(damage/(1+(ServerData.GetEnemy(enemy_container.name).defense/100)))
 		if enemy_container.effects.has("invincible"):
 			total_damage = 0
 		
@@ -715,7 +719,7 @@ func ForcedEnterInstance(instance_id, player_id):
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			spawnpoint = island_node.GetMapSpawnpoint()
 			
-			rpc_id(player_id, "ReturnIslandData", { "Name": island_node.ruler, "Id":instance_id, "Position": spawnpoint})
+			rpc_id(player_id, "ReturnIslandData", { "Name": island_node.ruler, "Id":instance_id, "Position": spawnpoint}, (island_node.which if ("special" in island_node.name) else null))
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
 			
@@ -762,7 +766,7 @@ remote func EnterInstance(instance_id):
 			var island_node = get_node("Instances/"+StringifyInstanceTree(instance_tree))
 			var spawnpoint = island_node.GetMapSpawnpoint()
 			
-			rpc_id(player_id, "ReturnIslandData", { "Name": island_node.ruler, "Id":instance_id, "Position": spawnpoint})
+			rpc_id(player_id, "ReturnIslandData", { "Name": island_node.ruler, "Id":instance_id, "Position": spawnpoint}, (island_node.which if ("special" in island_node.name) else null))
 			get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).RemovePlayer(player_container)
 			get_node("Instances/"+StringifyInstanceTree(instance_tree)).SpawnPlayer(player_container)
 			
@@ -882,6 +886,8 @@ remote func RecieveChatMessage(message):
 				else:
 					rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "SystemERROR")
 			if message[0] == "/" and admin:
+				if message_words[0] == "/damage":
+					player_container.DealDamage(int(message_words[1]), "poop")
 				if message_words[0] == "/bot":
 					var multiple_enemies = message_words.size() > 1 and int(message_words[1])
 					if multiple_enemies:
@@ -896,8 +902,7 @@ remote func RecieveChatMessage(message):
 					else:
 						rpc_id(player_id, "RecieveChat", "Error spawning bots", "SystemERROR")
 				if message_words[0] == "/class" and message_words.size() == 2 and player_container.account_data.classes.has(message_words[1]):
-					player_container.character.class = message_words[1]
-					SendCharacterData(player_id, player_container.character)
+					player_container.GetAchievement("Unlock " + message_words[1])
 				if message_words[0] == "/exp" and message_words.size() == 2 and int(message_words[1]):
 					player_container.AddExp(int(message_words[1]), "Ghoul", "123")
 				if message_words[0] == "/invincible":
@@ -953,6 +958,9 @@ remote func RecieveChatMessage(message):
 				"timestamp" : OS.get_system_time_msecs(),
 				"fake" : false,
 			})
+			var filters = "rape nigger nigg nigga chigger chigga fuck bitch ass anus pussy vagina dick cum cock sex anal shit murder hitler nazi abuse abusive asshole bastard bitch bullshit cock crap damn dumb fucker fucking moron nigger retard shit slut stupid whore"
+			for filter in filters.split(" "):
+				message = message.replace(filter, "****")
 			rpc("RecieveChat", message, player_name, player_container.character.class, player_container.name)
 
 #PLAYER INTERACTION

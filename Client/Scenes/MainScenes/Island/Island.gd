@@ -43,7 +43,7 @@ func _physics_process(delta):
 					var tile = map_tiles[Vector2(x,y)]
 					map_tiles.erase(Vector2(x,y))
 					
-					var num_variations = tile_variations[tile]
+					var num_variations = tile_variations[tile] if tile_variations.has(tile) else [3,0,0]
 					var random_index = 0
 					
 					#Standard tile
@@ -55,6 +55,10 @@ func _physics_process(delta):
 							random_index = (randi() % num_variations[1]) + num_variations[0]
 					
 					$TileMap.set_cell(x,y,tile,false,false,false, Vector2(random_index, 0))
+
+func SetSpecialIsland(which):
+	var tileset = load("res://Resources/"+which+"_island_tilemap.tres")
+	$TileMap.tile_set = tileset
 
 func GenerateChunk(chunk_data, chunk):
 	map_objects += chunk_data["Objects"]

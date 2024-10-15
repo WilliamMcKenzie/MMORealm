@@ -20,6 +20,7 @@ func _ready():
 	$UI/Graveyard.connect("button_down", self, "OpenGraveyard")
 	$UI/Gold.connect("button_down", self, "OpenShop")
 	$UI/Logout.connect("button_down", self, "OpenLogout")
+	$UI/Support.connect("button_down", self, "OpenSupport")
 	
 	if ClientAuth.cached_email and ClientAuth.cached_password:
 		email = ClientAuth.cached_email
@@ -41,6 +42,8 @@ func UpdateGold():
 	graveyard.get_node("Gold/Gold").text = str(gold)
 	shop.get_node("Gold/Gold").text = str(gold)
 
+func OpenSupport():
+	get_node("UI/Support/PanelContainer").visible = true if not get_node("UI/Support/PanelContainer").visible else false
 func OpenLogout():
 	get_node("Logout").visible = true
 func CloseLogout():
@@ -149,4 +152,10 @@ func EnterGame(character_index, character):
 	GameUI.Init()
 	GameUI.get_node("GameButtons").visible = true
 	queue_free()
-	
+
+func _on_Discord_pressed():
+	OS.shell_open("https://discord.gg/kUfm6xJvbs")
+func _on_Wiki_pressed():
+	OS.shell_open("https://wiki.kingdomsonline.io/wiki")
+func _on_Cancel_pressed():
+	get_node("UI/Support/PanelContainer").visible = false

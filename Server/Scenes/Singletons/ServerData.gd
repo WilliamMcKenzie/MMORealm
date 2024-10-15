@@ -42,7 +42,7 @@ var basic_loot_pools = {
 			{
 				"item" : -2,
 				"chance" : 20,
-				"threshold" : 0.5,
+				"threshold" : 0.3,
 			},
 		],
 		"loot" : []
@@ -242,6 +242,18 @@ var special_loot_pools = {
 		],
 		"loot" : []
 	},
+	
+	"pumpkin" : {
+		"override" : "none",
+		"soulbound_loot" : [
+			{
+				"item" : 13,
+				"chance" : 200,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 }
 
 var small = 3
@@ -257,6 +269,31 @@ var mid = 120
 var strong = 160
 
 var projectile_databank = {
+	"PlatinumSlash_strong_fast" : {
+		"projectile" : "PlatinumSlash",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : med,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : medium
+	},
+	"PlatinumSlash_mid_medium" : {
+		"projectile" : "PlatinumSlash",
+		"formula" : "0",
+		"damage" : 80,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : med,
+		"tile_range" : 12,
+		"targeter" : "nearest",
+		"direction" : Vector2.ZERO,
+		"size" : medium
+	},
+	
 	"RockBlastSmall_mid_fast" : {
 		"projectile" : "RockBlastSmall",
 		"formula" : "0",
@@ -381,6 +418,18 @@ var projectile_databank = {
 		"size" : medium
 	},
 	
+	"Stack_strong_fast" : {
+		"projectile" : "Stack",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : fast,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : small
+	},
 	"Wave_strong_fast_short" : {
 		"projectile" : "Wave",
 		"formula" : "0",
@@ -1530,19 +1579,24 @@ func _ready():
 			basic_loot_pools["ruler_1"].soulbound_loot.append({
 				"item" : item_id,
 				"chance" : low_chance,
-				"threshold" : 0.05,
+				"threshold" : 0.01,
 			})
 			basic_loot_pools["encounter_1"].soulbound_loot.append({
 				"item" : item_id,
 				"chance" : low_chance,
-				"threshold" : 0.05,
+				"threshold" : 0.01,
 			})
 			basic_loot_pools["encounter_2"].soulbound_loot.append({
 				"item" : item_id,
 				"chance" : decent_chance,
-				"threshold" : 0.05,
+				"threshold" : 0.01,
 			})
 		if item.tier == "4":
+			basic_loot_pools["encounter_2"].soulbound_loot.append({
+				"item" : item_id,
+				"chance" : rare_chance,
+				"threshold" : 0.01,
+			})
 			basic_loot_pools["encounter_2"].soulbound_loot.append({
 				"item" : item_id,
 				"chance" : low_chance,
@@ -1579,9 +1633,10 @@ func MakeProjectile(projectile_type, degrees, wait, targeter = null):
 	
 	return projectile_data
 
-func CreateSpiral(arm_count, projectile_type, delay, mix_in = null, chance = 0.2, steps = 32.0, invincible = false):
+func CreateSpiral(arm_count, projectile_type, delay, mix_in = null, chance = 0.2, steps = 32.0, invincible = false, reverse = false):
 	randomize()
 	var attack_pattern = []
+	var coefficient = -1 if reverse else 1
 	
 	for step in steps:
 		if invincible:
@@ -1595,7 +1650,7 @@ func CreateSpiral(arm_count, projectile_type, delay, mix_in = null, chance = 0.2
 			attack_pattern.append(projectile)
 		for arm in range(arm_count):
 			var wait = delay if (arm+1 == arm_count) else 0
-			var projectile = MakeProjectile(projectile_type, (360.0/steps)*(step+arm*(steps/arm_count)), wait)
+			var projectile = MakeProjectile(projectile_type, coefficient*(360.0/steps)*(step+arm*(steps/arm_count)), wait)
 			attack_pattern.append(projectile)
 	
 	return attack_pattern
@@ -2697,7 +2752,7 @@ var tutorial_enemies = {
 				"duration" : 4,
 				"health" : [0,100],
 				"attack_pattern" : [
-					MakeProjectile("None", 0, 1000, "nearest"),
+					{"wait" : 10}
 				]
 			},
 		]
@@ -2749,7 +2804,7 @@ var tutorial_enemies = {
 		"loot_pool" :  {
 			"soulbound_loot" : [
 				{
-					"item" : 0,
+					"item" : -2,
 					"chance" : 1,
 					"threshold" : 0.2,
 				},
@@ -4791,7 +4846,16 @@ var realm_enemies = {
 		"exp" : 200,
 		"behavior" : 1,
 		"speed" : 10,
-		"loot_pool" :  basic_loot_pools["highlands_2"],
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 144,
+					"chance" : 500,
+					"threshold" : 0.5,
+				},
+			],
+			"loot" : []
+		},
 		"phases" : [
 			{
 				"duration" : 1,
@@ -5713,7 +5777,7 @@ var orc_vigil_enemies = {
 		"health_scaling" : 10000,
 		"health" : 50000,
 		"defense" : 20,
-		"exp" : 6000,
+		"exp" : 1000,
 		"behavior" : 0,
 		"speed" : 15,
 		"dungeon" : {
@@ -5879,7 +5943,7 @@ var orc_vigil_enemies = {
 		"health_scaling" : 1000,
 		"health" : 2000,
 		"defense" : 1,
-		"exp" : 2000,
+		"exp" : 500,
 		"behavior" : 0,
 		"speed" : 10,
 		"loot_pool" : basic_loot_pools["none"],
@@ -5949,7 +6013,7 @@ var orc_vigil_enemies = {
 		"health_scaling" : 20000,
 		"health" : 140000,
 		"defense" : 10,
-		"exp" : 10000,
+		"exp" : 1000,
 		"behavior" : 0,
 		"speed" : 15,
 		"loot_pool" : special_loot_pools["atlas"],
@@ -6172,7 +6236,7 @@ var orc_vigil_enemies = {
 		"health_scaling" : 1000,
 		"health" : 2000,
 		"defense" : 1,
-		"exp" : 1000,
+		"exp" : 500,
 		"behavior" : 1,
 		"speed" : 5,
 		"loot_pool" : basic_loot_pools["none"],
@@ -6223,7 +6287,7 @@ var frozen_fortress_enemies = {
 		"health_scaling" : 1000,
 		"health" : 2000,
 		"defense" : 1,
-		"exp" : 2000,
+		"exp" : 500,
 		"behavior" : 0,
 		"speed" : 10,
 		"loot_pool" : {
@@ -6310,7 +6374,7 @@ var frozen_fortress_enemies = {
 		"health_scaling" : 20000,
 		"health" : 100000,
 		"defense" : 20,
-		"exp" : 5000,
+		"exp" : 1000,
 		"behavior" : 0,
 		"speed" : 15,
 		"loot_pool" : special_loot_pools["og_the_treacherous"],
@@ -6885,7 +6949,7 @@ var desert_catacombs_enemies = {
 		
 		"health" : 3000,
 		"defense" : 20,
-		"exp" : 2000,
+		"exp" : 500,
 		"behavior" : 2,
 		"speed" : 5,
 		"loot_pool" : basic_loot_pools["none"],
@@ -6979,7 +7043,7 @@ var desert_catacombs_enemies = {
 		
 		"health" : 1000,
 		"defense" : 20,
-		"exp" : 2000,
+		"exp" : 500,
 		"behavior" : 1,
 		"speed" : 11,
 		"loot_pool" : basic_loot_pools["none"],
@@ -7053,7 +7117,7 @@ var desert_catacombs_enemies = {
 		
 		"health" : 2000,
 		"defense" : 10,
-		"exp" : 2000,
+		"exp" : 500,
 		"behavior" : 2,
 		"speed" : 25,
 		"loot_pool" : basic_loot_pools["none"],
@@ -7133,7 +7197,7 @@ var desert_catacombs_enemies = {
 		
 		"health" : 30000,
 		"defense" : 5,
-		"exp" : 5000,
+		"exp" : 1000,
 		"behavior" : 0,
 		"speed" : 25,
 		"loot_pool" : special_loot_pools["mummified_king"],
@@ -7278,7 +7342,7 @@ var rocky_cave_enemies = {
 		
 		"health" : 6000,
 		"defense" : 0,
-		"exp" : 2000,
+		"exp" : 1000,
 		"behavior" : 1,
 		"speed" : 5,
 		"loot_pool" : special_loot_pools["rokk_the_rough"],
@@ -7438,7 +7502,7 @@ var cloud_isles_enemies = {
 		
 		"health" : 50000,
 		"defense" : 20,
-		"exp" : 4000,
+		"exp" : 1000,
 		"behavior" : 0,
 		"speed" : 5,
 		"loot_pool" : special_loot_pools["pohaku"],
@@ -7507,7 +7571,7 @@ var cloud_isles_enemies = {
 					{
 						"signal" : "activate_protectors_1",
 						"reciever" : "gold_protector",
-						"duration" : 5,
+						"duration" : OS.get_system_time_msecs(),
 						"wait" : 0,
 					},
 					{
@@ -7551,7 +7615,7 @@ var cloud_isles_enemies = {
 					{
 						"signal" : "activate_protectors_2",
 						"reciever" : "gold_protector",
-						"duration" : 5,
+						"duration" : OS.get_system_time_msecs(),
 						"wait" : 0,
 					},
 					{
@@ -7597,7 +7661,7 @@ var cloud_isles_enemies = {
 					{
 						"signal" : "activate_protectors_3",
 						"reciever" : "gold_protector",
-						"duration" : 5,
+						"duration" : OS.get_system_time_msecs(),
 						"wait" : 0,
 					},
 					{
@@ -8000,7 +8064,7 @@ var the_abyss_enemies = {
 		
 		"health" : 100000,
 		"defense" : 10,
-		"exp" : 12000,
+		"exp" : 1000,
 		"behavior" : 0,
 		"speed" : 40,
 		"loot_pool" : special_loot_pools["salazar,_rex_of_the_abyss"],
@@ -8038,7 +8102,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(8, "FlameBlast_strong_slow", 0.2, "GiantFlameArrow_strong_fast", 0.3, 16) + [{"wait" : 4}]
+				] + CreateSpiral(12, "FlameBlast_strong_slow", 0.2, "GiantFlameArrow_strong_fast", 0.3, 24) + [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,
@@ -8052,7 +8116,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(12, "FlameBlast_strong_slow", 0.3, "GiantFlameArrow_strong_fast", 0.5, 24)+ [{"wait" : 4}]
+				] + CreateSpiral(14, "FlameBlast_strong_slow", 0.3, "GiantFlameArrow_strong_fast", 0.5, 32)+ [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,
@@ -8066,7 +8130,7 @@ var the_abyss_enemies = {
 						"speech" : "Feel the inferno!",
 						"wait" : 1,
 					},
-				] + CreateSpiral(16, "FlameBlast_strong_fast", 0.3, "GiantFlameArrow_strong_fast", 1, 32)+ [{"wait" : 4}]
+				] + CreateSpiral(16, "FlameBlast_strong_fast", 0.2, "GiantFlameArrow_strong_fast", 1, 32)+ [{"wait" : 4}]
 			},
 			{
 				"duration" : 8,
@@ -8298,7 +8362,7 @@ var ruined_temple_enemies = {
 		
 		"health" : 2000,
 		"defense" : 10,
-		"exp" : 2500,
+		"exp" : 400,
 		"behavior" : 2,
 		"speed" : 8,
 		"loot_pool" : basic_loot_pools["none"],
@@ -8385,7 +8449,7 @@ var ruined_temple_enemies = {
 		
 		"health" : 4000,
 		"defense" : 10,
-		"exp" : 2500,
+		"exp" : 500,
 		"behavior" : 1,
 		"speed" : slow,
 		"loot_pool" : basic_loot_pools["none"],
@@ -8451,7 +8515,7 @@ var ruined_temple_enemies = {
 		
 		"health" : 3000,
 		"defense" : 20,
-		"exp" : 3000,
+		"exp" : 500,
 		"behavior" : 1,
 		"speed" : 3,
 		"loot_pool" : basic_loot_pools["none"],
@@ -8529,7 +8593,7 @@ var ruined_temple_enemies = {
 		
 		"health" : 100000,
 		"defense" : 10,
-		"exp" : 7000,
+		"exp" : 1000,
 		"behavior" : 1,
 		"speed" : 5,
 		"loot_pool" : special_loot_pools["eye_of_naa'zorak"],
@@ -8862,7 +8926,7 @@ var ruined_temple_enemies = {
 		
 		"health" : 2000,
 		"defense" : 1,
-		"exp" : 2000,
+		"exp" : 200,
 		"behavior" : 0,
 		"speed" : 10,
 		"loot_pool" : basic_loot_pools["none"],
@@ -8874,7 +8938,7 @@ var ruined_temple_enemies = {
 					{
 						"signal" : "monolith_active",
 						"reciever" : "eye_of_naa'zorak",
-						"duration" : 2,
+						"duration" : 1.6,
 						"wait" : 0,
 					},
 					MakeProjectile("BloodSpinner_weak_fast_short", -40, 0, "nearest"),
@@ -8890,13 +8954,952 @@ var ruined_temple_enemies = {
 					{
 						"signal" : "monolith_active",
 						"reciever" : "eye_of_naa'zorak",
-						"duration" : 2,
+						"duration" : 1.6,
 						"wait" : 0,
 					},
 				] + CreateSpiral(1, "Dart_strong_medium_short", 0, null, 0.2, 8) + [{"wait" : 1.5}]
 			}
 		]
 	},
+}
+var halloween_island_enemies = {
+	"pumpkin_tyrant" : {
+		"scale" : 1.5,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(144,252), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"dungeon" : {
+			"rate" : 0,
+			"name" : "spooky_cavern"
+		},
+		
+		"health_scaling" : 30000,
+		"health" : 70000,
+		"defense" : 1,
+		"exp" : 2000,
+		"behavior" : 0,
+		"speed" : 10,
+		"loot_pool" : {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "pumpkin_protector",
+						"summon_position" : DegreesToVector(0)*100,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_protector",
+						"summon_position" : DegreesToVector(180)*100,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 5,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0, 99.99],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 0,
+					},
+					{
+						"speech" : "I am the spirit of halloween...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "Let me show you a trick!",
+						"wait" : 1,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(0)*30,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(240)*30,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(120)*30,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(0)*50,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(240)*50,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(120)*50,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 2,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0, 66],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 3,
+						"wait" : 0,
+					},
+					{
+						"speech" : "The pumpkin patch will rot your bones!",
+						"wait" : 1,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(30)*20,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(240)*20,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(80)*20,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(0)*40,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(220)*40,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(130)*40,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 2,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0, 33],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 3,
+						"wait" : 0,
+					},
+					{
+						"speech" : "My pumpkins are hungry!",
+						"wait" : 1,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(0)*20,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(220)*20,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_fighter",
+						"summon_position" : DegreesToVector(110)*20,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(0)*40,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(260)*40,
+						"wait" : 0,
+					},
+					{
+						"summon" : "pumpkin_minion",
+						"summon_position" : DegreesToVector(100)*40,
+						"wait" : 2,
+					},
+				]
+			},
+			
+			{
+				"duration" : 1,
+				"health" : [99.99,100],
+				"attack_pattern" : [
+					{
+						"wait" : 1
+					}
+				]
+			},
+			{
+				"duration" : 6,
+				"health" : [33,99.99],
+				"attack_pattern" : [
+					MakeProjectile("PlatinumSlash_strong_fast", 15, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 10, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 5, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -5, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -10, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -15, 0.5, "nearest"),
+					
+					MakeProjectile("PlatinumSlash_strong_fast", 25, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 15, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 10, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 5, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 0, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -5, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -10, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -15, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -25, 1, "nearest"),
+				]
+			},
+			{
+				"duration" : 8,
+				"health" : [33,99.99],
+				"attack_pattern" : CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 12) + [{"wait" : 2}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 16) + [{"wait" : 1.5}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 20) + [{"wait" : 1}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 30) + [{"wait" : 0.5}]
+			},
+			{
+				"duration" : 15,
+				"health" : [0,33],
+				"behavior" : 2,
+				"speed" : 5,
+				"attack_pattern" : CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 12) + [{"wait" : 1}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 16) + [{"wait" : 0.8}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 20) + [{"wait" : 0.5}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 30) + [{"wait" : 0.2}] + [
+					MakeProjectile("PlatinumSlash_strong_fast", 15, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", 10, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 5, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", 0, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -5, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", -10, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -15, 0.5, "nearest"),
+					
+					MakeProjectile("GiantBlast_fast", 25, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", 15, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", 5, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", 0, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", -5, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", -15, 0, "nearest"),
+					MakeProjectile("GiantBlast_fast", -25, 1, "nearest"),
+				]
+			}
+		]
+	},
+	"pumpkin_protector" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(180,252), Vector2(18,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"health" : 999999,
+		"defense" : 0,
+		"exp" : 10000,
+		"anchor" : "parent",
+		"behavior" : 3,
+		"speed" : 30,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"attack_pattern" : CreateSpiral(1,"Wave_mid_slow",0,null,0.2,8) + [{"wait" : 4}]
+			},
+		]
+	},
+	"pumpkin_fighter" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 12,
+		"rect" : Rect2(Vector2(198,252), Vector2(18,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 1000,
+		"defense" : 10,
+		"exp" : 20,
+		"behavior" : 1,
+		"speed" : 20,
+		"loot_pool" : special_loot_pools["pumpkin"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : medium
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : medium
+					},
+					{
+						"projectile" : "PlatinumSlash",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : med,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : medium
+					},
+				]
+			},
+		]
+	},
+	"pumpkin_minion" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(0,250), Vector2(40,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 500,
+		"defense" : 10,
+		"exp" : 20,
+		"anchor" : "parent",
+		"behavior" : 3,
+		"speed" : 6,
+		"loot_pool" : special_loot_pools["pumpkin"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(5),
+						"size" : medium
+					},
+					{
+						"projectile" : "SmallBlast",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : med,
+						"tile_range" : 10,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-5),
+						"size" : medium
+					},
+				]
+			},
+		]
+	},
+	"shadow_spider" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,252), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
+		"health" : 1200,
+		"defense" : 10,
+		"exp" : 250,
+		"behavior" : 2,
+		"speed" : 10,
+		"loot_pool" : {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : []
+	},
+	"greater_slime" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(54,252), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [2],
+		},
+		
+		"health" : 2000,
+		"defense" : 0,
+		"exp" : 300,
+		"behavior" : 2,
+		"speed" : 6,
+		"loot_pool" : {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : []
+	},
+	"ghastly_ghoul" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(108,252), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"health" : 1000,
+		"defense" : 20,
+		"exp" : 300,
+		"behavior" : 2,
+		"speed" : 20,
+		"loot_pool" : {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : []
+	},
+	
+	"orbanis" : {
+		"scale" : 1.3,
+		"res" : 18,
+		"height" : 10,
+		"rect" : Rect2(Vector2(0,234), Vector2(36,18)),
+		"custom_hitbox" : Vector2(11,10),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"no_sink" : true,
+		"health_scaling" : 10000,
+		"health" : 50000,
+		"defense" : 0,
+		"exp" : 5000,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 8,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0, 100],
+				"attack_pattern" : [
+					{
+						"summon" : "orbanis_back",
+						"summon_position" : Vector2(0, -15),
+						"wait" : 0,
+					},
+					{
+						"summon" : "orbanis_leg",
+						"summon_position" : Vector2(7,20),
+						"flip" : 1,
+						"wait" : 0,
+					},
+					{
+						"summon" : "orbanis_leg",
+						"summon_position" : Vector2(29,12),
+						"flip" : 0,
+						"wait" : 0,
+					},
+					{
+						"summon" : "orbanis_leg",
+						"summon_position" : Vector2(18,-2),
+						"flip" : 0,
+						"wait" : 0,
+					},
+					{
+						"summon" : "orbanis_leg",
+						"summon_position" : Vector2(-8,20),
+						"flip" : 0,
+						"wait" : 0,
+					},
+					{
+						"summon" : "orbanis_leg",
+						"summon_position" : Vector2(-20,-2),
+						"flip" : 1,
+						"wait" : 0,
+					},
+					{
+						"summon" : "orbanis_leg",
+						"summon_position" : Vector2(-29,12),
+						"flip" : 1,
+						"wait" : 0,
+					},
+					
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 3,
+					},
+					{
+						"speech" : "What a feast...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "The pumpkin king has outdone himself this time!",
+						"wait" : 1,
+					},
+					{
+						"signal" : "initiate_legs",
+						"reciever" : "orbanis_leg",
+						"duration" : 1.1,
+						"wait" : 2,
+					},
+				]
+			},
+			
+			{
+				"duration" : 2,
+				"health" : [70,100],
+				"on_signal" : ["legs_alive"],
+				"attack_pattern" : CreateSpiral(3, "AbyssBlast_strong_mid", 0.2, "BloodShuriken1", 0.2, 16, true)
+			},
+			{
+				"duration" : 15,
+				"health" : [70,100],
+				"attack_pattern" : CreateSpiral(2, "AbyssBlast_strong_mid", 0.1, "AbyssSpinner_mid_fast", 0.2, 16, false) + CreateSpiral(2, "AbyssBlast_strong_mid", 0.1, "AbyssSpinner_mid_fast", 0.2, 16, false, true) + [
+					{
+						"wait" : 1,
+					}
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+					{
+						"wait" : 1,
+					}
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+					{
+						"wait" : 1,
+					}
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+					{
+						"wait" : 1,
+					}
+				]
+			},
+			
+			{
+				"duration" : 2,
+				"health" : [40,70],
+				"on_signal" : ["legs_alive"],
+				"attack_pattern" : [{ "effect" : "invincible", "duration" : 5, "wait" : 0 }] + CreateSpiral(1, "Wave_weak_fast", 0, null, 0, 32, true) + [{"wait":0.1}] + CreateSpiral(1, "Stack_strong_fast", 0, null, 0, 8, true) + CreateSpiral(1, "Wave_weak_fast", 0, null, 0, 32, true) + [{"wait":0.1}] + CreateSpiral(1, "Stack_strong_fast", 0, null, 0, 8, true) + CreateSpiral(1, "Wave_weak_fast", 0, null, 0, 32, true) + [{"wait":2}]
+			},
+			{
+				"duration" : 15,
+				"health" : [40,70],
+				"attack_pattern" : CreateSpiral(2, "AbyssBlast_strong_mid", 0.1, "AbyssSpinner_mid_fast", 0.2, 24, false) + CreateSpiral(2, "AbyssBlast_strong_mid", 0.1, "AbyssSpinner_mid_fast", 0.2, 24, false, true) + [
+					{
+						"wait" : 0.5,
+					}
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+					{
+						"wait" : 0.5,
+					}
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+					{
+						"wait" : 0.5,
+					}
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+					{
+						"wait" : 0.5,
+					}
+				]
+			},
+			{
+				"duration" : 2,
+				"health" : [40,70],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"speech" : "I will devour you myself!",
+						"wait" : 0,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 3,
+						"wait" : 0,
+					},
+					{
+						"signal" : "initiate_legs",
+						"reciever" : "orbanis_leg",
+						"duration" : 1.1,
+						"wait" : 2,
+					},
+				]
+			},
+			
+			{
+				"duration" : 4,
+				"health" : [10,40],
+				"on_signal" : ["legs_alive"],
+				"attack_pattern" : [{ "effect" : "invincible", "duration" : 5, "wait" : 0 }] + CreateSpiral(1, "Wave_weak_fast", 0, null, 0, 32, true) + [{"wait":0.1}] + CreateSpiral(1, "Stack_strong_fast", 0, null, 0, 8, true) + CreateSpiral(1, "Wave_weak_fast", 0, null, 0, 32, true) + [{"wait":0.1}] + CreateSpiral(1, "Stack_strong_fast", 0, null, 0, 8, true) + CreateSpiral(1, "Wave_weak_fast", 0, null, 0, 32, true) + [{"wait":2}]
+			},
+			{
+				"duration" : 15,
+				"health" : [10,40],
+				"attack_pattern" : CreateSpiral(2, "AbyssBlast_strong_mid", 0.1, "AbyssSpinner_mid_fast", 1, 24, false) + CreateSpiral(2, "AbyssBlast_strong_mid", 0.1, "AbyssSpinner_strong_medium", 1, 24, false, true) + [
+					MakeProjectile("GiantDemonicBlast_strong_slow", 6, 1, "nearest"),
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+					MakeProjectile("GiantDemonicBlast_strong_slow", 6, 1, "nearest"),
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+					MakeProjectile("GiantDemonicBlast_strong_slow", 6, 1, "nearest"),
+				] + CreateSpiral(1, "AbyssSpinner_mid_fast", 0, "BloodShuriken1", 1, 10, false) + [
+				]
+			},
+			{
+				"duration" : 2,
+				"health" : [10,40],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"speech" : "Enough games, get caught in my web!",
+						"wait" : 0,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 3,
+						"wait" : 0,
+					},
+					{
+						"signal" : "initiate_legs",
+						"reciever" : "orbanis_leg",
+						"duration" : 1.1,
+						"wait" : 2,
+					},
+				]
+			},
+			
+			{
+				"duration" : 2.5,
+				"health" : [0,10],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"speech" : "Hissss! You win this time...",
+						"wait" : 0,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 3,
+						"wait" : 2,
+					},
+					{
+						"summon" : "halloween_chest",
+						"summon_position" : Vector2(0, 6*8),
+						"wait" : 0,
+					},
+					{
+						"dead" : true,
+						"wait" : 1,
+					}
+				]
+			},
+			{
+				"duration" : 2.5,
+				"health" : [0,10],
+				"attack_pattern" : [
+					{
+						"wait" : 1,
+					}
+					
+				]
+			},
+		]
+	},
+	"orbanis_leg" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+			"rect" : Rect2(Vector2(36,234), Vector2(54,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+			"Death" : [2],
+		},
+		
+		"no_sink" : true,
+		"health_scaling" : 10000,
+		"health" : 50000,
+		"defense" : 0,
+		"exp" : 0,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [90,100],
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 0,
+					},
+					{
+						"signal" : "legs_alive",
+						"reciever" : "orbanis",
+						"duration" : 1.1,
+						"wait" : 1,
+					},
+				]
+			},
+			{
+				"duration" : OS.get_system_time_secs(),
+				"health" : [90,100],
+				"on_signal" : ["initiate_legs"],
+				"attack_pattern" : [
+					{
+						"signal" : "legs_alive",
+						"reciever" : "orbanis",
+						"duration" : 1.1,
+						"wait" : 1,
+					},
+				]
+			},
+			{
+				"duration" : 1,
+				"health" : [80,90],
+				"attack_pattern" : [
+					{
+						"dead" : true,
+						"wait" : 1,
+					},
+				]
+			},
+			
+			{
+				"duration" : OS.get_system_time_secs(),
+				"health" : [80,90],
+				"on_signal" : ["initiate_legs"],
+				"attack_pattern" : [
+					{
+						"dead" : false,
+						"wait" : 0,
+					},
+					{
+						"signal" : "legs_alive",
+						"reciever" : "orbanis",
+						"duration" : 1.1,
+						"wait" : 1,
+					},
+				]
+			},
+			{
+				"duration" : 1,
+				"health" : [70,80],
+				"attack_pattern" : [
+					{
+						"dead" : true,
+						"wait" : 1,
+					},
+				]
+			},
+			
+			{
+				"duration" : OS.get_system_time_secs(),
+				"health" : [70,80],
+				"on_signal" : ["initiate_legs"],
+				"attack_pattern" : [
+					{
+						"dead" : false,
+						"wait" : 0,
+					},
+					{
+						"signal" : "legs_alive",
+						"reciever" : "orbanis",
+						"duration" : 0.5,
+						"wait" : 0,
+					},
+					MakeProjectile("Wave_weak_fast", 0, 0.4, "nearest"),
+				]
+			},
+			{
+				"duration" : 1,
+				"health" : [60,70],
+				"attack_pattern" : [
+					{
+						"dead" : true,
+						"wait" : 1,
+					},
+				]
+			},
+		]
+	},
+	"orbanis_back" : {
+		"scale" : 1.3,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(90,234), Vector2(18,18)),
+		"custom_hitbox" : Vector2(0,0),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"no_sink" : true,
+		"health" : OS.get_system_time_msecs(),
+		"defense" : OS.get_system_time_msecs(),
+		"exp" : 0,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : {
+			"soulbound_loot" : [],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"wait" : 1
+					}
+				]
+			},
+		]
+	},
+	
+	"halloween_chest" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(20,250), Vector2(10,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"health_scaling" : 10000,
+		"health" : 25000,
+		"defense" : 0,
+		"exp" : 500,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 107,
+					"chance" : 30,
+					"threshold" : 0.01,
+				},
+				{
+					"item" : 13,
+					"chance" : 1,
+					"threshold" : 0.01,
+				},
+			],
+			"loot" : [
+				{
+					"item" : 9,
+					"chance" : 2,
+				},
+				{
+					"item" : 10,
+					"chance" : 2,
+				},
+				{
+					"item" : 11,
+					"chance" : 2,
+				},
+				{
+					"item" : 12,
+					"chance" : 2,
+				},
+			]
+		},
+		"phases" : [
+			{
+				"duration" : 3,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0, 100],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 3,
+						"wait" : 4
+					}
+				]
+			},
+			{
+				"duration" : 3,
+				"health" : [0, 100],
+				"attack_pattern" : [
+					{
+						"wait" : 4
+					}
+				]
+			}
+		]
+	}
 }
 onready var enemies = CompileEnemies()
 func CompileEnemies():
@@ -8911,6 +9914,7 @@ func CompileEnemies():
 	res.merge(ruined_temple_enemies)
 	res.merge(rocky_cave_enemies)
 	res.merge(cloud_isles_enemies)
+	res.merge(halloween_island_enemies)
 	return res
 
 var dungeons = {
@@ -9058,6 +10062,18 @@ var dungeons = {
 		"tile_translation" : {
 		}
 	},
+	"spooky_cavern" : {
+		"difficulty" : "Medium",
+		"group_size" : "1-10",
+		"portal_rect" : [100,0,"objects_8x8"],
+		"type" : "encounter",
+		"dungeon_boss" : "orbanis",
+		"room_size" : 40,
+		"spawnpoint" : Vector2(14,10)*8,
+		"tile_translation" : {
+			5 : "orbanis",
+		}
+	},
 }
 
 var items = {
@@ -9086,7 +10102,7 @@ var items = {
 		"description" : "A precious gem, what will it awaken in you?",
 		"tier" : "5",
 		"type" : "Consumable",
-		"use" : "ascend 5",
+		"use" : "ascend 3",
 		"slot" : "na",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,13)],
@@ -9210,6 +10226,56 @@ var items = {
 		"slot" : "na",
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(8,13)],
+	},
+	9 : {
+		"name": "Orange Candy",
+		"description" : "A tasty treat, +100 attack for 1 minute",
+		"tier" : "5",
+		"type" : "Consumable",
+		"use" : "buff attack 100 60",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(0,14)],
+	},
+	10 : {
+		"name": "Yellow Candy",
+		"description" : "A tasty treat, +100 speed for 1 minute",
+		"tier" : "5",
+		"type" : "Consumable",
+		"use" : "buff speed 100 60",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(1,14)],
+	},
+	11 : {
+		"name": "Green Candy",
+		"description" : "A tasty treat, +100 attack speed for 1 minute",
+		"tier" : "5",
+		"type" : "Consumable",
+		"use" : "buff dexterity 100 60",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(2,14)],
+	},
+	12 : {
+		"name": "Pink Candy",
+		"description" : "A tasty treat, +500 regen for 1 minute",
+		"tier" : "5",
+		"type" : "Consumable",
+		"use" : "buff vitality 500 60",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(3,14)],
+	},
+	13 : {
+		"name": "Treat Basket",
+		"description" : "What might you find inside?",
+		"tier" : "5",
+		"type" : "Consumable",
+		"use" : "gift halloween",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,14)],
 	},
 	100 : {
 		"name": "Short Sword",
@@ -9454,6 +10520,79 @@ var items = {
 		},
 		"textures" : {
 			"weaponTexture" : "ice_scimitar"
+		}
+	},
+	107 : {
+		"name": "Spider Fang",
+		"description" : "A vicious mandible from a scary night",
+		"type" : "Sword",
+		"slot" : "weapon",
+		"tier" : "UT",
+		
+		"rof" : 100,
+		"stats" : {
+			"vitality" : 100,
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [50,60],
+				"projectile" : "BloodShuriken",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : fast,
+				"tile_range" : 2,
+				"size" : 5,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [20,30],
+				"projectile" : "BloodSpinner",
+				"formula" : "sin(x)",
+				"piercing" : false,
+				"speed" : fast,
+				"tile_range" : 1,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [20,30],
+				"projectile" : "BloodSpinner",
+				"formula" : "sin(x)",
+				"piercing" : false,
+				"speed" : fast,
+				"tile_range" : 1,
+				"size" : 4,
+				"offset" : DegreesToVector(90),
+			},
+			{
+				"damage" : [20,30],
+				"projectile" : "BloodSpinner",
+				"formula" : "sin(x)",
+				"piercing" : false,
+				"speed" : fast,
+				"tile_range" : 1,
+				"size" : 4,
+				"offset" : DegreesToVector(180),
+			},
+			{
+				"damage" : [20,30],
+				"projectile" : "BloodSpinner",
+				"formula" : "sin(x)",
+				"piercing" : false,
+				"speed" : fast,
+				"tile_range" : 1,
+				"size" : 4,
+				"offset" : DegreesToVector(270),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,14)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(209.0, 198.0, 202.0),
+			"weaponNew" : RgbToColor(222.0, 0.0, 0.0)
+		},
+		"textures" : {
 		}
 	},
 	133 : {
@@ -10025,7 +11164,7 @@ var items = {
 		"description" : "A powerful sceptre with a dark spell",
 		"type" : "Staff",
 		"slot" : "weapon",
-		"tier" : "4",
+		"tier" : "5",
 		
 		"rof" : 13,
 		"stats" : {
@@ -10743,7 +11882,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 4, "range" : 8},
+			"armored" : { "duration" : 2, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 5,
@@ -10769,7 +11908,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 5, "range" : 8},
+			"armored" : { "duration" : 2.5, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 7,
@@ -10795,7 +11934,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 6, "range" : 8},
+			"armored" : { "duration" : 3, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 9,
@@ -10822,7 +11961,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 6.5, "range" : 8},
+			"armored" : { "duration" : 4, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 10,
@@ -10848,7 +11987,7 @@ var items = {
 		
 		"cooldown" : 6,
 		"buffs" : {
-			"armored" : { "duration" : 8, "range" : 8},
+			"armored" : { "duration" : 5.5, "range" : 8},
 		},
 		"stats" : {
 			"defense" : 15,
@@ -10892,6 +12031,32 @@ var items = {
 		},
 		"textures" : {
 			"helmetTexture" : "everwinter_diadem",
+		}
+	},
+	406 : {
+		"name": "Pumpkin Helmet",
+		"description" : "You wont find a helmet tastier than this",
+		"type" : "Helmet",
+		"slot" : "helmet",
+		
+		"cooldown" : 6,
+		"buffs" : {
+			"armored" : { "duration" : 5.5, "range" : 8},
+		},
+		"stats" : {
+			"defense" : 15,
+			"vitality" : 15,
+		},
+		"tier" : "5",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(5,14)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(255.0, 193.0, 92.0),
+			"helmetMediumNew" : RgbToColor(228.0, 91.0, 9.0),
+			"helmetDarkNew" : RgbToColor(206.0, 81.0, 5.0),
+		},
+		"textures" : {
+			
 		}
 	},
 	433 : {
@@ -11029,10 +12194,10 @@ var items = {
 		"type" : "Hat",
 		"slot" : "helmet",
 		
-		"cooldown" : 2,
+		"cooldown" : 3,
 		"buffs" : {
-			"healing" : { "duration" : 1, "range" : 5},
-			"damaging" : { "duration" : 1, "range" : 5},
+			"healing" : { "duration" : 2, "range" : 5},
+			"damaging" : { "duration" : 2, "range" : 5},
 		},
 		"stats" : {
 			"attack" : 10,
@@ -11375,7 +12540,7 @@ var buildings = {
 		"craftable" : false,
 		"materials" : [],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(70,40)],
-		"achievement" : "Trial By Fire",
+		"achievement" : "Noble Statue",
 	},
 	"nomad_statue" : {
 		"name" : "Nomad Statue",
@@ -11386,7 +12551,7 @@ var buildings = {
 		"craftable" : false,
 		"materials" : [],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(80,40)],
-		"achievement" : "Trial By Fire",
+		"achievement" : "Unlock Nomad",
 	},
 	"scholar_statue" : {
 		"name" : "Scholar Statue",
@@ -11397,7 +12562,7 @@ var buildings = {
 		"craftable" : false,
 		"materials" : [],
 		"path" : ["objects/objects_8x8.png", 26, 26, Vector2(90,40)],
-		"achievement" : "Trial By Fire",
+		"achievement" : "Unlock Scholar",
 	},
 	"dragon_statue" : {
 		"name" : "Dragon Statue",
@@ -11856,7 +13021,7 @@ var achievement_catagories = {
 		"icon" : Vector2(10,0)
 	},
 	"Misc" : { 
-		"achievements" : ["Vagabond", "Mr. Worldwide","6 Feet Under I","6 Feet Under II","6 Feet Under III"], 
+		"achievements" : ["Mr. Worldwide I", "Mr. Worldwide II","6 Feet Under I","6 Feet Under II","6 Feet Under III"], 
 		"icon" : Vector2(20,0)
 	},
 }
@@ -11883,14 +13048,14 @@ var achievements = {
 		"description" : "Die 125 times.",
 		"gold" : 800,
 	},
-	"Vagabond" : {
+	"Mr. Worldwide I" : {
 		"which" : "tiles_covered",
 		"amount" : 100000,
 		"icon" : Vector2(10,30),
 		"description" : "Travel 100000 tiles.",
 		"gold" : 200,
 	},
-	"Mr. Worldwide" : {
+	"Mr. Worldwide II" : {
 		"which" : "tiles_covered",
 		"amount" : 1000000,
 		"icon" : Vector2(10,30),
@@ -11899,8 +13064,8 @@ var achievements = {
 	},
 	"Back From The Dead" : {
 		"which" : "enemies_killed",
-		"amount" : 1000,
-		"enemies" : ["cacodemon", "basalisk", "phoenix", "archmage"],
+		"amount" : 100,
+		"enemies" : ["skeletal_warrior", "skeletal_archer"],
 		"icon" : Vector2(20,20),
 		"description" : "Kill 100 skeletons.",
 		"gold" : 200,
@@ -11923,7 +13088,7 @@ var achievements = {
 	"On The Rocks" : {
 		"which" : "enemies_killed",
 		"amount" : 1000,
-		"enemies" : ["rock_golem"],
+		"enemies" : ["rock_sprite", "rock_scorpion", "lil_rock_golem", "rokk_the_rough", "rock_sprite_rotating"],
 		"icon" : Vector2(40,20),
 		"description" : "Kill 1000 rock enemies.",
 		"gold" : 400,
@@ -11948,7 +13113,7 @@ var achievements = {
 		"amount" : 50,
 		"enemies" : ["salazar,_rex_of_the_abyss"],
 		"icon" : Vector2(50, 20),
-		"description" : "Kill salazar in the abyss 100 times.",
+		"description" : "Kill salazar in the abyss 50 times.",
 		"gold" : 800,
 	},
 	"Job Hopper" : {
@@ -12014,7 +13179,7 @@ var achievements = {
 	},
 	"Unlock Knight" : {
 		"which" : "damage_taken",
-		"amount" : 50000,
+		"amount" : 100000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
@@ -12044,7 +13209,7 @@ var achievements = {
 	},
 	"Unlock Sentinel" : {
 		"which" : "damage_taken",
-		"amount" : 50000,
+		"amount" : 100000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
@@ -12065,7 +13230,7 @@ var achievements = {
 	},
 	"Unlock Druid" : {
 		"which" : "enemies_killed",
-		"amount" : 220,
+		"amount" : 120,
 		"enemies" : ["phoenix"],
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
@@ -12073,7 +13238,7 @@ var achievements = {
 	},
 	"Unlock Warlock" : {
 		"which" : "enemies_killed",
-		"amount" : 4000,
+		"amount" : 3000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
@@ -12137,10 +13302,10 @@ var characters = {
 		},
 		"bonus_stats" : {
 			"health" : 200,
-			"attack" : 10,
+			"attack" : 5,
 			"defense" : 20,
-			"speed" : 10,
-			"dexterity" : 10,
+			"speed" : 0,
+			"dexterity" : 5,
 			"vitality" : 20
 		},
 		"multipliers" : {
@@ -12175,15 +13340,15 @@ var characters = {
 		},
 		"bonus_stats" : {
 			"health" : 100,
-			"attack" : 20,
-			"defense" : 10,
+			"attack" : 5,
+			"defense" : 0,
 			"speed" : 20,
 			"dexterity" : 20,
-			"vitality" : 10
+			"vitality" : 0
 		},
 		"multipliers" : {
 			"Bow" : {"rof" : 1.2, "stats" : 1.2},
-			"Leather" : {"stats" : 1.2},
+			"Hide" : {"stats" : 1.2},
 			"Cap" : {"stats" : 1.2},
 		},
 		"description" : "Swift and precise, the Nomad's arrows strike fear into distant foes.",
@@ -12212,11 +13377,11 @@ var characters = {
 			}
 		},
 		"bonus_stats" : {
-			"health" : 100,
+			"health" : 50,
 			"attack" : 30,
 			"defense" :0,
-			"speed" : 10,
-			"dexterity" : 30,
+			"speed" : 5,
+			"dexterity" : 5,
 			"vitality" : 10
 		},
 		"multipliers" : {
@@ -12247,7 +13412,7 @@ var characters = {
 		"bonus_stats" : {
 			"health" : 100,
 			"attack" : 0,
-			"defense" : 20,
+			"defense" : 10,
 			"speed" : -10,
 			"dexterity" : 0,
 			"vitality" : 10,
@@ -12278,16 +13443,17 @@ var characters = {
 			}
 		},
 		"bonus_stats" : {
-			"health" : 150,
+			"health" : 50,
 			"attack" : 0,
-			"defense" : 10,
+			"defense" : 0,
 			"speed" : 0,
 			"dexterity" : 0,
-			"vitality" : 25,
+			"vitality" : 20,
 		},
 		"multipliers" : {
 			"Sword" : {"damage" : 1.4, "stats" : 1.4},
-			"Armor" : {"stats" : 1.4},
+			"Robe" : {"stats" : 1.4},
+			"Armor" : {"stats" : 1.2},
 			"Helmet" : {"stats" : 1.4},
 		},
 		"description" : "The Paladin's high regen and health make them the ultimate tank.",
@@ -12314,16 +13480,17 @@ var characters = {
 			}
 		},
 		"bonus_stats" : {
-			"health" : 50,
-			"attack" : 30,
-			"defense" : 5,
-			"speed" : 5,
+			"health" : 0,
+			"attack" : 10,
+			"defense" : 0,
+			"speed" : 10,
 			"dexterity" : 10,
-			"vitality" : 5,
+			"vitality" : 0,
 		},
 		"multipliers" : {
 			"Sword" : {"damage" : 1.5, "stats" : 1.4},
-			"Armor" : {"stats" : 1.4},
+			"Hide" : {"stats" : 1.4},
+			"Armor" : {"stats" : 1.2},
 			"Helmet" : {"stats" : 1.4},
 		},
 		"description" : "The Marauder's sharp blade and swift blows make them a unstoppable force.",
@@ -12350,16 +13517,17 @@ var characters = {
 			}
 		},
 		"bonus_stats" : {
-			"health" : 25,
+			"health" : 0,
 			"attack" : 20,
 			"defense" : 0,
-			"speed" : 5,
-			"dexterity" : 20,
+			"speed" : 0,
+			"dexterity" : 10,
 			"vitality" : 0,
 		},
 		"multipliers" : {
 			"Bow" : {"damage" : 1.2, "rof" : 1.4, "stats" : 1.4},
-			"Hide" : {"stats" : 1.4},
+			"Hide" : {"stats" : 1.2},
+			"Robe" : {"stats" : 1.4},
 			"Cap" : {"stats" : 1.4},
 		},
 		"description" : "The Ranger's extreme power and precision make them a feared marksman.",
@@ -12387,15 +13555,16 @@ var characters = {
 		},
 		"bonus_stats" : {
 			"health" : 100,
-			"attack" : 10,
-			"defense" : 20,
-			"speed" : 10,
-			"dexterity" : 10,
+			"attack" : 0,
+			"defense" : 10,
+			"speed" : 0,
+			"dexterity" : 0,
 			"vitality" : 0,
 		},
 		"multipliers" : {
 			"Bow" : {"rof" : 1.4, "stats" : 1.4},
-			"Hide" : {"stats" : 1.4},
+			"Hide" : {"stats" : 1.2},
+			"Armor" : {"stats" : 1.4},
 			"Cap" : {"stats" : 1.4},
 		},
 		"description" : "The Sentinel's thick hide make them a robust marksman.",
@@ -12422,11 +13591,11 @@ var characters = {
 			}
 		},
 		"bonus_stats" : {
-			"health" : 25,
-			"attack" : 10,
+			"health" : 50,
+			"attack" : 0,
 			"defense" : 0,
-			"speed" : 25,
-			"dexterity" : 10,
+			"speed" : 20,
+			"dexterity" : 0,
 			"vitality" : 0,
 		},
 		"multipliers" : {
@@ -12434,7 +13603,7 @@ var characters = {
 			"Hide" : {"stats" : 1.4},
 			"Cap" : {"stats" : 1.4},
 		},
-		"description" : "The Sentinel's thick hide make them a robust marksman.",
+		"description" : "The Scout's swift nature makes them the fastest marksman.",
 		"teaser" : "Discover by venturing far AND wide.",
 		"ascension_stones" : 75,
 	},
@@ -12458,16 +13627,17 @@ var characters = {
 			}
 		},
 		"bonus_stats" : {
-			"health" : 100,
-			"attack" : 5,
+			"health" : 0,
+			"attack" : 0,
 			"defense" : 0,
-			"speed" : 25,
-			"dexterity" : 5,
-			"vitality" : 20,
+			"speed" : 20,
+			"dexterity" : 0,
+			"vitality" : 10,
 		},
 		"multipliers" : {
 			"Staff" : {"damage" : 1.4, "stats" : 1.4},
-			"Robe" : {"stats" : 1.4},
+			"Robe" : {"stats" : 1.2},
+			"Hide" : {"stats" : 1.4},
 			"Hat" : {"stats" : 1.4},
 		},
 		"description" : "The Magician's quick thinking make for a cunning opponent.",
@@ -12494,17 +13664,18 @@ var characters = {
 			}
 		},
 		"bonus_stats" : {
-			"health" : 200,
+			"health" : 100,
 			"attack" : 0,
 			"defense" : 10,
 			"speed" : 0,
 			"dexterity" : 0,
-			"vitality" : 40,
+			"vitality" : 0,
 		},
 		"multipliers" : {
 			"Staff" : {"damage" : 1.4, "stats" : 1.4},
-			"Robe" : {"stats" : 1.4},
-			"Hat" : {"stats" : 1.5},
+			"Robe" : {"stats" : 1.2},
+			"Armor" : {"stats" : 1.4},
+			"Hat" : {"stats" : 1.4},
 		},
 		"description" : "The Druid's extreme durability and regeneration can outlast anyone.",
 		"teaser" : "Discover by putting out some serious fire.",
@@ -12531,17 +13702,17 @@ var characters = {
 		},
 		"bonus_stats" : {
 			"health" : 0,
-			"attack" : 30,
-			"defense" : 0,
+			"attack" : 20,
+			"defense" : -10,
 			"speed" : 10,
 			"dexterity" : 10,
 			"vitality" : 0,
 		},
 		"multipliers" : {
-			"Sword" : {"damage" : 1.2, "stats" : 1.2},
-			"Staff" : {"damage" : 1.2, "rof" : 1.2, "stats" : 1.4},
-			"Robe" : {"stats" : 1.2},
-			"Hat" : {"stats" : 1.2},
+			"Sword" : {"damage" : 1.4, "stats" : 1.4},
+			"Staff" : {"damage" : 1.4, "rof" : 1.1, "stats" : 1.4},
+			"Robe" : {"stats" : 1.4},
+			"Hat" : {"stats" : 1.4},
 		},
 		"description" : "The Warlocks mastery of both sword and staff make them a feared mage.",
 		"teaser" : "Discover by killing everything in sight.",
