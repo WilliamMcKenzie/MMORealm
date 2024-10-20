@@ -12,9 +12,8 @@ func _ready():
 func UpdateLoot(_loot):
 	if (GameUI.get_node("Inventory").loot_container_id == object_id) and not UtilityFunctions.CompareArrays(loot, _loot):
 		loot = _loot
-		GameUI.get_node("Inventory").SetLoot(object_id, loot)
-		
-	if item_stand and loot[0]:
+		GameUI.get_node("UtilityButtons/LootButton").UpdateLoot(object_id, loot)
+	elif item_stand and loot[0]:
 		var item_coords = ClientData.GetItem(loot[0].item).path[3]
 		$Item.frame_coords = item_coords
 		$Item.visible = true
@@ -41,17 +40,19 @@ func OnBag(body):
 			if raw_item == null:
 				continue
 			
-			loot[i] = raw_item
-			i += 1
 			var item = ClientData.GetItem(raw_item.item)
 			if int(item.tier) > highest_loot_tier:
 				highest_loot_tier = int(item.tier)
 			elif item.tier == "UT":
 				highest_loot_tier = 6
-
+		
 		tier = loot_bag_tier_translation[highest_loot_tier]
 		GameUI.get_node("UtilityButtons/LootButton").ActivateLootButton(object_id, loot, tier, position)
+		if Settings.auto_open_chests:
+			GameUI.Toggle("inventory")
 
 func OffBag(body):
 	if body.get_parent().has_method("DefinePlayerState"):
 		GameUI.get_node("UtilityButtons/LootButton").DisableLootButton(object_id)
+		if Settings.auto_open_chests and GameUI.get_node("Inventory").active:
+			GameUI.Toggle("inventory")

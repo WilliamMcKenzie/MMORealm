@@ -31,7 +31,7 @@ func _ready():
 	GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
-	#GameplayLoop.CreateIslandTemplate(Vector2(501,501), "halloween")
+	GameplayLoop.CreateIslandTemplate(Vector2(501,501), "halloween")
 	
 	#Open realm
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
@@ -97,7 +97,9 @@ func _Peer_Disconnected(id):
 	if player_state_collection.has(id) and player_instance_tracker[player_state_collection[id]["I"]].has(id) and get_node_or_null("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])+"/YSort/Players/"+str(id)):
 		print("User " + str(id) + " has disconnected!")
 		var instance_tree = player_state_collection[id]["I"]
-		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
+		var player_container = get_node_or_null("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
+		if not player_container or not player_container.character:
+			return
 		
 		for stat in ["health", "attack", "defense", "speed", "dexterity", "vitality"]:
 			if player_container.stat_buffs.has(stat):
@@ -161,7 +163,7 @@ remote func DialogueResponse(response):
 		ForcedEnterInstance(CreateArena(player_id, "daily"), player_id)
 	elif response == "Daily Arena":
 		Dialogue("ArenaToSoon", player_id)
-	elif response == "Monthly Arena":
+	elif response == "Monthly Arena" and (not time_tracker.has(response) or (month != time_tracker[response]["month"])):
 		time_tracker[response] = time
 		ForcedEnterInstance(CreateArena(player_id, "monthly"), player_id)
 	elif response == "Monthly Arena":
@@ -599,7 +601,7 @@ remote func Nexus():
 	
 	if "arena" in get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).name:
 		if player_container.health > 0:
-			player_container.DealDamage(999, "Gladius")
+			player_container.DealDamage(9999, "Gladius")
 	elif not player_container.in_tutorial:
 		rpc_id(player_id, "ConfirmNexus")
 	
@@ -822,19 +824,6 @@ remote func RecieveChatMessage(message):
 				var commands = ["Commands:", "/help (command list)", "/home (go to your house)", "/home username (go to username's house if you are allowed)", "/players (list of online players)", "/trade username (send trade offer to username)", "/tp username (teleport to username)"]
 				for command in commands:
 					rpc_id(player_id, "RecieveChat", command, "System")
-			if message_words[0] == "/closerealm":
-					#rpc_id(player_id, "MovePlayer", instance_node.enemy_list[instance_node.ruler_id]["position"]+Vector2(0,50))
-					yield(get_tree().create_timer(2), "timeout")
-					instance_node.enemy_list[instance_node.ruler_id]["health"] = 0
-			if message_words[0] == "/closeallrealms":
-					for node in instance_node.get_children():
-						if "island" in node.name and node.ruler_id:
-							node.enemy_list[node.ruler_id]["health"] = 0
-			if message_words[0] == "/roll" and message_words.size() > 2:
-				for i in range(int(message_words[2])):
-					instance_node.CalculateLootPool({ "position" : player_position, "name" : message_words[1], "damage_tracker" : { player_id : 123 }, "max_health" : 1 }, 12312)
-			if message_words[0] == "/giveitem":
-				player_container.GiveItem(int(message_words[1]))
 			if players_online_alternatives.has(message_words[0]):
 				var connected_players = get_tree().get_network_connected_peers()
 				var players_online = ""
@@ -852,15 +841,15 @@ remote func RecieveChatMessage(message):
 				EnterHouse(player_id, player_id)
 			elif home_alternatives.has(message_words[0]):
 				var selected_player_name = message.substr(6,-1)
-				if player_id_by_name.has(selected_player_name) and get_tree().get_network_connected_peers().has(player_id_by_name[selected_player_name]):
-					var selected_player_id = player_id_by_name[selected_player_name]
+				var selected_player_id = FindPlayerByName(selected_player_name)
+				if selected_player_id and get_tree().get_network_connected_peers().has(selected_player_id):
 					EnterHouse(player_id, selected_player_id)
 				else:
 					rpc_id(player_id, "RecieveChat", "Invalid username: " + selected_player_name, "SystemERROR")
 			if message_words[0] == "/trade":
 				var selected_player_name = message.substr(7,-1)
-				if player_id_by_name.has(selected_player_name):
-					var selected_player_id = player_id_by_name[selected_player_name]
+				var selected_player_id = FindPlayerByName(selected_player_name)
+				if selected_player_id:
 					if player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"] and player_container.position.distance_to(get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(selected_player_id)).position) > 32*8:
 						rpc_id(player_id, "RecieveChat", "To far away!", "System")
 					elif player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
@@ -872,8 +861,8 @@ remote func RecieveChatMessage(message):
 					rpc_id(player_id, "RecieveChat", "Invalid username: " + selected_player_name, "SystemERROR")
 			if message_words[0] == "/tp":
 				var selected_player_name = message.substr(4,-1)
-				if player_id_by_name.has(selected_player_name):
-					var selected_player_id =  player_id_by_name[message.substr(4,-1)]
+				var selected_player_id = FindPlayerByName(selected_player_name)
+				if selected_player_id:
 					if OS.get_system_time_secs() - player_container.last_teleported < 5:
 						rpc_id(player_id, "RecieveChat", "Teleport on cooldown, wait " + str(5 - (OS.get_system_time_secs() - player_container.last_teleported)) + " more seconds.", "System")
 					elif player_state_collection.has(selected_player_id) and player_state_collection[selected_player_id]["I"] == player_state_collection[player_id]["I"]:
@@ -882,10 +871,23 @@ remote func RecieveChatMessage(message):
 						rpc_id(player_id, "MovePlayer", player_state_collection[player_id]["P"])
 						rpc_id(player_id, "RecieveChat", "You have teleported to " + selected_player_name, "System")
 					else:
-						rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "SystemERROR")
+						rpc_id(player_id, "RecieveChat", selected_player_name + " is in a different island.", "SystemWARN")
 				else:
 					rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "SystemERROR")
 			if message[0] == "/" and admin:
+				if message_words[0] == "/closerealm":
+					#rpc_id(player_id, "MovePlayer", instance_node.enemy_list[instance_node.ruler_id]["position"]+Vector2(0,50))
+					yield(get_tree().create_timer(2), "timeout")
+					instance_node.enemy_list[instance_node.ruler_id]["health"] = 0
+				if message_words[0] == "/closeallrealms":
+						for node in instance_node.get_children():
+							if "island" in node.name and node.ruler_id:
+								node.enemy_list[node.ruler_id]["health"] = 0
+				if message_words[0] == "/roll" and message_words.size() > 2:
+					for i in range(int(message_words[2])):
+						instance_node.CalculateLootPool({ "position" : player_position, "name" : message_words[1], "damage_tracker" : { player_id : 123 }, "max_health" : 1 }, 12312)
+				if message_words[0] == "/giveitem":
+					player_container.GiveItem(int(message_words[1]))
 				if message_words[0] == "/damage":
 					player_container.DealDamage(int(message_words[1]), "poop")
 				if message_words[0] == "/bot":
@@ -907,6 +909,8 @@ remote func RecieveChatMessage(message):
 					player_container.AddExp(int(message_words[1]), "Ghoul", "123")
 				if message_words[0] == "/invincible":
 					player_container.GiveEffect("invincible", 99999)
+				if message_words[0] == "/d" and message_words[1] == "halloween_island":
+					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal("special_island", instance_tree, player_position, Vector2(501,501), "pumpkin_tyrant", "halloween")
 				if message_words[0] == "/d" and message_words[1] == "island" and len(message_words) == 3:
 					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal("island", instance_tree, player_position, Vector2(750,750), message_words[2])
 				elif message_words[0] == "/d":
@@ -958,10 +962,15 @@ remote func RecieveChatMessage(message):
 				"timestamp" : OS.get_system_time_msecs(),
 				"fake" : false,
 			})
-			var filters = "rape nigger nigg nigga chigger chigga fuck bitch ass anus pussy vagina dick cum cock sex anal shit murder hitler nazi abuse abusive asshole bastard bitch bullshit cock crap damn dumb fucker fucking moron nigger retard shit slut stupid whore"
+			var filters = "rape nigger nigg nigga chigger chigga fuck bitch pussy vagina dick cum cock sex anal shit murder hitler nazi abuse abusive asshole bastard bitch bullshit cock crap damn dumb fucker fucking moron nigger retard shit slut stupid whore fag faggot chigger china tranny"
 			for filter in filters.split(" "):
 				message = message.replace(filter, "****")
 			rpc("RecieveChat", message, player_name, player_container.character.class, player_container.name)
+func FindPlayerByName(username):
+	for _username in player_id_by_name.keys():
+		if _username.to_lower() == username.to_lower():
+			return player_id_by_name[_username]
+	return null
 
 #PLAYER INTERACTION
 

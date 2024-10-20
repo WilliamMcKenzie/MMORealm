@@ -86,26 +86,31 @@ func MovePlayer(new_position, animation, sprite_data):
 func ShootProjectile():
 	for projectile_time in projectile_dict.keys():
 		if projectile_time <= OS.get_system_time_msecs():
+			var pool = get_parent().get_parent().get_parent().get_node_or_null("PlayerPool")
+			if not pool:
+				Server.CreatePool(Server.projectile_pool_amount)
+				pool = get_parent().get_parent().get_parent().get_node_or_null("PlayerPool")
 			for projectile_data in projectile_dict[projectile_time]:
-				var projectile_path = "res://Scenes/SupportScenes/Projectiles/Players/Projectile.tscn"
-				var projectile = load(projectile_path)
-				var projectile_instance = projectile.instance()
-				
-				#Set projectile data
-				projectile_instance.position = $Axis.global_position + projectile_data["Direction"]*3
-				projectile_instance.original = false
-				projectile_instance.damage = round(CalculateDamageWithMultiplier(projectile_data["Damage"]))
-				projectile_instance.set_direction(projectile_data["Direction"])
-				projectile_instance.projectile = projectile_data["Projectile"]
-				projectile_instance.tile_range = projectile_data["TileRange"]
-				projectile_instance.piercing = projectile_data["Piercing"]
-				projectile_instance.formula = projectile_data["Formula"]
-				projectile_instance.speed = projectile_data["Speed"]
-				projectile_instance.size = projectile_data["Size"]
-				
-				projectile_dict.erase(projectile_time)
-				get_parent().get_parent().add_child(projectile_instance)
-				get_parent().get_parent().get_node(projectile_instance.name).look_at(projectile_data["MousePosition"])
+				for child in pool.get_children():
+					if child.is_active == false:
+						var start_position = $Axis.global_position + projectile_data["Direction"]*3
+						child.original = false
+						child.projectile_data = {
+							"name" : projectile_data["Projectile"],
+							"path" : start_position,
+							"start_position" : start_position,
+							"direction" : projectile_data["Direction"],
+							"tile_range" : projectile_data["TileRange"],
+							"damage" : projectile_data["Damage"],
+							"piercing" : projectile_data["Piercing"],
+							"speed" : projectile_data["Speed"],
+							"formula" : projectile_data["Formula"],
+							"size" : projectile_data["Size"],
+						}
+						child.damage = projectile_data["Damage"]
+						child.Activate()
+						projectile_dict.erase(projectile_time)
+						break
 
 func CalculateDamageWithMultiplier(damage):
 	if last_status_effects.has("damaging"):

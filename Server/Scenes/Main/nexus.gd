@@ -2,6 +2,7 @@ extends Node2D
 
 var collision_layer = 1
 var instance_tree = []
+var arena = false
 
 var player_list = {}
 var enemy_list = {}
@@ -125,7 +126,6 @@ func _physics_process(delta):
 				var _health = _health_ratio >= _phase.health[0] and _health_ratio <= _phase.health[1]
 				
 				if not _health or (_phase.has("on_signal") and not enemy_data["signals"].has(_phase["on_signal"][0])):
-					print(enemy_data["signals"])
 					phase_timer = 0
 				
 				pattern_timer -= tick_rate
@@ -238,7 +238,7 @@ func _physics_process(delta):
 							}
 							SpawnEnemyProjectile(projectile_data, instance_tree, enemy_id, enemy_name)
 					
-					elif current_attack.has("summon"):
+					elif current_attack.has("summon") and not arena:
 						var summon_position = current_attack["summon_position"] + enemy_position
 						var flip = current_attack.flip if current_attack.has("flip") else -1
 						get_node("/root/Server").SpawnNPC(current_attack["summon"], instance_tree, summon_position-position, enemy_id, flip)

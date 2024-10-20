@@ -39,6 +39,7 @@ onready var CharacterSpriteEle = $Control/CharacterSprite
 onready var animation_tree = $AnimationTree
 
 func _ready():
+	$Camera2D.zoom = Vector2(0.2/Settings.zoom, 0.2/Settings.zoom)
 	SetCharacterSprite()
 
 #Dealing with the characters sprite
@@ -92,11 +93,16 @@ func SetSpriteData(sprite, path):
 	sprite.vframes = path[2]
 
 # warning-ignore:unused_argument
+var clock_sync_timer = 0
 func _physics_process(delta):
 	if GameUI.is_dead:
 		return
 	
-	if "dungeon_name" in Server.GetCurrentInstanceNode() and Server.GetCurrentInstanceNode().dungeon_name == "cloud_isles":
+	clock_sync_timer += 1
+	if clock_sync_timer >= 20:
+		clock_sync_timer = 0
+		$Camera2D.zoom = Vector2(0.2/Settings.zoom, 0.2/Settings.zoom)
+	if Server.GetCurrentInstanceNode() and "dungeon_name" in Server.GetCurrentInstanceNode() and Server.GetCurrentInstanceNode().dungeon_name == "cloud_isles":
 		$SkyBackgound.visible = true
 		$BlackBackground.visible = false
 	else:
@@ -259,7 +265,6 @@ func OffsetProjectileAngle(base_direction, offset_vector):
 func ShootProjectile(projectile_data, projectile_index):
 	var mouse_position = get_global_mouse_position()
 	var direction = (mouse_position - position).normalized()
-	var projectile_instance = projectile.instance()
 	var damage = round(CalculateDamageWithMultiplier((rand_range(projectile_data.damage[0], projectile_data.damage[1]))))
 	var offset
 	
@@ -286,23 +291,26 @@ func ShootProjectile(projectile_data, projectile_index):
 	}
 	Server.SendProjectile(_projectile_data)
 	
-	#Set projectile data
-	projectile_instance.position = $Axis.global_position + direction*3
-	projectile_instance.projectile = projectile_data.projectile
-	projectile_instance.tile_range = projectile_data.tile_range
-	projectile_instance.piercing = projectile_data.piercing
-	projectile_instance.formula = projectile_data.formula
-	projectile_instance.speed = projectile_data.speed
-	projectile_instance.size = projectile_data.size
-	projectile_instance.damage = damage
-	
-	#Just for hjek naga
-	if projectile_data.projectile == "GreenBlast":
-		projectile_instance.position = $Axis.global_position
-	
-	projectile_instance.set_direction(OffsetProjectileAngle(direction, offset))
-	get_parent().add_child(projectile_instance)
-	get_parent().get_node(projectile_instance.name).look_at(position+100*OffsetProjectileAngle(direction, offset))
+	var start_position = $Axis.global_position + direction*3
+	var pool = get_parent().get_parent().get_node_or_null("PlayerPool")
+	for child in pool.get_children():
+		if not child.is_active:
+			child.original = true
+			child.damage = damage
+			child.projectile_data = {
+				"name" : projectile_data["projectile"],
+				"path" : start_position,
+				"start_position" : start_position,
+				"direction" : OffsetProjectileAngle(direction, offset),
+				"tile_range" : projectile_data["tile_range"],
+				"damage" : projectile_data["damage"],
+				"piercing" : projectile_data["piercing"],
+				"speed" : projectile_data["speed"],
+				"formula" : projectile_data["formula"],
+				"size" : projectile_data["size"],
+			}
+			child.Activate()
+			break
 
 func CalculateDamageWithMultiplier(damage):
 	var base_damage = (damage*(0.5 + (float(stats.attack)/float(100))))

@@ -7,6 +7,11 @@ var world_state_buffer = []
 var expression = Expression.new()
 
 var clock_sync_timer_2 = 0
+func _ready():
+	var pool = get_node_or_null("PlayerPool")
+	if not pool:
+		Server.CreatePool(Server.projectile_pool_amount)
+
 func _physics_process(delta):
 	clock_sync_timer_2 += 1
 	if not has_node("YSort") or GameUI.is_dead:
@@ -22,7 +27,6 @@ func _physics_process(delta):
 		
 		if world_state_buffer.size() > 2:
 			RefreshPlayers(world_state_buffer[2]["P"])
-			RefreshEnemies(world_state_buffer[2]["E"])
 			RefreshObjects(world_state_buffer[2]["O"])
 			
 			var t1 = world_state_buffer[1]["T"]
@@ -114,24 +118,31 @@ func _physics_process(delta):
 					get_node("YSort/Enemies/" + str(enemy)).MoveEnemy(new_position, flip)
 				elif not dead_enemies.has(enemy):
 					SpawnNewEnemy(enemy, enemies1[enemy]["position"], enemies1[enemy]["name"])
-	if clock_sync_timer_2 >= 20:
+	if clock_sync_timer_2 >= 20 and len(world_state_buffer) > 2:
 		var enemies = get_node("YSort/Enemies")
 		clock_sync_timer_2 = 0
+		var i = 0
 		for child in enemies.get_children():
 			var is_visible = child.visible
 			var is_active = child.is_active
+			var exists = world_state_buffer[2]["E"].has(child.name)
+			if is_active:
+				i += 1
 			
-			if is_visible and not is_active and len(world_state_buffer) > 2 and world_state_buffer[2]["E"].has(child.name) and not dead_enemies.has(child.name):
+			if dead_enemies.has(child.name):
+				child.DeActivate()
+			elif is_visible and not is_active and len(world_state_buffer) > 2 and exists:
 				child.Activate(child.enemy_type)
-			elif is_visible and not is_active:
+			elif is_visible and not is_active and not exists:
 				child.DeActivate()
-			elif is_visible and is_active and len(world_state_buffer) > 2 and not world_state_buffer[2]["E"].has(child.name):
+			elif is_active and not is_visible and not exists:
 				child.DeActivate()
-
+			elif (is_visible or is_active) and len(world_state_buffer) > 2 and not exists:
+				child.DeActivate()
 func UpdateWorldState(world_state):
 	if world_state["T"] > last_world_state:
-		world_state["T"] = Server.client_clock
 		last_world_state = world_state["T"]
+		world_state["T"] = Server.client_clock
 		world_state_buffer.append(world_state)
 
 #Enemy nodes
@@ -139,17 +150,15 @@ var enemy_scene = preload("res://Scenes/SupportScenes/Npcs/BasicEnemy.tscn")
 var dead_enemies = {}
 var living_enemies = []
 func SpawnNewEnemy(enemy_id, enemy_position, enemy_name):
-	if not living_enemies.has(enemy_id):
-		living_enemies.append(enemy_id)
-		for child in get_node("YSort/Enemies").get_children():
-			if child.is_active == false:
-				child.name = enemy_id
-				child.position = enemy_position
-				child.is_active = true
-				child.Activate(enemy_name)
-				return
-		CreateEnemy(30)
-		SpawnNewEnemy(enemy_id, enemy_position, enemy_name)
+	for child in get_node("YSort/Enemies").get_children():
+		if child.is_active == false:
+			child.name = enemy_id
+			child.position = enemy_position
+			child.is_active = true
+			child.Activate(enemy_name)
+			return
+	CreateEnemy(30)
+	SpawnNewEnemy(enemy_id, enemy_position, enemy_name)
 
 func CreateEnemy(amount):
 	for i in range(amount):
@@ -157,24 +166,6 @@ func CreateEnemy(amount):
 		child.name = str(i)
 		get_node("YSort/Enemies").add_child(child)
 
-func SpawnNewEnemyLegacy(enemy_id, enemy_position, enemy_name):
-	if not get_node("YSort/Enemies").has_node(str(enemy_id)):
-		var enemy_scene = load("res://Scenes/SupportScenes/Npcs/BasicEnemy.tscn")
-		var child = enemy_scene.instance()
-		child.name = enemy_id
-		child.position = enemy_position
-		child.is_active = true
-		get_node("YSort/Enemies").add_child(child)
-		child.Activate(enemy_name)
-
-func RefreshEnemies(enemies):
-	var enemies_node = get_node("YSort/Enemies")
-	for enemy_id in living_enemies:
-		var enemy_node = enemies_node.get_node_or_null(enemy_id)
-		living_enemies.erase(enemy_id)
-		if enemy_node:
-			enemy_node.DeActivate()
- 
 #Object nodes
 func RefreshObjects(objects):
 	var expiring_types = [

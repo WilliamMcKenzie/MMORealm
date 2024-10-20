@@ -49,11 +49,10 @@ func Activate(_enemy_type):
 	if _res == 38:
 		_texture = texture_32x32
 	
-	#sprite_node.name = enemy_type
 	chat_node.position = Vector2(0,-_height*_scale)
 	sprite_node.scale = Vector2(_scale,_scale)
 	sprite_node.position = Vector2(rect_variable/2,rect_variable/2)
-	hitbox_node.disabled = false
+	hitbox_node.set_deferred("disabled", false)
 	hitbox_node.shape = hitbox_node.shape.duplicate()
 	hitbox_node.shape.extents = Vector2((_res/2)*_scale, (_height/2)*_scale)
 	hitbox_node.position = Vector2(0,-(_height/2)*_scale)
@@ -63,7 +62,7 @@ func Activate(_enemy_type):
 		hitbox_node.shape.extents = Vector2(hitbox.x/2.0, hitbox.y/2.0)
 		hitbox_node.position = Vector2(0,-(hitbox.y/2.0))
 		if enemy_data.custom_hitbox == Vector2(0,0):
-			hitbox_node.disabled = true
+			hitbox_node.set_deferred("disabled", true)
 	
 	rect_size1 = Vector2(rect_variable,rect_variable-3)
 	rect_size2 = Vector2(rect_variable,rect_variable)
@@ -96,16 +95,15 @@ func Activate(_enemy_type):
 			animation.track_insert_key(0, frame_time, frame)
 			frame_time += 0.3
 	
-	$Area2D.connect("area_entered", self, "OnHit")
 	set_physics_process(true)
 	SpeedModifiers()
 	finished_propogating = true
 	self.visible = true
 
 func DeActivate():
+	name = "Deactivated"
+	$Area2D/Hitbox.set_deferred("disabled", true)
 	is_active = false
-	if $Area2D.is_connected("area_entered", self, "OnHit"):
-		$Area2D.disconnect("area_entered", self, "OnHit")
 	set_physics_process(false)
 	self.visible = false
 	finished_propogating = false
@@ -184,13 +182,6 @@ func DegreesToVector(degrees):
 	var radians = deg2rad(degrees)
 	var vector = Vector2(cos(radians), sin(radians))
 	return vector
-func OnHit(body):
-	var node = body.get_parent()
-	if "damage" in node and node.original == true:
-		Server.NPCHit(name,node.damage)
-	if "damage" in node:
-		ShowDamageIndicator(-1*node.damage)
-		node.interaction(self)
 
 func ShowDamageIndicator(damage_amount):
 	AudioManager.Play("hit")
@@ -203,3 +194,13 @@ func ShowDamageIndicator(damage_amount):
 	var damage_indicator = damage_indicator_scene.instance()
 	damage_indicator.get_node("Label").text = str(-total_damage)
 	$IndicatorPlaceholder.add_child(damage_indicator)
+	yield(get_tree().create_timer(1.0), "timeout")
+
+func _on_Area2D_area_entered(body):
+	var node = body.get_parent()
+	if "damage" in node and node.original:
+		Server.NPCHit(name,node.damage)
+	if "damage" in node and node.damage:
+		ShowDamageIndicator(-1*node.damage)
+		if(not node.projectile_data.piercing):
+			node.DeActivate()

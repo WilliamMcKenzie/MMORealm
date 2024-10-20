@@ -62,6 +62,7 @@ func Logout():
 	var selection_screen = get_node("CharacterSelection")
 	selection_screen.characters = []
 	selection_screen.character_slots = 0
+	selection_screen.get_child(0).queue_free()
 	selection_screen.remove_child(selection_screen.get_child(0))
 	
 	var graveyard = get_node("Graveyard")
@@ -119,6 +120,7 @@ func SelectionScreen(account_data):
 	selection_screen.characters = account_data.characters
 	selection_screen.character_slots = account_data.character_slots
 	if selection_screen.get_child_count() > 1:
+		selection_screen.get_child(0).queue_free()
 		selection_screen.remove_child(selection_screen.get_child(0))
 	selection_screen.Populate()
 	
@@ -147,6 +149,7 @@ func EnterGame(character_index, character):
 	var nexus_instance = nexus.instance()
 	nexus_instance.add_child(load("res://Scenes/SupportScenes/Misc/YSort.tscn").instance())
 	nexus_instance.get_node("YSort/player").SetCharacter(character)
+	Server.current_instance_tree = ["nexus"]
 	get_parent().add_child(nexus_instance)
 	GameUI.visible = true
 	GameUI.Init()
@@ -156,6 +159,6 @@ func EnterGame(character_index, character):
 func _on_Discord_pressed():
 	OS.shell_open("https://discord.gg/kUfm6xJvbs")
 func _on_Wiki_pressed():
-	OS.shell_open("https://wiki.kingdomsonline.io/wiki")
+	OS.shell_open("https://wiki.kingdomcrushers.io/")
 func _on_Cancel_pressed():
 	get_node("UI/Support/PanelContainer").visible = false

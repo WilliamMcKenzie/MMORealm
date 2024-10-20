@@ -1,11 +1,11 @@
 extends Node
 
-#var url = "wss://gameserver.lagso.com"
+var url = "wss://gameserver.lagso.com"
 #var url = "ws://159.203.0.78:20200"
-var url = "ws://localhost:20200"
+#var url = "ws://localhost:20200"
 
-#var ip_address = "159.203.0.78"
-var ip_address = "localhost"
+var ip_address = "159.203.0.78"
+#var ip_address = "localhost"
 var port = 20200
 
 var network = NetworkedMultiplayerENet.new()
@@ -35,8 +35,9 @@ var house_container = preload("res://Scenes/MainScenes/House/House.tscn")
 
 
 #Projectile preload
-var projectile = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Projectile.tscn")
-var projectile_pool = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Pool.tscn")
+var enemy_projectile = preload("res://Scenes/SupportScenes/Projectiles/Enemies/Projectile.tscn")
+var player_projectile = preload("res://Scenes/SupportScenes/Projectiles/Players/Projectile.tscn")
+var projectile_pool = preload("res://Scenes/SupportScenes/Projectiles/Pool.tscn")
 
 #For player hierarchy
 var ysort_scene = preload("res://Scenes/SupportScenes/Misc/YSort.tscn")
@@ -292,8 +293,8 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 		pass
 	elif enemy_node:
 		enemy_node.ShootProjectile()
-	if GetCurrentInstanceNode().has_node("Pool"):
-		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
+	if GetCurrentInstanceNode().has_node("EnemyPool"):
+		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/EnemyPool").get_children():
 			if child.is_active == false:
 				child.projectile_data = projectile_data
 				child.is_active = true
@@ -301,7 +302,7 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 				break
 	else:
 		CreatePool(projectile_pool_amount)
-		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
+		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/EnemyPool").get_children():
 			if child.is_active == false:
 				child.projectile_data = projectile_data
 				child.is_active = true
@@ -311,8 +312,8 @@ remote func RecieveEnemyProjectile(projectile_data, instance_tree, enemy_id):
 remote func RemoveEnemyProjectile(id, instance_tree):
 	if instance_tree != current_instance_tree:
 		pass
-	if has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort") and GetCurrentInstanceNode().has_node("Pool"):
-		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/Pool").get_children():
+	if has_node("../SceneHandler/"+GetCurrentInstance()+"/YSort") and GetCurrentInstanceNode().has_node("EnemyPool"):
+		for child in get_node("../SceneHandler/"+GetCurrentInstance()+"/EnemyPool").get_children():
 			if child.projectile_data and child.projectile_data.id == id:
 				child.DeActivate()
 				break
@@ -354,7 +355,7 @@ var last_nexus = 0
 func Nexus():
 	if GameUI.get_node("NpcDialogue").subject == "Final":
 		GameUI.get_node("GameButtons/HomeButton/TutorialArrow").visible = false
-	if "nexus" == GetCurrentInstance() or OS.get_system_time_msecs()-last_nexus < 500:
+	if "nexus" == GetCurrentInstance() or OS.get_system_time_msecs()-last_nexus < 600:
 		return
 	rpc_id(1, "Nexus")
 	last_nexus = OS.get_system_time_msecs()
@@ -363,16 +364,7 @@ remote func ConfirmNexus(spawnpoint = Vector2.ZERO):
 	yield(get_tree().create_timer(0.3), "timeout")
 	var nexus_instance = nexus.instance()
 	var map_instance = GetCurrentInstanceNode()
-	var ysort = map_instance.get_node("YSort")
-	for object in ysort.get_node("Objects/Npcs").get_children():
-		object.queue_free()
-	map_instance.remove_child(ysort)
-	nexus_instance.add_child(ysort)
-	nexus_instance.get_node("YSort/player").global_position = spawnpoint
-	
-	nexus_instance.name = "nexus"
-	GetCurrentInstanceNode().queue_free()
-	get_node("../SceneHandler").add_child(nexus_instance)
+	TransferData({ "Id" : "nexus", "Position" : spawnpoint }, map_instance, nexus_instance)
 	current_instance_tree = ["nexus"]
 
 func EnterInstance(instance_id, portal_name):
@@ -394,20 +386,12 @@ remote func UpdateHouseTiles(tiles):
 	
 remote func ReturnHouseData(instance_data):
 	LoadingScreen.Transition(instance_data.Name + "'s House")
+	yield(get_tree().create_timer(0.3), "timeout")
 	var house_instance = house_container.instance()
 	var map_instance = GetCurrentInstanceNode()
 	
-	var ysort = map_instance.get_node("YSort")
-	for object in ysort.get_node("Objects/Npcs").get_children():
-		object.queue_free()
-	map_instance.remove_child(ysort)
-	house_instance.add_child(ysort)
-	house_instance.get_node("YSort/player").global_position = instance_data["Position"]
-	house_instance.name = instance_data["Id"]
+	TransferData(instance_data, map_instance, house_instance)
 	house_instance.PopulateHouse(instance_data)
-	
-	get_node("../SceneHandler").remove_child(GetCurrentInstanceNode())
-	get_node("../SceneHandler").add_child(house_instance)
 	current_instance_tree = ["nexus", instance_data["Id"]]
 
 remote func Wave(gold, wave):
@@ -417,16 +401,7 @@ remote func ReturnArenaData(instance_data):
 	var arena_instance = arena_container.instance()
 	var map_instance = GetCurrentInstanceNode()
 	
-	var ysort = map_instance.get_node("YSort")
-	for object in ysort.get_node("Objects/Npcs").get_children():
-		object.queue_free()
-	map_instance.remove_child(ysort)
-	arena_instance.add_child(ysort)
-	arena_instance.get_node("YSort/player").global_position = instance_data["Position"]
-	arena_instance.name = instance_data["Id"]
-	
-	GetCurrentInstanceNode().queue_free()
-	get_node("../SceneHandler").add_child(arena_instance)
+	TransferData(instance_data, map_instance, arena_instance)
 	current_instance_tree.append(instance_data["Id"])
 	LoadingScreen.Countdown()
 
@@ -434,39 +409,39 @@ remote func ReturnDungeonData(instance_data):
 	var dungeon_instance = dungeon_container.instance()
 	var map_instance = GetCurrentInstanceNode()
 	
-	var ysort = map_instance.get_node("YSort")
-	for object in ysort.get_node("Objects/Npcs").get_children():
-		object.queue_free()
-	map_instance.remove_child(ysort)
-	dungeon_instance.add_child(ysort)
-	dungeon_instance.get_node("YSort/player").global_position = instance_data["Position"]
-	dungeon_instance.get_node("YSort/player/Camera2D").current = true
-	
-	dungeon_instance.name = instance_data["Id"]
+	TransferData(instance_data, map_instance, dungeon_instance)
 	dungeon_instance.PopulateDungeon(instance_data)
-	
-	GetCurrentInstanceNode().queue_free()
-	get_node("../SceneHandler").add_child(dungeon_instance)
 	current_instance_tree.append(instance_data["Id"])
 
 remote func ReturnIslandData(instance_data, which=null):
 	var island_instance = island_container.instance()
 	var map_instance = GetCurrentInstanceNode()
-	
 	if which:
 		island_instance.SetSpecialIsland(which)
+	
+	TransferData(instance_data, map_instance, island_instance)
+	current_instance_tree.append(instance_data["Id"])
 
-	var ysort = map_instance.get_node("YSort")
+func TransferData(instance_data, old, new):
+	var ysort = old.get_node("YSort")
 	for object in ysort.get_node("Objects/Npcs").get_children():
 		object.queue_free()
-	map_instance.remove_child(ysort)
-	island_instance.add_child(ysort)
-	island_instance.get_node("YSort/player").global_position = instance_data["Position"]
-	island_instance.name = instance_data["Id"]
 	
-	GetCurrentInstanceNode().queue_free()
-	get_node("../SceneHandler").add_child(island_instance)
-	current_instance_tree.append(instance_data["Id"])
+	old.remove_child(ysort)
+	new.add_child(ysort)
+	new.get_node("YSort/player").global_position = instance_data["Position"]
+	new.name = instance_data["Id"]
+	
+	var player_pool = old.get_node_or_null("PlayerPool")
+	var enemy_pool = old.get_node_or_null("EnemyPool")
+	if player_pool:
+		old.remove_child(player_pool)
+		new.add_child(player_pool)
+	if enemy_pool:
+		old.remove_child(enemy_pool)
+		new.add_child(enemy_pool)
+	old.queue_free()
+	get_node("../SceneHandler").add_child(new)
 
 func AddGuest(guest):
 	rpc_id(1, "AddGuest", guest)
@@ -511,11 +486,19 @@ func NPCHit(enemy_id, damage):
 	rpc_id(1, "NPCHit", enemy_id, damage)
 	
 func CreatePool(amount):
-	var new_pool = projectile_pool.instance()
-	GetCurrentInstanceNode().add_child(new_pool)
-	GetCurrentInstanceNode().move_child(new_pool, 0)
+	print("CREAITINGNG")
+	var enemy_pool = projectile_pool.instance()
+	var player_pool = projectile_pool.instance()
+	enemy_pool.name = "EnemyPool"
+	player_pool.name = "PlayerPool"
+	
+	GetCurrentInstanceNode().add_child(enemy_pool)
+	GetCurrentInstanceNode().move_child(enemy_pool, 0)
+	GetCurrentInstanceNode().add_child(player_pool)
+	GetCurrentInstanceNode().move_child(player_pool, 0)
 	for i in range(amount):
-		new_pool.add_child(projectile.instance())
+		enemy_pool.add_child(enemy_projectile.instance())
+		player_pool.add_child(player_projectile.instance())
 
 func IdentifierToString(identifier):
 	var words = identifier.split("_")

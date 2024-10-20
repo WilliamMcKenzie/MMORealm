@@ -177,7 +177,7 @@ func DeInspectItem(item):
 		$InspectItem.visible = false
 
 func ToggleInventory():
-	if OS.get_system_time_msecs() - GameUI.get_node("Inventory").last_opened >= 500:
+	if OS.get_system_time_msecs() - last_opened >= 500:
 		get_parent().Toggle("inventory")
 
 var last_opened = 0
@@ -186,7 +186,6 @@ func Open():
 		return
 	last_opened = OS.get_system_time_msecs()
 	
-	var gear_tween = $GearTween
 	var backpack_tween = $BackpackTween
 	var loot_tween = $LootTween
 	
@@ -194,8 +193,7 @@ func Open():
 	var backpack_element = $BackpackContainer
 	var loot_element = $LootContainer
 	
-	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, gear_element.rect_position+Vector2(0,-110), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	gear_tween.start()
+	gear_element.rect_position += Vector2(0,-110)
 	backpack_tween.interpolate_property(backpack_element, "rect_position", Vector2(800,0), Vector2(-100, 0)+Vector2(800,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	backpack_tween.start()
 	loot_tween.interpolate_property(loot_element, "rect_position", Vector2(-100, 0), Vector2(100, 0)+Vector2(-100, 0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
@@ -215,7 +213,6 @@ func Close():
 	if not active:
 		return
 	
-	var gear_tween = $GearTween
 	var backpack_tween = $BackpackTween
 	var loot_tween = $LootTween
 	
@@ -223,8 +220,7 @@ func Close():
 	var backpack_element = $BackpackContainer
 	var loot_element = $LootContainer
 	
-	gear_tween.interpolate_property(gear_element, "rect_position", gear_element.rect_position, gear_element.rect_position+Vector2(0,110), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	gear_tween.start()
+	gear_element.rect_position += Vector2(0,110)
 	backpack_tween.interpolate_property(backpack_element, "rect_position", Vector2(700,0), Vector2(800,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	backpack_tween.start()
 	loot_tween.interpolate_property(loot_element, "rect_position", Vector2(0,0), Vector2(-100, 0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
@@ -240,7 +236,6 @@ func SetInventory(inventory):
 		slot.SetItem(inventory[i], 1)
 		slot.index = i
 		slot.parent = "inventory"
-		#slot.connect("pressed", self, "EquipItem", [i])
 		i += 1
 func SetGear(gear):
 	var gear_slots = $PanelContainer/MarginContainer/GearContainer.get_children()
@@ -261,6 +256,8 @@ func SetGear(gear):
 		else:
 			gear_slots[slot_index].SetItem(null, 1)
 func SetLoot(_loot_container_id, _loot):
+	if loot and _loot and UtilityFunctions.CompareArrays(loot, _loot):
+		return
 	loot = _loot
 	loot_container_id = _loot_container_id
 	if self.visible == true:
@@ -274,7 +271,6 @@ func SetLoot(_loot_container_id, _loot):
 	
 	var loot_slots = $LootContainer/PanelContainer2/MarginContainer/ResizeContainer.get_children()
 	var i = 0
-	
 	for slot in loot_slots:
 		if len(loot) > i:
 			slot.visible = true

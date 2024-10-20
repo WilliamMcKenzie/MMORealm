@@ -117,11 +117,10 @@ remote func CreateAccount(email, password, player_id):
 	rpc_id(gateway_id, "ReturnCreateAccountRequest", result, player_id, message)
 
 remote func AuthenticatePlayer(email, password, player_id):
-	print("Authenticating")
 	var result
 	var gateway_id = get_tree().get_rpc_sender_id()
 	
-	var verification = DatabaseInterface.FindUser(email)
+	var verification = DatabaseInterface.VerifyUser(email, password)
 	
 	if not verification:
 		result = false

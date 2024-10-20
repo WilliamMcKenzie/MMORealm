@@ -101,7 +101,7 @@ func GoHome():
 	var home_instance = load("res://Scenes/MainScenes/Home/Home.tscn").instance()
 	
 	for child in scene_handler.get_children():
-		scene_handler.remove_child(child)
+		child.queue_free()
 	scene_handler.add_child(home_instance)
 	self.visible = false
 	

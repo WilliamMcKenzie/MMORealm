@@ -86,6 +86,7 @@ func AddChat(message,username,classname,id):
 var switch = false
 var last_scroll = 0
 var last_added = 0
+var last_chatted = 0
 func _physics_process(delta):
 	if switch:
 		scroll_container.scroll_vertical = scroll_container.get_v_scrollbar().max_value
@@ -97,22 +98,29 @@ func _physics_process(delta):
 		interacted = true
 	last_scroll = scroll_container.scroll_vertical
 	
-	if(Input.is_action_just_pressed ("chat")) and chat_input.has_focus():
+	if(Input.is_action_just_pressed ("chat")) and chat_input.has_focus() and OS.get_system_time_msecs()-last_chatted > 100:
+		last_chatted = OS.get_system_time_msecs()
 		chat_input.grab_focus()
 		chat_input.caret_position = chat_input.text.length()
 		if GameUI.is_in_menu:
 			GameUI.Toggle("all")
+	if(Input.is_action_just_pressed ("chat")) and not chat_input.has_focus() and OS.get_system_time_msecs()-last_chatted > 100:
+		last_chatted = OS.get_system_time_msecs()
+		if not GameUI.is_in_chat:
+			GameUI.OpenChat()
+		chat_input.grab_focus()
+		yield(get_tree().create_timer(0.1), "timeout")
+		chat_input.grab_focus()
+		chat_input.text = ""
+		chat_input.caret_position = chat_input.text.length()
+	
+	if Input.is_action_just_pressed ("exit_chat"):
+		GameUI.CloseChat()
 	if(Input.is_action_just_pressed ("command")) and not chat_input.has_focus():
 		if not GameUI.is_in_chat:
 			GameUI.OpenChat()
 		chat_input.grab_focus()
-		var timer = Timer.new()
-		timer.wait_time = 0.1
-		timer.one_shot = true
-		add_child(timer)
-		timer.start()
-		yield(timer, "timeout")
-		
+		yield(get_tree().create_timer(0.1), "timeout")
 		chat_input.grab_focus()
 		chat_input.text = "/"
 		chat_input.caret_position = chat_input.text.length()

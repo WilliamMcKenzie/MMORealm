@@ -121,13 +121,11 @@ func _process(delta):
 		var server = get_node("/root/Server")
 		if wave-1 >= 0:
 			var _gold = waves[arena_type][wave-1].gold
-			server.ShowIndicator(int(name.split(" ")[1]), "gold", _gold)
 			gold += _gold
-			server.rpc_id(int(name.split(" ")[1]),"Wave", gold, wave)
 		if $YSort/Players.get_child_count() > 0:
 			if arena_type == "monthly" and rand_range(0, 10) > 9:
 				$YSort/Players.get_children()[0].GiveItem(499, 1)
-			$YSort/Players.get_children()[0].DealDamage(999, "Gladius")
+			$YSort/Players.get_children()[0].DealDamage(9999, "Gladius")
 	elif wave_countdown < 0:
 		wave_countdown = 2
 		var server = get_node("/root/Server")
@@ -155,6 +153,7 @@ func CreateSpawnpoint(x,y):
 	return (Vector2(x*8, y*8) + Vector2(4,4))
 
 func _ready():
+	arena = true
 	for i in range(len(enemy_spawnpoints)):
 		enemy_spawnpoints[i] -= position
 	for x in range(-100, 100):

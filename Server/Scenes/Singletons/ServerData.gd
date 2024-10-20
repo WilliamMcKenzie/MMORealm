@@ -6010,9 +6010,9 @@ var orc_vigil_enemies = {
 			"Attack" : [1,2],
 		},
 		
-		"health_scaling" : 20000,
-		"health" : 140000,
-		"defense" : 10,
+		"health_scaling" : 40000,
+		"health" : 10000,
+		"defense" : 0,
 		"exp" : 1000,
 		"behavior" : 0,
 		"speed" : 15,
@@ -6371,8 +6371,8 @@ var frozen_fortress_enemies = {
 			"Death" : [4],
 		},
 		
-		"health_scaling" : 20000,
-		"health" : 100000,
+		"health_scaling" : 30000,
+		"health" : 10000,
 		"defense" : 20,
 		"exp" : 1000,
 		"behavior" : 0,
@@ -6445,6 +6445,11 @@ var frozen_fortress_enemies = {
 				"max_uses" : 1,
 				"health" : [0,100],
 				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 17,
+						"wait" : 0,
+					},
 					{
 						"wait" : 5,
 					},
@@ -8062,7 +8067,8 @@ var the_abyss_enemies = {
 			"Attack" : [1,2],
 		},
 		
-		"health" : 100000,
+		"health_scaling" : 40000,
+		"health" : 10000,
 		"defense" : 10,
 		"exp" : 1000,
 		"behavior" : 0,
@@ -8591,7 +8597,8 @@ var ruined_temple_enemies = {
 			"Attack" : [0,1],
 		},
 		
-		"health" : 100000,
+		"health_scaling" : 30000,
+		"health" : 10000,
 		"defense" : 10,
 		"exp" : 1000,
 		"behavior" : 1,

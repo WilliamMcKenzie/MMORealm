@@ -279,11 +279,11 @@ func HandleFake():
 			var distance =  player_data.position.distance_to(self.position)
 			if distance < closest_player and not "fake" in player_data:
 				closest_player = distance
-		#if closest_player > 48*8:
-			#despawned = true
-			#Bots.used_names.erase(account_data.username)
-			#server._Peer_Disconnected(int(name))
-			#return
+		if closest_player > 48*8:
+			despawned = true
+			Bots.used_names.erase(account_data.username)
+			server._Peer_Disconnected(int(name))
+			return
 		
 		for enemy_id in instance_node.enemy_list.keys():
 			var enemy_data = instance_node.enemy_list[enemy_id]
