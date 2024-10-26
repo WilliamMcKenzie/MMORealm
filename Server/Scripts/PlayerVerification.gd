@@ -17,6 +17,7 @@ func Verify(player_id, token, character_index):
 			
 			#Check if same account is already in the game
 			if(verified_emails.has(main_interface.expected_tokens[token])):
+				get_node("/root/Server").html_network.disconnect_peer(verified_emails[main_interface.expected_tokens[token]])
 				break
 			
 			token_verification = true
@@ -34,7 +35,7 @@ func Verify(player_id, token, character_index):
 		main_interface.network.disconnect_peer(player_id)
 
 func CreatePlayerContainer(player_id, email, character_index):
-	verified_emails[email] = true
+	verified_emails[email] = player_id
 	var instance_tree = ["nexus"]
 	var new_player_container = player_container_scene.instance()
 	new_player_container.email = email

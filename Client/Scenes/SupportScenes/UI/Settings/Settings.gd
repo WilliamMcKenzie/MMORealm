@@ -98,6 +98,14 @@ var settings = [
 			"default" :  OS.find_scancode_from_string("R"),
 		}
 	},
+	{
+		"title" : "Sound FX",
+		"description" : "Enable/disable sound effects. (WIP)",
+		"data" : {
+			"type" : "checkbox",
+			"default" :  false,
+		}
+	},
 ]
 var setting_scenes = {
 	"checkbox" : preload("res://Scenes/SupportScenes/UI/Settings/SettingScenes/CheckboxSetting.tscn"),
@@ -167,6 +175,8 @@ func ChangeValue(which, value):
 		
 		InputMap.action_erase_events("nexus")
 		InputMap.action_add_event("nexus", event)
+	if which == settings[12].title:
+		Settings.audio = value
 
 func GoHome():
 	GameUI.GoHome()

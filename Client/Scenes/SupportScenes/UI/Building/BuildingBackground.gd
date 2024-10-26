@@ -31,21 +31,32 @@ func CalculateGamePosition(mouse_position, type):
 		screen_size.x = base_screen_size.x
 	
 	var offset_position = mouse_position - screen_size/2
-	var result = offset_position*0.18 + root_pos
-	if is_tile:
-		var tile_coord = result/8
-		return Vector2(floor(tile_coord.x), floor(tile_coord.y-0.5))
-	return result
+	var result = offset_position*0.2/Settings.zoom + root_pos
+	var tile_coord = result/8
+	var tile_result = Vector2(round(tile_coord.x-0.5), round(tile_coord.y-1))
+	var building_result = (Vector2(round(tile_coord.x-0.5), round(tile_coord.y-1))*8) + Vector2(4, 4)
+	return tile_result if is_tile else building_result
 
 var last_placement = 0
 var dragging = false
+var last_tile = Vector2.ZERO
 func _physics_process(delta):
 	if not visible:
 		dragging = false
+		return
+	
 	var brush = GameUI.get_node("Building").brush
 	if dragging and OS.get_system_time_msecs() - last_placement > 100 and brush:
 		last_placement = OS.get_system_time_msecs()
 		GameUI.get_node("Building").PlaceBuilding(CalculateGamePosition(get_global_mouse_position(), brush))
+	
+	var preview_node = Server.GetCurrentInstanceNode().get_node("PlacementPreview")
+	var tile_pos = CalculateGamePosition(get_global_mouse_position(), "grass")
+	var tile = ClientData.GetBuilding(brush).tile if brush and ClientData.GetBuilding(brush) and ClientData.GetBuilding(brush).has("tile") else 0
+	if tile_pos != last_tile and brush:
+		preview_node.set_cell(tile_pos.x, tile_pos.y, tile)
+		preview_node.set_cell(last_tile.x, last_tile.y, -1)
+		last_tile = tile_pos
 
 func _ready():
 	connect("button_down", self, "Event")

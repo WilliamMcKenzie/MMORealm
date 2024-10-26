@@ -68,4 +68,4 @@ show_collision = true
 centered_textures = true
 collision_mask = 23
 format = 1
-tile_data = PoolIntArray( 262158, 0, 0, 327695, 0, 0, 524304, 0, 0, 589827, 0, 1, 720899, 0, 0, 917520, 0, 0, 983054, 0, 1 )
+tile_data = PoolIntArray( 262158, 0, 0, 327695, 0, 0, 458755, 0, 0, 524304, 0, 0, 917520, 0, 0, 983054, 0, 1 )

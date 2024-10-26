@@ -92,7 +92,7 @@ size_flags_horizontal = 4
 margin_right = 350.0
 margin_bottom = 23.0
 custom_fonts/font = SubResource( 2 )
-text = "User"
+text = "Email"
 
 [node name="Email" type="PanelContainer" parent="VBoxContainer/EmailContainer"]
 margin_top = 27.0

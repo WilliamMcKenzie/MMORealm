@@ -45,7 +45,7 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-7*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("tutorial_master", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
-	#get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(501,501), "pumpkin_tyrant", "halloween")
+	get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(501,501), "pumpkin_tyrant", "halloween")
 	
 	for i in range(0):
 		var container = PlayerVerification.CreateFakePlayerContainer()
@@ -569,7 +569,10 @@ remote func NPCHit(enemy_id, damage):
 	var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
 	var which_achievement = "bow_projectiles"
 	
-	if player_container.gear.has("weapon"):
+	if not player_container:
+		return
+	
+	if  player_container.gear.has("weapon"):
 		var weapon_type = player_container.gear.weapon.type
 		if weapon_type == "Staff":
 			which_achievement = "staff_projectiles"
@@ -736,7 +739,9 @@ remote func EnterInstance(instance_id):
 	
 	if current_instance_node.has_node(instance_id):
 		var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
-		var player_container = get_node("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+		var player_container = get_node_or_null("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(player_id))
+		if not player_container:
+			return
 		player_container.GiveEffect("invincible", 5)
 		
 		player_instance_tracker[instance_tree].erase(player_id)

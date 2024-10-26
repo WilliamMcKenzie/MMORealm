@@ -77,6 +77,16 @@ var subject_data = {
 	"Classes/Ascension" : {
 		"text" : ["Ascension allows you to increase your stats even further beyond level 20...", "To ascend, you need to consume ascension stones.", "Each tier of class has a max ascension limit:", "Tier 1 (apprentice) has a cap of 5 stones...", "Tier 2 has a cap of 50...", "And tier 3 has a cap of 75.", "Think about these classes like a tree...","You start with the apprentice (tier 1), then you can evolve into another class (tier 2), then that class can evolve into another class (tier 3)...", "You get the idea. To evolve you have to do certain quests like killing 3000 enemies...","you can find hints underneath each of the 3 evolutions in the classes page.", "To see the classes page click on the helmet button in the top right."],
 		"character_rect" : Vector2(0,0),
+	},
+	
+	"Limitbreak" : {
+		"text" : ["Whats that? You want to get more powerful?", "Well I suppose I could give you a trial...", "What do you say?"],
+		#"question" : ["I'm Ready!", "Not Yet", "Tell Me More"],
+		"character_rect" : Vector2(40,0),
+	},
+	"NotMaxed" : {
+		"text" : ["Whats that? You think your ready?", "Bahaha! Come back when you are fully ascended lowly bottomfeeder."],
+		"character_rect" : Vector2(40,0),
 	}
 }
 var subject = null

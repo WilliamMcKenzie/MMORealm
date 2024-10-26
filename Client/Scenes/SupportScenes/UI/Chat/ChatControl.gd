@@ -62,16 +62,19 @@ func AddChat(message,username,classname,id):
 		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(178.0/255, 223.0/255, 230.0/255))
 		chat_message.get_node("MarginContainer/Message").text = "" + chat_message.get_node("MarginContainer/Message").text + ""
 	elif username == "SystemWARN":
+		AudioManager.Play("warning", 1)
 		chat_message.get_node("Icon").visible = false
 		chat_message.get_node("From").text = ""
 		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(219.0/255, 211.0/255, 122.0/255))
 		chat_message.get_node("MarginContainer/Message").text = "" + chat_message.get_node("MarginContainer/Message").text + ""
 	elif username == "SystemERROR":
+		AudioManager.Play("error", 1)
 		chat_message.get_node("Icon").visible = false
 		chat_message.get_node("From").text = ""
 		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(219.0/255, 122.0/255, 122.0/255))
 		chat_message.get_node("MarginContainer/Message").text = "" + chat_message.get_node("MarginContainer/Message").text + ""
 	elif username == "SystemSUCCESS":
+		AudioManager.Play("action", 1)
 		chat_message.get_node("Icon").visible = false
 		chat_message.get_node("From").text = ""
 		chat_message.get_node("MarginContainer/Message").add_color_override("font_color", Color(122.0/255, 219.0/255, 130.0/255))
@@ -86,7 +89,7 @@ func AddChat(message,username,classname,id):
 var switch = false
 var last_scroll = 0
 var last_added = 0
-var last_chatted = 0
+var last_sent = 0
 func _physics_process(delta):
 	if switch:
 		scroll_container.scroll_vertical = scroll_container.get_v_scrollbar().max_value
@@ -98,14 +101,12 @@ func _physics_process(delta):
 		interacted = true
 	last_scroll = scroll_container.scroll_vertical
 	
-	if(Input.is_action_just_pressed ("chat")) and chat_input.has_focus() and OS.get_system_time_msecs()-last_chatted > 100:
-		last_chatted = OS.get_system_time_msecs()
+	if(Input.is_action_just_pressed ("chat")) and chat_input.has_focus() and OS.get_system_time_msecs()-last_sent > 100:
 		chat_input.grab_focus()
 		chat_input.caret_position = chat_input.text.length()
 		if GameUI.is_in_menu:
 			GameUI.Toggle("all")
-	if(Input.is_action_just_pressed ("chat")) and not chat_input.has_focus() and OS.get_system_time_msecs()-last_chatted > 100:
-		last_chatted = OS.get_system_time_msecs()
+	if(Input.is_action_just_pressed ("chat")) and not chat_input.has_focus() and OS.get_system_time_msecs()-last_sent > 100:
 		if not GameUI.is_in_chat:
 			GameUI.OpenChat()
 		chat_input.grab_focus()

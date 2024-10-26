@@ -4,6 +4,17 @@ var active = false
 var brush = ""
 var inspecting_building = null
 
+var previous_tile = Vector2(0,0)
+func _physics_process(delta):
+	var node =  Server.GetCurrentInstanceNode() if Server.GetCurrentInstance() != "nexus" else false
+	var is_home = node and node.has_node("PlacementPreview")
+	
+	if is_home:
+		var mouse_position = get_viewport().get_mouse_position()
+		var x = round(mouse_position.x/8*0.2 + node.get_node("YSort/player").position.x/8)
+		var y = round(mouse_position.y/8*0.2 + node.get_node("YSort/player").position.y/8)
+		#node.get_node("PlacementPreview").set_cell(x-10, y-6, 1)
+
 func _ready():
 	$PanelContainer/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/ExitButton.connect("pressed", self, "ToggleBuilding")
 	$PanelContainer/MarginContainer/VBoxContainer/OpenContainer/StateContainer.connect("pressed", self, "ToggleState")
@@ -236,7 +247,6 @@ func SelectBuilding(type):
 			slot.get_node("SelectedBg").visible = false
 	brush = type
 	$BuildingBackground.dragging = false
-
 
 func _on_Input_text_entered(new_guest):
 	Server.AddGuest(new_guest)

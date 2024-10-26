@@ -87,6 +87,9 @@ func SetCharacters(characters_data):
 	
 	var index = 0
 	for character_data in characters_data:
+		if not character_data.name:
+			continue
+		
 		index += 1
 		var player_instance = player_node.instance()
 		

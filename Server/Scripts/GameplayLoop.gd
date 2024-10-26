@@ -33,8 +33,6 @@ func Update():
 	
 	var server = get_node("/root/Server")
 	
-	print(bosses_status)
-	
 	if vessels_dead:
 		at_spire = true
 		bosses_status = {
@@ -60,4 +58,4 @@ func Update():
 		server.get_node("Instances/nexus").OpenPortal("island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 		server.get_node("Instances/nexus").OpenPortal("island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 		server.get_node("Instances/nexus").OpenPortal("island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
-		#server.get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(501,501), "pumpkin_tyrant", "halloween")
+		server.get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(501,501), "pumpkin_tyrant", "halloween")

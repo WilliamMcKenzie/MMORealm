@@ -1,30 +1,27 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Resources/Renderer.tres" type="Material" id=1]
 [ext_resource path="res://Assets/projectiles/projectiles_8x8.png" type="Texture" id=2]
-[ext_resource path="res://Scenes/SupportScenes/Projectiles/Players/ProjectileArea2D.gd" type="Script" id=3]
-[ext_resource path="res://Scenes/SupportScenes/Projectiles/Players/Projectile.gd" type="Script" id=4]
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 20, 10, 10 )
+[ext_resource path="res://Scenes/SupportScenes/Projectiles/Projectile.gd" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 5.0
+radius = 4.0
 
-[node name="Projectile" type="Node2D"]
-rotation = -1.5708
-script = ExtResource( 4 )
-
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Projectile" type="Sprite"]
+visible = false
 material = ExtResource( 1 )
-rotation = 0.785398
-texture = SubResource( 2 )
+texture = ExtResource( 2 )
+hframes = 26
+vframes = 26
+frame = 1
+script = ExtResource( 4 )
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 2
-script = ExtResource( 3 )
 
 [node name="Hitbox" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
+disabled = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

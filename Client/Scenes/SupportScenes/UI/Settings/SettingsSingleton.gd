@@ -8,6 +8,7 @@ var interpolation_offset = 100
 
 var zoom = 1
 var auto_open_chests = false
+var audio = false
 
 var open_inventory = InputEventKey.new()
 var enter_dungeon = InputEventKey.new()

@@ -586,7 +586,7 @@ theme = ExtResource( 6 )
 custom_styles/panel = SubResource( 19 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ClassEvolution"]
-margin_right = 420.0
+margin_right = 432.0
 margin_bottom = 313.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -598,8 +598,9 @@ custom_constants/margin_bottom = 8
 [node name="HBoxContainer" type="HBoxContainer" parent="ClassEvolution/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 412.0
+margin_right = 424.0
 margin_bottom = 305.0
+custom_constants/separation = 16
 alignment = 1
 
 [node name="CharacterPreview" parent="ClassEvolution/MarginContainer/HBoxContainer" instance=ExtResource( 13 )]
@@ -607,8 +608,8 @@ margin_bottom = 297.0
 alignment = 2
 
 [node name="CharacterPreview2" parent="ClassEvolution/MarginContainer/HBoxContainer" instance=ExtResource( 13 )]
-margin_left = 204.0
-margin_right = 404.0
+margin_left = 216.0
+margin_right = 416.0
 margin_bottom = 297.0
 alignment = 2
 

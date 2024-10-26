@@ -184,7 +184,7 @@ func DegreesToVector(degrees):
 	return vector
 
 func ShowDamageIndicator(damage_amount):
-	AudioManager.Play("hit")
+	AudioManager.Play("hit", damage_amount/100)
 	var total_damage = floor(-damage_amount - ClientData.GetEnemy(enemy_type).defense)
 	if total_damage < damage_amount - damage_amount*0.9:
 		total_damage = floor(damage_amount - damage_amount*0.9)
@@ -194,7 +194,10 @@ func ShowDamageIndicator(damage_amount):
 	var damage_indicator = damage_indicator_scene.instance()
 	damage_indicator.get_node("Label").text = str(-total_damage)
 	$IndicatorPlaceholder.add_child(damage_indicator)
+	
 	yield(get_tree().create_timer(1.0), "timeout")
+	if is_instance_valid(damage_indicator):
+		damage_indicator.queue_free()
 
 func _on_Area2D_area_entered(body):
 	var node = body.get_parent()

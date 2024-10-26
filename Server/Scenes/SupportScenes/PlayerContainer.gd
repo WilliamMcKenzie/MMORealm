@@ -193,8 +193,11 @@ func _physics_process(delta):
 		#Tiles covered
 		if not account_data.statistics.has("tiles_covered"):
 			account_data.statistics.tiles_covered = 0
+		if not character.statistics.has("tiles_covered"):
+			character.statistics.tiles_covered = 0
 		if last_position:
 			account_data.statistics.tiles_covered += round(last_position.distance_to(self.position)/8.0)
+			character.statistics.tiles_covered += round(last_position.distance_to(self.position)/8.0)
 		last_position = self.position
 		
 		#Class achievements

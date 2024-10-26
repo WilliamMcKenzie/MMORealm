@@ -218,6 +218,7 @@ func NearbyToggleLogic():
 	else:
 		$LeftContainer.visible = false
 func Toggle(which):
+	AudioManager.Play("open", 1)
 	var node_map = {
 		"classes" : get_node("Classes"),
 		"stats" : get_node("Stats"),

@@ -125,7 +125,7 @@ func _physics_process(delta):
 				var _health_ratio = (enemy_data.health/enemy_data.max_health)*100
 				var _health = _health_ratio >= _phase.health[0] and _health_ratio <= _phase.health[1]
 				
-				if not _health or (_phase.has("on_signal") and not enemy_data["signals"].has(_phase["on_signal"][0])):
+				if not _health or (_phase.has("on_signal") and not "initiate_legs" == _phase["on_signal"][0] and not "legs_alive" == _phase["on_signal"][0] and not enemy_data["signals"].has(_phase["on_signal"][0])):
 					phase_timer = 0
 				
 				pattern_timer -= tick_rate
@@ -190,7 +190,7 @@ func _physics_process(delta):
 						if new_phase.has("speed"):
 							enemy_data["speed"] = new_phase["speed"]
 				var loops = 0
-				while pattern_timer <= 0 and loops < 64:
+				while pattern_timer <= 0 and loops < 72:
 					loops += 1
 					var attack_pattern = phases[phase_index].attack_pattern
 					var current_attack = attack_pattern[pattern_index]
@@ -558,10 +558,14 @@ func GetBoatSpawnpoints():
 			
 			if current_tile == 12:
 				res.append(current_position)
-				
+	
 	var index = round(rand_range(0, res.size()-1))
+	var count = 0
 	while(taken_points.has(index)):
+		count += 1
 		index = round(rand_range(0, res.size()-1))
+		if count > 100:
+			return res[0]
 	taken_points.append(index)
 	return res[index]
 	

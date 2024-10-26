@@ -272,7 +272,7 @@ var projectile_databank = {
 	"PlatinumSlash_strong_fast" : {
 		"projectile" : "PlatinumSlash",
 		"formula" : "0",
-		"damage" : 120,
+		"damage" : 70,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : med,
@@ -284,7 +284,7 @@ var projectile_databank = {
 	"PlatinumSlash_mid_medium" : {
 		"projectile" : "PlatinumSlash",
 		"formula" : "0",
-		"damage" : 80,
+		"damage" : 60,
 		"piercing" : false,
 		"wait" : 0,
 		"speed" : med,
@@ -1655,6 +1655,83 @@ func CreateSpiral(arm_count, projectile_type, delay, mix_in = null, chance = 0.2
 	
 	return attack_pattern
 
+var misc =  {
+	"oracle_placeholder" : {
+		"scale" : 1,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(1000,1000), Vector2(1,1)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"no_sink" : true,
+		"health_scaling" : 0,
+		"health" : 1,
+		"defense" : 0,
+		"exp" : 0,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 13,
+				"behavior" : 0,
+				"speed" : 0,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [-100,0],
+				"attack_pattern" : [
+					{
+						"dead" : true,
+						"wait" : 0,
+					},
+					{
+						"summon" : "nature_sprite_passive",
+						"summon_position" : Vector2(3*8,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "nature_sprite_passive",
+						"summon_position" : Vector2(-3*8,0),
+						"wait" : OS.get_system_time_msecs(),
+					},
+				]
+			},
+		]
+	}, 
+	"nature_sprite_passive" : {
+		"custom_hitbox" : Vector2(0,0),
+		"scale" : 0.8,
+		"res" : 10,
+		"height" : 8,
+		"rect" : Rect2(Vector2(120,10), Vector2(20,10)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0,1],
+		},
+		
+		"health" : 40,
+		"defense" : 0,
+		"exp" : 5,
+		"behavior" : 3,
+		"anchor" : "parent",
+		"speed" : 5,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"wait" : 10
+					}
+				]
+			}
+		]
+	},
+}
 var rulers = {
 	"oranix" : {
 		"scale" : 1.2,
@@ -1667,8 +1744,8 @@ var rulers = {
 			"Death" : [4],
 		},
 		
-		"health_scaling" : 10000,
-		"health" : 50000,
+		"health_scaling" : 30000,
+		"health" : 10000,
 		"defense" : 10,
 		"exp" : 2000,
 		"behavior" : 0,
@@ -2096,8 +2173,8 @@ var rulers = {
 			"Death" : [4],
 		},
 		
-		"health_scaling" : 10000,
-		"health" : 30000,
+		"health_scaling" : 30000,
+		"health" : 10000,
 		"defense" : 10,
 		"exp" : 2000,
 		"behavior" : 0,
@@ -2291,8 +2368,8 @@ var rulers = {
 			"Death" : [4],
 		},
 		
-		"health_scaling" : 10000,
-		"health" : 25000,
+		"health_scaling" : 30000,
+		"health" : 10000,
 		"defense" : 20,
 		"exp" : 2000,
 		"behavior" : 1,
@@ -2470,8 +2547,9 @@ var rulers = {
 			"Death" : [2],
 		},
 		
-		"health_scaling" : 10000,
-		"health" : 70000,
+		"no_sink" : true,
+		"health_scaling" : 40000,
+		"health" : 10000,
 		"defense" : 10,
 		"exp" : 10000,
 		"behavior" : 0,
@@ -2507,13 +2585,15 @@ var rulers = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"summon" : "salazar_left_wing",
+						"summon" : "salazar_wing",
 						"summon_position" : Vector2(-19,-1),
+						"flip" : 0,
 						"wait" : 0,
 					},
 					{
-						"summon" : "salazar_right_wing",
+						"summon" : "salazar_wing",
 						"summon_position" : Vector2(20,-1),
+						"flip" : 1,
 						"wait" : 2,
 					},
 				]
@@ -2545,6 +2625,16 @@ var rulers = {
 					{
 						"speech" : "You are not to be underestimated. The abyss awaits you!",
 						"wait" : 3,
+					},
+					{
+						"summon" : "fireball",
+						"summon_position" : Vector2(8*5,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "fireball",
+						"summon_position" : Vector2(-8*5,0),
+						"wait" : 0,
 					},
 				]
 			},
@@ -2628,6 +2718,16 @@ var rulers = {
 					},
 					{
 						"speech" : "FEAR THE ABYSS!",
+						"wait" : 0,
+					},
+					{
+						"summon" : "fireball",
+						"summon_position" : Vector2(8*5,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "fireball",
+						"summon_position" : Vector2(-8*5,0),
 						"wait" : 3,
 					},
 				]
@@ -2663,7 +2763,7 @@ var rulers = {
 			},
 		]
 	},
-	"salazar_left_wing" : {
+	"salazar_wing" : {
 		"scale" : 1,
 		"res" : 18,
 		"height" : 16,
@@ -2674,6 +2774,7 @@ var rulers = {
 			"Attack" : [1],
 		},
 		
+		"no_sink" : true,
 		"health" : 5000,
 		"defense" : 5,
 		"exp" : 3000,
@@ -2686,35 +2787,7 @@ var rulers = {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"wait" : 10,
-					}
-				]
-			},
-		]
-	},
-	"salazar_right_wing" : {
-		"scale" : 1,
-		"res" : 18,
-		"height" : 16,
-		"rect" : Rect2(Vector2(198,52), Vector2(36,18)),
-		"custom_hitbox" : Vector2(0,0),
-		"animations" : {
-			"Idle" : [0],
-			"Attack" : [1],
-		},
-		
-		"health" : 5000,
-		"defense" : 5,
-		"exp" : 3000,
-		"behavior" : 0,
-		"speed" : 0,
-		"loot_pool" : basic_loot_pools["none"],
-		"phases" : [
-			{
-				"duration" : 4,
-				"health" : [0,100],
-				"attack_pattern" : [
-					{
+						"dead" : true,
 						"wait" : 10,
 					}
 				]
@@ -8302,7 +8375,17 @@ var the_abyss_enemies = {
 					},
 					{
 						"speech" : "In this kingdom, I alone am the strongest!",
-						"wait" : 4,
+						"wait" : 2,
+					},
+					{
+						"summon" : "fireball",
+						"summon_position" : Vector2(8*5,0),
+						"wait" : 0,
+					},
+					{
+						"summon" : "fireball",
+						"summon_position" : Vector2(-8*5,0),
+						"wait" : 2,
 					},
 				]
 			},
@@ -8351,6 +8434,46 @@ var the_abyss_enemies = {
 					MakeProjectile("GiantFlameArrow_strong_medium", 40, 0, "nearest"),
 					MakeProjectile("GiantFlameArrow_strong_medium", -40, 1, "nearest"),
 				]
+			},
+		]
+	},
+	"fireball" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(234,54), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [1],
+		},
+		
+		"health" : 100,
+		"defense" : 0,
+		"exp" : 100,
+		"anchor" : "parent",
+		"behavior" : 3,
+		"speed" : 20,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 4,
+				"on_spawn" : true,
+				"max_uses" : 1,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 6,
+						"wait" : 5,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"behavior" : 2,
+				"speed" : 40,
+				"attack_pattern" : CreateSpiral(2, "FlameBlast_strong_slow", 0.3)
 			},
 		]
 	},
@@ -9206,20 +9329,20 @@ var halloween_island_enemies = {
 				"speed" : 5,
 				"attack_pattern" : CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 12) + [{"wait" : 1}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 16) + [{"wait" : 0.8}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 20) + [{"wait" : 0.5}] + CreateSpiral(1, "PlatinumSlash_mid_medium", 0, null, 0.2, 30) + [{"wait" : 0.2}] + [
 					MakeProjectile("PlatinumSlash_strong_fast", 15, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", 10, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 10, 0, "nearest"),
 					MakeProjectile("PlatinumSlash_strong_fast", 5, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", 0, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 0, 0, "nearest"),
 					MakeProjectile("PlatinumSlash_strong_fast", -5, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", -10, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", -10, 0, "nearest"),
 					MakeProjectile("PlatinumSlash_strong_fast", -15, 0.5, "nearest"),
 					
-					MakeProjectile("GiantBlast_fast", 25, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", 15, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", 5, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", 0, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", -5, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", -15, 0, "nearest"),
-					MakeProjectile("GiantBlast_fast", -25, 1, "nearest"),
+					MakeProjectile("GiantBlast_medium", 25, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 15, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 5, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", 0, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", -5, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", -15, 0, "nearest"),
+					MakeProjectile("GiantBlast_medium", -25, 1, "nearest"),
 				]
 			}
 		]
@@ -9375,11 +9498,111 @@ var halloween_island_enemies = {
 		"exp" : 250,
 		"behavior" : 2,
 		"speed" : 10,
-		"loot_pool" : {
-			"soulbound_loot" : [],
-			"loot" : []
-		},
-		"phases" : []
+		"loot_pool" : basic_loot_pools["godlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 0,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 65,
+						"piercing" : true,
+						"wait" : 0.8,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : medium
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(10),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : medium
+					},
+					{
+						"projectile" : "Blast",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 0,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-10),
+						"size" : medium
+					},
+					{
+						"projectile" : "Wave",
+						"formula" : "0",
+						"damage" : 75,
+						"piercing" : false,
+						"wait" : 1,
+						"speed" : med,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : medium
+					},
+				]
+			},
+		]
 	},
 	"greater_slime" : {
 		"scale" : 1,
@@ -9396,11 +9619,159 @@ var halloween_island_enemies = {
 		"exp" : 300,
 		"behavior" : 2,
 		"speed" : 6,
-		"loot_pool" : {
-			"soulbound_loot" : [],
-			"loot" : []
-		},
-		"phases" : []
+		"loot_pool" : basic_loot_pools["godlands_1"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(40),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(60),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(40),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(20),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(0),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-40),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-60),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-40),
+						"size" : medium
+					},
+					{
+						"projectile" : "GreenBlast",
+						"formula" : "0",
+						"damage" : 90,
+						"piercing" : false,
+						"wait" : 0.3,
+						"speed" : fast,
+						"tile_range" : 8,
+						"targeter" : "nearest",
+						"direction" : DegreesToVector(-20),
+						"size" : medium
+					},
+				]
+			},
+		]
 	},
 	"ghastly_ghoul" : {
 		"scale" : 1,
@@ -9417,11 +9788,23 @@ var halloween_island_enemies = {
 		"exp" : 300,
 		"behavior" : 2,
 		"speed" : 20,
-		"loot_pool" : {
-			"soulbound_loot" : [],
-			"loot" : []
-		},
-		"phases" : []
+		"loot_pool" : basic_loot_pools["godlands_1"],
+		"phases" : [
+			{
+				"duration" : 32,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("Blast_strong_fast", (360.0/8.0)*1, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", (360.0/8.0)*2, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", (360.0/8.0)*3, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", (360.0/8.0)*4, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", (360.0/8.0)*5, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", (360.0/8.0)*6, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", (360.0/8.0)*7, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", (360.0/8.0)*8, 3, "nearest"),
+				]
+			},
+		]
 	},
 	
 	"orbanis" : {
@@ -9460,12 +9843,6 @@ var halloween_island_enemies = {
 					},
 					{
 						"summon" : "orbanis_leg",
-						"summon_position" : Vector2(7,20),
-						"flip" : 1,
-						"wait" : 0,
-					},
-					{
-						"summon" : "orbanis_leg",
 						"summon_position" : Vector2(29,12),
 						"flip" : 0,
 						"wait" : 0,
@@ -9473,12 +9850,6 @@ var halloween_island_enemies = {
 					{
 						"summon" : "orbanis_leg",
 						"summon_position" : Vector2(18,-2),
-						"flip" : 0,
-						"wait" : 0,
-					},
-					{
-						"summon" : "orbanis_leg",
-						"summon_position" : Vector2(-8,20),
 						"flip" : 0,
 						"wait" : 0,
 					},
@@ -9680,7 +10051,7 @@ var halloween_island_enemies = {
 		"scale" : 1,
 		"res" : 18,
 		"height" : 16,
-			"rect" : Rect2(Vector2(36,234), Vector2(54,18)),
+		"rect" : Rect2(Vector2(36,234), Vector2(54,18)),
 		"animations" : {
 			"Idle" : [0],
 			"Attack" : [1],
@@ -9854,7 +10225,7 @@ var halloween_island_enemies = {
 			"soulbound_loot" : [
 				{
 					"item" : 107,
-					"chance" : 30,
+					"chance" : 100,
 					"threshold" : 0.01,
 				},
 				{
@@ -9866,19 +10237,19 @@ var halloween_island_enemies = {
 			"loot" : [
 				{
 					"item" : 9,
-					"chance" : 2,
+					"chance" : 4,
 				},
 				{
 					"item" : 10,
-					"chance" : 2,
+					"chance" : 4,
 				},
 				{
 					"item" : 11,
-					"chance" : 2,
+					"chance" : 4,
 				},
 				{
 					"item" : 12,
-					"chance" : 2,
+					"chance" : 4,
 				},
 			]
 		},
@@ -9911,6 +10282,7 @@ var halloween_island_enemies = {
 onready var enemies = CompileEnemies()
 func CompileEnemies():
 	var res = {}
+	res.merge(misc)
 	res.merge(rulers)
 	res.merge(tutorial_enemies)
 	res.merge(realm_enemies)
@@ -10544,54 +10916,24 @@ var items = {
 		"projectiles" : [
 			{
 				"damage" : [50,60],
-				"projectile" : "BloodShuriken",
-				"formula" : "0",
+				"projectile" : "BloodSlash",
+				"formula" : "cos(x)",
 				"piercing" : false,
 				"speed" : fast,
-				"tile_range" : 2,
+				"tile_range" : 4,
 				"size" : 5,
-				"offset" : DegreesToVector(0),
+				"offset" : DegreesToVector(10),
 			},
 			{
-				"damage" : [20,30],
-				"projectile" : "BloodSpinner",
+				"damage" : [50,60],
+				"projectile" : "BloodSlash",
 				"formula" : "sin(x)",
 				"piercing" : false,
 				"speed" : fast,
-				"tile_range" : 1,
-				"size" : 4,
-				"offset" : DegreesToVector(0),
+				"tile_range" : 4,
+				"size" : 5,
+				"offset" : DegreesToVector(-10),
 			},
-			{
-				"damage" : [20,30],
-				"projectile" : "BloodSpinner",
-				"formula" : "sin(x)",
-				"piercing" : false,
-				"speed" : fast,
-				"tile_range" : 1,
-				"size" : 4,
-				"offset" : DegreesToVector(90),
-			},
-			{
-				"damage" : [20,30],
-				"projectile" : "BloodSpinner",
-				"formula" : "sin(x)",
-				"piercing" : false,
-				"speed" : fast,
-				"tile_range" : 1,
-				"size" : 4,
-				"offset" : DegreesToVector(180),
-			},
-			{
-				"damage" : [20,30],
-				"projectile" : "BloodSpinner",
-				"formula" : "sin(x)",
-				"piercing" : false,
-				"speed" : fast,
-				"tile_range" : 1,
-				"size" : 4,
-				"offset" : DegreesToVector(270),
-			}
 		],
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(6,14)],
@@ -12983,6 +13325,12 @@ var projectiles = {
 		"spin" : true,
 		"scale" : 1,
 	},
+	"BloodSlash" : {
+		"rect" : Rect2(250,40,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 1,
+	},
 	"BloodShuriken" : {
 		"rect" : Rect2(250,30,10,10),
 		"rotation" : 45,
@@ -13105,7 +13453,7 @@ var achievements = {
 		"amount" : 1000,
 		"enemies" : ["cacodemon", "basalisk", "phoenix", "archmage"],
 		"icon" : Vector2(0,20),
-		"description" : "Kill 10000 gods.",
+		"description" : "Kill 1000 gods.",
 		"gold" : 400,
 	},
 	"Fear To Fortitude" : {
@@ -13186,7 +13534,7 @@ var achievements = {
 	},
 	"Unlock Knight" : {
 		"which" : "damage_taken",
-		"amount" : 100000,
+		"amount" : 200000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
@@ -13209,21 +13557,21 @@ var achievements = {
 	"Unlock Ranger" : {
 		"which" : "enemies_killed",
 		"amount" : 10,
-		"enemies" : ["oranix","vajira","raa'sloth","salazar"],
+		"enemies" : ["atlas","og_the_treacherous","vigil_guardian","eye_of_naa'zorak"],
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
 	},
 	"Unlock Sentinel" : {
 		"which" : "damage_taken",
-		"amount" : 100000,
+		"amount" : 200000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
 	},
 	"Unlock Scout" : {
 		"which" : "tiles_covered",
-		"amount" : 50000,
+		"amount" : 10000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,
@@ -13237,7 +13585,7 @@ var achievements = {
 	},
 	"Unlock Druid" : {
 		"which" : "enemies_killed",
-		"amount" : 120,
+		"amount" : 200,
 		"enemies" : ["phoenix"],
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
@@ -13245,7 +13593,7 @@ var achievements = {
 	},
 	"Unlock Warlock" : {
 		"which" : "enemies_killed",
-		"amount" : 3000,
+		"amount" : 2500,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,

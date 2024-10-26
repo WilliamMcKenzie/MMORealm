@@ -123,8 +123,11 @@ func _process(delta):
 			var _gold = waves[arena_type][wave-1].gold
 			gold += _gold
 		if $YSort/Players.get_child_count() > 0:
-			if arena_type == "monthly" and rand_range(0, 10) > 9:
-				$YSort/Players.get_children()[0].GiveItem(499, 1)
+			if arena_type == "monthly":
+				$YSort/Players.get_children()[0].GiveItem(3, 1)
+				if rand_range(0, 10) >= 9:
+					$YSort/Players.get_children()[0].GiveItem(499, 1)
+			
 			$YSort/Players.get_children()[0].DealDamage(9999, "Gladius")
 	elif wave_countdown < 0:
 		wave_countdown = 2

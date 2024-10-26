@@ -2,7 +2,27 @@ extends VBoxContainer
 
 var classname
 
+func SetAchievement(_achievement):
+	var achievement_data = ClientData.GetAchievement(_achievement)
+	var bar = $ProgressBar
+	
+	if achievement_data.which == "enemies_killed" and achievement_data.has("enemies"):
+		var total = 0
+		for enemy in achievement_data.enemies:
+			if GameUI.last_character.statistics.has(enemy):
+				total += GameUI.last_character.statistics[enemy]
+		bar.max_value = ClientData.GetAchievement(_achievement).amount
+		bar.value = total
+	elif GameUI.last_character.statistics.has(achievement_data.which):
+		bar.max_value = ClientData.GetAchievement(_achievement).amount
+		bar.value = GameUI.last_character.statistics[ClientData.GetAchievement(_achievement).which]
+	else:
+		bar.max_value = ClientData.GetAchievement(_achievement).amount
+		bar.value = 0
+
 func SetCharacter(_classname):
+	SetAchievement("Unlock " + _classname)
+	
 	classname = _classname
 	var class_data = ClientData.GetCharacter(classname)
 	$Description.text = class_data.teaser

@@ -8,7 +8,7 @@ func GetClosestPlayer(pos, root):
 		if player_list[player_id]["position"].distance_to(pos) <= closest:
 			closest = player_list[player_id]["position"].distance_to(pos)
 			closest_position = player_list[player_id]["position"]
-	if closest > 16*8:
+	if closest > 32*8:
 		return false
 	return closest_position
 

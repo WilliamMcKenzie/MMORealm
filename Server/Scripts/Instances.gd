@@ -1,12 +1,9 @@
 extends Node
 
 var chunk_sensors = {}
-
+var free_position = Vector2(1500*8,0)
 func GetFreeInstancePosition():
-	var free_position = Vector2.ZERO
-	
-	while(get_node("/root/Server").instance_positions.has(free_position)):
-		free_position += Vector2(1500*8,0)
+	free_position += Vector2(1500*8,0)
 	get_node("/root/Server").instance_positions[free_position] = true
 	return free_position
 

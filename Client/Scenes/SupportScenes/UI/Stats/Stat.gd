@@ -24,4 +24,5 @@ func DeActivate():
 	$ButtonContainer.visible = false
 
 func IncreaseStat():
+	AudioManager.Play("action", 1)
 	Server.IncreaseStat(stat)

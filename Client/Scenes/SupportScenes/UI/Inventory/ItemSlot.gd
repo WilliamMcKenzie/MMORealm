@@ -79,10 +79,11 @@ func drop_data(position, data):
 		"index" : index
 	}
 	GameUI.get_node("Inventory").ChangeItem(current_data, data)
-	
+
 func InspectItem():
 	if last_click < 1 and parent == "inventory" and item:
 		last_click = 1
+		AudioManager.Play("action", 1)
 		GameUI.get_node("Inventory").UseItem(index)
 		GameUI.get_node("Inventory").EquipItem(index)
 	elif last_click < 1 and parent != "gear" and item:

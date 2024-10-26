@@ -102,12 +102,12 @@ func _physics_process(delta):
 	if clock_sync_timer >= 20:
 		clock_sync_timer = 0
 		$Camera2D.zoom = Vector2(0.2/Settings.zoom, 0.2/Settings.zoom)
-	if Server.GetCurrentInstanceNode() and "dungeon_name" in Server.GetCurrentInstanceNode() and Server.GetCurrentInstanceNode().dungeon_name == "cloud_isles":
-		$SkyBackgound.visible = true
-		$BlackBackground.visible = false
-	else:
-		$SkyBackgound.visible = false
-		$BlackBackground.visible = true
+		if Server.GetCurrentInstanceNode() and "dungeon_name" in Server.GetCurrentInstanceNode() and Server.GetCurrentInstanceNode().dungeon_name == "cloud_isles":
+			$SkyBackgound.visible = true
+			$BlackBackground.visible = false
+		else:
+			$SkyBackgound.visible = false
+			$BlackBackground.visible = true
 	
 	UpdateStatusEffects()
 	MovePlayer(delta)
@@ -329,11 +329,16 @@ func ShowIndicator(type, amount):
 	
 	indicator.name = id
 	if type == "damage":
-		AudioManager.Play("hit")
+		AudioManager.Play("hit", amount/100)
 		if amount < 0:
 			indicator.get_node("Label").text = str(amount)
 		else:
+			indicator.queue_free()
 			return
 	else:
 		indicator.get_node("Label").text = "+"+str(amount)
 	$IndicatorPlaceholder.add_child(indicator)
+	
+	yield(get_tree().create_timer(1.0), "timeout")
+	if is_instance_valid(indicator):
+		indicator.queue_free()

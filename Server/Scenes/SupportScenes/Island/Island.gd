@@ -108,7 +108,8 @@ func _physics_process(delta):
 						var server = get_node("/root/Server")
 						for player_id in player_list.keys():
 							get_node("YSort/Players").get_node(player_id).GiveEffect("invincible", 10)
-							server.rpc_id(int(player_id), "RealmClosed", ruler_id, ServerData.GetEnemy(ruler).dungeon.name)
+							server.rpc("RecieveChat", server.IdentifierToString(ruler) + "'s kingdom has been destroyed!", "System")
+							server.rpc_id(1, "RealmClosed", ruler_id, ServerData.GetEnemy(ruler).dungeon.name)
 					
 					enemy_list[enemy_id]["dead"] = true
 					enemy_list[enemy_id]["pattern_timer"] = OS.get_system_time_msecs()

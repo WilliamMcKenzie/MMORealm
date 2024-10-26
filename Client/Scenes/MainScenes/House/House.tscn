@@ -157,6 +157,19 @@ points = PoolVector2Array( 9, 17, 1, 17, 1, 9, 9, 9 )
 [node name="house_container" type="YSort"]
 script = ExtResource( 2 )
 
+[node name="PlacementPreview" type="TileMap" parent="."]
+modulate = Color( 1, 1, 1, 0.478431 )
+z_index = 10
+z_as_relative = false
+tile_set = SubResource( 2 )
+cell_size = Vector2( 8, 8 )
+cell_custom_transform = Transform2D( 8, 0, 0, 8, 0, 0 )
+centered_textures = true
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -1048527, 2, 0 )
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 2 )
 cell_size = Vector2( 8, 8 )
