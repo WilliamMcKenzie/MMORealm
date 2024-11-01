@@ -31,7 +31,7 @@ func _ready():
 	GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
-	GameplayLoop.CreateIslandTemplate(Vector2(501,501), "halloween")
+	GameplayLoop.CreateIslandTemplate(Vector2(502,502), "tundra")
 	
 	#Open realm
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
@@ -45,7 +45,7 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-7*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("tutorial_master", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
-	get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(501,501), "pumpkin_tyrant", "halloween")
+	get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(502,502), "pumpkin_tyrant", "halloween")
 	
 	for i in range(0):
 		var container = PlayerVerification.CreateFakePlayerContainer()
@@ -801,6 +801,7 @@ func EnemySpeech(enemy_name, enemy_id, message):
 	rpc("RecieveChat", message, "Enemy", enemy_name, enemy_id)
 
 var chat_messages = []
+var mute_list = {}
 remote func RecieveChatMessage(message):
 	print(message)
 	
@@ -880,13 +881,15 @@ remote func RecieveChatMessage(message):
 				else:
 					rpc_id(player_id, "RecieveChat", "Invalid username: " + message.substr(4,-1), "SystemERROR")
 			if message[0] == "/" and admin:
+				if message_words[0] == "/mute":
+					mute_list[player_name] = true
 				if message_words[0] == "/closerealm":
 					#rpc_id(player_id, "MovePlayer", instance_node.enemy_list[instance_node.ruler_id]["position"]+Vector2(0,50))
 					yield(get_tree().create_timer(2), "timeout")
 					instance_node.enemy_list[instance_node.ruler_id]["health"] = 0
 				if message_words[0] == "/closeallrealms":
 						for node in instance_node.get_children():
-							if "island" in node.name and node.ruler_id:
+							if "island" in node.name and node.ruler != "pumpkin_tyrant" and node.ruler_id:
 								node.enemy_list[node.ruler_id]["health"] = 0
 				if message_words[0] == "/roll" and message_words.size() > 2:
 					for i in range(int(message_words[2])):
@@ -914,6 +917,8 @@ remote func RecieveChatMessage(message):
 					player_container.AddExp(int(message_words[1]), "Ghoul", "123")
 				if message_words[0] == "/invincible":
 					player_container.GiveEffect("invincible", 99999)
+				if message_words[0] == "/d" and message_words[1] == "tundra":
+					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal("special_island", instance_tree, player_position, Vector2(502,502), "oracle", "tundra")
 				if message_words[0] == "/d" and message_words[1] == "halloween_island":
 					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal("special_island", instance_tree, player_position, Vector2(501,501), "pumpkin_tyrant", "halloween")
 				if message_words[0] == "/d" and message_words[1] == "island" and len(message_words) == 3:
@@ -961,15 +966,16 @@ remote func RecieveChatMessage(message):
 					player_container.Max()
 				if message_words[0] == "/hypermax" and message_words.size() == 1:
 					player_container.Max(true)
-		else:
+		elif not mute_list.has(player_name):
 			chat_messages.append({
 				"sender" : player_name,
 				"timestamp" : OS.get_system_time_msecs(),
 				"fake" : false,
 			})
-			var filters = "rape nigger nigg nigga chigger chigga fuck bitch pussy vagina dick cum cock sex anal shit murder hitler nazi abuse abusive asshole bastard bitch bullshit cock crap damn dumb fucker fucking moron nigger retard shit slut stupid whore fag faggot chigger china tranny"
+			var filters = "rape nigger nigg nigga chigger chigga fuck bitch pussy vagina dick cum cock sex anal shit murder hitler nazi abuse abusive asshole bastard bitch bullshit cock crap damn dumb fucker fucking moron nigger nigga n@gg n!g retard shit slut stupid whore fag faggot chigger china tranny"
 			for filter in filters.split(" "):
 				message = message.replace(filter, "****")
+				message = message.replace(filter.to_upper(), "****")
 			rpc("RecieveChat", message, player_name, player_container.character.class, player_container.name)
 func FindPlayerByName(username):
 	for _username in player_id_by_name.keys():

@@ -269,6 +269,79 @@ var mid = 120
 var strong = 160
 
 var projectile_databank = {
+	"Plasma2_mid_fast" : {
+		"projectile" : "Plasma2",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : true,
+		"wait" : 0.2,
+		"speed" : fast,
+		"tile_range" : 10,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : medium
+	},
+	"PlasmaSpinner_mid_fast" : {
+		"projectile" : "PlasmaSpinner",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : med,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : large
+	},
+	"PlasmaSpinner_mid_mid" : {
+		"projectile" : "PlasmaSpinner",
+		"formula" : "0",
+		"damage" : 120,
+		"piercing" : false,
+		"wait" : 0.2,
+		"speed" : slow,
+		"tile_range" : 7,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : large
+	},
+	"PlasmaBall_mid_mid" : {
+		"projectile" : "PlasmaBall",
+		"formula" : "0",
+		"damage" : 110,
+		"piercing" : true,
+		"wait" : 0.2,
+		"speed" : med,
+		"tile_range" : 6,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : medium
+	},
+	"SmallPlasmaBall_mid_mid" : {
+		"projectile" : "SmallPlasmaBall",
+		"formula" : "0",
+		"damage" : 60,
+		"piercing" : true,
+		"wait" : 0.2,
+		"speed" : fast,
+		"tile_range" : 5,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : medium
+	},
+	"GiantPlasmaSpinner_strong_mid" : {
+		"projectile" : "GiantPlasmaSpinner",
+		"formula" : "0",
+		"damage" : 200,
+		"piercing" : true,
+		"wait" : 0.2,
+		"speed" : slow,
+		"tile_range" : 10,
+		"targeter" : "nearest",
+		"direction" : DegreesToVector(0),
+		"size" : large + 1
+	},
+	
 	"PlatinumSlash_strong_fast" : {
 		"projectile" : "PlatinumSlash",
 		"formula" : "0",
@@ -477,6 +550,11 @@ var projectile_databank = {
 		"inherit" : "Wave_strong_fast",
 		"damage" : 30,
 		"speed" : slow,
+	},
+	"Wave_mid_med" : {
+		"inherit" : "Wave_strong_fast",
+		"damage" : 60,
+		"speed" : med,
 	},
 	
 	
@@ -1633,6 +1711,13 @@ func MakeProjectile(projectile_type, degrees, wait, targeter = null):
 	
 	return projectile_data
 
+func CreateArc(steps, from, to, projectile):
+	var attack_pattern = []
+	for step in to-from:
+		attack_pattern.append(MakeProjectile(projectile, (360.0/steps)*(step+from), 0))
+	return attack_pattern
+
+
 func CreateSpiral(arm_count, projectile_type, delay, mix_in = null, chance = 0.2, steps = 32.0, invincible = false, reverse = false):
 	randomize()
 	var attack_pattern = []
@@ -1725,14 +1810,444 @@ var misc =  {
 				"health" : [0,100],
 				"attack_pattern" : [
 					{
-						"wait" : 10
-					}
+						"effect" : "invincible",
+						"duration" : 100,
+						"wait" : 10,
+					},
 				]
 			}
 		]
 	},
 }
 var rulers = {
+	"oracle" : {
+		"scale" : 1,
+		"res" : 38,
+		"height" : 20,
+		"rect" : Rect2(Vector2(114,38), Vector2(38,38)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [0],
+		},
+		
+		"health_scaling" : 10000,
+		"health" : 60000,
+		"defense" : 10,
+		"exp" : 2000,
+		"behavior" : 0,
+		"speed" : 10,
+		"dungeon" : {
+			"rate" : 0,
+			"name" : "tower_of_babel_floor_1"
+		},
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 40,
+				"behavior" : 0,
+				"speed" : 0,
+				"on_signal" : ["pillars_active"],
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"speech" : "As long as my 3 pillars stand, I am impervious!",
+						"wait" : 0,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 4,
+					},
+					{
+						"speech" : "Search all you want, my 3 pillars will never fall!",
+						"wait" : 0,
+					},
+				]
+			},
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"summon" : "oracle_pillar",
+						"summon_position" : DegreesToVector((360.0/3.0)*1)*8*30,
+						"flip" : 0,
+						"wait" : 0,
+					},
+					{
+						"summon" : "oracle_pillar",
+						"summon_position" : DegreesToVector((360.0/3.0)*2)*8*30,
+						"flip" : 0,
+						"wait" : 0,
+					},
+					{
+						"summon" : "oracle_pillar",
+						"summon_position" : DegreesToVector((360.0/3.0)*3)*8*30,
+						"flip" : 0,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 1,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"speech" : "I forsaw your downfall in a dream!",
+						"wait" : 1,
+					},
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [50,100],
+				"attack_pattern" : CreateArc(32, 1, 16, "SmallPlasmaBall_mid_mid") + [
+						{
+							"wait" : 0.5
+						}
+					] + CreateArc(32, 1, 16, "PlasmaBall_mid_mid") + [
+						{
+							"wait" : 0
+						}
+					] + CreateArc(24, 1, 12, "PlasmaSpinner_mid_mid") + [
+						{
+							"wait" : 0.5
+						}
+					] + CreateArc(16, 1, 8, "PlasmaSpinner_mid_mid") + [
+						{
+							"wait" : 1
+						}
+					] + CreateArc(32, 17, 32, "SmallPlasmaBall_mid_mid") + [
+						{
+							"wait" : 0.5
+						}
+					] + CreateArc(32, 17, 32, "PlasmaBall_mid_mid") + [
+						{
+							"wait" : 0
+						}
+					] + CreateArc(24, 13, 24, "PlasmaSpinner_mid_mid") + [
+						{
+							"wait" : 0.5
+						}
+					] + CreateArc(16, 9, 16, "PlasmaSpinner_mid_mid") + [
+						{
+							"wait" : 2
+						}
+					] + CreateSpiral(1, "GiantPlasmaSpinner_strong_mid", 0, null, 0, 7) + [{
+						"wait" : 1
+					}
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [50,100],
+				"attack_pattern" : CreateSpiral(1, "GiantPlasmaSpinner_strong_mid", 0.1, null, 0, 16) + [{
+						"wait" : 1
+					}] + CreateSpiral(1, "GiantPlasmaSpinner_strong_mid", 0.1, null, 0, 17) + [{
+						"wait" : 1
+					}] + CreateSpiral(1, "GiantPlasmaSpinner_strong_mid", 0.1, null, 0, 18) + [{
+						"wait" : 1
+					}] + CreateSpiral(1, "Plasma2_mid_fast", 0.1, null, 0, 8) + [{
+						"wait" : 0.4
+					}] + CreateSpiral(1, "Plasma2_mid_fast", 0.1, null, 0, 8) + [{
+						"wait" : 0.4
+					}] + CreateSpiral(1, "Plasma2_mid_fast", 0.1, null, 0, 8) + [{
+						"wait" : 0.4
+					}]
+			},
+			{
+				"duration" : 3.5,
+				"health" : [50,100],
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 3.5,
+						"wait" : 0,
+					},
+					{
+						"speech" : "The world of man will crumble!",
+						"wait" : 0,
+					},
+					{
+						"summon" : "oracle_pillar_summon",
+						"summon_position" : DegreesToVector((360.0/4.0)*1)*8*10,
+						"flip" : 0,
+						"wait" : 1,
+					},
+					{
+						"summon" : "oracle_pillar_summon",
+						"summon_position" : DegreesToVector((360.0/4.0)*2)*8*10,
+						"flip" : 0,
+						"wait" : 1,
+					},
+					{
+						"summon" : "oracle_pillar_summon",
+						"summon_position" : DegreesToVector((360.0/4.0)*3)*8*10,
+						"flip" : 0,
+						"wait" : 1,
+					},
+					{
+						"summon" : "oracle_pillar_summon",
+						"summon_position" : DegreesToVector((360.0/4.0)*4)*8*10,
+						"flip" : 0,
+						"wait" : 1,
+					},
+				]
+			},
+			
+			{
+				"duration" : 3.5,
+				"health" : [0,50],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 3.5,
+						"wait" : 0,
+					},
+					{
+						"speech" : "I have seen thousands of kingdoms fall...",
+						"wait" : 0,
+					},
+					{
+						"speech" : "You bottomfeeders will feed the bottom!",
+						"wait" : 2,
+					},
+					{
+						"summon" : "bookish_novel",
+						"summon_position" : DegreesToVector((360.0/4.0)*1)*8*12,
+						"flip" : 0,
+						"wait" : 0,
+					},
+					{
+						"summon" : "bookish_novel",
+						"summon_position" : DegreesToVector((360.0/4.0)*2)*8*12,
+						"flip" : 0,
+						"wait" : 0,
+					},
+					{
+						"summon" : "bookish_novel",
+						"summon_position" : DegreesToVector((360.0/4.0)*3)*8*12,
+						"flip" : 0,
+						"wait" : 0,
+					},
+					{
+						"summon" : "bookish_novel",
+						"summon_position" : DegreesToVector((360.0/4.0)*4)*8*12,
+						"flip" : 0,
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 5,
+				"health" : [0,50],
+				"attack_pattern" : [
+					MakeProjectile("SmallPlasmaBall_mid_mid", 15, 0, "nearest"),
+					MakeProjectile("PlasmaBall_mid_mid", 10, 0, "nearest"),
+					MakeProjectile("SmallPlasmaBall_mid_mid", 5, 0, "nearest"),
+					MakeProjectile("PlasmaBall_mid_mid", 0, 0, "nearest"),
+					MakeProjectile("SmallPlasmaBall_mid_mid", -5, 0, "nearest"),
+					MakeProjectile("PlasmaBall_mid_mid", -10, 0, "nearest"),
+					MakeProjectile("SmallPlasmaBall_mid_mid", -15, 0.5, "nearest"),
+				]
+			},
+		]
+	},
+	"bookish_novel" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,144), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [],
+		},
+		
+		"no_sink" : true,
+		"health" : 1000,
+		"defense" : 0,
+		"exp" : 100,
+		"anchor" : "parent",
+		"behavior" : 3,
+		"speed" : 10,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 0,
+					},
+					MakeProjectile("Wave_mid_med", 12, 0, "parent"),
+					MakeProjectile("Wave_mid_med", 10, 0, "parent"),
+					MakeProjectile("Wave_mid_med", 5, 0, "parent"),
+					MakeProjectile("Wave_mid_med", -5, 0, "parent"),
+					MakeProjectile("Wave_mid_med", -10, 0, "parent"),
+					MakeProjectile("Wave_mid_med", -12, 0, "parent"),
+					MakeProjectile("Wave_mid_slow", 12, 0, "parent"),
+					MakeProjectile("Wave_mid_slow", 10, 0, "parent"),
+					MakeProjectile("Wave_mid_slow", 5, 0, "parent"),
+					MakeProjectile("Wave_mid_slow", -5, 0, "parent"),
+					MakeProjectile("Wave_mid_slow", -10, 0, "parent"),
+					MakeProjectile("Wave_mid_slow", -12, 1, "parent"),
+				]
+			},
+		]
+	},
+	"oracle_pillar_summon" : {
+		"scale" : 1.4,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(36,144), Vector2(18*3,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [],
+			"Death" : [2],
+		},
+		
+		"health" : 500,
+		"defense" : 1000,
+		"exp" : 500,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Plasma1",
+						"formula" : "0",
+						"damage" : 50,
+						"piercing" :true,
+						"wait" : 0.2,
+						"speed" : fast,
+						"tile_range" : 7,
+						"targeter" : "nearest",
+						"direction" : Vector2.ZERO,
+						"size" : 4
+					},
+				]
+			},
+		]
+	},
+	"oracle_pillar" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(36,144), Vector2(18*3,18)),
+		"animations" : {
+			"Idle" : [0,1],
+			"Attack" : [],
+			"Death" : [2],
+		},
+		
+		"health" : 20000,
+		"defense" : 1,
+		"exp" : 500,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			{
+				"duration" : 10,
+				"health" : [50,100],
+				"attack_pattern" : [
+					{
+						"projectile" : "Plasma1",
+						"formula" : "0",
+						"damage" : 5,
+						"piercing" :true,
+						"wait" : 0,
+						"speed" : fast,
+						"tile_range" : 30,
+						"targeter" : "parent",
+						"direction" : Vector2.ZERO,
+						"size" : 4
+					},
+					{
+						"signal" : "pillars_active",
+						"reciever" : "oracle",
+						"duration" : 1.1,
+						"wait" : 0.3,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,50],
+				"attack_pattern" : [
+					{
+						"dead" : true,
+						"wait" : 4
+					},
+				]
+			}
+		]
+	},
+	
 	"oranix" : {
 		"scale" : 1.2,
 		"res" : 18,
@@ -1744,8 +2259,8 @@ var rulers = {
 			"Death" : [4],
 		},
 		
-		"health_scaling" : 30000,
-		"health" : 10000,
+		"health_scaling" : 10000,
+		"health" : 30000,
 		"defense" : 10,
 		"exp" : 2000,
 		"behavior" : 0,
@@ -1762,7 +2277,7 @@ var rulers = {
 				"speed" : 0,
 				"on_spawn" : true,
 				"max_uses" : 1,
-				"health" : [-100,0],
+				"health" : [-100,1],
 				"attack_pattern" : [
 					{
 						"speech" : "No matter, the vigil shall bring you to ruin!",
@@ -2173,8 +2688,8 @@ var rulers = {
 			"Death" : [4],
 		},
 		
-		"health_scaling" : 30000,
-		"health" : 10000,
+		"health_scaling" : 10000,
+		"health" : 30000,
 		"defense" : 10,
 		"exp" : 2000,
 		"behavior" : 0,
@@ -2368,8 +2883,8 @@ var rulers = {
 			"Death" : [4],
 		},
 		
-		"health_scaling" : 30000,
-		"health" : 10000,
+		"health_scaling" : 10000,
+		"health" : 30000,
 		"defense" : 20,
 		"exp" : 2000,
 		"behavior" : 1,
@@ -2626,16 +3141,16 @@ var rulers = {
 						"speech" : "You are not to be underestimated. The abyss awaits you!",
 						"wait" : 3,
 					},
-					{
-						"summon" : "fireball",
-						"summon_position" : Vector2(8*5,0),
-						"wait" : 0,
-					},
-					{
-						"summon" : "fireball",
-						"summon_position" : Vector2(-8*5,0),
-						"wait" : 0,
-					},
+					#{
+						#"summon" : "fireball",
+						#"summon_position" : Vector2(8*5,0),
+						#"wait" : 0,
+					#},
+					#{
+						#"summon" : "fireball",
+						#"summon_position" : Vector2(-8*5,0),
+						#"wait" : 0,
+					#},
 				]
 			},
 			{
@@ -2720,16 +3235,16 @@ var rulers = {
 						"speech" : "FEAR THE ABYSS!",
 						"wait" : 0,
 					},
-					{
-						"summon" : "fireball",
-						"summon_position" : Vector2(8*5,0),
-						"wait" : 0,
-					},
-					{
-						"summon" : "fireball",
-						"summon_position" : Vector2(-8*5,0),
-						"wait" : 3,
-					},
+					#{
+						#"summon" : "fireball",
+						#"summon_position" : Vector2(8*5,0),
+						#"wait" : 0,
+					#},
+					#{
+						#"summon" : "fireball",
+						#"summon_position" : Vector2(-8*5,0),
+						#"wait" : 3,
+					#},
 				]
 			},
 			{
@@ -8377,16 +8892,16 @@ var the_abyss_enemies = {
 						"speech" : "In this kingdom, I alone am the strongest!",
 						"wait" : 2,
 					},
-					{
-						"summon" : "fireball",
-						"summon_position" : Vector2(8*5,0),
-						"wait" : 0,
-					},
-					{
-						"summon" : "fireball",
-						"summon_position" : Vector2(-8*5,0),
-						"wait" : 2,
-					},
+					#{
+						#"summon" : "fireball",
+						#"summon_position" : Vector2(8*5,0),
+						#"wait" : 0,
+					#},
+					#{
+						#"summon" : "fireball",
+						#"summon_position" : Vector2(-8*5,0),
+						#"wait" : 2,
+					#},
 				]
 			},
 			{
@@ -10279,9 +10794,55 @@ var halloween_island_enemies = {
 		]
 	}
 }
+var babel_bosses = {
+	"argolath" : {
+		"scale" : 1,
+		"res" : 38,
+		"height" : 34,
+		"rect" : Rect2(Vector2(190,38), Vector2(38,38)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"health_scaling" : 30000,
+		"health" : 10000,
+		"defense" : 30,
+		"exp" : 1000,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			
+		]
+	},
+	"babel" : {
+		"scale" : 1,
+		"res" : 38,
+		"height" : 34,
+		"rect" : Rect2(Vector2(152,38), Vector2(38,38)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [],
+		},
+		
+		"health_scaling" : 30000,
+		"health" : 50000,
+		"defense" : 0,
+		"exp" : 1000,
+		"behavior" : 0,
+		"speed" : 0,
+		"loot_pool" : basic_loot_pools["none"],
+		"phases" : [
+			
+		]
+	},
+}
+
 onready var enemies = CompileEnemies()
 func CompileEnemies():
 	var res = {}
+	res.merge(babel_bosses)
 	res.merge(misc)
 	res.merge(rulers)
 	res.merge(tutorial_enemies)
@@ -10297,6 +10858,30 @@ func CompileEnemies():
 	return res
 
 var dungeons = {
+	"tower_of_babel_floor_1" : {
+		"difficulty" : "Hard",
+		"group_size" : "1-10",
+		"portal_rect" : [10,0,"objects_8x8"],
+		"type" : "encounter",
+		"dungeon_boss" : "argolath",
+		"room_size" : 100,
+		"spawnpoint" : Vector2(10,10)*8,
+		"tile_translation" : {
+			8 : "argolath",
+		}
+	},
+	"tower_of_babel_floor_2" : {
+		"difficulty" : "Hard",
+		"group_size" : "1-10",
+		"portal_rect" : [10,0,"objects_8x8"],
+		"type" : "encounter",
+		"dungeon_boss" : "babel",
+		"room_size" : 100,
+		"spawnpoint" : Vector2(16,18)*8,
+		"tile_translation" : {
+			8 : "babel",
+		}
+	},
 	"island" : {
 		"difficulty" : "NA",
 		"dungeon_boss" : "salazar",
@@ -12936,6 +13521,39 @@ var buildings = {
 }
 
 var projectiles = {
+	"Plasma1" : {
+		"rect" : Rect2(180,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"Plasma2" : {
+		"rect" : Rect2(190,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"SmallPlasmaBall" : {
+		"rect" : Rect2(200,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+		"scale" : 0.8
+	},
+	"PlasmaBall" : {
+		"rect" : Rect2(200,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	"PlasmaSpinner" : {
+		"rect" : Rect2(210,10,10,10),
+		"rotation" : 45,
+		"spin" : true,
+	},
+	"GiantPlasmaSpinner" : {
+		"rect" : Rect2(210,10,10,10),
+		"rotation" : 45,
+		"spin" : true,
+		"scale" : 1.2
+	},
+	
 	"Slash" : {
 		"rect" : Rect2(0,0,10,10),
 		"rotation" : 90,

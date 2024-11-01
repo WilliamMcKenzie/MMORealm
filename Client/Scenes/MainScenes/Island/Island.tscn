@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=2]
 
+[ext_resource path="res://Resources/tundra_island_tilemap.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/MainScenes/Island/Island.gd" type="Script" id=2]
-[ext_resource path="res://Resources/island_tilemap.tres" type="TileSet" id=3]
 
 [node name="island_container" type="YSort"]
 script = ExtResource( 2 )
 
 [node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource( 3 )
+tile_set = ExtResource( 1 )
 cell_size = Vector2( 8, 8 )
 cell_quadrant_size = 8
 cell_custom_transform = Transform2D( 8, 0, 0, 8, 0, 0 )
@@ -17,4 +17,3 @@ centered_textures = true
 collision_layer = 15
 collision_mask = 31
 format = 1
-tile_data = PoolIntArray( -917500, 3, 2, -917499, 3, 2, -917498, 3, 4, -917497, 3, 2, -917496, 3, 6, -917495, 3, 1, -917494, 3, 2, -786433, 3, 1, -851968, 3, 5, -851967, 3, 1, -851966, 3, 0, -851965, 3, 4, -851964, 3, 5, -851957, 3, 6, -851956, 3, 5, -851955, 3, 5, -851954, 3, 5, -851953, 3, 5, -851952, 3, 4, -851951, 3, 5, -851950, 3, 0, -720898, 3, 1, -720897, 3, 5, -786414, 3, 3, -655362, 3, 4, -720878, 3, 2, -589826, 3, 5, -655341, 3, 3, -524290, 3, 2, -589805, 3, 6, -458754, 3, 6, -524269, 3, 2, -393218, 3, 5, -458733, 3, 5, -327682, 3, 4, -393197, 3, 0, -262146, 3, 2, -327661, 3, 3, -196610, 3, 2, -262125, 3, 0, -131074, 3, 0, -196589, 3, 2, -65538, 3, 2, -65537, 3, 4, -131053, 3, 4, -2, 3, 0, -1, 3, 0, -65536, 3, 3, -65535, 3, 1, -65534, 3, 4, -65533, 3, 5, -65532, 3, 6, -65531, 3, 0, -65530, 3, 4, -65529, 3, 3, -65528, 3, 1, -65527, 3, 0, -65526, 3, 0, -65525, 3, 0, -65524, 3, 5, -65523, 3, 5, -65522, 3, 2, -65521, 3, 5, -65520, 3, 1, -65517, 3, 4, 17, 3, 5, 18, 3, 1, 19, 3, 3 )

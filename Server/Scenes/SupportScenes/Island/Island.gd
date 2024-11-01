@@ -353,6 +353,7 @@ func ArrayToTiles():
 			if map_tile == player_spawnpoint_tile_id:
 				spawn_points.append(Vector2(x*8, y*8))
 			
+			#$TileMap.set_cell(x, y, map_as_array[x][y])
 			if not spawnpoint_tile:
 				continue
 			elif map_tile == 2:
@@ -370,8 +371,6 @@ func ArrayToTiles():
 			elif map_tile == 6:
 				enemy_spawn_points[spawnpoint_position] = { "Index": spawn_point_index, "Alive":false, "Selection":mountain_enemies}
 				spawn_point_index += 1
-			#For visualizing realms
-			#$TileMap.set_cell(x, y, map_as_array[x][y])
 
 func PopulateObstacles():
 	randomize()

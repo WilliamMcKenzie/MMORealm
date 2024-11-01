@@ -13,6 +13,7 @@ func CreateIslandTemplate(map_size = Vector2(750,750), special=null):
 	var island_instance = load("res://Scenes/SupportScenes/Island/Island.tscn").instance()
 	if special:
 		island_instance = load("res://Scenes/SupportScenes/Island/SpecialIsland.tscn").instance()
+		island_instance.which = special
 	
 	island_instance.server_ref = get_node("/root/Server")
 	island_instance.map_size = map_size
@@ -58,4 +59,10 @@ func Update():
 		server.get_node("Instances/nexus").OpenPortal("island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "oranix")
 		server.get_node("Instances/nexus").OpenPortal("island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "vajira")
 		server.get_node("Instances/nexus").OpenPortal("island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(750,750), "raa'sloth")
-		server.get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(501,501), "pumpkin_tyrant", "halloween")
+		
+		var special_island_open = false
+		for node in server.get_node("Instances/nexus").get_children():
+			if "island" in node.name and node.ruler == "pumpkin_tyrant":
+				special_island_open = true
+		if not special_island_open:
+			server.get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], server.get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(501,501), "pumpkin_tyrant", "halloween")

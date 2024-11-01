@@ -5,14 +5,29 @@ var special_data = {
 	"halloween" : {
 		"player_spawnpoint_tile_id" : 12,
 		"ruler" : "pumpkin_tyrant",
-	}
+	},
+	"tundra" : {
+		"player_spawnpoint_tile_id" : 2,
+		"ruler" : "oracle",
+	},
 }
+
 var tile_values = {
 	"halloween" : {
 		0 : [2, 0, 0],
 		1 : [1.3, 0, 1],
 		12 : [0.75, 1/5, 2],
 		6 : [0.7, 1/5, 3]
+	},
+	"tundra" : {
+		0 : [2, 0, 0],
+		1 : [1.5, 0, 1],
+		2 : [1.3, 1/5, 2],
+		3 : [1.2, 1/5, 3],
+		4 : [1.1, 1/5, 4],
+		5 : [0.95, 1/5, 5],
+		6 : [0.8, 1/5, 6],
+		12 : [0.6, 1/5, 7],
 	}
 }
 

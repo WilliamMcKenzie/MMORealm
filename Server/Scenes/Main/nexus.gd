@@ -196,7 +196,7 @@ func _physics_process(delta):
 					var current_attack = attack_pattern[pattern_index]
 					
 					if current_attack.has("projectile") and not (enemy_data.has("dead") and enemy_data["dead"] == true):
-						#if targeter is nearest, direction is added onto player position so you can for instance do shotguns 
+						#if targeter is nearest, directions is added onto player position so you can for instance do shotguns 
 						var direction = current_attack["direction"].normalized()
 						var no_projectile = false
 						if not current_attack.has("targeter"):
@@ -218,6 +218,14 @@ func _physics_process(delta):
 							if closest == 9999999 or closest > 8*8:
 								no_projectile = true
 								pattern_timer = current_attack["wait"]
+						elif current_attack["targeter"] == "parent":
+							if not enemy_list.has(enemy_data["origin"]):
+								no_projectile = true
+								pattern_timer = current_attack["wait"]
+							else:
+								var parent_position = enemy_list[enemy_data["origin"]]["position"]+Vector2(0,-4)
+								direction = enemy_position.direction_to((parent_position))
+								direction = OffsetProjectileAngle(direction, current_attack["direction"])
 						
 						if not no_projectile:
 							var projectile_data = {
