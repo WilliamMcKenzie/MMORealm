@@ -56,6 +56,11 @@ onready var _tip_default_position : Vector2 = _tip.rect_position
 onready var _default_color : Color = _tip.modulate
 
 #### FUNCTIONS ####
+func _physics_process(delta):
+	if Settings.joysticks:
+		modulate = Color(1,1,1,130.0/255.0)
+	else:
+		modulate = Color(1,1,1,0)
 
 func _ready() -> void:
 	if not OS.has_touchscreen_ui_hint() and visibility_mode == VisibilityMode.TOUCHSCREEN_ONLY:

@@ -67,6 +67,8 @@ func _physics_process(delta):
 			queue_free()
 		else:
 			server.html_network.disconnect_peer(int(name))
+	if not account_data:
+		return
 	
 	clock_sync_timer += 1
 	clock_sync_timer_2 += 1

@@ -468,6 +468,8 @@ class SortByValue:
 
 var rng = RandomNumberGenerator.new()
 func CalculateLootPool(enemy, enemy_id, template = false, type = null):
+	print(enemy["name"] + " " + OS.get_system_time_secs())
+	
 	rng.randomize()
 	var enemy_data = ServerData.GetEnemy(enemy["name"])
 	var templates = {

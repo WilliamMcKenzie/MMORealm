@@ -61,6 +61,12 @@ func _ready() -> void:
 	if not OS.has_touchscreen_ui_hint() and visibility_mode == VisibilityMode.TOUCHSCREEN_ONLY:
 		hide()
 
+func _physics_process(delta):
+	if Settings.joysticks:
+		modulate = Color(1,1,1,130.0/255.0)
+	else:
+		modulate = Color(1,1,1,0)
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed:

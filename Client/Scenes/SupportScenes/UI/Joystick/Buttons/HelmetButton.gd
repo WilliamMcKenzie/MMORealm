@@ -22,6 +22,11 @@ func _physics_process(delta):
 	
 	if(Input.is_action_pressed("ability")) and not GameUI.in_chat:
 		UseAbility()
+	
+	if Settings.buttons:
+		visible = true
+	else:
+		visible = false
 
 func UseAbility():
 	if GameUI.last_character and GameUI.last_character.ability_cooldown <= 0:

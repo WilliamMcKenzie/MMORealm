@@ -10877,8 +10877,8 @@ var babel_bosses = {
 			"name" : "tower_of_babel_floor_2"
 		},
 		"loot_offset" : Vector2(0, 10),
-		"health_scaling" : 30000,
-		"health" : 10000,
+		"health_scaling" : 50000,
+		"health" : 75000,
 		"defense" : 30,
 		"exp" : 1000,
 		"behavior" : 1,
@@ -11119,7 +11119,7 @@ var babel_bosses = {
 		},
 		
 		"loot_offset" : Vector2(0, 10),
-		"health_scaling" : 2000,
+		"health_scaling" : 4000,
 		"health" : 2000,
 		"defense" : 10,
 		"exp" : 500,
@@ -11174,8 +11174,8 @@ var babel_bosses = {
 			"Attack" : [1],
 		},
 		
-		"health_scaling" : 30000,
-		"health" : 50000,
+		"health_scaling" : 60000,
+		"health" : 100000,
 		"defense" : 0,
 		"exp" : 1000,
 		"behavior" : 1,
@@ -14847,7 +14847,7 @@ var achievements = {
 	},
 	"Unlock Scout" : {
 		"which" : "tiles_covered",
-		"amount" : 10000,
+		"amount" : 50000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,

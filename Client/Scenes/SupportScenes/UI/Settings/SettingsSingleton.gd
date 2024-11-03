@@ -15,6 +15,9 @@ var enter_dungeon = InputEventKey.new()
 var use_ability = InputEventKey.new()
 var return_to_port = InputEventKey.new()
 
+var joysticks = true
+var buttons = true
+
 var last_pressed = {
 	"open_inventory" : 0,
 }

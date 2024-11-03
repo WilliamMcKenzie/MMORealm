@@ -137,7 +137,7 @@ func SetCharacter(classname):
 			stylebox.modulate_color = Color(56.0/255,79.0/255,132.0/255,230.0/255)
 			#stylebox.modulate_color = Color(122.0/255,78.0/255,185.0/255,230.0/255)
 			stat_node.add_stylebox_override("panel", stylebox)
-		elif (value > 10 and stat != "health") or (value > 100):
+		elif (value >= 10 and stat != "health") or (value > 100):
 			strengths_node.visible = true
 			strengths_node.get_node("Label").visible = true
 			

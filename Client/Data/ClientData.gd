@@ -186,7 +186,12 @@ var special_loot_pools = {
 	},
 	"babel" : {
 		"override" : "encounter_2",
+		"one_person_loot" : {
+			"item" : 3,
+			"chance" : 5,
+		},
 		"soulbound_loot" : [
+			
 			{
 				"item" : 145,
 				"chance" : 125,
@@ -194,7 +199,12 @@ var special_loot_pools = {
 			},
 			{
 				"item" : 439,
-				"chance" : 10,
+				"chance" : 50,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 15,
+				"chance" : 5,
 				"threshold" : 0.05,
 			},
 		],
@@ -250,12 +260,10 @@ var special_loot_pools = {
 	},
 	"salazar,_rex_of_the_abyss" : {
 		"override" : "encounter_2",
-		"one_person_loot" : [
-			{
-				"item" : 14,
-				"chance" : 2,
-			},
-		],
+		"one_person_loot" : {
+			"item" : 14,
+			"chance" : 4,
+		},
 		"soulbound_loot" : [
 			{
 				"item" : 142,
@@ -2130,7 +2138,7 @@ var rulers = {
 						"wait" : 0,
 					},
 					{
-						"speech" : "You bottomfeeders will feed the bottom!",
+						"speech" : "Babel alone has withstood the turmoil!",
 						"wait" : 2,
 					},
 					{
@@ -2202,18 +2210,14 @@ var rulers = {
 						"duration" : 5,
 						"wait" : 0,
 					},
-					MakeProjectile("Wave_mid_med", 12, 0, "parent"),
-					MakeProjectile("Wave_mid_med", 10, 0, "parent"),
+					MakeProjectile("Wave_mid_med", 15, 0, "parent"),
 					MakeProjectile("Wave_mid_med", 5, 0, "parent"),
 					MakeProjectile("Wave_mid_med", -5, 0, "parent"),
-					MakeProjectile("Wave_mid_med", -10, 0, "parent"),
-					MakeProjectile("Wave_mid_med", -12, 0, "parent"),
-					MakeProjectile("Wave_mid_slow", 12, 0, "parent"),
-					MakeProjectile("Wave_mid_slow", 10, 0, "parent"),
+					MakeProjectile("Wave_mid_med", -15, 0.5, "parent"),
+					MakeProjectile("Wave_mid_slow", 15, 0, "parent"),
 					MakeProjectile("Wave_mid_slow", 5, 0, "parent"),
 					MakeProjectile("Wave_mid_slow", -5, 0, "parent"),
-					MakeProjectile("Wave_mid_slow", -10, 0, "parent"),
-					MakeProjectile("Wave_mid_slow", -12, 1, "parent"),
+					MakeProjectile("Wave_mid_slow", -15, 0.5, "parent"),
 				]
 			},
 		]
@@ -3594,7 +3598,7 @@ var realm_enemies = {
 			{
 				"duration" : 10,
 				"health" : [0,100],
-				"attack_pattern" : [
+				"attack_pattern" :  [
 					MakeProjectile("Slash_1", 0, 1, "nearest"),
 				]
 			}
@@ -11771,6 +11775,15 @@ var items = {
 		"textures" : {},
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(9,13)],
 	},
+	15 : {
+		"name": "Blackened Key",
+		"description" : "What lies in the bottom of the tower...",
+		"tier" : "5",
+		"type" : "Material",
+		"slot" : "na",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(10,13)],
+	},
 	100 : {
 		"name": "Short Sword",
 		"description" : "A simple yet effective weapon.",
@@ -14834,7 +14847,7 @@ var achievements = {
 	},
 	"Unlock Scout" : {
 		"which" : "tiles_covered",
-		"amount" : 10000,
+		"amount" : 50000,
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,

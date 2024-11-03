@@ -106,6 +106,22 @@ var settings = [
 			"default" :  false,
 		}
 	},
+	{
+		"title" : "Show Joysticks",
+		"description" : "Enable/disable joystick opacity",
+		"data" : {
+			"type" : "checkbox",
+			"default" :  true,
+		}
+	},
+	{
+		"title" : "Show Buttons",
+		"description" : "Enable/disable button opacity",
+		"data" : {
+			"type" : "checkbox",
+			"default" :  true,
+		}
+	},
 ]
 var setting_scenes = {
 	"checkbox" : preload("res://Scenes/SupportScenes/UI/Settings/SettingScenes/CheckboxSetting.tscn"),
@@ -177,6 +193,10 @@ func ChangeValue(which, value):
 		InputMap.action_add_event("nexus", event)
 	if which == settings[12].title:
 		Settings.audio = value
+	if which == settings[13].title:
+		Settings.joysticks = value
+	if which == settings[14].title:
+		Settings.buttons = value
 
 func GoHome():
 	GameUI.GoHome()
