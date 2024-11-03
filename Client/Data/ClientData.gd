@@ -168,6 +168,38 @@ var special_loot_pools = {
 		],
 		"loot" : []
 	},
+	"argolath" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 407,
+				"chance" : 125,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 173,
+				"chance" : 125,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
+	"babel" : {
+		"override" : "encounter_2",
+		"soulbound_loot" : [
+			{
+				"item" : 145,
+				"chance" : 125,
+				"threshold" : 0.05,
+			},
+			{
+				"item" : 439,
+				"chance" : 10,
+				"threshold" : 0.05,
+			},
+		],
+		"loot" : []
+	},
 	"atlas" : {
 		"override" : "encounter_2",
 		"soulbound_loot" : [
@@ -218,6 +250,12 @@ var special_loot_pools = {
 	},
 	"salazar,_rex_of_the_abyss" : {
 		"override" : "encounter_2",
+		"one_person_loot" : [
+			{
+				"item" : 14,
+				"chance" : 2,
+			},
+		],
 		"soulbound_loot" : [
 			{
 				"item" : 142,
@@ -318,7 +356,7 @@ var projectile_databank = {
 		"size" : medium
 	},
 	"SmallPlasmaBall_mid_mid" : {
-		"projectile" : "SmallPlasmaBall",
+		"projectile" : "PlasmaBall",
 		"formula" : "0",
 		"damage" : 60,
 		"piercing" : true,
@@ -491,6 +529,30 @@ var projectile_databank = {
 		"size" : medium
 	},
 	
+	"GiantStack_strong_insane" : {
+		"projectile" : "GiantStack",
+		"formula" : "0",
+		"damage" : 200,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : 160,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : 8
+	},
+	"GiantStack_strong_fast" : {
+		"projectile" : "GiantStack",
+		"formula" : "0",
+		"damage" : 100,
+		"piercing" : false,
+		"wait" : 0,
+		"speed" : fast,
+		"tile_range" : 9,
+		"targeter" : "nearest",
+		"direction" : Vector2(0,1),
+		"size" : large
+	},
 	"Stack_strong_fast" : {
 		"projectile" : "Stack",
 		"formula" : "0",
@@ -1711,10 +1773,11 @@ func MakeProjectile(projectile_type, degrees, wait, targeter = null):
 	
 	return projectile_data
 
-func CreateArc(steps, from, to, projectile):
+func CreateArc(steps, from, to, projectile, targeter = null):
 	var attack_pattern = []
+	var offset = steps/4 if targeter else 0
 	for step in to-from:
-		attack_pattern.append(MakeProjectile(projectile, (360.0/steps)*(step+from), 0))
+		attack_pattern.append(MakeProjectile(projectile, (360.0/steps)*(step+from-offset), 0, targeter))
 	return attack_pattern
 
 
@@ -1824,10 +1887,10 @@ var rulers = {
 		"scale" : 1,
 		"res" : 38,
 		"height" : 20,
-		"rect" : Rect2(Vector2(114,38), Vector2(38,38)),
+		"rect" : Rect2(Vector2(114,38), Vector2(114,38)),
 		"animations" : {
-			"Idle" : [0],
-			"Attack" : [0],
+			"Idle" : [0,1],
+			"Attack" : [2,0],
 		},
 		
 		"health_scaling" : 10000,
@@ -8988,7 +9051,7 @@ var the_abyss_enemies = {
 				"health" : [0,100],
 				"behavior" : 2,
 				"speed" : 40,
-				"attack_pattern" : CreateSpiral(2, "FlameBlast_strong_slow", 0.3)
+				"attack_pattern" : CreateSpiral(2, "PlasmaBall_mid_mid", 0.3)
 			},
 		]
 	},
@@ -10796,45 +10859,482 @@ var halloween_island_enemies = {
 }
 var babel_bosses = {
 	"argolath" : {
-		"scale" : 1,
+		"scale" : 1.5,
 		"res" : 38,
-		"height" : 34,
-		"rect" : Rect2(Vector2(190,38), Vector2(38,38)),
+		"height" : 22,
+		"rect" : Rect2(Vector2(76,114), Vector2(152,38)),
 		"animations" : {
-			"Idle" : [0],
-			"Attack" : [],
+			"Idle" : [1,2],
+			"Attack" : [3,1],
 		},
 		
+		"dungeon" : {
+			"rate" : 1,
+			"name" : "tower_of_babel_floor_2"
+		},
+		"loot_offset" : Vector2(0, 10),
 		"health_scaling" : 30000,
 		"health" : 10000,
 		"defense" : 30,
 		"exp" : 1000,
-		"behavior" : 0,
-		"speed" : 0,
-		"loot_pool" : basic_loot_pools["none"],
+		"behavior" : 1,
+		"speed" : 8,
+		"loot_pool" : special_loot_pools["argolath"],
 		"phases" : [
+			{
+				"duration" : 13,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 13,
+						"wait" : 8,
+					},
+					{
+						"speech" : "In the last thousand years...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "This tower has stood as a reminder of Babel's power!..",
+						"wait" : 2,
+					},
+					{
+						"speech" : "Rest assured, it will not fall today.",
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [0,50],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 1,
+					},
+					{
+						"speech" : "The power of Babel is beyond your understanding...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "Know fear!",
+						"wait" : 2,
+					},
+				]
+			},
 			
+			{
+				"duration" : 4,
+				"health" : [0,75],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"speech" : "My minions will drag you under!",
+						"wait" : 2,
+					},
+					{
+						"summon" : "spawn_of_argolath",
+						"summon_position" : DegreesToVector((360.0/4.0)*1)*50,
+						"wait" : 0,
+					},
+					{
+						"summon" : "spawn_of_argolath",
+						"summon_position" : DegreesToVector((360.0/4.0)*2)*50,
+						"wait" : 0,
+					},
+					{
+						"summon" : "spawn_of_argolath",
+						"summon_position" : DegreesToVector((360.0/4.0)*3)*50,
+						"wait" : 0,
+					},
+					{
+						"summon" : "spawn_of_argolath",
+						"summon_position" : DegreesToVector((360.0/4.0)*4)*50,
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [0,25],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"speech" : "My minions will drag you under!",
+						"wait" : 2,
+					},
+					{
+						"summon" : "spawn_of_argolath",
+						"summon_position" : DegreesToVector((360.0/4.0)*1)*50,
+						"wait" : 0,
+					},
+					{
+						"summon" : "spawn_of_argolath",
+						"summon_position" : DegreesToVector((360.0/4.0)*2)*50,
+						"wait" : 0,
+					},
+					{
+						"summon" : "spawn_of_argolath",
+						"summon_position" : DegreesToVector((360.0/4.0)*3)*50,
+						"wait" : 0,
+					},
+					{
+						"summon" : "spawn_of_argolath",
+						"summon_position" : DegreesToVector((360.0/4.0)*4)*50,
+						"wait" : 3,
+					},
+				]
+			},
+			
+			{
+				"duration" : 10,
+				"health" : [50,100],
+				"attack_pattern" : CreateSpiral(1, "Blast_strong_fast", 0, null, 0.2, 16) + CreateSpiral(3, "GiantStack_strong_fast", 0.2, "GiantPlasmaSpinner_strong_mid", 0.3) + CreateSpiral(1, "Blast_strong_fast", 0, null, 0.2, 16) + CreateSpiral(3, "GiantStack_strong_fast", 0.2, "GiantPlasmaSpinner_strong_mid", 0.3, 32, false, true)
+			},
+			{
+				"duration" : 10,
+				"health" : [50,100],
+				"attack_pattern" : CreateArc(32, 1, 16, "Plasma2_mid_fast", "nearest") + [{"wait" : 1}] + [
+					MakeProjectile("PlasmaSpinner_mid_fast", 0, 0.1, "nearest"),
+					MakeProjectile("Plasma2_mid_fast", 20, 0.1, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_fast", 40, 0.1, "nearest"),
+					MakeProjectile("Plasma2_mid_fast", 60, 0.1, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_fast", 40, 0.1, "nearest"),
+					MakeProjectile("Plasma2_mid_fast", 20, 0.1, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_fast", 0, 0.1, "nearest"),
+					MakeProjectile("Plasma2_mid_fast", -20, 0.1, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_fast", -40, 0.1, "nearest"),
+					MakeProjectile("Plasma2_mid_fast", -60, 0.1, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_fast", -40, 0.1, "nearest"),
+					MakeProjectile("Plasma2_mid_fast", -20, 0.1, "nearest"),
+				]
+			},
+			{
+				"duration" : 1,
+				"health" : [50,100],
+				"max_uses" : 1,
+				"attack_pattern" : [
+					{
+						"speech" : "Babel, lend me your power!",
+						"wait" : 0,
+					},
+					{
+						"summon" : "oracle_pillar_summon",
+						"summon_position" : Vector2(8*6,7*8),
+						"wait" : 0,
+					},
+					{
+						"summon" : "oracle_pillar_summon",
+						"summon_position" : Vector2(-8*6,7*8),
+						"wait" : 2,
+					},
+				]
+			},
+			
+			{
+				"duration" : 10,
+				"health" : [0,50],
+				"attack_pattern" : [
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/8*1), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/8*2), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/8*3), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/8*4), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/8*5), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/8*6), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/8*7), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/8*8), 0.5, "nearest"),
+					
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/7*1), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/7*2), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/7*3), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/7*4), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/7*5), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/7*6), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/7*7), 0.5, "nearest"),
+					
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/9*1), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/9*2), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/9*3), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/9*4), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/9*5), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/9*6), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/9*7), 0, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_mid", (360.0/9*8), 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", (360.0/9*9), 0.5, "nearest"),
+					
+				] + CreateSpiral(1, "PlasmaBall_mid_mid", 0, null, 0.2, 16) + CreateSpiral(1, "SmallPlasmaBall_mid_mid", 0, null, 0.2, 32) + [{"wait" : 1}]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,50],
+				"attack_pattern" : [
+					MakeProjectile("Blast_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -20, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -20, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -20, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -20, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -20, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", -20, 0.2, "nearest"),
+				] + CreateSpiral(1, "Slash_1", 0, null, 0, 9) + [{"wait" : 1}] + CreateSpiral(1, "GiantStack_strong_insane", 0, null, 0, 9) + [{"wait" : 0.2}] + CreateSpiral(1, "GiantStack_strong_insane", 0, null, 0, 9) + [{"wait" : 0.2}] + CreateSpiral(1, "GiantStack_strong_insane", 0, null, 0, 9) + [{"wait" : 0.6}] +  [
+					MakeProjectile("Blast_strong_fast", -45, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", 45, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", -45, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", 45, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", -45, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", 45, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", -45, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", 45, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", -45, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", 45, 0.2, "nearest"),
+					MakeProjectile("Blast_strong_fast", -45, 0, "nearest"),
+					MakeProjectile("Blast_strong_fast", 45, 0.2, "nearest"),
+				] + CreateSpiral(1, "Slash_1", 0, null, 0, 9) + [{"wait" : 1}] + CreateSpiral(1, "GiantStack_strong_insane", 0, null, 0, 9) + [{"wait" : 0.2}] + CreateSpiral(1, "GiantStack_strong_insane", 0, null, 0, 9) + [{"wait" : 0.2}] + CreateSpiral(1, "GiantStack_strong_insane", 0, null, 0, 9) + [{"wait" : 0.6}]
+			},
 		]
 	},
+	"spawn_of_argolath" : {
+		"scale" : 1,
+		"res" : 18,
+		"height" : 16,
+		"rect" : Rect2(Vector2(90,144), Vector2(36,18)),
+		"animations" : {
+			"Idle" : [0],
+			"Attack" : [1],
+		},
+		
+		"loot_offset" : Vector2(0, 10),
+		"health_scaling" : 2000,
+		"health" : 2000,
+		"defense" : 10,
+		"exp" : 500,
+		"behavior" : 1,
+		"speed" : 5,
+		"loot_pool" : {
+			"soulbound_loot" : [
+				{
+					"item" : 407,
+					"chance" : 4000,
+					"threshold" : 0.5,
+				},
+			],
+			"loot" : []
+		},
+		"phases" : [
+			{
+				"duration" : 4,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 4,
+						"wait" : 5,
+					},
+				]
+			},
+			{
+				"duration" : 10,
+				"health" : [0,100],
+				"attack_pattern" : [
+					MakeProjectile("PlasmaSpinner_mid_fast", 0, 0.4, "parent"),
+					MakeProjectile("PlasmaSpinner_mid_fast", 0, 0.3, "parent"),
+					MakeProjectile("PlasmaSpinner_mid_fast", 0, 0.2, "parent"),
+					MakeProjectile("SmallPlasmaBall_mid_mid", 0, 0.2, "nearest"),
+					MakeProjectile("SmallPlasmaBall_mid_mid", 0, 0.1, "nearest"),
+					MakeProjectile("SmallPlasmaBall_mid_mid", 0, 0.5, "nearest"),
+				]
+			},
+		]
+	},
+	
 	"babel" : {
 		"scale" : 1,
 		"res" : 38,
-		"height" : 34,
-		"rect" : Rect2(Vector2(152,38), Vector2(38,38)),
+		"height" : 16,
+		"rect" : Rect2(Vector2(0,114), Vector2(76,38)),
 		"animations" : {
 			"Idle" : [0],
-			"Attack" : [],
+			"Attack" : [1],
 		},
 		
 		"health_scaling" : 30000,
 		"health" : 50000,
 		"defense" : 0,
 		"exp" : 1000,
-		"behavior" : 0,
-		"speed" : 0,
-		"loot_pool" : basic_loot_pools["none"],
+		"behavior" : 1,
+		"speed" : 5,
+		"loot_pool" : special_loot_pools["babel"],
 		"phases" : [
+			{
+				"duration" : 16,
+				"health" : [0,100],
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 13,
+						"wait" : 8,
+					},
+					{
+						"speech" : "Ah, you managed to climb up here...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "I was once like you, a spry young adventurer looking for battle...",
+						"wait" : 3,
+					},
+					{
+						"speech" : "See if you can keep up!",
+						"wait" : 3,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [0,66],
+				"behavior" : 0,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 1,
+					},
+					{
+						"speech" : "You sure are strong...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "But I am only getting started!",
+						"wait" : 2,
+					},
+				]
+			},
+			{
+				"duration" : 4,
+				"health" : [0,33],
+				"behavior" : 0,
+				"max_uses" : 1,
+				"on_spawn" : true,
+				"attack_pattern" : [
+					{
+						"effect" : "invincible",
+						"duration" : 5,
+						"wait" : 1,
+					},
+					{
+						"speech" : "In this world, where kingdoms rise and fall...",
+						"wait" : 2,
+					},
+					{
+						"speech" : "My tower has stood for a millenium!",
+						"wait" : 2,
+					},
+				]
+			},
 			
+			{
+				"duration" : 6,
+				"health" : [66,100],
+				"behavior" : 1,
+				"speed" : 35,
+				"attack_pattern" : CreateSpiral(3, "Plasma2_mid_fast", 0.2, "PlasmaBall_mid_mid", 0.3, 16) + CreateSpiral(3, "Plasma2_mid_fast", 0.2, "PlasmaBall_mid_mid", 0.3, 16, false, true)
+			},
+			{
+				"duration" : 6,
+				"health" : [66,100],
+				"behavior" : 2,
+				"speed" : 25,
+				"attack_pattern" : [
+					MakeProjectile("Stack_strong_medium", 15, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 0, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", -15, 0.4, "nearest"),
+					
+					MakeProjectile("PlatinumSlash_strong_fast", 50, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", 35, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 20, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -20, 0, "nearest"),
+					MakeProjectile("Stack_strong_medium", -35, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -50, 0.5, "nearest"),
+				] + CreateSpiral(4, "Plasma2_mid_fast", 0.2, null, 0.2, 8)
+			},
+			{
+				"duration" : 6,
+				"health" : [66,100],
+				"behavior" : 2,
+				"speed" : 30,
+				"attack_pattern" : [
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", 15, 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", 0, 0, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", -15, 0.4, "nearest"),
+				] + CreateSpiral(3, "Plasma2_mid_fast", 0.2, null, 0.2, 7)
+			},
+			
+			{
+				"duration" : 6,
+				"health" : [33,66],
+				"behavior" : 2,
+				"speed" : 25,
+				"attack_pattern" : [
+					MakeProjectile("PlatinumSlash_strong_fast", 10, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 5, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -5, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -10, 0.2, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", 25, 0, "nearest"),
+					MakeProjectile("PlatinumSlash_strong_fast", -25, 0, "nearest"),
+				] + CreateSpiral(1, "GiantPlasmaSpinner_strong_mid", 0, null, 0.2, 8) + CreateSpiral(1, "PlasmaSpinner_mid_fast", 0, null, 0.2, 12) + [{"wait" : 1.5}]
+			},
+			{
+				"duration" : 6,
+				"health" : [33,66],
+				"behavior" : 1,
+				"speed" : 35,
+				"attack_pattern" : [
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", 0, 0.2, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("GiantPlasmaSpinner_strong_mid", 0, 0.2, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("PlasmaBall_mid_mid", 0, 0.2, "nearest"),
+					MakeProjectile("PlasmaSpinner_mid_fast", 0, 0.2, "nearest"),
+					MakeProjectile("PlasmaBall_mid_mid", 0, 0.2, "nearest"),
+				] + CreateSpiral(1, "GiantPlasmaSpinner_strong_mid", 0, null, 0.2, 7) + CreateSpiral(1, "PlasmaSpinner_mid_fast", 0, null, 0.2, 16) + [{"wait" : 1}]
+			},
+			
+			{
+				"duration" : 5,
+				"behavior" : 2,
+				"speed" : 20,
+				"health" : [0,33],
+				"attack_pattern" : CreateSpiral(7, "PlatinumSlash_strong_fast", 0.2, null, 0.2, 7) + CreateArc(16, 1, 8, "GiantPlasmaSpinner_strong_mid", "nearest") + CreateSpiral(6, "PlatinumSlash_strong_fast", 0.2, null, 0.2, 6) + CreateArc(32, 17, 32, "GiantPlasmaSpinner_strong_mid", "nearest")
+			},
+			{
+				"duration" : 5,
+				"behavior" : 1,
+				"speed" : 5,
+				"health" : [0,33],
+				"attack_pattern" : [
+					{
+						"summon" : "fireball",
+						"summon_position" : Vector2(-8*5,0),
+						"wait" : 3,
+					},
+				] + CreateSpiral(4, "Plasma2_mid_fast", 0.1, null, 0.2, 8) + CreateArc(16, 1, 8, "GiantPlasmaSpinner_strong_mid", "nearest") + CreateSpiral(3, "Plasma2_mid_fast", 0.1, null, 0.2, 7) + CreateArc(16, 9, 16, "GiantPlasmaSpinner_strong_mid", "nearest")
+			},
 		]
 	},
 }
@@ -10877,7 +11377,7 @@ var dungeons = {
 		"type" : "encounter",
 		"dungeon_boss" : "babel",
 		"room_size" : 100,
-		"spawnpoint" : Vector2(16,18)*8,
+		"spawnpoint" : Vector2(16,22)*8,
 		"tile_translation" : {
 			8 : "babel",
 		}
@@ -11241,6 +11741,36 @@ var items = {
 		
 		"path" : ["items/items_8x8.png", 26, 26, Vector2(4,14)],
 	},
+	14 : {
+		"name": "Blue Tuna",
+		"description" : "I think a certain fisherman was looking for this...",
+		"tier" : "5",
+		"type" : "Sword",
+		"slot" : "weapon",
+		"use" : "open tundra",
+		
+		"rof" : 100,
+		"stats" : {},
+		
+		"projectiles" : [
+			{
+				"damage" : [15,25],
+				"projectile" : "TunaSlash",
+				"formula" : "0",
+				"piercing" : false,
+				"speed" : med,
+				"tile_range" : 3,
+				"size" : 4,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(210.0, 238.0, 255.0),
+			"weaponNew" : RgbToColor(70.0, 186.0, 255.0),
+		},
+		"textures" : {},
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(9,13)],
+	},
 	100 : {
 		"name": "Short Sword",
 		"description" : "A simple yet effective weapon.",
@@ -11529,6 +12059,7 @@ var items = {
 		"textures" : {
 		}
 	},
+	
 	133 : {
 		"name": "Wand of Fire",
 		"description" : "A wooden wand with a fire spell",
@@ -12124,6 +12655,49 @@ var items = {
 			"weaponNew" : RgbToColor(154.0, 35.0, 193.0)
 		},
 		"textures" : {
+		}
+	},
+	145 : {
+		"name": "Soulflame Sceptre",
+		"description" : "A powerful sceptre, lit by the souls of the fallen",
+		"type" : "Staff",
+		"slot" : "weapon",
+		"tier" : "UT",
+		
+		"rof" : 200,
+		"stats" : {
+					
+		},
+		
+		"projectiles" : [
+			{
+				"damage" : [39,40],
+				"projectile" : "PlasmaFlipped",
+				"formula" : "sin(x+3.14)",
+				"piercing" : false,
+				"speed" : 40,
+				"tile_range" : 9,
+				"size" : 7,
+				"offset" : DegreesToVector(0),
+			},
+			{
+				"damage" : [39,40],
+				"projectile" : "Plasma1",
+				"formula" : "sin(x)",
+				"piercing" : false,
+				"speed" : 40,
+				"tile_range" : 9,
+				"size" : 7,
+				"offset" : DegreesToVector(0),
+			}
+		],
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(12,5)],
+		"colors" : {
+			"weaponSecondaryNew" : RgbToColor(0.0, 0.0, 0.0)
+		},
+		"textures" : {
+			"weaponTexture" : "soulflame_sceptre"
 		}
 	},
 	166 : {
@@ -12941,7 +13515,7 @@ var items = {
 	},
 	405 : {
 		"name": "Everwinter Diadem",
-		"description" : "A grand helm, cold to the touch.",
+		"description" : "A grand helm, cold to the touch",
 		"type" : "Helmet",
 		"slot" : "helmet",
 		
@@ -12991,6 +13565,35 @@ var items = {
 		},
 		"textures" : {
 			
+		}
+	},
+	407 : {
+		"name": "Bonewick Helmet",
+		"description" : "A scaley helm made from the hide of Argolath",
+		"type" : "Helmet",
+		"slot" : "helmet",
+		
+		"cooldown" : 6,
+		"buffs" : {
+			"healing" : { "duration" : 2, "range" : 1},
+			"armored" : { "duration" : 2, "range" : 1},
+		},
+		"stats" : {
+			"dexterity" : 10,
+			"attack" : 10,
+			"defense" : 10,
+			"health" : 100,
+		},
+		"tier" : "UT",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(7,8)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(160.0, 178.0, 186.0),
+			"helmetMediumNew" : RgbToColor(80.0, 81.0, 75.0),
+			"helmetDarkNew" : RgbToColor(60.0, 60.0, 54.0),
+		},
+		"textures" : {
+			"helmetTexture" : "bonewick_helmet",
 		}
 	},
 	433 : {
@@ -13147,6 +13750,31 @@ var items = {
 		},
 		"textures" : {
 			"helmetTexture" : "beastly_hat",
+		}
+	},
+	439 : {
+		"name": "Mask of Babel",
+		"description" : "A mask worn by the greatest druid to have ever lived",
+		"type" : "Hat",
+		"slot" : "helmet",
+		
+		"cooldown" : 4,
+		"buffs" : {
+			"healing" : { "duration" : 4, "range" : 0},
+		},
+		"stats" : {
+			"health" : 200,
+		},
+		"tier" : "UT",
+		
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(7,9)],
+		"colors" : {
+			"helmetLightNew" : RgbToColor(0.0, 0.0, 0.0),
+			"helmetMediumNew" : RgbToColor(0.0, 0.0, 0.0),
+			"helmetDarkNew" : RgbToColor(0.0, 0.0, 0.0),
+		},
+		"textures" : {
+			"helmetTexture" : "mask_of_babel",
 		}
 	},
 	466 : {
@@ -13521,6 +14149,17 @@ var buildings = {
 }
 
 var projectiles = {
+	"TunaSlash" : {
+		"rect" : Rect2(70,10,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
+	
+	"PlasmaFlipped" : {
+		"rect" : Rect2(180,20,10,10),
+		"rotation" : 45,
+		"spin" : false,
+	},
 	"Plasma1" : {
 		"rect" : Rect2(180,10,10,10),
 		"rotation" : 45,
@@ -13551,7 +14190,7 @@ var projectiles = {
 		"rect" : Rect2(210,10,10,10),
 		"rotation" : 45,
 		"spin" : true,
-		"scale" : 1.2
+		"scale" : 1.4
 	},
 	
 	"Slash" : {
@@ -13572,6 +14211,12 @@ var projectiles = {
 	"GiantBall" : {
 		"rect" : Rect2(20,0,10,10),
 		"rotation" : 90,
+		"spin" : false,
+		"scale" : 1.5
+	},
+	"GiantStack" : {
+		"rect" : Rect2(30,0,10,10),
+		"rotation" : 45,
 		"spin" : false,
 		"scale" : 1.5
 	},
@@ -14175,7 +14820,7 @@ var achievements = {
 	"Unlock Ranger" : {
 		"which" : "enemies_killed",
 		"amount" : 10,
-		"enemies" : ["atlas","og_the_treacherous","vigil_guardian","eye_of_naa'zorak"],
+		"enemies" : ["atlas","og_the_treacherous","vigil_guardian"],
 		"icon" : Vector2(0,10),
 		"description" : "Take some serious damage.",
 		"gold" : 0,

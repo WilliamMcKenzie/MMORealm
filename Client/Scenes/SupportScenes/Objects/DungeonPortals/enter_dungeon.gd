@@ -10,6 +10,7 @@ var island_translation = {
 	"salazar" : Vector2(0,72),
 	"saint_of_the_north" : Vector2(0,90),
 	"pumpkin_tyrant" : Vector2(0,108),
+	"oracle" : Vector2(0,126),
 }
 
 func _ready():

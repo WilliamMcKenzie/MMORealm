@@ -14,10 +14,13 @@ func Verify(player_id, token, character_index):
 	var token_verification = false
 	while OS.get_unix_time() - int(token.right(64)) <= 120:
 		if main_interface.expected_tokens.has(token):
-			
+			var email = main_interface.expected_tokens[token]
+			print("Email: " + email)
 			#Check if same account is already in the game
-			if(verified_emails.has(main_interface.expected_tokens[token])):
-				get_node("/root/Server").html_network.disconnect_peer(verified_emails[main_interface.expected_tokens[token]])
+			if(verified_emails.has(email)):
+				var server = get_node("/root/Server")
+				server.html_network.disconnect_peer(verified_emails[main_interface.expected_tokens[token]])
+				verified_emails.erase(email)
 				break
 			
 			token_verification = true

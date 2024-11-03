@@ -61,8 +61,12 @@ func _physics_process(delta):
 		HandleFake()
 		return
 	
-	#if OS.get_system_time_secs() - last_updated > 6:
-		#get_node("/root/Server").html_network.disconnect_peer(int(name))
+	if not account_data and OS.get_system_time_secs() - last_updated > 6:
+		var server = get_node("/root/Server")
+		if not int(name) in server.get_tree().get_network_connected_peers():
+			queue_free()
+		else:
+			server.html_network.disconnect_peer(int(name))
 	
 	clock_sync_timer += 1
 	clock_sync_timer_2 += 1
@@ -274,7 +278,7 @@ func HandleFake():
 			last_shot_time = OS.get_ticks_msec() / 1000.0
 	
 	if fake_sync_timer >= 40:
-		time_between_shots = (1 / (6.5 * (character.stats.dexterity + 17.3) / 75)) / (gear.weapon.rof/100.0)
+		time_between_shots = (1 / max((6.5 * (character.stats.dexterity + 17.3) / 75), 0.0001)) / (max(gear.weapon.rof, 1)/100.0)
 		var closest_player = OS.get_system_time_msecs()
 		for player_id in instance_node.player_list.keys():
 			var player_data = instance_node.player_list[player_id]
@@ -546,13 +550,13 @@ func Max(limitless = false):
 	get_node("/root/Server").SendCharacterData(name, character)
 	get_node("/root/Server").SendMessage(int(name), "success", "You feel your strength grow...")
 
-func UseItem(index):
+func UseItem(index, from_npc = false):
 	var selected_item_raw = character.inventory[index]
 	if selected_item_raw == null:
 		return
 	
 	var selected_item = ServerData.GetItem(selected_item_raw.item)
-	if selected_item.type != "Consumable":
+	if selected_item.type != "Consumable" and selected_item.name != "Blue Tuna":
 		return
 	
 	if "gift" in selected_item.use:
@@ -596,6 +600,10 @@ func UseItem(index):
 			account_data.finished_tutorial = true
 			get_node("/root/Server").Dialogue(tutorial_step_translation[tutorial_step], name)
 		get_node("/root/Server").SendMessage(int(name), "warning", "Class is fully ascended, evolve to ascend further")
+	elif "open" in selected_item.use:
+		if from_npc and selected_item.use == "open tundra":
+			character.inventory[index] = null
+			get_node("/root/Server/Instances/nexus").OpenPortal("special_island", ["nexus"], get_node("/root/Server/Instances/nexus").GetBoatSpawnpoints(), Vector2(802,802), "oracle", "tundra")
 	
 	get_node("/root/Server").SendCharacterData(name, character)
 

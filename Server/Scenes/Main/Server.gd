@@ -31,7 +31,8 @@ func _ready():
 	GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
 	#GameplayLoop.CreateIslandTemplate()
-	GameplayLoop.CreateIslandTemplate(Vector2(502,502), "tundra")
+	GameplayLoop.CreateIslandTemplate(Vector2(502,502), "halloween")
+	GameplayLoop.CreateIslandTemplate(Vector2(802,802), "tundra")
 	
 	#Open realm
 	#SpawnNPC("raa'sloth", ["nexus"], Vector2(0,0))
@@ -45,6 +46,7 @@ func _ready():
 	get_node("Instances/nexus").OpenPortal("house", ["nexus"], (Vector2(-7*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("arena_master", ["nexus"], (Vector2(4*8, -8*8) + Vector2(4,4)))
 	get_node("Instances/nexus").SpawnNPC("tutorial_master", ["nexus"], (Vector2(-5*8, -8*8) + Vector2(4,4)))
+	get_node("Instances/nexus").SpawnNPC("old_fisherman", ["nexus"], (Vector2(-10*8, -28*8) + Vector2(4,4)))
 	get_node("Instances/nexus").OpenPortal("special_island", ["nexus"], get_node("Instances/nexus").GetBoatSpawnpoints(), Vector2(502,502), "pumpkin_tyrant", "halloween")
 	
 	for i in range(0):
@@ -98,16 +100,21 @@ func _Peer_Disconnected(id):
 		print("User " + str(id) + " has disconnected!")
 		var instance_tree = player_state_collection[id]["I"]
 		var player_container = get_node_or_null("Instances/"+StringifyInstanceTree(instance_tree)+"/YSort/Players/"+str(id))
-		if not player_container or not player_container.character:
+		if not player_container:
 			return
 		
-		for stat in ["health", "attack", "defense", "speed", "dexterity", "vitality"]:
-			if player_container.stat_buffs.has(stat):
-				player_container.GiveBuff(0, stat, 0)
-		DeleteHouse(id)
-		PlayerVerification.verified_emails.erase(player_container.email)
-		if player_container.account_data:
-			HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
+		if player_container.character:
+			for stat in ["health", "attack", "defense", "speed", "dexterity", "vitality"]:
+				if player_container.stat_buffs.has(stat):
+					player_container.GiveBuff(0, stat, 0)
+		
+			DeleteHouse(id)
+		
+			if PlayerVerification.verified_emails.has(player_container.email):
+				PlayerVerification.verified_emails.erase(player_container.email)
+			if player_container.account_data:
+				HubConnection.UpdateAccountData(player_container.email, player_container.account_data)
+		
 		get_node("Instances/"+StringifyInstanceTree(player_state_collection[id]["I"])).RemovePlayer(player_container)
 		player_container.queue_free()
 		player_instance_tracker[player_state_collection[id]["I"]].erase(id)
@@ -168,6 +175,16 @@ remote func DialogueResponse(response):
 		ForcedEnterInstance(CreateArena(player_id, "monthly"), player_id)
 	elif response == "Monthly Arena":
 		Dialogue("ArenaToSoon", player_id)
+	elif response == "I have one!":
+		var inventory = player_container.character.inventory
+		var i = -1
+		for raw_item in inventory:
+			i += 1
+			if raw_item and raw_item.item == 14:
+				player_container.UseItem(i, true)
+				Dialogue("HasTuna", player_id)
+				return
+		Dialogue("NoTuna", player_id)
 	else:
 		Dialogue(response, player_id)
 
@@ -537,6 +554,9 @@ remote func SendPlayerProjectile(projectile_data):
 		return
 	
 	var weapon = player_container.gear.weapon
+	if len(weapon.projectiles) <= projectile_data.ProjectileIndex:
+		return
+	
 	var projectile = weapon.projectiles[projectile_data.ProjectileIndex]
 	projectile_data.Direction = OffsetProjectileAngle(projectile_data.Direction, projectile.offset)
 	projectile_data.merge({
@@ -918,7 +938,7 @@ remote func RecieveChatMessage(message):
 				if message_words[0] == "/invincible":
 					player_container.GiveEffect("invincible", 99999)
 				if message_words[0] == "/d" and message_words[1] == "tundra":
-					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal("special_island", instance_tree, player_position, Vector2(502,502), "oracle", "tundra")
+					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal("special_island", instance_tree, player_position, Vector2(802,802), "oracle", "tundra")
 				if message_words[0] == "/d" and message_words[1] == "halloween_island":
 					get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])).OpenPortal("special_island", instance_tree, player_position, Vector2(501,501), "pumpkin_tyrant", "halloween")
 				if message_words[0] == "/d" and message_words[1] == "island" and len(message_words) == 3:

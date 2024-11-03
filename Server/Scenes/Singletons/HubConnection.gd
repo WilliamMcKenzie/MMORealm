@@ -36,7 +36,7 @@ func _onConnectionSucceeded():
 
 remote func RecieveLoginToken(token, email):
 	gameserver.expected_tokens[token] = email
-	
+
 func GetAccountData(player_id, email):
 	rpc_id(1, "GetAccountData", player_id, email)
 

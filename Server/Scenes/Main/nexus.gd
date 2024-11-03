@@ -47,7 +47,7 @@ func _physics_process(delta):
 			var projectile_position = projectile["position"]
 			var path = projectile["path"]
 			
-			var alive_time = time/1000-projectile["start_time"]
+			var alive_time = (time/1000)-projectile["start_time"]
 			expression.parse(projectile["formula"],["x"])
 			
 			var velocity = projectile.direction.normalized()*projectile.speed
@@ -469,6 +469,7 @@ class SortByValue:
 var rng = RandomNumberGenerator.new()
 func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 	rng.randomize()
+	var enemy_data = ServerData.GetEnemy(enemy["name"])
 	var templates = {
 		"building_materials" : {
 			"soulbound_loot" : [
@@ -491,13 +492,13 @@ func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 		OpenPortal(ServerData.GetEnemy(enemy.name).dungeon.name, instance_tree, enemy.position)
 	
 	var player_pool = enemy["damage_tracker"]
-	var loot_pool = ServerData.GetEnemy(enemy["name"]).loot_pool
+	var loot_pool = enemy_data.loot_pool
 	if template and templates.has(type):
 		loot_pool = templates[type]
 	
 	if not template:
 		#Handle EXP
-		var exp_amount = ServerData.GetEnemy(enemy["name"]).exp
+		var exp_amount = enemy_data.exp
 		for player_id in player_pool.keys():
 			var player_container = get_node("YSort/Players/"+str(player_id))
 			if not player_container:
@@ -547,9 +548,16 @@ func CalculateLootPool(enemy, enemy_id, template = false, type = null):
 			})
 	if loot_bag.loot != []:
 			loot_bags.append(loot_bag)
-		
+	
+	if loot_pool.has("one_person_loot") and rng.randi_range(1,loot_pool.one_person_loot.chance) == loot_pool.one_person_loot.chance:
+		loot_bags[randi() % len(loot_bags)].loot.append({
+			"item" : loot_pool.one_person_loot.item,
+			"id" : get_node("/root/Server").generate_unique_id()
+		})
+	
+	var loot_position = enemy.position+enemy_data.loot_offset if enemy_data.has("loot_offset") else enemy.position
 	for _loot_bag in loot_bags:
-		get_node("/root/Server").get_node("Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)).SpawnLootBag(_loot_bag.loot, _loot_bag.player_id, instance_tree, enemy.position+Vector2(rand_range(-3,3), rand_range(-3,3)))
+		get_node("/root/Server").get_node("Instances/"+get_node("/root/Server").StringifyInstanceTree(instance_tree)).SpawnLootBag(_loot_bag.loot, _loot_bag.player_id, instance_tree, loot_position+Vector2(rand_range(-3,3), rand_range(-3,3)))
 
 func _compare_values(a, b):
 	return a[1] - b[1]

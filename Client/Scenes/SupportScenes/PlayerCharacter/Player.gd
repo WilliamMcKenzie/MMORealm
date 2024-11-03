@@ -102,7 +102,7 @@ func _physics_process(delta):
 	if clock_sync_timer >= 20:
 		clock_sync_timer = 0
 		$Camera2D.zoom = Vector2(0.2/Settings.zoom, 0.2/Settings.zoom)
-		if Server.GetCurrentInstanceNode() and "dungeon_name" in Server.GetCurrentInstanceNode() and Server.GetCurrentInstanceNode().dungeon_name == "cloud_isles":
+		if Server.GetCurrentInstanceNode() and "dungeon_name" in Server.GetCurrentInstanceNode() and (Server.GetCurrentInstanceNode().dungeon_name == "cloud_isles" or "babel" in Server.GetCurrentInstanceNode().dungeon_name):
 			$SkyBackgound.visible = true
 			$BlackBackground.visible = false
 		else:

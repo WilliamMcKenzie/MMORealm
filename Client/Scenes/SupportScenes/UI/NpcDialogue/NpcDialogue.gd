@@ -87,6 +87,24 @@ var subject_data = {
 	"NotMaxed" : {
 		"text" : ["Whats that? You think your ready?", "Bahaha! Come back when you are fully ascended lowly bottomfeeder."],
 		"character_rect" : Vector2(40,0),
+	},
+	
+	"Fisherman" : {
+		"text" : ["I've been trying to catch a blue tuna for a millenium now...", "If you happen to find one, I would happily sail you to a new island...", "What do you say?"],
+		"question" : ["I have one!", "I'll keep an eye out"],
+		"character_rect" : Vector2(60,0),
+	},
+	"HasTuna" : {
+		"text" : ["Haha! This is gonna be tasty...", "Well you held up your end of the bargain, so I'll sail you to my old friend's kingdom...", "Don't cause to much chaos, alright?"],
+		"character_rect" : Vector2(60,0),
+	},
+	"NoTuna" : {
+		"text" : ["You liar!", "I can smell blue tuna from a mile away, and you don't have it."],
+		"character_rect" : Vector2(60,0),
+	},
+	"I'll keep an eye out" : {
+		"text" : ["I appreciate it, I can't remember the last good meal I had."],
+		"character_rect" : Vector2(60,0),
 	}
 }
 var subject = null
