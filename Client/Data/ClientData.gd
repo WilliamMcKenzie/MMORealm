@@ -69,6 +69,11 @@ var basic_loot_pools = {
 				"chance" : 1,
 				"threshold" : 0.05,
 			},
+			{
+				"item" : 3,
+				"chance" : 300,
+				"threshold" : 0.05,
+			},
 		],
 		"loot" : []
 	},
@@ -83,6 +88,11 @@ var basic_loot_pools = {
 				"item" : 0,
 				"chance" : 2,
 				"threshold" : 0.1,
+			},
+			{
+				"item" : 3,
+				"chance" : 1000,
+				"threshold" : 0.05,
 			},
 		],
 		"loot" : []
@@ -14789,7 +14799,7 @@ var achievements = {
 	},
 	"Unlock Nomad" : {
 		"which" : "bow_projectiles",
-		"amount" : 3000,
+		"amount" : 9000,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the arrow.",
 		"gold" : 0,
@@ -14803,7 +14813,7 @@ var achievements = {
 	},
 	"Unlock Scholar" : {
 		"which" : "staff_projectiles",
-		"amount" : 3000,
+		"amount" : 6000,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the magic.",
 		"gold" : 0,

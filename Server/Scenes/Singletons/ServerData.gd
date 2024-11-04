@@ -69,6 +69,11 @@ var basic_loot_pools = {
 				"chance" : 1,
 				"threshold" : 0.05,
 			},
+			{
+				"item" : 3,
+				"chance" : 300,
+				"threshold" : 0.05,
+			},
 		],
 		"loot" : []
 	},
@@ -83,6 +88,11 @@ var basic_loot_pools = {
 				"item" : 0,
 				"chance" : 2,
 				"threshold" : 0.1,
+			},
+			{
+				"item" : 3,
+				"chance" : 1000,
+				"threshold" : 0.05,
 			},
 		],
 		"loot" : []
@@ -10877,8 +10887,8 @@ var babel_bosses = {
 			"name" : "tower_of_babel_floor_2"
 		},
 		"loot_offset" : Vector2(0, 10),
-		"health_scaling" : 50000,
-		"health" : 75000,
+		"health_scaling" : 30000,
+		"health" : 10000,
 		"defense" : 30,
 		"exp" : 1000,
 		"behavior" : 1,
@@ -11119,7 +11129,7 @@ var babel_bosses = {
 		},
 		
 		"loot_offset" : Vector2(0, 10),
-		"health_scaling" : 4000,
+		"health_scaling" : 2000,
 		"health" : 2000,
 		"defense" : 10,
 		"exp" : 500,
@@ -11174,8 +11184,8 @@ var babel_bosses = {
 			"Attack" : [1],
 		},
 		
-		"health_scaling" : 60000,
-		"health" : 100000,
+		"health_scaling" : 30000,
+		"health" : 50000,
 		"defense" : 0,
 		"exp" : 1000,
 		"behavior" : 1,
@@ -11782,7 +11792,7 @@ var items = {
 		"type" : "Material",
 		"slot" : "na",
 		
-		"path" : ["items/items_8x8.png", 26, 26, Vector2(7,13)],
+		"path" : ["items/items_8x8.png", 26, 26, Vector2(10,13)],
 	},
 	100 : {
 		"name": "Short Sword",
@@ -14789,7 +14799,7 @@ var achievements = {
 	},
 	"Unlock Nomad" : {
 		"which" : "bow_projectiles",
-		"amount" : 3000,
+		"amount" : 9000,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the arrow.",
 		"gold" : 0,
@@ -14803,7 +14813,7 @@ var achievements = {
 	},
 	"Unlock Scholar" : {
 		"which" : "staff_projectiles",
-		"amount" : 3000,
+		"amount" : 6000,
 		"icon" : Vector2(0,10),
 		"description" : "Become one with the magic.",
 		"gold" : 0,
