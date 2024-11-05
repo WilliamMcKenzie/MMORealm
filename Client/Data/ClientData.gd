@@ -196,10 +196,6 @@ var special_loot_pools = {
 	},
 	"babel" : {
 		"override" : "encounter_2",
-		"one_person_loot" : {
-			"item" : 3,
-			"chance" : 5,
-		},
 		"soulbound_loot" : [
 			
 			{
@@ -10887,8 +10883,8 @@ var babel_bosses = {
 			"name" : "tower_of_babel_floor_2"
 		},
 		"loot_offset" : Vector2(0, 10),
-		"health_scaling" : 30000,
-		"health" : 10000,
+		"health_scaling" : 50000,
+		"health" : 75000,
 		"defense" : 30,
 		"exp" : 1000,
 		"behavior" : 1,
@@ -11184,8 +11180,8 @@ var babel_bosses = {
 			"Attack" : [1],
 		},
 		
-		"health_scaling" : 30000,
-		"health" : 50000,
+		"health_scaling" : 60000,
+		"health" : 100000,
 		"defense" : 0,
 		"exp" : 1000,
 		"behavior" : 1,
