@@ -656,7 +656,7 @@ func EnterHouse(player_id, house_player_id):
 		SendMessage(player_id, "error", "Access not permitted by owner!")
 		return
 	
-	var player_container = get_node("Instances/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
+	var player_container = get_node("a/"+StringifyInstanceTree(player_state_collection[player_id]["I"])+"/YSort/Players/"+str(player_id))
 	var instance_tree = player_state_collection[player_id]["I"].duplicate(true)
 	
 	player_instance_tracker[instance_tree].erase(player_id)
@@ -1017,11 +1017,11 @@ func IdentifierToString(identifier):
 	
 	return proper_string
 
-func NotifyDeath(player_id, enemy_name):
+func NotifyDeath(player_id, enemy_name, character_lvl, character_class):
 	var instance_tree = player_state_collection[int(player_id)]["I"]
 	
 	rpc_id(player_id, "CharacterDied", enemy_name)
-	rpc("RecieveChat", str(player_name_by_id[player_id]) + " has been killed by a "+IdentifierToString(enemy_name), "System")
+	rpc("RecieveChat","level " + character_lvl + " " + character_class + ", " + str(player_name_by_id[player_id]) + ", has been killed by a "+IdentifierToString(enemy_name), "System")
 	yield(get_tree().create_timer(1), "timeout")
 	html_network.disconnect_peer(player_id)
 

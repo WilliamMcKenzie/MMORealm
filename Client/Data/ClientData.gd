@@ -12051,7 +12051,7 @@ var items = {
 			{
 				"damage" : [50,60],
 				"projectile" : "BloodSlash",
-				"formula" : "cos(x)",
+				"formula" : "-sin(x)",
 				"piercing" : false,
 				"speed" : fast,
 				"tile_range" : 4,

@@ -867,7 +867,7 @@ func DealDamage(damage, enemy_name):
 func Death(enemy_name):
 	UpdateStatistics("deaths",1)
 	var username = get_node("/root/Server").player_name_by_id[int(name)]
-	
+	get_node("/root/Server").NotifyDeath(int(name), enemy_name, character.level, character.class)
 	account_data.characters.remove(character_index)
 	if not character.has("revive_cost"):
 		character.revive_cost = DetermineReviveCost(character.level)
@@ -881,7 +881,6 @@ func Death(enemy_name):
 	
 	if not account_data.has("admin"):
 		HubConnection.UpdateLeaderboard(username, character)
-	get_node("/root/Server").NotifyDeath(int(name), enemy_name)
 	is_dead = true
 func DetermineReviveCost(reputation):
 	var cost = reputation * 10
