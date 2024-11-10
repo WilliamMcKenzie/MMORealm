@@ -468,7 +468,7 @@ class SortByValue:
 
 var rng = RandomNumberGenerator.new()
 func CalculateLootPool(enemy, enemy_id, template = false, type = null):
-	print(enemy["name"] + " " + OS.get_system_time_secs())
+	print(enemy["name"] + " " + str(OS.get_system_time_secs()))
 	
 	rng.randomize()
 	var enemy_data = ServerData.GetEnemy(enemy["name"])
@@ -638,7 +638,7 @@ func OpenPortal(portal_name, instance_tree, position, map_size = Vector2(750,750
 		return instance_id
 	elif "house" in portal_name:
 		object_list[instance_id] = {
-			"name":"house",
+			"name": portal_name,
 			"type":"DungeonPortals",
 			"end_time": OS.get_system_time_msecs()+OS.get_system_time_msecs(),
 			"position": position,

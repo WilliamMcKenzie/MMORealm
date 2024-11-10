@@ -1,11 +1,11 @@
 extends Node
 
-var url = "wss://gameserver.lagso.com"
+#var url = "wss://gameserver.lagso.com"
 #var url = "ws://159.203.0.78:20200"
-#var url = "ws://localhost:20200"
+var url = "ws://localhost:20200"
 
-var ip_address = "159.203.0.78"
-#var ip_address = "localhost"
+#var ip_address = "159.203.0.78"
+var ip_address = "localhost"
 var port = 20200
 
 var network = NetworkedMultiplayerENet.new()
@@ -369,8 +369,8 @@ func EnterInstance(instance_id, portal_name):
 	LoadingScreen.Transition(IdentifierToString(portal_name))
 	if instance_id == GetCurrentInstance():
 		return
-	if portal_name == "house":
-		rpc_id(1,"RecieveChatMessage", "/home")
+	if "house" in portal_name:
+		rpc_id(1,"RecieveChatMessage", "/home " + portal_name.substring(0,portal_name.indexof("'")))
 	else:
 		rpc_id(1, "EnterInstance", instance_id)
 

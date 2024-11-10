@@ -40,7 +40,7 @@ func GetAccountData(player_id, email):
 	rpc_id(1, "GetAccountData", player_id, email)
 
 remote func ReturnAccountData(player_id, account_data):
-	print(account_data.username + " returned data " + OS.get_system_time_secs())
+	print(account_data.username + " returned data " + str(OS.get_system_time_secs()))
 	if not get_node("/root/Server").player_state_collection.has(player_id):
 		get_node("/root/Server").network.disconnect_peer(int(player_id))
 		return
